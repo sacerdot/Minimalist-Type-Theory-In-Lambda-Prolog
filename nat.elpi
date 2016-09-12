@@ -2,15 +2,20 @@ bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
 spy G :- (bracket ">Entering " G "\n", G, bracket ">Success  " G "\n";
           bracket ">Leaving  " G "\n",  fail).
+success.
+%printt A :- term_to_string A S, print"]>-+-+-+-+[> ", print S, print "\n".
 
-conv A B :- nf A B ; (nf A C, nf B C).
-nf A B :- announce ( nf A B).
+nf A B  :- announce ( nf A B).
+bnf A B :- announce (bnf A B).
+printt T:- announce (printt T) ; success.
+natint A B :- announce ( natint A B).
+
+%conv A B :- nf A B ; (nf A C, nf B C).
 nf A A :- bnf A A, ! .
 nf A B :- bnf A C , nf C B .
 
-bnf A B :- announce (bnf A B).
-bnf (nrec F K zero) K         :-  print "\n$bnf nrec 0$".
-bnf (nrec F K (succ N)) (F N (nrec F K N)) :-  print "\n$bnf nrec succ$" .
+bnf (nrec F K zero) KK :- bnf K KK.
+bnf (nrec F K (succ N)) Fnrec :- bnf (F N (nrec F K N)) Fnrec.
 bnf (succ E) (succ Q) :- bnf E Q.
 bnf zero zero.
 
@@ -28,14 +33,12 @@ intnat K (succ N) :-
     K > 0, KK is K - 1, 
     intnat KK N.
 
-natint A B :- announce ( natint A B).
-
-natint zero 0 :- !.
+natint zero 0 :- 1 = 1, !.
 natint Nat Int :-
     defs prec Prec,
+    printt (Prec Nat),
     nf (Prec Nat) A,
-    print "\n11\n11\n",
     natint A Int2,
-    Int is Int2 +1
+    Int is Int2 + 1
     .
 
