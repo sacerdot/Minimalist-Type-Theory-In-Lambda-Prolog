@@ -1,21 +1,36 @@
+include calc.
+
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
-spy G :- (bracket ">Entering " G "\n", G, bracket ">Success  " G "\n";
-          bracket ">Leaving  " G "\n",  fail).
+spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
+          bracket "]Leaving  " G "\n",  fail).
 success.
 %printt A :- term_to_string A S, print"]>-+-+-+-+[> ", print S, print "\n".
+
+
 
 nf A B  :- announce ( nf A B).
 bnf A B :- announce (bnf A B).
 printt T:- announce (printt T) ; success.
 natint A B :- announce ( natint A B).
+intnat A B :- announce ( intnat A B).
 
-%conv A B :- nf A B ; (nf A C, nf B C).
-nf A A :- bnf A A, ! .
-nf A B :- bnf A C , nf C B .
+conv A B :- nf A B ; (nf A C, nf B C).
+nf A A :- (bnf A A), ! .
+nf A B :- (bnf A C), nf C B .
 
-bnf (nrec F K zero) KK :- bnf K KK.
-bnf (nrec F K (succ N)) Fnrec :- bnf (F N (nrec F K N)) Fnrec.
+
+bnf (nrec T F K zero) K.
+bnf (nrec T F K (succ N)) (F N (nrec F K N)).
+
+bnf (nrec T F K A1) (nrec T F K A2) :- bnf A1 A2.
+bnf (nrec T F K1 A) (nrec T F K2 A) :- bnf K1 K2.
+bnf (nrec T F1 K A) (nrec T F2 K A) :-
+ pi x \ bnf x x => of x nat =>
+ pi y \ bnf y y => of y (T x) =>
+ bnf (F1 x y) (F2 x y).
+
+
 bnf (succ E) (succ Q) :- bnf E Q.
 bnf zero zero.
 
@@ -23,8 +38,15 @@ isType nat.
 is_canon zero.  is_canon succ.  is_const nrec.
 of zero nat.
 of (succ A) nat :- of A nat.
+of (nrec T F K A) (T A) :-
+ of A nat,
+ (pi x \ bnf x x => of x nat => isType (T x)),
+ of K (T zero),
+ (pi x \ bnf x x => of x nat =>
+  pi y \ bnf y y => of y (T x) =>
+  of (F x y) (T (succ x))).
 
-defs plus (m\ nrec succ m).
+defs plus ( nrec x\y\succ y ).   %%%MACROOOOOOOOOOOOOOOO!!!!!!!!!!!!!1
 defs prec ( nrec (x\y\x) zero). 
 
 
@@ -42,3 +64,10 @@ natint Nat Int :-
     Int is Int2 + 1
     .
 
+
+natPlus A B C :- 
+    (intnat A AA), 
+    (intnat B BB), 
+    (defs plus Plus),
+    (nf (Plus AA BB) K),
+    (natint K C).
