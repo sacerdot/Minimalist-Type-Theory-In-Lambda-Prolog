@@ -1,6 +1,31 @@
-include calc.
+%include calc.
+bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
+announce G :- bracket ">>" G "\n", fail.
+spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
+          bracket "]Leaving  " G "\n",  fail).
+success.
+%printt A :- term_to_string A S, print"]>-+-+-+-+[> ", print S, print "\n".
 
+nf A B  :- announce ( nf A B).
+%bnf A B :- announce (bnf A B).
+%printt T:- announce (printt T) ; success.
+%natint A B :- announce ( natint A B).
+%intnat A B :- announce ( intnat A B).
 
+conv A B :- nf A B ; (nf A C, nf B C).
+nf A A :- (bnf A A), ! .
+nf A B :- (bnf A C), nf C B .
+
+%bnf X XX :- defs X XX _.
+of X Y :- defs X _ Y.
+
+conv A B :- nf A B ; (nf A C, nf B C).
+
+load_library [] GOAL :- GOAL.
+load_library [ddd NAME BODY | TAIL ] GOAL :-
+ of BODY TYPE,
+ defs NAME BODY TYPE => load_library TAIL GOAL.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 bnf (nrec T F K zero) K.
 bnf (nrec T F K (succ N)) (F N (nrec F K N)).
 
