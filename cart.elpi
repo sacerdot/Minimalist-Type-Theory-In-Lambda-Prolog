@@ -28,3 +28,24 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+isType set (setPi A B) :-    % SET FORMATION
+    isType set A, 
+    pi x\ of x A => 
+        bnf x x => 
+            isType set (B x).
+
+
+of (lambda B F) (setPi B C) :-  % ELEMENT FORMATION
+    isType set (setPi B C), 
+        pi x\ of x B => bnf x x => of (F x) (C x).
+
+of (app Lam X)  (CX) :- % ELEMENT ELIMINATION
+    of Lam (setPi B C),
+    of X B,
+    CX = C X.
+
+
+bnf ( app (lambda B F) Bb) (F Bb) :- of Bb B, of (lambda B F) (setPi B C). 
+
+
+
