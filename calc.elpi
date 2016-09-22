@@ -117,7 +117,7 @@ bnf (pair B C b c1) (pair B C b c2) :- bnf c1 c2.
 bnf (elimSigma B C M d1 m) (elimSigma B C M d2 m) :- bnf d1 d2.
 bnf (elimSigma B C M d m1) (elimSigma B C M d m2) :- bnf m1 m2.
 
-
+ 
 
 %MACROs and stuff.
 
