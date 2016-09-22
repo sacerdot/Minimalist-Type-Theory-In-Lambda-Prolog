@@ -51,7 +51,7 @@ of (nrec T F K A) (T A) :-
   pi y \ bnf y y => of y (T x) =>
   of (F x y) (T (succ x))).
 
-%%%%
+%%%%  DEPENDENT PRODUCT
 isType set (setPi A B) :-    % SET FORMATION
     isType set A, 
     pi x\ of x A => 
@@ -70,15 +70,52 @@ of (app Lam X)  (CX) :- % ELEMENT ELIMINATION
 
 pi b\   %% le variabili libere vengono implicitamente quantificate
   bnf ( app (lambda B F) b) (F b) :- of b B, of (lambda B F) (setPi B C).
-
-
+  
 bnf (lambda B1 F) (lambda B2 F) :- bnf B1 B2.
 bnf (lambda B F1) (lambda B F2) :- pi b\ of b B => bnf b b => bnf (F1 b) (F2 b).
 
 bnf (app L X1) (app L X2) :- bnf X1 X2.
 bnf (app L1 X) (app L2 X) :- bnf L1 L2.
 
+%% STRONG INDEXED SUM
 
+isType col (colSigma B C) :- pi b\ 
+    bnf b b => of b B => isType col (C b).
+
+pi b\ 
+  pi c\ 
+    of ( pair B C b c ) (colSigma B C) :-  bnf b b, of b B, bnf c c, of c (C b), isType col (colSigma B C).
+
+pi m\
+  pi d\
+    of (elimSigma B C M d m) (M d) :-
+        (pi z\ of z (colSigma B C) => bnf z z => isType col (M z)),
+        bnf d d,
+        of d (colSigma B C),
+        (pi x\
+          pi y\
+            (bnf x x, bnf y y, of x B, of y (C x)) =>  of (m x y) (M (pair B C b c))).
+
+
+pi b\
+ pi c\
+  pi m\
+    bnf (elimSigma B C M (pair B C b c) m) (m b c) :- %% bnf forse deve essere arricchita con il tipo bnf T X1 X2
+        (pi z\ of z (colSigma B C) => bnf z z => isType col (M z)),
+        of (pair B C b c) (colSigma B C),
+        (pi x\
+          pi y\
+            (bnf x x, bnf y y, of x B, of y (C x)) =>  of (m x y) (M (pair B C b c)))
+
+%% Chiusura contestuale
+
+bnf (pair B1 C b c) (pair B2 C b c) :- bnf B1 B2.
+bnf (pair B C1 b c) (pair B C2 b c) :- pi b\ of b B => bnf b b => bnf (C1 b) (C2 b).
+bnf (pair B C b1 c) (pair B C b2 c) :- bnf b1 b2.
+bnf (pair B C b c1) (pair B C b c2) :- bnf c1 c2.
+
+bnf (elimSigma B C M d1 m) (elimSigma B C M d2 m) :- bnf d1 d2.
+bnf (elimSigma B C M d m1) (elimSigma B C M d m2) :- bnf m1 m2.
 
 
 
@@ -120,4 +157,5 @@ natPlus A B C :-
 
 
 %is_canon zero.  is_canon succ.  is_const nrec.
-
+rifl R A B :- A = B.
+rifl R A B :- R A B.
