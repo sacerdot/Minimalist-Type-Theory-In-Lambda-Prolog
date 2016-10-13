@@ -1,0 +1,32 @@
+%include calc.
+bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
+announce G :- bracket ">>" G "\n", fail.
+spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
+          bracket "]Leaving  " G "\n",  fail).
+
+load_library [] GOAL :- GOAL.
+load_library [ddd NAME BODY | TAIL ] GOAL :-
+ of BODY TYPE,
+ defs NAME BODY TYPE => load_library TAIL GOAL.
+
+
+
+nf A B  :- announce ( nf A B).
+nf A A :- (bnf A A), ! .
+nf A B :- (bnf A C), nf C B .
+conv A B :- nf A C, nf B C.
+
+% of T TY  the type inferred for T is TY
+% isa T TY..T has the expected type TY
+isa T TY :- of T TY', conv TY TY'.
+
+var Z T :- of Z T, bnf Z Z.
+of X Y :- defs X _ Y.
+
+isType col A :- isType set A.
+isType prop A :- isType propS A.
+isType set A :- isType propS A.
+isType col A :- isType prop A.
+isCol A :- isType col A.
+
+
