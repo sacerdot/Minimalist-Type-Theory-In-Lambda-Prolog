@@ -11,7 +11,7 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
 
 
 
-nf A B  :- announce ( nf A B).
+nf A B :- announce ( nf A B).
 nf A A :- (bnf A A), ! .
 nf A B :- (bnf A C), nf C B .
 conv A B :- nf A C, nf B C.
@@ -27,6 +27,4 @@ isType col A :- isType set A.
 isType prop A :- isType propS A.
 isType set A :- isType propS A.
 isType col A :- isType prop A.
-isCol A :- isType col A.
-
 

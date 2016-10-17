@@ -20,16 +20,18 @@ of (nrec T F K A) (T A) :-
  of K (T zero),
  (pi x \ bnf x x => of x nat => isType set (T x)),
  (pi x \ bnf x x => of x nat =>
-   pi y \ bnf y y => of y (T x) => of (F x y) (T (succ x))).
+  pi y \ bnf y y => of y (T x) => of (F x y) (T (succ x))).
 
 %%%%  DEPENDENT PRODUCT
-isType set (setPi A B) :-    % SET FORMATION
-    isType set A, 
-    pi x\ of x A => bnf x x => isType set (B x).
+isType set (setPi B C) :-    % SET FORMATION
+    conv B BB,
+    isType set BB, 
+    pi x\ bnf x x => of x B => isType set (C x).
 
 of (lambda B F) (setPi B C) :-  % ELEMENT FORMATION
-    isType set (setPi B C), 
-    pi x\ of x B => bnf x x => of (F x) (C x).
+    conv B BB,
+    isType set (setPi BB C), %quesa sostituzione non è valida, l'implicazione è al contrario
+    pi x\ bnf x x => of x B => of (F x) (C x).
 
 of (app Lam X) (CX) :- % ELEMENT ELIMINATION
     of Lam (setPi B C),
@@ -43,18 +45,25 @@ bnf (lambda B F1) (lambda B F2) :- pi b\ of b B => bnf b b => bnf (F1 b) (F2 b).
 bnf (app L X1) (app L X2) :- bnf X1 X2.
 bnf (app L1 X) (app L2 X) :- bnf L1 L2.
 
-%% STRONG INDEXED SUM
+%% STRONG INDEXED COL SUM
 
 isType col (colSigma B C) :-
  isType K B,
  pi b\ 
     bnf b b => of b B => isType col (C b).
 
-of ( pair B C Bb Cc ) (colSigma B C) :-  isa Bb B, isa Cc (C Bb), isType col (colSigma B C).
+of ( pair B C Bb Cc ) (colSigma B C) :-  
+    isType col (C Bb),
+    isType col B, %quando invoco isa non controllo che il tipo fornito sia 
+                  %corretto al più controllo che la sua forma normale lo sia. 
+    isa Bb B, 
+    isa Cc (C Bb),
+    isType col (colSigma B C).
 
-of (elimSigma B C M D Mm) (M D) :-
-        of D (colSigma B C),
-        (pi z\ of z (colSigma B C) => bnf z z => isType col (M z)),
+of (elimSigma B C M Pair Mm) (M D) :-
+        isa Pair (colSigma B C),
+%       of  Pair (colSigma BB CC),
+        (pi z\ bnf z z => of z (colSigma B C) => isType col (M z)),
         (pi x\
           pi y\
             (bnf x x, bnf y y, of x B, of y (C x)) =>  of (Mm x y) (M (pair B C x y))).
@@ -83,7 +92,7 @@ bnf (elimSigma B C M D Mm1) (elimSigma B C M D Mm2) :- bnf Mm1 Mm2.
 
 isType set n0.
 
-of (emp Null) (A Null) :- of Null n0, (pi z\ (bnf z z, of z n0) => isType col (A z)) 
+of (emp Null) (A_Null) :- of Null n0, (pi z\ (bnf z z, of z n0) => isType col (A z)), A_Null = A Null. 
 
 bnf (emp A) (emp A') :- bnf A A'.
 
@@ -95,9 +104,9 @@ of star n1.
 
 bnf star star.
 
-of (elim_n1 T C) (M T) :- of T n1, (pi z\ var z n1 => isCol (M z) ), of C (M star). 
+of (elim_n1 T C) (M T) :- of T n1, (pi z\ bnf z z => of z n1 => isCol (M z) ), of C (M star). 
 
-bnf (elim_n1 star C) C :- (pi z\ var z n1 => isCol (M z) ), of C (M star).
+bnf (elim_n1 star C) C :- (pi z\ bnf z z => of z n1 => isCol (M z) ), of C (M star).
 bnf (elim_n1 T C) (elim_n1 T' C) :- bnf T T'.
 
 % Disjoint Sum Set
