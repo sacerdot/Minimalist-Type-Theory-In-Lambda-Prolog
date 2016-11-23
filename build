@@ -1,9 +1,0 @@
-touch final
-
-cat final > final-old.elpi
-
-echo "###################\n\n" > final.elpi
-
-cat main.elpi >> final.elpi
-
-cat estentional.elpi >> final.elpi
