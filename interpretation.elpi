@@ -42,7 +42,7 @@ bnf (subst X1 X2 W) W :-
     (sigma T\ of X1 T, of X2 T).
     
 trad (propsEquClass A) TA :- trad A TA.
-s
+
 tau_rec powerCol powerCol (x \ x).
 
 %% EMPTYSET
@@ -121,7 +121,6 @@ trad (lambda B Cc) (pair (lambda TradB TradCc) P )
          prove_equ UUU (TradCC x2) PROVEEQ),
        P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
             PROVEEQ x1 x2 d.
-
 
 
 
