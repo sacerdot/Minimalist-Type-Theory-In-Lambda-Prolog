@@ -1,6 +1,6 @@
 %MACROs and stuff.
 
-macro plus ( nrec x\y\succ y ).   %%%MACROOOOOOOOOOOOOOOO!!!!!!!!!!!!!1
+macro plus ( nrec x\y\succ y ).   
 macro prec ( nrec (x\y\x) zero). 
 
 intnat 0 zero.
@@ -26,6 +26,4 @@ natPlus A B C :-
 
 
 
-%is_canon zero.  is_canon succ.  is_const nrec.
-rifl R A B :- A = B.
-rifl R A B :- R A B.
+

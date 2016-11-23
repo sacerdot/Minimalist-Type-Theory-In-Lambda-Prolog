@@ -1,12 +1,26 @@
 %interpretation.elpi
+accumulate main.
 
-%trad (of Aa AA) (of Aa (trad AA)).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+%trad
+
+%equ
+
+%tau_rec
+
+%sigm
+
+%prove_equ
+
+%tau
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 trad (of Aa AA) 
      (of 
         (tau A_inferred (TradAA) (TradAa) )
-        (TradAA) % il setoide I(AA) è determinato univocamente
-                 % dal suo supporto.
+        (TradAA) 
      ) :- 
      (trad AA TradAA), 
      (trad Aa TradAa), 
@@ -17,7 +31,7 @@ trad (isType A Ty) (isType TradA Ty)
 
 %%POWER COLLECTION 
 
-trad power propsCol.
+trad powerCol propsCol.
 
 bnf (equ propsCol Z1 Z2) (and (implies Z1 Z2) (implies Z2 Z1))
     :- of Z1 propsCol,
@@ -28,6 +42,8 @@ bnf (subst X1 X2 W) W :-
     (sigma T\ of X1 T, of X2 T).
     
 trad (propsEquClass A) TA :- trad A TA.
+s
+tau_rec powerCol powerCol (x \ x).
 
 %% EMPTYSET
 
@@ -66,15 +82,7 @@ sigma X X :- of_int X singleton.
 prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
  pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
 
-prove_equ star star (refl singleton star).
-
-%% UTILS
-
-tau A A1 (TAU A1) :-
- of_ext A TA,
- trad TA TAi,
- of_int A1 TA1,
- tau_rec TAi TA1 TAU.
+prove_eq star star (refl singleton star).
 
 %% DEPENDENT PRODUCT SET
 
@@ -113,6 +121,17 @@ trad (lambda B Cc) (pair (lambda TradB TradCc) P )
          prove_equ UUU (TradCC x2) PROVEEQ),
        P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
             PROVEEQ x1 x2 d.
+
+
+
+
+
+
+
+
+
+
+
 
 %%colSigma
 

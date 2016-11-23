@@ -1,4 +1,5 @@
 %include calc.
+
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
 spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
@@ -20,7 +21,10 @@ conv A B :- nf A C, nf B C.
 % isa T TY..T has the expected type TY
 isa T TY :- of T TY', conv TY TY'.
 
-var Z T :- of Z T, bnf Z Z.
+
+of Z T   :- var Z T.
+bnf Z Z :- var Z T.
+
 of X Y :- defs X _ Y.
 
 isType col A :- isType set A.
@@ -28,3 +32,13 @@ isType prop A :- isType propS A.
 isType set A :- isType propS A.
 isType col A :- isType prop A.
 
+
+
+
+tau A A1 (TAU A1) :-
+ of_ext A TA,
+ trad TA TAi,
+ of_int A1 TA1,
+ tau_rec TAi TA1 TAU.
+ 
+ 
