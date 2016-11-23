@@ -1,0 +1,149 @@
+%interpretation.elpi
+
+%trad (of Aa AA) (of Aa (trad AA)).
+
+trad (of Aa AA) 
+     (of 
+        (tau A_inferred (TradAA) (TradAa) )
+        (TradAA) % il setoide I(AA) è determinato univocamente
+                 % dal suo supporto.
+     ) :- 
+     (trad AA TradAA), 
+     (trad Aa TradAa), 
+     of (TradAa) A_inferred. 
+
+trad (isType A Ty) (isType TradA Ty)
+    :- trad A TradA.
+
+%%POWER COLLECTION 
+
+trad power propsCol.
+
+bnf (equ propsCol Z1 Z2) (and (implies Z1 Z2) (implies Z2 Z1))
+    :- of Z1 propsCol,
+       of Z2 propsCol.
+
+bnf (subst X1 X2 W) W :- 
+    of W propsCol, 
+    (sigma T\ of X1 T, of X2 T).
+    
+trad (propsEquClass A) TA :- trad A TA.
+
+%% EMPTYSET
+
+trad emptyset emptyset.
+
+equ emptyset (lambda emptyset x \ lambda emptyset y \ id emptyset x y).
+
+trad (emp A T) (emp A' T') :-
+ trad T T1, tau T T1 T',
+ pi x \ trad x x => of_int x emptyset => of_ext x emptyset => bnf x x =>
+  trad (A x) (A1 x), tau (A x) (A1 x) (A' x). 
+
+tau_rec emptyset emptyset (x \ x).
+
+prove_equ (emp A T) (emp A' T') (emp (EQU T T') T) :-
+ of_int T TTY, equ TTY EQU.
+
+
+%% SINGLETON
+
+trad singleton singleton.
+
+equ singleton (x \ y \ id singleton x y).
+
+trad star star.
+
+trad (elim_singleton T C) (elim_singleton T' C') :-
+ trad T T1, tau T T1 T',
+ (pi x \ trad x x => of_int x singleton => of_ext x singleton => bnf x x =>
+   trad (C x) (C1 x), tau (C x) (C1 x) (C' x)).
+
+tau_rec singleton singleton (x \ x).
+
+sigma X X :- of_int X singleton.
+
+prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
+ pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
+
+prove_equ star star (refl singleton star).
+
+%% UTILS
+
+tau A A1 (TAU A1) :-
+ of_ext A TA,
+ trad TA TAi,
+ of_int A1 TA1,
+ tau_rec TAi TA1 TAU.
+
+%% DEPENDENT PRODUCT SET
+
+trad 
+    (setPi B C) 
+    (setSigma 
+        (setPi TradB TradC))
+        (H\
+            (forall TradB y1\
+                (forall TradB y2\
+                    (forall (EQUB y1 y2) d \
+                        (EQUC y2 (SIGMA y1 y2 (app h y1)) (app H y2)
+                        )
+                    )
+                )
+            )
+        )
+    )
+    :-
+    trad B TradB, 
+    (pi y\ trad y y => of_ext y B => of_int y TradB => bnf y y =>
+      trad (C y) (Trad1 y), tau (Trad1 y) (TradC y)),
+    equ TradB EQUB,
+    (pi y \ equ (TradC y) (EQUC y)),
+    (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigma z (SIGMA z)).
+
+trad (lambda B Cc) (pair (lambda TradB TradCc) P )
+    :- trad B TradB,
+       (of_ext (lambda B Cc) (setPi B T_inferred_ext)),
+       (pi x \ trad x x => trad (Cc x) (TradCc x), of (TradCc x) (T_inferred x),
+         trad (T_inferred_ext x) (T_inferred_ext_trad x),
+         tau (T_inferred x) (T_inferred_ext_trad x) (TAU x)),
+       equ TradB EQU,
+       (pi x1 \ pi x2 \ pi d \ prove_equ x1 x2 d => sigma x1 x2 =>
+         sigma (TradCc x1) UUU,
+         prove_equ UUU (TradCC x2) PROVEEQ),
+       P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
+            PROVEEQ x1 x2 d.
+
+%%colSigma
+
+trad (colSigma B C) (colSigma Bi Ci) :- trad B Bi, trad C Ci.
+
+bnf (
+     equ (colSigma B C) Z1 Z2
+    ) 
+    (
+     exist (equ B (p1 Z1) (p1 Z2)
+           ) 
+           (d\
+            subst (p1 Z1) 
+                  (p1 Z2) 
+                  (equ (C (p1 Z2)) (p2 Z1) (p2 Z2))
+           ) 
+    ) :-  of Z1 colSigma B C, of Z2 colSigma B C.
+
+:- of Z1 (colSigma B C), of Z2 (colSigma B C).
+
+trad (pair BB CC Bb Cc) (pair (trad BB) (trad CC) (trad Bb) (trad Cc)).
+
+subst X1 X2 wimSigma
+
+
+
+
+trad (quotientCol A R ) Ai :- trad A Ai.
+
+bnf (equ (quotientCol A R) Z1 Z2) (R Z1 Z2) :- of Z1 A, of Z2 A.
+
+
+
+
