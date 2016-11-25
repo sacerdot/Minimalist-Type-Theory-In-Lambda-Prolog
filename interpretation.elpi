@@ -89,7 +89,7 @@ prove_eq star star (refl singleton star).
 trad 
     (setPi B C) 
     (setSigma 
-        (setPi TradB TradC))
+        (setPi TradB TradC)
         (H\
             (forall TradB y1\
                 (forall TradB y2\
