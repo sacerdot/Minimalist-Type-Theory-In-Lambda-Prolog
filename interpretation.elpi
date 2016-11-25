@@ -13,7 +13,7 @@ accumulate main.
 
 %prove_equ
 
-%tau
+%%tau
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -101,10 +101,14 @@ trad
             )
         )
     )
-    :-
-    trad B TradB, 
-    (pi y\ trad y y => of_ext y B => of_int y TradB => bnf y y =>
-      trad (C y) (Trad1 y), tau (Trad1 y) (TradC y)),
+    :- trad B TradB 
+      ,(pi ye\ 
+         pi yi\ trad ye yi 
+             => of_ext ye B 
+             => of_int yi TradB 
+             => bnf ye ye
+             => bnf yi yi 
+             => trad (C ye) (TradC1 yi)) 
     equ TradB EQUB,
     (pi y \ equ (TradC y) (EQUC y)),
     (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigma z (SIGMA z)).
@@ -123,9 +127,7 @@ trad (lambda B Cc) (pair (lambda TradB TradCc) P )
             PROVEEQ x1 x2 d.
 
 
-
-
-
+equ (setPi B C) something.
 
 
 
