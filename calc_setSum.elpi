@@ -13,6 +13,7 @@ of_int (elim_setSum W Cl Cr) (C W) :-
     of_int W (setSum A B).
 
 bnf (elim_setSum W Cl Cr) (Cl (inl Wl)) :- nf W (inl Wl).
-bnf (elim_setSum W Cl Cr) (Cr (inl Wr)) :- nf W (inr Wr). 
-                             
+bnf (elim_setSum W Cl Cr) (Cr (inl Wr)) :- nf W (inr Wr).
+
+
 

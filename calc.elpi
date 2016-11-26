@@ -1,18 +1,7 @@
-%%Disjoint Sum Type
-
-isType set (setSum A B) :- isType set A, isType set B.
-
-of_int (inr BB) (setSum A B) :- isType set A, isType set B, isa BB B.
-
-of_int (inl AA) (setSum A B) :- isType set A, isType set B, isa AA A.
-
-of_int (elim_setSum W Cl Cr) (C W) :- 
-    pi z\ of_int z setSum A B => isType col (C z),
-    pi x\ of_int x A => of_int (Cl x) (C (inl x)),
-    pi y\ of_int y B => of_int (Cr x) (C (inr y)),
-    of_int W (setSum A B).
-
-bnf (elim_setSum W Cl Cr) (Cl (inl Wl)) :- nf W (inl Wl).
-bnf (elim_setSum W Cl Cr) (Cr (inl Wr)) :- nf W (inr Wr). 
-                             
+accumulate calc_simpleSets.
+accumulate calc_colSigma.
+accumulate calc_nat.    
+accumulate calc_setSum.
+accumulate calc_setPi.
+accumulate calc_simpleSets.
 
