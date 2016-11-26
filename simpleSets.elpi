@@ -1,0 +1,20 @@
+%EMPTY SET
+
+isType set n0.
+
+of (emp Null) (A_Null) :- of Null n0, (pi z\ (bnf z z, of z n0) => isType col (A z)), A_Null = A Null. 
+
+bnf (emp A) (emp A') :- bnf A A'.
+
+% SINGLETON SET
+
+isType set n1.
+
+of star n1.
+
+bnf star star.
+
+of (elim_n1 T C) (M T) :- of T n1, (pi z\ bnf z z => of z n1 => isCol (M z) ), of C (M star). 
+
+bnf (elim_n1 star C) C :- (pi z\ bnf z z => of z n1 => isCol (M z) ), of C (M star).
+bnf (elim_n1 T C) (elim_n1 T' C) :- bnf T T'.

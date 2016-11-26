@@ -1,5 +1,4 @@
 %interpretation.elpi
-accumulate main.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -72,97 +71,113 @@ trad star star.
 
 trad (elim_singleton T C) (elim_singleton T' C') :-
  trad T T1, tau T T1 T',
- (pi x \ trad x x => of_int x singleton => of_ext x singleton => bnf x x =>
-   trad (C x) (C1 x), tau (C x) (C1 x) (C' x)).
+ (pi x \ 
+    trad xe xi => 
+    of_int xi singleton => 
+    of_ext xe singleton => 
+    bnf xi xi => bnf xe xe =>
+        trad (C x) (C1 x),tau (C x) (C1 x) (C' x)).
 
 tau_rec singleton singleton (x \ x).
 
-sigma X X :- of_int X singleton.
+sigm X X :- of_int X singleton.
 
 prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
  pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
 
 prove_eq star star (refl singleton star).
 
-%% DEPENDENT PRODUCT SET
+%%% Disjoint Sum Set
 
-trad 
-    (setPi B C) 
-    (setSigma 
-        (setPi TradB TradC)
-        (H\
-            (forall TradB y1\
-                (forall TradB y2\
-                    (forall (EQUB y1 y2) d \
-                        (EQUC y2 (SIGMA y1 y2 (app h y1)) (app H y2)
-                        )
-                    )
-                )
-            )
-        )
-    )
-    :- trad B TradB 
-      ,(pi ye\ 
-         pi yi\ trad ye yi 
-             => of_ext ye B 
-             => of_int yi TradB 
-             => bnf ye ye
-             => bnf yi yi 
-             => trad (C ye) (TradC1 yi)) 
-    equ TradB EQUB,
-    (pi y \ equ (TradC y) (EQUC y)),
-    (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigma z (SIGMA z)).
+trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
+trad (inl CC) (inl CCi) :- trad CC CCi.
+trad (inr CC) (inr CCi) :- trad CC CCi.
 
-trad (lambda B Cc) (pair (lambda TradB TradCc) P )
-    :- trad B TradB,
-       (of_ext (lambda B Cc) (setPi B T_inferred_ext)),
-       (pi x \ trad x x => trad (Cc x) (TradCc x), of (TradCc x) (T_inferred x),
-         trad (T_inferred_ext x) (T_inferred_ext_trad x),
-         tau (T_inferred x) (T_inferred_ext_trad x) (TAU x)),
-       equ TradB EQU,
-       (pi x1 \ pi x2 \ pi d \ prove_equ x1 x2 d => sigma x1 x2 =>
-         sigma (TradCc x1) UUU,
-         prove_equ UUU (TradCC x2) PROVEEQ),
-       P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
-            PROVEEQ x1 x2 d.
-
-
-equ (setPi B C) something.
+sigm X 
 
 
 
 
 
+%%% DEPENDENT PRODUCT SET
 
-%%colSigma
+%trad 
+%    (setPi B C) 
+%    (setSigma 
+%        (setPi TradB TradC)
+%        (H\
+%            (forall TradB y1\
+%                (forall TradB y2\
+%                    (forall (EQUB y1 y2) d \
+%                        (EQUC y2 (SIGMA y1 y2 (app H y1)) (app H y2)
+%                        )
+%                    )
+%                )
+%            )
+%        )
+%    )
+%    :- trad B TradB 
+%      ,(pi ye\ 
+%         pi yi\ trad ye yi 
+%             => of_ext ye B 
+%             => of_int yi TradB 
+%             => bnf ye ye
+%             => bnf yi yi 
+%             => trad (C ye) (TradC1 yi)) 
+%    equ TradB EQUB,
+%    (pi y \ equ (TradC y) (EQUC y)),
+%    (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigma z (SIGMA z)).
 
-trad (colSigma B C) (colSigma Bi Ci) :- trad B Bi, trad C Ci.
+%trad (lambda B Cc) (pair (lambda TradB TradCc) P )
+%    :- trad B TradB,
+%       (of_ext (lambda B Cc) (setPi B T_inferred_ext)),
+%       (pi x \ trad x x => trad (Cc x) (TradCc x), of (TradCc x) (T_inferred x),
+%         trad (T_inferred_ext x) (T_inferred_ext_trad x),
+%         tau (T_inferred x) (T_inferred_ext_trad x) (TAU x)),
+%       equ TradB EQU,
+%       (pi x1 \ pi x2 \ pi d \ prove_equ x1 x2 d => sigma x1 x2 =>
+%         sigma (TradCc x1) UUU,
+%         prove_equ UUU (TradCC x2) PROVEEQ),
+%       P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
+%            PROVEEQ x1 x2 d.
 
-bnf (
-     equ (colSigma B C) Z1 Z2
-    ) 
-    (
-     exist (equ B (p1 Z1) (p1 Z2)
-           ) 
-           (d\
-            subst (p1 Z1) 
-                  (p1 Z2) 
-                  (equ (C (p1 Z2)) (p2 Z1) (p2 Z2))
-           ) 
-    ) :-  of Z1 colSigma B C, of Z2 colSigma B C.
 
-:- of Z1 (colSigma B C), of Z2 (colSigma B C).
-
-trad (pair BB CC Bb Cc) (pair (trad BB) (trad CC) (trad Bb) (trad Cc)).
-
-subst X1 X2 wimSigma
+%equ (setPi B C) something.
 
 
 
 
-trad (quotientCol A R ) Ai :- trad A Ai.
 
-bnf (equ (quotientCol A R) Z1 Z2) (R Z1 Z2) :- of Z1 A, of Z2 A.
+
+%%%colSigma
+
+%trad (colSigma B C) (colSigma Bi Ci) :- trad B Bi, trad C Ci.
+
+%bnf (
+%     equ (colSigma B C) Z1 Z2
+%    ) 
+%    (
+%     exist (equ B (p1 Z1) (p1 Z2)
+%           ) 
+%           (d\
+%            subst (p1 Z1) 
+%                  (p1 Z2) 
+%                  (equ (C (p1 Z2)) (p2 Z1) (p2 Z2))
+%           ) 
+%    ) :-  of Z1 colSigma B C, of Z2 colSigma B C.
+
+%:- of Z1 (colSigma B C), of Z2 (colSigma B C).
+
+%trad (pair BB CC Bb Cc) (pair (trad BB) (trad CC) (trad Bb) (trad Cc)).
+
+%subst X1 X2 wimSigma
+
+
+
+
+%trad (quotientCol A R ) Ai :- trad A Ai.
+
+%bnf (equ (quotientCol A R) Z1 Z2) (R Z1 Z2) :- of Z1 A, of Z2 A.
 
 
 

@@ -1,0 +1,42 @@
+%% STRONG INDEXED COL SUM
+
+isType col (colSigma B C) :-
+ isType K B,
+ pi b\ 
+    bnf b b => of b B => isType col (C b).
+
+of ( pair B C Bb Cc ) (colSigma B C) :-  
+    isType col (C Bb),
+    isType col B, %quando invoco isa non controllo che il tipo fornito sia 
+                  %corretto al più controllo che la sua forma normale lo sia. 
+    isa Bb B, 
+    isa Cc (C Bb),
+    isType col (colSigma B C).
+
+of (elimSigma B C M Pair Mm) (M D) :-
+        isa Pair (colSigma B C),
+%       of  Pair (colSigma BB CC),
+        (pi z\ bnf z z => of z (colSigma B C) => isType col (M z)),
+        (pi x\
+          pi y\
+            (bnf x x, bnf y y, of x B, of y (C x)) =>  of (Mm x y) (M (pair B C x y))).
+
+
+
+bnf (elimSigma B C M (pair B C Bb Cc) Mm) (Mm Bb Cc) :-
+    (pi z\ of z (colSigma B C) => bnf z z => isType col (M z)),
+     of (pair B C Bb Cc) (colSigma B C),
+    (pi x\
+      pi y\
+        (bnf x x, bnf y y, of x B, of y (C x)) =>  of (Mm x y) (M (pair B C x y)))
+
+
+bnf (pair B1 C Bb Cc) (pair B2 C Bb Cc) :- bnf B1 B2.
+bnf (pair B C1 Bb Cc) (pair B C2 Bb Cc) :- pi b\ of b B => bnf b b => bnf (C1 b) (C2 b).
+bnf (pair B C Bb1 Cc) (pair B C Bb2 Cc) :- bnf Bb1 Bb2.
+bnf (pair B C Bb Cc1) (pair B C Bb Cc2) :- bnf Cc1 Cc2.
+
+bnf (elimSigma B C M D1 Mm) (elimSigma B C M D2 Mm) :- bnf D1 D2.
+bnf (elimSigma B C M D Mm1) (elimSigma B C M D Mm2) :- bnf Mm1 Mm2.
+
+
