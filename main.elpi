@@ -8,13 +8,13 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
  of BODY TYPE,
  defs NAME BODY TYPE => load_library TAIL GOAL.
 
-nf A B :- announce ( nf A B).
+nf A B :- announce (nf A B).
 nf A A :- (bnf A A), ! .
 nf A B :- (bnf A C), nf C B .
 
-redux A B :-   A = B, !.
-redux A B :- bnf A B, !.
-redux A B :- bnf A A', redux A' B.
+redux A B :-   A = B, ! .
+redux A B :- bnf A B, ! .
+redux A B :- bnf A C, redux C B .
 
 conv A B :- nf A C, nf B C.
 

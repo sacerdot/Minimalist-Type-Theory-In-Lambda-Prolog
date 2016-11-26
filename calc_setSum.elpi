@@ -12,8 +12,8 @@ of_int (elim_setSum W Cl Cr) (C W) :-
     pi y\ of_int y B => of_int (Cr x) (C y),
     of_int W (setSum A B).
 
-bnf (elim_setSum W Cl Cr) (Cl Wl) :- nf W (inl Wl).
-bnf (elim_setSum W Cl Cr) (Cr Wr) :- nf W (inr Wr).
+bnf (elim_setSum W Cl Cr) (Cl Wl) :- redux W (inl Wl).
+bnf (elim_setSum W Cl Cr) (Cr Wr) :- redux W (inr Wr).
 
 bnf (inl AA) (inl AA') :- bnf AA AA'.
 bnf (inr BB) (inr BB') :- bnf BB BB'.
