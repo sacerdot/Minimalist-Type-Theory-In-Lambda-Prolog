@@ -11,6 +11,11 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
 nf A B :- announce ( nf A B).
 nf A A :- (bnf A A), ! .
 nf A B :- (bnf A C), nf C B .
+
+redux A B :-   A = B, !.
+redux A B :- bnf A B, !.
+redux A B :- bnf A A', redux A' B.
+
 conv A B :- nf A C, nf B C.
 
 % of T TY  the type inferred for T is TY
@@ -34,4 +39,4 @@ tau A A1 (TAU A1) :-
 tau2 A B (TAU A) :- % A è un termine interpretato, B è il tipo finale del isomorfismo canonico il tipo iniziale viene indotto da A. l'ultimo argomento è l'output dell'isomorfismo canonico.
     of_int A A_type,
     tau_rec A_type B TAU.
-    
+

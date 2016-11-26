@@ -1,0 +1,5 @@
+
+accumulate main.
+accumulate calc.
+
+e1 Q :- bnf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
