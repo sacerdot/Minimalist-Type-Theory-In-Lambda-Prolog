@@ -2,24 +2,24 @@
 
 isType set (setSum A B) :- isType set A, isType set B.
 
-of_int (inr A B BB) (setSum A B) :- isType set B, isType set A, isa BB B.
+of int (inr A B BB) (setSum A B) :- isType set B, isType set A, isa BB B.
 
-of_int (inl A B AA) (setSum A B) :- isType set A, isType set B, isa AA A.
+of int (inl A B AA) (setSum A B) :- isType set A, isType set B, isa AA A.
 
-of_int (elim_setSum C W Cl Cr) (C W) :- 
-    of_int W (setSum A B),
-    pi x\ of_int x A => of_int (Cl x) (C (inr A B x)),
-    pi y\ of_int y B => of_int (Cr y) (C (inl A B y)),
-    pi z\ of_int z (setSum A B) => isType col (C z).
+of int (elim_setSum C W Cl Cr) (C W) :- 
+    of int W (setSum A B),
+    pi x\ of int x A => of int (Cl x) (C (inr A B x)),
+    pi y\ of int y B => of int (Cr y) (C (inl A B y)),
+    pi z\ of int z (setSum A B) => isType col (C z).
 
 bnf (elim_setSum W Cl Cr) (Cl Wl) :- redux W (inl A B Wl).
 bnf (elim_setSum W Cl Cr) (Cr Wr) :- redux W (inr A B Wr).
 
 bnf (elim_setSum W Cl Cr) (elim_setSum W' Cl Cr) :- bnf W W'.
 bnf (elim_setSum W Cl Cr) (elim_setSum W Cl' Cr) :- 
-    pi w\ bnf w w => of_int w (setSum A B) => bnf (Cl w) (Cl' w).
+    pi w\ bnf w w => of int w (setSum A B) => bnf (Cl w) (Cl' w).
 bnf (elim_setSum W Cl Cr) (elim_setSum W Cl Cr') :- 
-    pi w\ bnf w w => of_int w (setSum A B) => bnf (Cr w) (Cr' w)  
+    pi w\ bnf w w => of int w (setSum A B) => bnf (Cr w) (Cr' w)  
 bnf (inl A B AA) (inl A B AA') :- bnf AA AA'.
 bnf (inr A B BB) (inr A B BB') :- bnf BB BB'.
 

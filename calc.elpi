@@ -14,10 +14,10 @@ redux A B :- bnf A C, redux C B, !.
 conv A B :- nf A C, nf B C.
 
 % of_inf T TY  the type inferred for T is TY
-isa T TY :- of_int T TY', conv TY TY'. % isa T TY..T has the expected type TY
-%of_int Z T   :- var Z T.
+isa T TY :- of int T TY', conv TY TY'. % isa T TY..T has the expected type TY
+%of int Z T   :- var Z T.
 %bnf Z Z :- var Z T.
-of_int X Y :- defs X _ Y.
+of int X Y :- defs X _ Y.
 
 isType col A :- isType set A.
 isType prop A :- isType propS A.
@@ -27,12 +27,12 @@ isType col A :- isType prop A.
 
 tau A A1 (TAU A1) :-
  of_ext A TA,
- of_int A1 TA1,
+ of int A1 TA1,
  trad TA TAi,
  tau_rec TAi TA1 TAU.
 
 tau2 A B (TAU A) :- % A è un termine interpretato, B è il tipo finale del isomorfismo canonico il tipo iniziale viene indotto da A. l'ultimo argomento è l'output dell'isomorfismo canonico.
-    of_int A A_type,
+    of int A A_type,
     tau_rec A_type B TAU.
 
 

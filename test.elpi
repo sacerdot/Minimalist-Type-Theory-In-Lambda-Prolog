@@ -18,16 +18,17 @@ conv A B :- announce (conv A B).
 
 accumulate main.
 accumulate calc.
+accumulate interpretation.
 
 e1 Q :- bnf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
 e2 Q :- bnf (elim_setSum (inr star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
-test 1 Q :- of_int (inl nat singleton zero) Q. 
-test 2 Q :- of_int (inr nat singleton zero) Q. %should fail
+test 1 Q :- of int (inl nat singleton zero) Q. 
+test 2 Q :- of int (inr nat singleton zero) Q. %should fail
 
 test 3 Q :- 
-    of_int (elim_setSum 
+    of int (elim_setSum 
         (x\setSum singleton nat) 
         (inl nat singleton zero) 
         (X\inr singleton nat X) 

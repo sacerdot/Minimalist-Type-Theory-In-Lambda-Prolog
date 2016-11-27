@@ -5,14 +5,14 @@ spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
 
 load_library [] GOAL :- GOAL.
 load_library [ddd NAME BODY | TAIL ] GOAL :-
- of_int BODY TYPE,
+ of int BODY TYPE,
  defs NAME BODY TYPE => load_library TAIL GOAL.
 
 
 bnf A B :- announce (bnf A B).
 nf A B :- announce (nf A B).
 redux A B :- announce (redux A B).
-of_int A B :- announce (of_int A B).
+of IE A B :- announce (of IE A B).
 
 
 

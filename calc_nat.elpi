@@ -7,22 +7,22 @@ bnf (nrec T1 F K A) (nrec T2 F K A) :- bnf T1 T2.
 bnf (nrec T F K A1) (nrec T F K A2) :- bnf A1 A2.
 bnf (nrec T F K1 A) (nrec T F K2 A) :- bnf K1 K2.
 bnf (nrec T F1 K A) (nrec T F2 K A) :-
-    pi x \ bnf x x => of_int x nat =>
-     pi y \ bnf y y => of_int y (T x) =>
+    pi x \ bnf x x => of int x nat =>
+     pi y \ bnf y y => of int y (T x) =>
             bnf (F1 x y) (F2 x y).
 
 bnf (succ E) (succ Q) :- bnf E Q.
 bnf zero zero.
 
 isType set nat.
-of_int zero nat.
-of_int (succ A) nat :- of_int A nat.
-of_int (nrec T F K N) (T N) :-
- of_int N nat,  
- of_int K (T zero),
- (pi x \ bnf x x => of_int x nat => isType set (T x)),
- (pi x \ bnf x x => of_int x nat =>
-  pi y \ bnf y y => of_int y (T x) => of_int (F x y) (T (succ x))).
+of int zero nat.
+of int (succ A) nat :- of int A nat.
+of int (nrec T F K N) (T N) :-
+ of int N nat,  
+ of int K (T zero),
+ (pi x \ bnf x x => of int x nat => isType set (T x)),
+ (pi x \ bnf x x => of int x nat =>
+  pi y \ bnf y y => of int y (T x) => of int (F x y) (T (succ x))).
  
 
 
