@@ -16,7 +16,7 @@ isType set nat.
 of_int zero nat.
 of_int (succ A) nat :- of_int A nat.
 of_int (nrec T F K N) (T N) :-
- of_int N nat,
+ of_int N nat,  
  of_int K (T zero),
  (pi x \ bnf x x => of_int x nat => isType set (T x)),
  (pi x \ bnf x x => of_int x nat =>
@@ -25,8 +25,8 @@ of_int (nrec T F K N) (T N) :-
 
 
 
-macro plus ( m\n\ nrec (x\nat) (x\y\ succ y) n m ).   
-macro prec ( m\ nrec (z\nat) (x\y\x) zero m). 
+macro plus ( m\n\ nrec (x\nat) (x\y\ succ y) n    m ).   
+macro prec ( m\   nrec (z\nat) (x\y\      x) zero m). 
 
 intnat 0 zero.
 intnat K (succ N) :- 
