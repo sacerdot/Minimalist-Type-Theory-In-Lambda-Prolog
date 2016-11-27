@@ -1,6 +1,5 @@
 bnf nat nat.
 
-
 bnf (nrec T F K zero) K.
 bnf (nrec T F K (succ N)) (F N (nrec F K N)).
 

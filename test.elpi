@@ -1,8 +1,50 @@
 
+isType set A :- announce (isType set A).
+
+isa BB B :- announce (isa BB B).
+
+conv A B :- announce (conv A B).
+
+
+
+%:- announce ().
+
+%:- announce ().
+
+
+
+
+
+
 accumulate main.
 accumulate calc.
 
 e1 Q :- bnf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
 e2 Q :- bnf (elim_setSum (inr star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
+
+test 1 Q :- of_int (inl nat singleton zero) Q. 
+test 2 Q :- of_int (inr nat singleton zero) Q. %should fail
+
+test 3 Q :- 
+    of_int (elim_setSum 
+        (x\setSum singleton nat) 
+        (inl nat singleton zero) 
+        (X\inr singleton nat X) 
+        (y\inl singleton nat y)) Q.
+
+test 4 Q :- 
+    nf (elim_setSum 
+        (x\setSum singleton nat) 
+        (inl nat singleton zero) 
+        (X\inr singleton nat X) 
+        (y\inl singleton nat y)) Q.
+
+test 5 Q :- 
+    bnf (elim_setSum 
+        (x\setSum singleton nat) 
+        (inl nat singleton zero) 
+        (X\inr singleton nat X) 
+        (y\inl singleton nat y)) Q.
+
 

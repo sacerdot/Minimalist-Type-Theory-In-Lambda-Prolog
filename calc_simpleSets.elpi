@@ -10,12 +10,14 @@ bnf (emp A) (emp A') :- bnf A A'.
 
 isType set singleton.
 
-of_int_int star singleton.
-
-bnf star star.
-bnf singleton singleton.
+of_int star singleton.
 
 of_int (elim_singleton T C) (M T) :- of_int T singleton, (pi z\ bnf z z => of_int z singleton => isCol (M z) ), of_int C (M star). 
+
+
+bnf singleton singleton.
+
+bnf star star.
 
 bnf (elim_singleton star C) C :- (pi z\ bnf z z => of_int z singleton => isCol (M z) ), of_int C (M star).
 bnf (elim_singleton T C) (elim_singleton T' C) :- bnf T T'.

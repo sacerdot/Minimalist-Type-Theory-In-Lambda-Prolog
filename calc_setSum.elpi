@@ -2,15 +2,15 @@
 
 isType set (setSum A B) :- isType set A, isType set B.
 
-of_int (inr A B BB) (setSum A B) :- isType set A, isType set B, isa BB B.
+of_int (inr A B BB) (setSum A B) :- isType set B, isType set A, isa BB B.
 
 of_int (inl A B AA) (setSum A B) :- isType set A, isType set B, isa AA A.
 
-of_int (elim_setSum W Cl Cr) (C W) :- 
+of_int (elim_setSum C W Cl Cr) (C W) :- 
     of_int W (setSum A B),
-    pi z\ of_int z setSum A B => isType col (C z),
     pi x\ of_int x A => of_int (Cl x) (C (inr A B x)),
-    pi y\ of_int y B => of_int (Cr x) (C (inl A B y)).
+    pi y\ of_int y B => of_int (Cr y) (C (inl A B y)),
+    pi z\ of_int z (setSum A B) => isType col (C z).
 
 bnf (elim_setSum W Cl Cr) (Cl Wl) :- redux W (inl A B Wl).
 bnf (elim_setSum W Cl Cr) (Cr Wr) :- redux W (inr A B Wr).

@@ -15,15 +15,4 @@ redux A B :- announce (redux A B).
 of_int A B :- announce (of_int A B).
 
 
-isType set A :- announce (isType set A).
 
-isa BB B :- announce (isa BB B).
-%:- announce ().
-
-%:- announce ().
-
-%:- announce ().
-
-%:- announce ().
-
-accumulate calc.
