@@ -28,6 +28,17 @@ trad (of Aa AA)
 trad (isType A Ty) (isType TradA Ty)
     :- trad A TradA.
 
+
+%%% Disjoint Sum Set
+
+trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
+trad (inl A B AA) (inl Ai Bi AAi) :- trad AA AA' i.
+trad (inr A B BB) (inr Ai Bi BBi) :- trad BB BB' i.
+
+sigm X 
+
+
+
 %%POWER COLLECTION 
 
 trad powerCol propsCol.
@@ -52,13 +63,13 @@ equ emptyset (lambda emptyset x \ lambda emptyset y \ id emptyset x y).
 
 trad (emp A T) (emp A' T') :-
  trad T T1, tau T T1 T',
- pi x \ trad x x => of_int x emptyset => of_ext x emptyset => bnf x x =>
+ pi x \ trad x x => of int x emptyset => of ext x emptyset => bnf x x =>
   trad (A x) (A1 x), tau (A x) (A1 x) (A' x). 
 
 tau_rec emptyset emptyset (x \ x).
 
 prove_equ (emp A T) (emp A' T') (emp (EQU T T') T) :-
- of_int T TTY, equ TTY EQU.
+ of int T TTY, equ TTY EQU.
 
 
 %% SINGLETON
@@ -73,27 +84,19 @@ trad (elim_singleton T C) (elim_singleton T' C') :-
  trad T T1, tau T T1 T',
  (pi x \ 
     trad xe xi => 
-    of_int xi singleton => 
-    of_ext xe singleton => 
+    of int xi singleton => 
+    of ext xe singleton => 
     bnf xi xi => bnf xe xe =>
         trad (C x) (C1 x),tau (C x) (C1 x) (C' x)).
 
 tau_rec singleton singleton (x \ x).
 
-sigm X X :- of_int X singleton.
+sigm X X :- of int X singleton.
 
 prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
  pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
 
 prove_eq star star (refl singleton star).
-
-%%% Disjoint Sum Set
-
-trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
-trad (inl CC) (inl CCi) :- trad CC CCi.
-trad (inr CC) (inr CCi) :- trad CC CCi.
-
-sigm X 
 
 
 
@@ -119,8 +122,8 @@ sigm X
 %    :- trad B TradB 
 %      ,(pi ye\ 
 %         pi yi\ trad ye yi 
-%             => of_ext ye B 
-%             => of_int yi TradB 
+%             => of ext ye B 
+%             => of int yi TradB 
 %             => bnf ye ye
 %             => bnf yi yi 
 %             => trad (C ye) (TradC1 yi)) 
@@ -130,7 +133,7 @@ sigm X
 
 %trad (lambda B Cc) (pair (lambda TradB TradCc) P )
 %    :- trad B TradB,
-%       (of_ext (lambda B Cc) (setPi B T_inferred_ext)),
+%       (of ext (lambda B Cc) (setPi B T_inferred_ext)),
 %       (pi x \ trad x x => trad (Cc x) (TradCc x), of (TradCc x) (T_inferred x),
 %         trad (T_inferred_ext x) (T_inferred_ext_trad x),
 %         tau (T_inferred x) (T_inferred_ext_trad x) (TAU x)),
