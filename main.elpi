@@ -9,4 +9,21 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
  defs NAME BODY TYPE => load_library TAIL GOAL.
 
 
+bnf A B :- announce (bnf A B).
+nf A B :- announce (nf A B).
+redux A B :- announce (redux A B).
+of_int A B :- announce (of_int A B).
+
+
+isType set A :- announce (isType set A).
+
+isa BB B :- announce (isa BB B).
+%:- announce ().
+
+%:- announce ().
+
+%:- announce ().
+
+%:- announce ().
+
 accumulate calc.

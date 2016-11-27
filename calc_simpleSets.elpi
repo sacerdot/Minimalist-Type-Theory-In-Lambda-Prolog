@@ -2,19 +2,20 @@
 
 isType set n0.
 
-of (emp Null) (A_Null) :- of Null n0, (pi z\ (bnf z z, of z n0) => isType col (A z)), A_Null = A Null. 
+of_int (emp Null) (A_Null) :- of_int Null n0, (pi z\ (bnf z z, of_int z n0) => isType col (A z)), A_Null = A Null. 
 
 bnf (emp A) (emp A') :- bnf A A'.
 
 % SINGLETON SET
 
-isType set n1.
+isType set singleton.
 
-of star n1.
+of_int_int star singleton.
 
 bnf star star.
+bnf singleton singleton.
 
-of (elim_n1 T C) (M T) :- of T n1, (pi z\ bnf z z => of z n1 => isCol (M z) ), of C (M star). 
+of_int (elim_singleton T C) (M T) :- of_int T singleton, (pi z\ bnf z z => of_int z singleton => isCol (M z) ), of_int C (M star). 
 
-bnf (elim_n1 star C) C :- (pi z\ bnf z z => of z n1 => isCol (M z) ), of C (M star).
-bnf (elim_n1 T C) (elim_n1 T' C) :- bnf T T'.
+bnf (elim_singleton star C) C :- (pi z\ bnf z z => of_int z singleton => isCol (M z) ), of_int C (M star).
+bnf (elim_singleton T C) (elim_singleton T' C) :- bnf T T'.

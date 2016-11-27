@@ -1,15 +1,15 @@
-bnf A B :- announce (bnf A B).
 
-nf A B :- announce (nf A B).
+
+
+% nf dà risposte multiple! c'è un semplice test not ( A = C) per bloccare alcuni cicli infiniti ma sarebbe da evitare nei programmi.
 nf A A :- (bnf A A).
 nf A B :- (bnf A C), not (A = C), ! , nf C B .
 
-
-redux A B :- announce (redux A B).
-redux A B :-   A = B, ! .
+redux A B :-   A = B, ! . % redux è totalmente inadatta a calcolare le forme normali.
 redux A B :- bnf A B, ! .
-redux A B :- bnf A A, ! , fail.
+redux A B :- bnf A A /*, not ( A = B)*/, fail. % se arriva a provare questa clausola ha già fallito a dimostrare  A = B.
 redux A B :- bnf A C, redux C B, !.
+%la mia intenzione nel crere questa funzione è di avere una funzione da usare per fare pattern matching
 
 conv A B :- nf A C, nf B C.
 
@@ -42,5 +42,5 @@ accumulate calc_colSigma.
 accumulate calc_nat.    
 accumulate calc_setSum.
 accumulate calc_setPi.
-accumulate calc_simpleSets.
+
 
