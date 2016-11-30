@@ -18,7 +18,7 @@ conv A B :- announce (conv A B).
 
 accumulate main.
 accumulate calc.
-accumulate interpretation.
+%accumulate interpretation.
 
 e1 Q :- bnf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 

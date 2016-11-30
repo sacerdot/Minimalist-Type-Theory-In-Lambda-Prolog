@@ -1,15 +1,19 @@
 
 
 
-% nf dà risposte multiple! c'è un semplice test not ( A = C) per bloccare alcuni cicli infiniti ma sarebbe da evitare nei programmi.
-nf A A :- (bnf A A).
-nf A B :- (bnf A C), not (A = C), ! , nf C B .
+% non contextual, non reflexive, maybe transitive closure
+% hstep A B
 
-redux A B :-   A = B, ! . % redux è totalmente inadatta a calcolare le forme normali.
-redux A B :- bnf A B, ! .
-redux A B :- bnf A A /*, not ( A = B)*/, fail. % se arriva a provare questa clausola ha già fallito a dimostrare  A = B.
-redux A B :- bnf A C, redux C B, !.
-%la mia intenzione nel crere questa funzione è di avere una funzione da usare per fare pattern matching
+% non contextual, transitive, reflexive normal form
+hnf A B :- hstep A C, !, hnf C B.
+hnf A A.
+
+% contextual, non reflexive, maybe transitive closure
+dstep A B :- hstep A B.
+
+% contextual, transitive, reflexive normal form
+nf A B :- dstep A C, ! nf C B.
+nf A A.
 
 conv A B :- nf A C, nf B C.
 

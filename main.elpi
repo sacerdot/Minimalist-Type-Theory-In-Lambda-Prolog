@@ -14,5 +14,5 @@ nf A B :- announce (nf A B).
 redux A B :- announce (redux A B).
 of IE A B :- announce (of IE A B).
 
-
-
+if Test True False IF :- Test, IF = True, !.
+if Test True False IF :- IF = False, !.
