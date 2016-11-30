@@ -32,3 +32,14 @@ dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
 dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 
 
+%%% Interpretation
+
+trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
+trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, trad AA AA', of int AA' Ai', tau_rec Ai' Ai TAU, AAi = TAU AA'.
+trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, trad BB BB', of int BB' Bi', tau_rec Bi' Bi TAU, BBi = TAU BB'.
+
+tau_rec (setPi A1 B1) (setPi A2 B2) (TAU /*qui devo fare pattern matching...*/ ) 
+    :- tau_rec A1 A2 TauA, tau_rec B1 B2 TauB
+        pi x\ of int x A1 => bnf x x => TAU (inr x) = inr (TauB x).  
+
+

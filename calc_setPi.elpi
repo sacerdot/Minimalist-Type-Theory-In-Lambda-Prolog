@@ -22,3 +22,63 @@ bnf (lambda B F1) (lambda B F2) :- pi b\ of b B => bnf b b => bnf (F1 b) (F2 b).
 bnf (app L X1) (app L X2) :- bnf X1 X2.
 bnf (app L1 X) (app L2 X) :- bnf L1 L2.
 
+
+
+
+
+
+
+
+
+
+
+
+
+%%% DEPENDENT PRODUCT SET
+
+trad 
+    (setPi B C) 
+    (setSigma 
+        (setPi TradB TradC)
+        (H\
+            (forall TradB y1\
+                (forall TradB y2\
+                    (forall (EQUB y1 y2) d \
+                        (EQUC y2 (SIGMA y1 y2 (app H y1)) (app H y2)
+                        )
+                    )
+                )
+            )
+        )
+    )
+    :- trad B TradB 
+      ,(pi ye\ 
+         pi yi\ trad ye yi 
+             => of ext ye B 
+             => of int yi TradB 
+             => bnf ye ye
+             => bnf yi yi 
+             => trad (C ye) (TradC1 yi)) 
+    equ TradB EQUB,
+    (pi y \ equ (TradC y) (EQUC y)),
+    (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigma z (SIGMA z)).
+
+trad (lambda B Cc) (pair (lambda TradB TradCc) P )
+    :- trad B TradB,
+       (of ext (lambda B Cc) (setPi B T_inferred_ext)),
+       (pi x \ trad x x => trad (Cc x) (TradCc x), of (TradCc x) (T_inferred x),
+         trad (T_inferred_ext x) (T_inferred_ext_trad x),
+         tau (T_inferred x) (T_inferred_ext_trad x) (TAU x)),
+       equ TradB EQU,
+       (pi x1 \ pi x2 \ pi d \ prove_equ x1 x2 d => sigma x1 x2 =>
+         sigma (TradCc x1) UUU,
+         prove_equ UUU (TradCC x2) PROVEEQ),
+       P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
+            PROVEEQ x1 x2 d.
+
+
+equ (setPi B C) something.
+
+
+
+

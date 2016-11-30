@@ -40,3 +40,51 @@ bnf (elimSigma B C M D1 Mm) (elimSigma B C M D2 Mm) :- bnf D1 D2.
 bnf (elimSigma B C M D Mm1) (elimSigma B C M D Mm2) :- bnf Mm1 Mm2.
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%%%colSigma
+
+%trad (colSigma B C) (colSigma Bi Ci) :- trad B Bi, trad C Ci.
+
+%bnf (
+%     equ (colSigma B C) Z1 Z2
+%    ) 
+%    (
+%     exist (equ B (p1 Z1) (p1 Z2)
+%           ) 
+%           (d\
+%            subst (p1 Z1) 
+%                  (p1 Z2) 
+%                  (equ (C (p1 Z2)) (p2 Z1) (p2 Z2))
+%           ) 
+%    ) :-  of Z1 colSigma B C, of Z2 colSigma B C.
+
+%:- of Z1 (colSigma B C), of Z2 (colSigma B C).
+
+%trad (pair BB CC Bb Cc) (pair (trad BB) (trad CC) (trad Bb) (trad Cc)).
+
+%subst X1 X2 wimSigma
+
+
+
+
+%trad (quotientCol A R ) Ai :- trad A Ai.
+
+%bnf (equ (quotientCol A R) Z1 Z2) (R Z1 Z2) :- of Z1 A, of Z2 A.
+
+
+
+
