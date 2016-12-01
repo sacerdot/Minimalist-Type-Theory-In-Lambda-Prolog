@@ -35,11 +35,23 @@ dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 %%% Interpretation
 
 trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
-trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, trad AA AA', of int AA' Ai', tau_rec Ai' Ai TAU, AAi = TAU AA'.
-trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, trad BB BB', of int BB' Bi', tau_rec Bi' Bi TAU, BBi = TAU BB'.
+trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, tau' A AA AAi.
+trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, tau' B BB BBi.
 
-tau_rec (setPi A1 B1) (setPi A2 B2) (TAU /*qui devo fare pattern matching...*/ ) 
-    :- tau_rec A1 A2 TauA, tau_rec B1 B2 TauB
-        pi x\ of int x A1 => bnf x x => TAU (inr x) = inr (TauB x).  
+trad (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
+    of ext W (setSum A B),
+    tau' (setSum A B) W Wi,
+    (pi x\ of int x (setSum A B) => trad (C x) (Ci x) ),
+    (pi a\ of int a A => tau' (C (inl A B a)) (Cl a) (Cli a)),
+    (pi b\ of int b B => tau' (C (inl A B b)) (Cr b) (Cri b)).
+
+sigm X Y :- of int X (setSum A B),
+    (pi a\ of int a A, sigm (Cl a) (Cl' a)),
+    (pi b\ of int b B, sigm (Cr b) (Cr' b)),
+    Y = elim_setSum (setSum A B) X Cl' Cr'.
+
+
+tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
+tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
 
 

@@ -1,24 +1,6 @@
-
-isType set A :- announce (isType set A).
-
-isa BB B :- announce (isa BB B).
-
-conv A B :- announce (conv A B).
-
-
-
-%:- announce ().
-
-%:- announce ().
-
-
-
-
-
-
 accumulate main.
 accumulate calc.
-%accumulate interpretation.
+
 
 e1 Q :- bnf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 

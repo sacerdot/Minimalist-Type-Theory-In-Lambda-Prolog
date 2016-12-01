@@ -28,6 +28,11 @@ trad (of Aa AA)
 trad (isType A Ty) (isType TradA Ty)
     :- trad A TradA.
 
-
+tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
+tau' TipoExt ElementoExt Output :- 
+    trad TipoExt TipoInt,
+    trad ElementoExt ElementoInt,
+    of int ElementoInt Ty,
+    tau Ty TipoInt ElementoInt Output.
 
 
