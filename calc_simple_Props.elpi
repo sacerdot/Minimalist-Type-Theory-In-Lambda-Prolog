@@ -75,3 +75,44 @@ dstep (pair_and B C Bb1 Cc) (pair_and B C Bb2 Cc) :- dstep Bb1 Bb2.
 
 dstep (pair_and B C Bb Cc1) (pair_and B C Bb Cc2) :- dstep Cc1 Cc2.
 
+%%%%% Implication
+
+isType prop (implies B C) :- isType prop B, isType prop C.
+
+of int (lam_impl B CC) (implies B C) :- 
+    isType prop B, 
+    (pi x\ of int x B => of int (CC x) C),
+    isType prop C.
+    
+of int (app_impl F BB) C :- 
+        hnf F (lam_impl B CC),
+        isa int BB B,
+        (pi x\ of int x B => of int (CC x) C).
+
+hstep (app_impl (lam_impl B CC) BB) (CC BB) :- 
+        isType prop B,
+        isa int BB B,
+        (pi x\ of int x B => of int (CC x) C),
+        isType prop C.
+        
+dstep (app_impl F BB1) (app_impl F BB2) :- dstep BB1 BB2.       
+
+dstep (app_impl F1 BB) (app_impl F1 BB) :-
+    hnf F1 (lam_impl B CC).
+    pi x\ of int x B => dstep (F1 x) (F2 x).
+     
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

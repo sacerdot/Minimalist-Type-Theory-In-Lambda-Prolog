@@ -1,9 +1,8 @@
 
 
 isType set (setPi B C) :-    % SET FORMATION
-    conv B BB,
-    isType set BB, 
-    pi x\ bnf x x => of x B => isType set (C x).
+    isType set B, 
+    pi x\ of int x B => isType set (C x).
 
 of (lambda B F) (setPi B C) :-  % ELEMENT FORMATION
     conv B BB,

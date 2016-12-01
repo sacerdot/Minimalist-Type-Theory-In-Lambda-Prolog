@@ -24,6 +24,7 @@ isa IE Term TY :-
     % isa T TY..T 
     %has the expected type TY
 
+isType K T :- nf T T', isType K T'.
 
 isType col  A  :- isType set   A.
 isType col  A  :- isType prop  A.
