@@ -17,12 +17,14 @@ of IE (elim_singleton T C) (M T) :-
     (pi z\ of IE z singleton => isCol (M z) ), of IE C (M star). 
 
 
-bnf singleton singleton.
+hstep (elim_singleton star C) C :- 
+        of IE C (M star),
+        (pi z\ of IE z singleton => isType col (M z) ).
 
-bnf star star.
 
-bnf (elim_singleton star C) C :- (pi z\ bnf z z => of IE z singleton => isCol (M z) ), of IE C (M star).
-bnf (elim_singleton T C) (elim_singleton T' C) :- bnf T T'.
+dstep (elim_singleton T C) (elim_singleton T' C) :- dstep T T'.
+dstep (elim_singleton T C) (elim_singleton T C') :- dstep C C'.
+
 
 
 
