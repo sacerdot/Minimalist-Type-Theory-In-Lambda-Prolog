@@ -1,18 +1,15 @@
-bnf nat nat.
+hstep (nrec T F K zero) K.
+hstep (nrec T F K (succ N)) (F N (nrec F K N)).
 
-bnf (nrec T F K zero) K.
-bnf (nrec T F K (succ N)) (F N (nrec F K N)).
+dstep (nrec T1 F K A) (nrec T2 F K A) :- dstep T1 T2.
+dstep (nrec T F K A1) (nrec T F K A2) :- dstep A1 A2.
+dstep (nrec T F K1 A) (nrec T F K2 A) :- dstep K1 K2.
+dstep (nrec T F1 K A) (nrec T F2 K A) :-
+    pi x \ of int x nat =>
+     pi y \ of int y (T x) =>
+            dstep (F1 x y) (F2 x y).
 
-bnf (nrec T1 F K A) (nrec T2 F K A) :- bnf T1 T2.
-bnf (nrec T F K A1) (nrec T F K A2) :- bnf A1 A2.
-bnf (nrec T F K1 A) (nrec T F K2 A) :- bnf K1 K2.
-bnf (nrec T F1 K A) (nrec T F2 K A) :-
-    pi x \ bnf x x => of int x nat =>
-     pi y \ bnf y y => of int y (T x) =>
-            bnf (F1 x y) (F2 x y).
-
-bnf (succ E) (succ Q) :- bnf E Q.
-bnf zero zero.
+dstep (succ E) (succ Q) :- bnf E Q.
 
 isType set nat.
 of int zero nat.
@@ -20,9 +17,9 @@ of int (succ A) nat :- of int A nat.
 of int (nrec T F K N) (T N) :-
  of int N nat,  
  of int K (T zero),
- (pi x \ bnf x x => of int x nat => isType set (T x)),
- (pi x \ bnf x x => of int x nat =>
-  pi y \ bnf y y => of int y (T x) => of int (F x y) (T (succ x))).
+ (pi x \ of int x nat => isType set (T x)),
+ (pi x \ of int x nat =>
+  pi y \ of int y (T x) => of int (F x y) (T (succ x))).
  
 
 

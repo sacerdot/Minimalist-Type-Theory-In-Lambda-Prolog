@@ -7,12 +7,12 @@ of int (r0 A) A :- isType prop A, of int A bottom.
 
 isType prop (or A B) :- isType prop A, isType prop B.
 
-of int (inr_or A B BB) (or A B) :-  
+of int (or_r A B BB) (or A B) :-  
         isType prop A, 
         isType prop B, 
         of int BB B.
 
-of int (inl_or A B AA) (or A B) :-  
+of int (or_l A B AA) (or A B) :-  
         isType prop A, 
         isType prop B, 
         of int AA A.
@@ -20,13 +20,13 @@ of int (inl_or A B AA) (or A B) :-
 
 of int (elim_or C W Cl Cr) (CW) :- 
     of int W (or A B),
-    pi x\ of int x A => of int (Cl x) (C (inr_or A B x)),
-    pi y\ of int y B => of int (Cr y) (C (inl_or A B y)),
+    pi x\ of int x A => of int (Cl x) (C (or_r A B x)),
+    pi y\ of int y B => of int (Cr y) (C (or_l A B y)),
     pi z\ of int z (or A B) => isType prop (C z)
     CW = C W.
 
-hstep (elim_or C W Cl Cr) (Cl Wl) :- hnf W (inl_or A B Wl).
-hstep (elim_or C W Cl Cr) (Cr Wr) :- hnf W (inr_or A B Wr).
+hstep (elim_or C W Cl Cr) (Cl Wl) :- hnf W (or_l A B Wl).
+hstep (elim_or C W Cl Cr) (Cr Wr) :- hnf W (or_r A B Wr).
 
 dstep (elim_or C W Cl Cr) (elim_or C W' Cl Cr) :- dstep W W'.
 
@@ -40,6 +40,38 @@ dstep (elim_or C W Cl Cr) (elim_or C' W Cl Cr) :-
     pi w\ of int w (or A B) => dstep (C w) (C' w)  
 
 
-dstep (inl_or A B AA) (inl_or A B AA') :- dstep AA AA'.
-dstep (inr_or A B BB) (inr_or A B BB') :- dstep BB BB'.
+dstep (or_l A B AA) (or_l A B AA') :- dstep AA AA'.
+dstep (or_r A B BB) (or_r A B BB') :- dstep BB BB'.
+
+
+
+%%% Conjuntion
+
+
+isType col (and B C) :-
+    isType prop B,
+    isType prop C.
+
+of int (pair_and B C Bb Cc) (and B C) :-  
+    isType prop B,
+    isType prop C,
+    isa int Bb B, 
+    isa int Cc C.
+    
+hstep (p1 Pair) BB :-
+        hnf Pair (pair_and B C BB CC).
+
+hstep (p2 Pair) CC :-
+        hnf Pair (pair_and B C BB CC).
+
+dstep (and B1 C) (and B2 C) :- dstep B1 B2.
+dstep (and B C2) (and B C2) :- dstep C1 C2.
+
+dstep (pair_and B1 C Bb Cc) (pair_and B2 C Bb Cc) :- dstep B1 B2.
+
+dstep (pair_and B C1 Bb Cc) (pair_and B C2 Bb Cc) :- dstep C1 C2.
+
+dstep (pair_and B C Bb1 Cc) (pair_and B C Bb2 Cc) :- dstep Bb1 Bb2.
+
+dstep (pair_and B C Bb Cc1) (pair_and B C Bb Cc2) :- dstep Cc1 Cc2.
 

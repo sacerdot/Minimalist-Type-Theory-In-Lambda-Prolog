@@ -4,14 +4,13 @@
 % hstep A B
 
 % non contextual, transitive, reflexive normal form
-hnf A A.
 hnf A B :- hstep A C, !, hnf C B.
-
+hnf A A.
 % contextual, non reflexive, maybe transitive closure
 dstep A B :- hstep A B.
 
 % contextual, transitive, reflexive normal form
-nf A B :- dstep A C, ! nf C B.
+nf A B :- dstep A C, !, nf C B.
 nf A A.
 
 conv A B :- nf A C, nf B C.
@@ -19,8 +18,8 @@ conv A B :- nf A C, nf B C.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % of_inf T TY  the type 
 % inferred for T is TY
-isa IE T TY :- 
-    of IE T TY', 
+isa IE Term TY :- 
+    of IE Term TY', 
     conv TY TY'. 
     % isa T TY..T 
     %has the expected type TY

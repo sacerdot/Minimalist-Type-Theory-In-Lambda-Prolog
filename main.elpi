@@ -17,7 +17,7 @@ conv A B :- announce (conv A B).
 of IE A B :- announce (of IE A B).
 
 
-isType set A :- announce (isType set A).
+isType K A :- announce (isType K A).
 isa IE BB B :- announce (isa IE BB B).
 conv A B :- announce (conv A B).
 
