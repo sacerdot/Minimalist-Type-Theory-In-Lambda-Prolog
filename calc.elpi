@@ -1,12 +1,11 @@
 
-
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % non contextual, non reflexive, maybe transitive closure
 % hstep A B
 
 % non contextual, transitive, reflexive normal form
-hnf A B :- hstep A C, !, hnf C B.
 hnf A A.
+hnf A B :- hstep A C, !, hnf C B.
 
 % contextual, non reflexive, maybe transitive closure
 dstep A B :- hstep A B.
@@ -17,6 +16,7 @@ nf A A.
 
 conv A B :- nf A C, nf B C.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % of_inf T TY  the type 
 % inferred for T is TY
 isa IE T TY :- 
@@ -24,17 +24,12 @@ isa IE T TY :-
     conv TY TY'. 
     % isa T TY..T 
     %has the expected type TY
-%of int Z T   :- var Z T.
-%bnf Z Z :- var Z T.
-of int X Y :- defs X _ Y.
-
-isType col A :- isType set A.
-isType prop A :- isType propS A.
-isType set A :- isType propS A.
-isType col A :- isType prop A.
 
 
-tau Ae AAe Ai AAi  :- % in generale of _ XX X
+isType col  A  :- isType set   A.
+isType col  A  :- isType prop  A.
+isType prop A  :- isType propS A.
+isType set  A  :- isType propS A.
 
 
 

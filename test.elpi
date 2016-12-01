@@ -24,7 +24,7 @@ test 4 Q :-
         (y\inl singleton nat y)) Q.
 
 test 5 Q :- 
-    bnf (elim_setSum 
+    hnf (elim_setSum 
         (x\setSum singleton nat) 
         (inl nat singleton zero) 
         (X\inr singleton nat X) 

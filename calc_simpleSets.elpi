@@ -1,25 +1,27 @@
 %EMPTY SET
 
-isType set n0.
+%isType set n0.
 
-of int (emp Null) (A_Null) :- of int Null n0, (pi z\ (bnf z z, of int z n0) => isType col (A z)), A_Null = A Null. 
+%of IE (emp Null) (A_Null) :- of IE Null n0, (pi z\ (bnf z z, of IE z n0) => isType col (A z)), A_Null = A Null. 
 
-bnf (emp A) (emp A') :- bnf A A'.
+%bnf (emp A) (emp A') :- bnf A A'.
 
 % SINGLETON SET
 
 isType set singleton.
 
-of int star singleton.
+of IE star singleton.
 
-of int (elim_singleton T C) (M T) :- of int T singleton, (pi z\ bnf z z => of int z singleton => isCol (M z) ), of int C (M star). 
+of IE (elim_singleton T C) (M T) :- 
+    of IE T singleton, 
+    (pi z\ of IE z singleton => isCol (M z) ), of IE C (M star). 
 
 
 bnf singleton singleton.
 
 bnf star star.
 
-bnf (elim_singleton star C) C :- (pi z\ bnf z z => of int z singleton => isCol (M z) ), of int C (M star).
+bnf (elim_singleton star C) C :- (pi z\ bnf z z => of IE z singleton => isCol (M z) ), of IE C (M star).
 bnf (elim_singleton T C) (elim_singleton T' C) :- bnf T T'.
 
 
@@ -59,13 +61,13 @@ equ emptyset (lambda emptyset x \ lambda emptyset y \ id emptyset x y).
 
 trad (emp A T) (emp A' T') :-
  trad T T1, tau T T1 T',
- pi x \ trad x x => of int x emptyset => of ext x emptyset => bnf x x =>
+ pi x \ trad x x => of IE x emptyset => of ext x emptyset => bnf x x =>
   trad (A x) (A1 x), tau (A x) (A1 x) (A' x). 
 
 tau_rec emptyset emptyset (x \ x).
 
 prove_equ (emp A T) (emp A' T') (emp (EQU T T') T) :-
- of int T TTY, equ TTY EQU.
+ of IE T TTY, equ TTY EQU.
 
 
 %% SINGLETON
@@ -80,14 +82,14 @@ trad (elim_singleton T C) (elim_singleton T' C') :-
  trad T T1, tau T T1 T',
  (pi x \ 
     trad xe xi => 
-    of int xi singleton => 
+    of IE xi singleton => 
     of ext xe singleton => 
     bnf xi xi => bnf xe xe =>
         trad (C x) (C1 x),tau (C x) (C1 x) (C' x)).
 
 tau_rec singleton singleton (x \ x).
 
-sigm X X :- of int X singleton.
+sigm X X :- of IE X singleton.
 
 prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
  pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
