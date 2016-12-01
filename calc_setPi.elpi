@@ -1,25 +1,36 @@
 
 
-isType set (setPi B C) :-    % SET FORMATION
+isType set (setPi B C) :-
     isType set B, 
     pi x\ of int x B => isType set (C x).
 
-of (lambda B F) (setPi B C) :-  % ELEMENT FORMATION
-    conv B BB,
-    isType set (setPi BB C), %quesa sostituzione non è valida, l'implicazione è al contrario
-    pi x\ bnf x x => of x B => of (F x) (C x).
+of int (lam B CC) (setPi B C) :-
+        isType set B.
+        pi x\ of int x B => of int (CC x) (C x).
 
-of (app Lam X) (CX) :- % ELEMENT ELIMINATION
-    of Lam (setPi B C),
-    isa X B,
-    CX = C X.
+of int (app Lam X) (C X) :-
+        hnf Lam (lam B CC),
+        of (lam B CC) (setPi B C),
+        isa X B. 
 
-bnf ( app (lambda B F) Bb) (F Bb) :- of Bb B, of (lambda B F) (setPi B C).
-bnf (lambda B1 F) (lambda B2 F) :- bnf B1 B2.
-bnf (lambda B F1) (lambda B F2) :- pi b\ of b B => bnf b b => bnf (F1 b) (F2 b).
+hstep (app LAM BB) (app (lambda B F) BB) :- 
+    hnf LAM (lambda B F).
 
-bnf (app L X1) (app L X2) :- bnf X1 X2.
-bnf (app L1 X) (app L2 X) :- bnf L1 L2.
+hstep (app (lambda B CC) BB) (F BB) :- 
+        isType set B,
+        isa BB B,
+        (pi x\ of int x B => of int (CC x) (C x) ),
+        (pi x\ of int x B => isType set (C x) ),
+        
+        .
+
+dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
+
+dstep (lambda B F1) (lambda B F2) :- 
+        pi b\ of int b B => dstep (F1 b) (F2 b).
+
+dstep (app L X1) (app L X2) :- dstep X1 X2.
+dstep (app L1 X) (app L2 X) :- dstep L1 L2.
 
 
 
