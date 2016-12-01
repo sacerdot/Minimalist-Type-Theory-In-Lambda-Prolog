@@ -1,0 +1,35 @@
+
+
+isType prop (propId A AA1 AA2) :-    % SET FORMATION
+    isType col A, 
+    isa int AA1 A,
+    isa int AA2 A.
+    
+of int (id A AA) (propId A AA AA) :-  % ELEMENT FORMATION
+    isType col A,
+    isa int AA A.
+
+
+of int (elim_propId P CC) (C AA AA') :- 
+    of P (propId A AA AA'),
+    (pi x\ pi y\ int of x A => of int y A => ( isType prop (C x y), of (CC x) (C x x)) ),
+    isa AA  A,
+    isa AA' A.
+    
+hstep (elim_propId C (id A AA) CC) () :- 
+        (pi x\ of int x A => pi y \ of int y A => isType prop (C x y)),
+        isa AA A,
+        (pi x \ of int x A => of int (CC x) (C x x) ).
+
+dstep (id A AA) (id A' AA) :- dstep A A'.
+dstep (id A AA) (id A AA') :- dstep AA AA'.
+dstep (propId A A1 A2) (propId A' A1 A2) :- dstep A A'.
+dstep (propId A A1 A2) (propId A A1' A2) :- dstep A1 A1'.
+dstep (propId A A1 A2) (propId A A1 A2') :- dstep A2 A2'.
+
+dstep (elim_propId C P CC) (elim_propId C' P CC) :- pi x\ pi y\ dstep (C x y) (C' x y).
+dstep (elim_propId C P CC) (elim_propId C P' CC) :- dstep P P'.
+dstep (elim_propId C P CC) (elim_propId C P CC') :- pi x\ dstep (CC x) (CC' y). 
+
+
+

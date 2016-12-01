@@ -8,8 +8,8 @@ of int (inl A B AA) (setSum A B) :- isType set A, isType set B, isa AA A.
 
 of int (elim_setSum C W Cl Cr) (CW) :- 
     of int W (setSum A B),
-    pi x\ of int x A => bnf x x => of int (Cl x) (C (inr A B x)),
-    pi y\ of int y B => bnf x x => of int (Cr y) (C (inl A B y)),
+    pi x\ of int x A => of int (Cl x) (C (inr A B x)),
+    pi y\ of int y B => of int (Cr y) (C (inl A B y)),
     pi z\ of int z (setSum A B) => isType col (C z)
     CW = C W.
 
@@ -54,4 +54,4 @@ sigm X Y :- of int X (setSum A B),
 tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
 tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
 
-
+%%equ --     non sono sicuro di che cosa dica il teorema 4.20 

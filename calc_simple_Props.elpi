@@ -1,0 +1,45 @@
+%%%%Falsum
+
+isType prop bottom.
+of int (r0 A) A :- isType prop A, of int A bottom.
+
+%%%%Disjuntion
+
+isType prop (or A B) :- isType prop A, isType prop B.
+
+of int (inr_or A B BB) (or A B) :-  
+        isType prop A, 
+        isType prop B, 
+        of int BB B.
+
+of int (inl_or A B AA) (or A B) :-  
+        isType prop A, 
+        isType prop B, 
+        of int AA A.
+        
+
+of int (elim_or C W Cl Cr) (CW) :- 
+    of int W (or A B),
+    pi x\ of int x A => of int (Cl x) (C (inr_or A B x)),
+    pi y\ of int y B => of int (Cr y) (C (inl_or A B y)),
+    pi z\ of int z (or A B) => isType prop (C z)
+    CW = C W.
+
+hstep (elim_or C W Cl Cr) (Cl Wl) :- hnf W (inl_or A B Wl).
+hstep (elim_or C W Cl Cr) (Cr Wr) :- hnf W (inr_or A B Wr).
+
+dstep (elim_or C W Cl Cr) (elim_or C W' Cl Cr) :- dstep W W'.
+
+dstep (elim_or C W Cl Cr) (elim_or C W Cl' Cr) :- 
+    pi w\ of int w (or A B) => dstep (Cl w) (Cl' w).
+
+dstep (elim_or C W Cl Cr) (elim_or C W Cl Cr') :- 
+    pi w\ of int w (or A B) => dstep (Cr w) (Cr' w)  
+
+dstep (elim_or C W Cl Cr) (elim_or C' W Cl Cr) :- 
+    pi w\ of int w (or A B) => dstep (C w) (C' w)  
+
+
+dstep (inl_or A B AA) (inl_or A B AA') :- dstep AA AA'.
+dstep (inr_or A B BB) (inr_or A B BB') :- dstep BB BB'.
+
