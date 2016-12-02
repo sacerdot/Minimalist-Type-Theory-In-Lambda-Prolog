@@ -50,7 +50,7 @@ sigm X Y :- of int X (setSum A B),
     (pi b\ of int b B, sigm (Cr b) (Cr' b)),
     Y = elim_setSum (setSum A B) X Cl' Cr'.
 
-
+%TAU input Type    output Type   input     output
 tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
 tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
 

@@ -19,8 +19,9 @@ of IE A B :- announce (of IE A B).
 isType K A :- announce (isType K A).
 isa IE BB B :- announce (isa IE BB B).
 conv A B :- announce (conv A B).
-
-
+sigm D A B :- announce (sigm D A B).
+equ T A B O :- announce (equ T A B O).
+macro A B :- announce (macro A B).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -35,7 +36,7 @@ dstep A B :- hstep A B.
 
 % contextual, transitive, reflexive normal form
 nf A B :- dstep A C, !, nf C B.
-nf A A.
+nf A A :- print "SUCCESSO".
 
 conv A B :- nf A C, nf B C.
 
@@ -46,12 +47,10 @@ isa IE Term TY :-
     conv TY TY'.
 
 
-isType K T :- nf T T', isType K T'.
-
 isType col  A  :- isType set   A.
-isType col  A  :- isType prop  A.
-isType prop A  :- isType propS A.
-isType set  A  :- isType propS A.
+%isType col  A  :- isType prop  A.
+%isType prop A  :- isType propS A.
+%isType set  A  :- isType propS A.
 
 
 

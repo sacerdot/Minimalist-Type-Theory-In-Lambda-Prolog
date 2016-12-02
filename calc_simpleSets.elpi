@@ -25,7 +25,10 @@ hstep (elim_singleton star C) C :-
 dstep (elim_singleton T C) (elim_singleton T' C) :- dstep T T'.
 dstep (elim_singleton T C) (elim_singleton T C') :- dstep C C'.
 
+sigm DIR singleton singleton.
+sigm DIR W W :- of int W singleton.
 
+equ singleton X Y (propId(singleton, star star)) .
 
 
 
@@ -91,7 +94,7 @@ trad (elim_singleton T C) (elim_singleton T' C') :-
 
 tau_rec singleton singleton (x \ x).
 
-sigm X X :- of IE X singleton.
+sigm X X :- of int X singleton.
 
 prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
  pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).

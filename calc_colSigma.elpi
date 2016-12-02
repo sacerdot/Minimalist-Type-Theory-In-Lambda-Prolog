@@ -60,14 +60,15 @@ dstep (elim_colSigma M1 Pair Mm) (elim_colSigma M2 Pair Mm) :-
 
 
 
-macro (fst P) (elim P M Mn) :- of int P (colSigma A B), M = A, Mn = x\ y\ x.
+macro (fst P) (elim_colSigma P M Mn) :- 
+        of int P (colSigma A B), print "\n\n macro \n\n",  M = (x\A), Mn = x\ y\ x.
 
-macro (snd P) (elim P M Mn) :- 
+macro (snd P) (elim_colSigma P M Mn) :- 
+    print "\n\nSECONDA\n\n",
     of int P (colSigma A B),
-    macro (fst P) FST,
-    hnf FST HFST,
-    M = (B HFST),
-     Mn = x\ y\ y.
+    (pi p \ of int p (colSigma A B) => macro (fst p) (FST p)),
+    M = (w \ B (FST w)),
+    Mn = x\ y\ y.
 
 
 
