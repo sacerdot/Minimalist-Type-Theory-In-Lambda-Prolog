@@ -3,6 +3,7 @@ accumulate main.
 
 e1 Q :- nf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
+
 e2 Q :- nf (elim_setSum (inr star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
 test 1 Q :- of int (inl nat singleton zero) Q. 
