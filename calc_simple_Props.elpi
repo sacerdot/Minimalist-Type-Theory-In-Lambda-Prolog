@@ -102,6 +102,33 @@ dstep (app_impl F1 BB) (app_impl F1 BB) :-
     pi x\ of int x B => dstep (F1 x) (F2 x).
      
 
+%%%%forall
+
+isType prop (forall B C) :- 
+    isType prop B,
+    (pi x\ of int x B => isType prop (C x)).
+
+of int (lam_for B CC) (forall B C) :- 
+        isType prop B,
+        (pi x\ of int x B => of int (CC x) (C x))
+        (pi x\ of int x B => isType prop (C x)).
+
+of int (app_for F BB) (C BB) :- 
+        hnf F (lam_for B CC),
+        isa int BB B,
+        (pi x\ of int x B => of int (CC x) (C x)).
+
+hstep (app_for F BB) (CC BB) :-
+        hnf F (lam_for B CC),
+        isa int BB B
+        (pi x\ of int x B => of int (CC x) (C x)).
+        
+dstep (app_for F BB) (app_for F' BB') :- dstep F F'.
+dstep (app_for F BB) (app_for F' BB') :- dstep BB BB'. 
+
+dstep (lam_for B CC) (lam_for B' CC') :- dstep B B'.
+dstep (lam_for B CC) (lam_for B' CC') :- 
+        pi x\ of int x B => dstep (CC x) (CC' x).
 
 
 

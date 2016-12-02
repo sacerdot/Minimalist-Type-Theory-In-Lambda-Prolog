@@ -38,8 +38,7 @@ natint Nat Int :-
     printt (Prec Nat),
     nf (Prec Nat) A,
     natint A Int2,
-    Int is Int2 + 1
-    .
+    Int is Int2 + 1.
     
 natPlus A B C :- 
     (intnat A AA), 
