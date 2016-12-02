@@ -81,3 +81,5 @@ accumulate calc_colSigma.
 accumulate calc_nat.    
 accumulate calc_setSum.
 accumulate calc_setPi.
+accumulate calc_simple_Props.
+

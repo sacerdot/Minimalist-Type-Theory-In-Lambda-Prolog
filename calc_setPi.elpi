@@ -5,7 +5,7 @@ isType set (setPi B C) :-
     pi x\ of int x B => isType set (C x).
 
 of int (lam B CC) (setPi B C) :-
-        isType set B.
+        isType set B,
         pi x\ of int x B => of int (CC x) (C x).
 
 of int (app Lam X) (C X) :-
@@ -59,8 +59,6 @@ trad
          pi yi\ trad ye yi 
              => of ext ye B 
              => of int yi TradB 
-             => bnf ye ye
-             => bnf yi yi 
              => trad (C ye) (TradC1 yi)) 
     equ TradB EQUB,
     (pi y \ equ (TradC y) (EQUC y)),
