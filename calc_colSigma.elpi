@@ -4,7 +4,10 @@ isType col (colSigma B C) :-
     isType K B,
     pi b\ of int b B => isType col (C b).
 
-of int (pair B C Bb Cc) (colSigma B C) :-  
+of int (pair B C Bb Cc) (colSigma B C) :-
+    of int Bb B',
+    of int Cc C',
+    (B' = B ; conv B' B)
     isType col B,
     isType col (C Bb),
     isa int Bb B, 

@@ -3,6 +3,9 @@ announce G :- bracket ">>" G "\n", fail.
 spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
           bracket "]Leaving  " G "\n",  fail).
 
+printt A :- term_to_string A S, print S.
+printW S A :- print S, printt A, print "\n".
+
 load_library [] GOAL :- GOAL.
 load_library [ddd NAME BODY | TAIL ] GOAL :-
  of int BODY TYPE,
@@ -36,7 +39,7 @@ dstep A B :- hstep A B.
 
 % contextual, transitive, reflexive normal form
 nf A B :- dstep A C, !, nf C B.
-nf A A :- print "SUCCESSO".
+nf A A :- printW "HO TROVATO UNA FORMA NORMALE: "  A.
 
 conv A B :- nf A C, nf B C.
 
@@ -44,7 +47,7 @@ conv A B :- nf A C, nf B C.
 
 isa IE Term TY :- 
     of IE Term TY', 
-    conv TY TY'.
+    (TY' = TY ; conv TY TY').
 
 
 isType col  A  :- isType set   A.
@@ -81,4 +84,5 @@ accumulate calc_nat.
 accumulate calc_setSum.
 accumulate calc_setPi.
 accumulate calc_simple_Props.
+accumulate calc_id.
 

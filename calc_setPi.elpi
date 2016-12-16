@@ -34,13 +34,6 @@ dstep (app L1 X) (app L2 X) :- dstep L1 L2.
 
 
 
-
-
-
-
-
-
-
 %%% DEPENDENT PRODUCT SET
 
 trad 
@@ -53,9 +46,13 @@ trad
                     (forall (EQUB y1 y2) d \
                         (EQUC y2 (SIGMA y1 y2 (app H y1)) (app H y2)
                         )
-    )))))
-    :- trad B TradB 
-      ,(pi ye\ 
+                    )
+                )
+            )
+        )
+    )
+    :- trad B TradB ,
+    (pi ye\ 
          pi yi\ trad ye yi 
              => of ext ye B 
              => of int yi TradB 
