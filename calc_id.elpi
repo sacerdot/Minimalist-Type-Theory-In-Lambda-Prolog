@@ -1,13 +1,12 @@
 
 isType prop (propId A AA1 AA2) :- 
-    isType ANY A,
     isa int AA1 A,
-    isa itn AA2 A.
+    isa itn AA2 A,
+    isType ANY A.
 
 of int (id A AA) (propId A AA AA) :-
-    isType ANY A,  
-    isa int AA A.
-
+    isa int AA A,
+    isType ANY A.  
 
 of int (elim_id P C CC) (C AA1 AA2) :-
     of int P (propId A AA1 AA2),

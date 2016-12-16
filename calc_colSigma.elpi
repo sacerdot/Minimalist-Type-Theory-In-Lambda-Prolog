@@ -5,13 +5,10 @@ isType col (colSigma B C) :-
     pi b\ of int b B => isType col (C b).
 
 of int (pair B C Bb Cc) (colSigma B C) :-
-    of int Bb B',
-    of int Cc C',
-    (B' = B ; conv B' B)
-    isType col B,
-    isType col (C Bb),
     isa int Bb B, 
     isa int Cc (C Bb),
+    isType col B,
+    isType col (C Bb),
     isType col (colSigma B C).
 
 of int (elim_colSigma Pair M MM) (M D) :-
