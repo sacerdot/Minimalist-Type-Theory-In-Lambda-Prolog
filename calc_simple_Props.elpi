@@ -1,5 +1,5 @@
 %%%%Falsum
-
+ 
 isType prop bottom.
 of int (r0 A) A :- isType prop A, of int A bottom.
 
