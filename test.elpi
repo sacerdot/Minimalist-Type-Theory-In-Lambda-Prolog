@@ -6,15 +6,17 @@ e1 Q :- nf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
 e2 Q :- nf (elim_setSum (inr star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
-test 1 Q :- of int (inl nat singleton zero) Q. 
-test 2 Q :- of int (inr nat singleton zero) Q. %should fail
+test 1 Q :- of (inl nat singleton zero) Q int. 
+test 2 Q :- of (inr nat singleton zero) Q int. %should fail
 
 test 3 Q :- 
-    of int (elim_setSum 
+    of  (elim_setSum 
         (x\setSum singleton nat) 
         (inl nat singleton zero) 
         (X\inr singleton nat X) 
-        (y\inl singleton nat y)) Q.
+        (y\inl singleton nat y))
+        Q
+        int.
 
 test 4 Q :- 
     nf (elim_setSum 

@@ -1,24 +1,24 @@
 
-isType prop (propId A AA1 AA2) :- 
-    isa int AA1 A,
-    isa itn AA2 A,
-    isType ANY A.
+isType (propId A AA1 AA2) prop :- 
+    isa AA1 A int,
+    isa AA2 A int,
+    isType A _.
 
-of int (id A AA) (propId A AA AA) :-
-    isa int AA A,
-    isType ANY A.  
+of (id A AA) (propId A AA AA)v :-
+    isa AA A int,
+    isType A _.  
 
 of int (elim_id P C CC) (C AA1 AA2) :-
-    of int P (propId A AA1 AA2),
-    (pi x\ pi y\ of int x A => of int y A => isType prop (C x y) ),
-    (pi x\ of int x A => of int (CC x) (C x x)),
-    of int AA1 A,
-    of int AA2 A.
+    of P (propId A AA1 AA2) int,
+    (pi x\ pi y\ of x A int => of y A int => isType (C x y)  prop),
+    (pi x\ of x A int => of (CC x) (C x x) int),
+    of AA1 A int,
+    of AA2 A int.
 
 hstep (elim_id (id A AA) C CC) (CC AA) :-
-    of int AA A,
-    (pi x\ pi y\ of int x A => of int y A => isType prop (C x y) ),
-    (pi x\ of int x A => of int (CC x) (C x x)).
+    of AA A int,
+    (pi x\ pi y\ of x A int => of y A int => isType (C x y) prop),
+    (pi x\ of x A int  => of (CC x) (C x x) int).
 
 dstep (id A AA) (id A AA') :- dstep AA AA'.
 
@@ -30,10 +30,10 @@ dstep (propId A Aa Ab) (propId A Aa Ab') :- dstep Ab Ab'.
 
 dstep (elim_id P C CC) (elim_id P' C CC)  :- dstep P P'.
 dstep (elim_id P C CC) (elim_id P C' CC)  :- 
-    of int P (propId A _ _),
-    pi x\ pi y\ of int x A => of int y A => dstep (C x y) (C' x y).
+    of P (propId A _ _) int,
+    pi x\ pi y\ of x A int => of y A int => dstep (C x y) (C' x y).
 
 dstep (elim_id P C CC) (elim_id P C CC')  :- 
-    of int P (propId A _ _),
-    pi x\ of int x A => dstep (CC x) (CC' x).
+    of P (propId A _ _) int,
+    pi x\ of x A int => dstep (CC x) (CC' x).
 

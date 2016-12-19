@@ -1,0 +1,145 @@
+%%%%Falsum
+ 
+isType bottom prop .
+of (r0 A) A int :- isType A prop, of A bottom int.
+
+%%%%Disjuntion
+
+isType (or A B) prop :- isType A prop, isType B prop.
+
+of (or_r A B BB) (or A B) int :-  
+        isType A prop, 
+        isType B prop, 
+        of BB B int.
+
+of (or_l A B AA) (or A B) int :-  
+        isType A prop , 
+        isType B prop , 
+        of AA A int.
+        
+
+of (elim_or C W Cl Cr) (CW) int :- 
+    of W (or A B) int,
+    (pi z\ of z (or A B) int => isType (C z) prop),
+    (pi x\ of x A int => of (Cl x) (C (or_r A B x)) int),
+    (pi y\ of y B int => of (Cr y) (C (or_l A B y)) int),
+    CW = C W.
+
+hstep (elim_or C W Cl Cr) (Cl Wl) :- hnf W (or_l A B Wl).
+hstep (elim_or C W Cl Cr) (Cr Wr) :- hnf W (or_r A B Wr).
+
+dstep (elim_or C W Cl Cr) (elim_or C W' Cl Cr) :- dstep W W'.
+
+dstep (elim_or C W Cl Cr) (elim_or C W Cl' Cr) :- 
+    pi w\ of w (or A B) int => dstep (Cl w) (Cl' w).
+
+dstep (elim_or C W Cl Cr) (elim_or C W Cl Cr') :- 
+    pi w\ of w (or A B) int => dstep (Cr w) (Cr' w)  
+
+dstep (elim_or C W Cl Cr) (elim_or C' W Cl Cr) :- 
+    pi w\ of w (or A B) int => dstep (C w) (C' w)  
+
+
+dstep (or_l A B AA) (or_l A B AA') :- dstep AA AA'.
+dstep (or_r A B BB) (or_r A B BB') :- dstep BB BB'.
+
+
+
+%%% Conjuntion
+
+
+isType (and B C) prop :-
+    isType B prop,
+    isType C prop.
+
+of (and_p B C Bb Cc) (and B C) int :-  
+    isa Bb B int, 
+    isa Cc C int,
+    isType B prop,
+    isType C prop.
+    
+hstep (p1 Pair) BB :-
+        hnf Pair (and_p B C BB CC).
+
+hstep (p2 Pair) CC :-
+        hnf Pair (and_p B C BB CC).
+
+dstep (and B1 C) (and B2 C) :- dstep B1 B2.
+dstep (and B C2) (and B C2) :- dstep C1 C2.
+
+dstep (and_p B1 C Bb Cc) (and_p B2 C Bb Cc) :- dstep B1 B2.
+
+dstep (and_p B C1 Bb Cc) (and_p B C2 Bb Cc) :- dstep C1 C2.
+
+dstep (and_p B C Bb1 Cc) (and_p B C Bb2 Cc) :- dstep Bb1 Bb2.
+
+dstep (and_p B C Bb Cc1) (and_p B C Bb Cc2) :- dstep Cc1 Cc2.
+
+%%%% Implication
+
+isType (implies B C) prop :- isType B prop, isType C prop.
+
+of (lam_impl B CC) (implies B C) int :- 
+    isType B prop, 
+    (pi x\ of x B int => of (CC x) C int),
+    isType C prop.
+    
+of (app_impl F BB) C int :- 
+        hnf F (lam_impl B CC),
+        isa BB B int,
+        (pi x\ of x B int => of (CC x) C int).
+
+hstep (app_impl (lam_impl B CC) BB) (CC BB) :-
+        isa BB B int, 
+        isType B prop,
+        (pi x\ of x B int => of (CC x) C int),
+        isType C prop.
+        
+dstep (app_impl F BB1) (app_impl F BB2) :- dstep BB1 BB2.       
+
+dstep (app_impl F1 BB) (app_impl F2 BB) :-
+    hnf F1 (lam_impl B CC),
+    pi x\ of x B int => dstep (F1 x) (F2 x).
+     
+
+%%%forall
+
+isType  (forall B C) prop :- 
+    isType B prop,
+    (pi x\ of x B int => isType (C x) prop).
+
+of (lam_for B CC) (forall B C) int :- 
+        isType B prop,
+        (pi x\ of x B int => of (CC x) (C x) int)
+        (pi x\ of x B int => isType  (C x) prop).
+
+of (app_for F BB) (C BB) int :- 
+        hnf F (lam_for B CC),
+        isa BB B int,
+        (pi x\ of x B int => of (CC x) (C x) int).
+
+hstep (app_for F BB) (CC BB) :-
+        hnf F (lam_for B CC),
+        isa BB B int,
+        (pi x\ of x B int => of (CC x) (C x) int).
+        
+dstep (app_for F BB) (app_for F' BB') :- dstep F F'.
+dstep (app_for F BB) (app_for F' BB') :- dstep BB BB'. 
+
+dstep (lam_for B CC) (lam_for B' CC') :- dstep B B'.
+dstep (lam_for B CC) (lam_for B' CC') :- 
+        pi x\ of x B int => dstep (CC x) (CC' x).
+
+
+
+
+
+
+
+
+
+
+
+
+
+

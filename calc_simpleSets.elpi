@@ -1,52 +1,55 @@
 % SINGLETON SET
 
-isType set singleton.
+isType singleton set.
 
-of IE star singleton.
+of star singleton IE.
 
-of IE (elim_singleton T C) (M T) :- 
-    of IE T singleton, 
-    (pi z\ of IE z singleton => isCol (M z) ), of IE C (M star). 
+of (elim_singleton T C CC) (C T) IE :- 
+    of T singleton IE,
+    of CC (C star) IE,
+    (pi z\ of z singleton IE => isType (C z) col).
 
+hstep (elim_singleton star C CC) CC :- 
+        of CC (C star) IE,
+        (pi z\ of z singleton IE => isType (C z) col ).
 
-hstep (elim_singleton star C) C :- 
-        of IE C (M star),
-        (pi z\ of IE z singleton => isType col (M z) ).
+dstep (elim_singleton T C CC) (elim_singleton T' C CC) :- dstep T T'.
+dstep (elim_singleton T C CC) (elim_singleton T C CC') :- dstep CC CC'.
+dstep (elim_singleton T C CC) (elim_singleton T C' CC) :- (pi z\ of z singleton IE => dstep (C z) (C' z)).
 
-dstep (elim_singleton T C) (elim_singleton T' C) :- dstep T T'.
-dstep (elim_singleton T C) (elim_singleton T C') :- dstep C C'.
+sigm singleton singleton DIR.
+sigm W W DIR :- of W singleton int.
 
-sigm DIR singleton singleton.
-sigm DIR W W :- of int W singleton.
-
-equ singleton X Y (propId(singleton, star star)) .
-
-
-%% SINGLETON
+%equ singleton X Y (propId(singleton, star star)) .
+%equ singleton (x \ y \ id singleton x y).
 
 trad singleton singleton.
-
-equ singleton (x \ y \ id singleton x y).
-
 trad star star.
 
-trad (elim_singleton T C) (elim_singleton T' C') :-
- trad T T1, tau T T1 T',
- (pi x \ 
+trad (elim_singleton T C CC) (elim_singleton T' C' CC') :-
+ tau' singleton T T',
+ printW "1" T',
+ printW "1" T,
+ printW "1" C,
+ printW "1" CC,
+ (pi xe \ pi xi \ 
     trad xe xi => 
-    of IE xi singleton => 
-    of ext xe singleton => 
-    bnf xi xi => bnf xe xe =>
-        trad (C x) (C1 x),tau (C x) (C1 x) (C' x)).
+    of xi singleton int => 
+    of xe singleton ext =>
+    ( 
+     trad (C xe) (C' xi),
+     printW "2: " C',
+     tau' (C star) CC CC'
+    ) 
+ ).
 
-tau_rec singleton singleton (x \ x).
+tau singleton singleton star star.
+sigm X X DIR :- of X singleton int.
 
-sigm X X :- of int X singleton.
+%prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
+% pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
 
-prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
- pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
-
-prove_eq star star (refl singleton star).
+%prove_eq star star (refl singleton star).
 
 
 

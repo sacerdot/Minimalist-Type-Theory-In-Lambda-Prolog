@@ -1,37 +1,37 @@
 %% STRONG INDEXED COL SUM
 
-isType col (colSigma B C) :-
-    isType K B,
-    pi b\ of int b B => isType col (C b).
+isType (colSigma B C) col :-
+    isType B _,
+    pi b\ of b B int => isType (C b) col.
 
-of int (pair B C Bb Cc) (colSigma B C) :-
-    isa int Bb B, 
-    isa int Cc (C Bb),
-    isType col B,
-    isType col (C Bb),
-    isType col (colSigma B C).
+of (pair B C Bb Cc) (colSigma B C) int :-
+    isa Bb B int, 
+    isa Cc (C Bb) int,
+    isType B col,
+    isType (C Bb) col,
+    isType (colSigma B C) col.
 
-of int (elim_colSigma Pair M MM) (M D) :-
-        of int Pair (colSigma B C),
-        (pi z \ of int z (colSigma B C) => isType col (M z)),
+of (elim_colSigma Pair M MM) (M D) int :-
+        of Pair (colSigma B C) int,
+        (pi z \ of z (colSigma B C) int => isType (M z) col),
         (pi x \ pi y \
-            of int x B => of int y (C x) =>  
-                of int (MM x y) (M (pair B C x y))).
+            of x B int => of y (C x) int =>  
+                of (MM x y) (M (pair B C x y)) int ).
 
 hstep (elim_colSigma (pair B C Bb Cc) M Mm) (Mm Bb Cc) :-
-    (pi z\ of z (colSigma B C) => isType col (M z)),
-    of int Bb B,
-    of int Cc (C Bb),
+    (pi z\ of z (colSigma B C) int => isType (M z)) col,
+    of Bb B int,
+    of Cc (C Bb) int,
     (pi x \ pi y \
-        of int x B => of int y (C x) =>  
-            of int (MM x y) (M (pair B C x y))
+        of x B int => of y (C x) int =>  
+            of (MM x y) (M (pair B C x y))  int
     ).
 
 
 dstep (pair B1 C Bb Cc) (pair B2 C Bb Cc) :- dstep B1 B2.
 
 dstep (pair B C1 Bb Cc) (pair B C2 Bb Cc) :- 
-    pi b\ of b B => dstep (C1 b) (C2 b).
+    pi b\ of b B int => dstep (C1 b) (C2 b).
 
 dstep (pair B C Bb1 Cc) (pair B C Bb2 Cc) :- dstep Bb1 Bb2.
 
@@ -43,13 +43,12 @@ dstep (elim_colSigma Pair1 M Mm) (elim_colSigma Pair2 M Mm) :-
 
 dstep (elim_colSigma Pair M Mm1) (elim_colSigma Pair M Mm2) :-
     of int Pair (colSigma B C), 
-    pi x\ pi y\ of int x B => of int y (C x) => dstep (Mm1 x y) (Mm2 x y).
+    pi x\ pi y\ of x B int => of y (C x) int => dstep (Mm1 x y) (Mm2 x y).
 
 dstep (elim_colSigma M1 Pair Mm) (elim_colSigma M2 Pair Mm) :-
-        of Pair (colSigma B C), 
+        of Pair (colSigma B C) int, 
         pi x\ pi y\
-                of int x B => of int y (C x) 
-                        => dstep (M1 x y) (M2 x y).
+                of x B int => of y (C x) int => dstep (M1 x y) (M2 x y).
 
 
 
@@ -61,12 +60,12 @@ dstep (elim_colSigma M1 Pair Mm) (elim_colSigma M2 Pair Mm) :-
 
 
 macro (fst P) (elim_colSigma P M Mn) :- 
-        of int P (colSigma A B), print "\n\n macro \n\n",  M = (x\A), Mn = x\ y\ x.
+        of  P (colSigma A B) int, print "\n\n macro \n\n",  M = (x\A), Mn = x\ y\ x.
 
 macro (snd P) (elim_colSigma P M Mn) :- 
     print "\n\nSECONDA\n\n",
-    of int P (colSigma A B),
-    (pi p \ of int p (colSigma A B) => macro (fst p) (FST p)),
+    of P (colSigma A B) int,
+    (pi p \ of p (colSigma A B) int => macro (fst p) (FST p)),
     M = (w \ B (FST w)),
     Mn = x\ y\ y.
 
