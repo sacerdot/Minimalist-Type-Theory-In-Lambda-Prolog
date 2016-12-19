@@ -5,9 +5,9 @@ isType (colSigma B C) col :-
     pi b\ of b B int => isType (C b) col.
 
 of (pair B C Bb Cc) (colSigma B C) int :-
-    isa Bb B int, 
+    spy (isa Bb B int), 
     isa Cc (C Bb) int,
-    isType B col,
+    spy (isType B col),
     isType (C Bb) col,
     isType (colSigma B C) col.
 

@@ -28,17 +28,17 @@ trad star star.
 
 trad (elim_singleton T C CC) (elim_singleton T' C' CC') :-
  tau' singleton T T',
- printW "1" T',
- printW "1" T,
- printW "1" C,
- printW "1" CC,
+% printW "1" T',
+% printW "1" T,
+% printW "1" C,
+% printW "1" CC,
  (pi xe \ pi xi \ 
     trad xe xi => 
     of xi singleton int => 
     of xe singleton ext =>
     ( 
      trad (C xe) (C' xi),
-     printW "2: " C',
+%     printW "2: " C',
      tau' (C star) CC CC'
     ) 
  ).

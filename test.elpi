@@ -1,6 +1,25 @@
 accumulate main.
 
 
+test Q1 Q2 Q3 :-
+        print "TEST 1\n",
+        spy (trad (elim_singleton star (x\singleton) star) Q1
+            ),
+        makeline "-",
+        
+        print "TEST 2\n",
+        spy (nf (elim_singleton star (x\singleton) star) Q2 
+            ),
+        makeline "-",
+
+        print "TEST 3\n",
+        spy (of (pair singleton (x\singleton) star star ) Q3 int
+            ),
+        makeline "-",
+
+        C = 1.
+
+
 e1 Q :- nf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .
 
 
