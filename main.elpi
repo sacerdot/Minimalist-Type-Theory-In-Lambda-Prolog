@@ -48,16 +48,6 @@ conv A B :-  nf A C, nf B C.
 
 
 
-isa Term TY IE :- 
-    of Term TY' IE, 
-    (TY' = TY ; conv TY TY').
-
-
-isType A col :- isType A set.
-isType A col :- isType A prop.
-isType A set :- isType A props.
-isType A prop :- isType A props.
-
 
 
 
@@ -91,4 +81,13 @@ accumulate calc_simpleSets.
 
 makeline "-" :- print 
 "----------------------------------------------------------------------------\n".
+
+isType A col :- isType A set.
+isType A col :- isType A prop.
+isType A set :- isType A props.
+isType A prop :- isType A props.
+
+isa Term TY IE :- 
+    of Term TY' IE, 
+    (TY' = TY ; conv TY TY').
 

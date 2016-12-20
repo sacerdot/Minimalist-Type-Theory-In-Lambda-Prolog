@@ -1,23 +1,41 @@
 accumulate main.
 
 
-test Q1 Q2 Q3 :-
-        print "TEST 1\n",
+test Q1 Q2 Q3 Q4 Q5 :-
+        print "- - - - TEST1\n",
         spy (trad (elim_singleton star (x\singleton) star) Q1
             ),
         makeline "-",
         
-        print "TEST 2\n",
+        print "- - - - TEST2\n",
         spy (nf (elim_singleton star (x\singleton) star) Q2 
             ),
         makeline "-",
 
-        print "TEST 3\n",
+        print "- - - - TEST3\n",
         spy (of (pair singleton (x\singleton) star star ) Q3 int
             ),
         makeline "-",
+ 
+        print "- - - - TEST4\n",
+        spy ( nf (elim_colSigma (pair singleton (x\singleton) star star) (x\singleton) (x\y\x)) Q4
+            )
+            ,
+        makeline "-",
 
+        print "- - - - TEST5\n",
+        spy (trad (pair singleton (x\singleton) star star) (pair singleton (x\singleton) star star)
+            ),
+        makeline "-",
+
+        print "- - - - TEST6\n",
+        spy (trad (pair singleton (x\singleton) star star) (pair singleton (x\singleton) star star)
+            ),
+        makeline "-",
+        
         C = 1.
+
+  
 
 
 e1 Q :- nf (elim_setSum (inl star) (x\inl (inl x)) (y\inr(inr y)) ) Q .

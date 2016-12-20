@@ -19,9 +19,9 @@ of (elim_colSigma Pair M MM) (M D) int :-
                 of (MM x y) (M (pair B C x y)) int ).
 
 hstep (elim_colSigma (pair B C Bb Cc) M Mm) (Mm Bb Cc) :-
-    (pi z\ of z (colSigma B C) int => isType (M z)) col,
     of Bb B int,
     of Cc (C Bb) int,
+    (pi z\ of z (colSigma B C) int => isType (M z) col),
     (pi x \ pi y \
         of x B int => of y (C x) int =>  
             of (MM x y) (M (pair B C x y))  int
@@ -50,6 +50,8 @@ dstep (elim_colSigma M1 Pair Mm) (elim_colSigma M2 Pair Mm) :-
         pi x\ pi y\
                 of x B int => of y (C x) int => dstep (M1 x y) (M2 x y).
 
+dstep (colSigma B C) (colSigma B' C) :- dstep B B'.
+dstep (colSigma B C) (colSigma B C') :- (pi x\ of x B int => dstep (C x) (C' x)).
 
 
 
@@ -58,25 +60,29 @@ dstep (elim_colSigma M1 Pair Mm) (elim_colSigma M2 Pair Mm) :-
 
 
 
+%%colSigma
 
-macro (fst P) (elim_colSigma P M Mn) :- 
-        of  P (colSigma A B) int, print "\n\n macro \n\n",  M = (x\A), Mn = x\ y\ x.
+trad (colSigma B C) (colSigma Bi Ci) :- 
+        trad B Bi, 
+        spy ( pi xe\ pi xi\ 
+            trad xe xi => 
+            of xe B ext =>
+            of xi Bi int =>
+            trad (C xe) (Ci xi) ).
 
-macro (snd P) (elim_colSigma P M Mn) :- 
-    print "\n\nSECONDA\n\n",
-    of P (colSigma A B) int,
-    (pi p \ of p (colSigma A B) int => macro (fst p) (FST p)),
-    M = (w \ B (FST w)),
-    Mn = x\ y\ y.
-
-
-
-
-
-%%%colSigma
-
-%trad (colSigma B C) (colSigma Bi Ci) :- trad B Bi, trad C Ci.
-
+trad (pair B C Bb Cc) (pair Bi Ci Bib Cic) :-
+        trad B Bi,
+        (pi xe\ pi xi\ 
+            trad xe xi => 
+            of xe B ext =>
+            of xi Bi int => trad (C xe) (Ci xi) 
+        ),
+        tau' B Bb Bib,
+        (pi xe\ pi xi\ 
+            trad xe xi => 
+            of xe B ext =>
+            of xi Bi int => tau' (C xe) Cc Cic  
+        ).
 %bnf (
 %     equ (colSigma B C) Z1 Z2
 %    ) 

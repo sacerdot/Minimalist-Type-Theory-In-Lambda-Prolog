@@ -24,7 +24,7 @@ dstep (id A AA) (id A AA') :- dstep AA AA'.
 
 dstep (id A AA) (id A' AA) :- dstep A A'.
 
-dstep (propId A Aa Ab) (propId A' Aa Ab) :- dstep A A'.
+dstep (propId A Aa Ab) (propId A' Aa Ab) :- spy (dstep A A').
 dstep (propId A Aa Ab) (propId A Aa' Ab) :- dstep Aa Aa'.
 dstep (propId A Aa Ab) (propId A Aa Ab') :- dstep Ab Ab'.
 
