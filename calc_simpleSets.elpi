@@ -44,7 +44,7 @@ trad (elim_singleton T C CC) (elim_singleton T' C' CC') :-
  ).
 
 tau singleton singleton star star.
-sigm X X DIR :- of X singleton int.
+sigm DIR X X :- of X singleton int.
 
 %prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
 % pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).

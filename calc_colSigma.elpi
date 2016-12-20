@@ -94,14 +94,21 @@ sigm DIR W W' :-
             sigm DIR (C x) (C' x')
         ),
         (pi x\
-            of x B int,
-            sigm DIR x (F x)
+            of x B int =>
+            sigm DIR x (F1 x)
         ),
-        (pi x\
-            of x B int,
-            sigm DIR x (F x)
+        (pi x\ pi y\
+            of x B int =>
+            of y (C x) int => 
+            sigm DIR x (F1 x) =>
+            sigm DIR y (F2 y)
         ),
-        W' = (elim_colSigma (W) (colSigma B' C') (w1\ w2\ )).
+        W' = (elim_colSigma 
+                (W) 
+                (colSigma B' C') 
+                (w1\ w2\ pair B' C' (F1 w1) (F2 w2) )
+             )
+        .
 
 %bnf (
 %     equ (colSigma B C) Z1 Z2
