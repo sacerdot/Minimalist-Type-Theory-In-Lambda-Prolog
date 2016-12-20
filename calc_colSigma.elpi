@@ -83,6 +83,26 @@ trad (pair B C Bb Cc) (pair Bi Ci Bib Cic) :-
             of xe B ext =>
             of xi Bi int => tau' (C xe) Cc Cic  
         ).
+
+sigm DIR W W' :- 
+        of W (colSigma B C) int,
+        sigm DIR B B',
+        (pi x\ pi x'\ 
+            of x B int =>
+            of x' B' int =>
+            sigm DIR x x' =>
+            sigm DIR (C x) (C' x')
+        ),
+        (pi x\
+            of x B int,
+            sigm DIR x (F x)
+        ),
+        (pi x\
+            of x B int,
+            sigm DIR x (F x)
+        ),
+        W' = (elim_colSigma (W) (colSigma B' C') (w1\ w2\ )).
+
 %bnf (
 %     equ (colSigma B C) Z1 Z2
 %    ) 
