@@ -1,6 +1,30 @@
 accumulate main.
 
 
+testId2 Q 
+    :- pi A\ isType A set 
+    => pi a\ of a A int
+    => pi b\ of b A int
+    => pi c\ of c A int
+    => pi p\ of p (propId A a b) int
+    => (pi x\ pi q\ of x A int => of (q x) (propId A x c) int)
+    => spy (of (elim_id p q) ( x\ y\ propId A x c) int)
+    .
+testId Q 
+    :- 
+        (
+        of 
+    (elim_id 
+        (id singleton star) 
+        (x\ id singleton x) 
+        ( x\ y\ propId A x y)
+    ) 
+    Q %(propId singleton star star) 
+    int
+        )
+    .
+
+
 test Q1 Q2 Q3 Q4 Q5 :-
         print "- - - - TEST1\n",
         spy (trad (elim_singleton star (x\singleton) star) Q1
@@ -68,5 +92,4 @@ test 5 Q :-
         (inl nat singleton zero) 
         (X\inr singleton nat X) 
         (y\inl singleton nat y)) Q.
-
 

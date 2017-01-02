@@ -1,0 +1,27 @@
+isType empty set.
+
+of (emp Z A) (A Z) IE 
+   :- of Z empty IE
+    , (pi x\ of x empty IE => isType (A x) _)
+    .
+
+of bottom empty IE.
+
+equ empty Z1 Z2 (propId empty Z1 Z2)
+   :- of Z1 empty int
+    , of Z2 empty int
+    .
+
+tau empty empty A A.
+
+trad bottom bottom.
+trad empty empty.
+trad (emp X A) (emp X' A') 
+   :- tau' empty X X'
+    , (pi xe\ pi xi\ of xe empty ext 
+                     => of xi empty int 
+                     => trad xe xi 
+                     => trad (A xe) (A' xi))
+    .
+
+sigm Z Z :- of Z empty int.    

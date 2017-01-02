@@ -1,7 +1,7 @@
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
-spy G :- (bracket "[Entering " G "\n", G, bracket "]Success  " G "\n";
-          bracket "]Leaving  " G "\n",  fail).
+spy G :- (bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n";
+          bracket "]--]Leaving  " G "\n",  fail).
 
 printt A :- term_to_string A S, print S.
 printW S A :- print S, printt A, print "\n".
@@ -44,7 +44,8 @@ dstep A B :- hstep A B.
 nf A B :- dstep A C, !, nf C B.
 %nf A A :- printW "HO TROVATO UNA FORMA NORMALE: "  A.
 nf A A.
-conv A B :-  nf A C, nf B C.
+conv A A :- ! .
+conv A B :- nf A C, nf B C.
 
 
 
@@ -77,7 +78,8 @@ accumulate calc_nat.
 accumulate calc_setPi.
 accumulate calc_setSum.
 accumulate calc_simpleProps.
-accumulate calc_simpleSets.
+accumulate calc_singleton.
+accumulate calc_empty.
 
 makeline "-" :- print 
 "----------------------------------------------------------------------------\n".
@@ -89,5 +91,5 @@ isType A prop :- isType A props.
 
 isa Term TY IE :- 
     of Term TY' IE, 
-    (TY' = TY ; conv TY TY').
+    conv TY TY'.
 
