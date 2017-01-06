@@ -1,3 +1,5 @@
+%%-- calc_id.elpi
+
 isType (propId A AA1 AA2) prop :- 
     isa AA1 A int,
     isa AA2 A int,
@@ -6,15 +8,10 @@ isType (propId A AA1 AA2) prop :-
 of (id A AA1) (propId A' AA2 AA3) int :-    
     of AA1 A'' int,
     conv A A'',
-    printW "--- " 1,
     (conv AA1 AA2),
-    printW "--- " 2,
     (conv AA1 AA3),
-    printW "--- " 3,
     (conv A A'),
-    printW "--- " 4,
-    isType A col,
-    printW "--- " 5.
+    isType A col.
 
 of (elim_id P Cc C) (C AA1 AA2) int :-
      (of P (propId A AA1 AA2) int),

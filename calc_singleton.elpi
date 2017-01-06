@@ -1,3 +1,5 @@
+%%-- calc_singleton.elpi
+
 % SINGLETON SET
 
 isType singleton set.
@@ -51,6 +53,7 @@ sigm DIR X X :- of X singleton int.
 
 %prove_eq star star (refl singleton star).
 
+equ singleton X1 X2 (propId singleton X1 X2).
 
 
 

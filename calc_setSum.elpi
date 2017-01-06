@@ -1,3 +1,5 @@
+%%-- calc_setSum.elpi
+
 %%Disjoint Sum Type
 
 isType (setSum A B) set :- isType A set, isType B set.

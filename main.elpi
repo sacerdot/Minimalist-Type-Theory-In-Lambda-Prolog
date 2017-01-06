@@ -1,3 +1,5 @@
+%%-- main.elpi
+
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
 spy G :- (bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n";
@@ -11,6 +13,8 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
  of BODY TYPE int,
  defs NAME BODY TYPE => load_library TAIL GOAL.
 
+test_library [].
+test_library [Test | Tail] :- Test , test_library Tail.
 
 trad A B    :- announce (trad A B).
 tau A B C D :- announce (tau A B C D).
@@ -72,15 +76,16 @@ tau' TipoExt ElementoExt Output :-
     of ElementoInt Ty int,
     tau Ty TipoInt ElementoInt Output.
 
-accumulate calc_colSigma.
-accumulate calc_id.
-accumulate calc_nat.
-accumulate calc_setPi.
-accumulate calc_setSum.
-accumulate calc_simpleProps.
-accumulate calc_singleton.
-accumulate calc_empty.
-
+%accumulate calc_colSigma.
+%accumulate calc_id.
+%accumulate calc_nat.
+%accumulate calc_setPi.
+%accumulate calc_setSum.
+%accumulate calc_simpleProps.
+%accumulate calc_singleton.
+%accumulate calc_empty.
+accumulate united.
+s
 makeline "-" :- print 
 "----------------------------------------------------------------------------\n".
 
@@ -88,6 +93,7 @@ isType A col :- isType A set.
 isType A col :- isType A prop.
 isType A set :- isType A props.
 isType A prop :- isType A props.
+%isType A col :- of _ A int.
 
 isa Term TY IE :- 
     of Term TY' IE, 

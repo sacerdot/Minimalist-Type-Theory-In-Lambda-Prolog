@@ -1,3 +1,5 @@
+%%-- calc_empty.elpi
+
 isType empty set.
 
 of (emp Z A) (A Z) IE 
@@ -7,10 +9,6 @@ of (emp Z A) (A Z) IE
 
 of bottom empty IE.
 
-equ empty Z1 Z2 (propId empty Z1 Z2)
-   :- of Z1 empty int
-    , of Z2 empty int
-    .
 
 tau empty empty A A.
 
@@ -25,3 +23,6 @@ trad (emp X A) (emp X' A')
     .
 
 sigm Z Z :- of Z empty int.    
+
+
+equ empty X1 X2 (propId empty X1 X2).

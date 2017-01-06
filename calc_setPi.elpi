@@ -1,4 +1,4 @@
-
+%%-- calc_setPi.elpi
 
 isType set (setPi B C) :-
     isType set B, 

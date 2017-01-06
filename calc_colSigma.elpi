@@ -1,17 +1,19 @@
+%%-- calc_colSigma.elpi
+
 %% STRONG INDEXED COL SUM
 
 isType (colSigma B C) col :-
-    isType B _,
+    isType B col,
     pi b\ of b B int => isType (C b) col.
 
-of (pair B C Bb Cc) (colSigma B C) int :-
-    spy (isa Bb B int), 
-    isa Cc (C Bb) int,
-    spy (isType B col),
-    isType (C Bb) col,
+of (pair B C BB CC) (colSigma B C) int :-
+    isType B col,
+    isType (C BB) col,
+    of BB B int,
+    of CC (C BB) int,
     isType (colSigma B C) col.
 
-of (elim_colSigma Pair M MM) (M D) int :-
+of (elim_colSigma Pair M MM) (M Pair) int :-
         of Pair (colSigma B C) int,
         (pi z \ of z (colSigma B C) int => isType (M z) col),
         (pi x \ pi y \
@@ -24,7 +26,7 @@ hstep (elim_colSigma (pair B C Bb Cc) M Mm) (Mm Bb Cc) :-
     (pi z\ of z (colSigma B C) int => isType (M z) col),
     (pi x \ pi y \
         of x B int => of y (C x) int =>  
-            of (MM x y) (M (pair B C x y))  int
+            of (Mm x y) (M (pair B C x y))  int
     ).
 
 
@@ -42,13 +44,12 @@ dstep (elim_colSigma Pair1 M Mm) (elim_colSigma Pair2 M Mm) :-
     dstep Pair1 Pair2.
 
 dstep (elim_colSigma Pair M Mm1) (elim_colSigma Pair M Mm2) :-
-    of int Pair (colSigma B C), 
+    of Pair (colSigma B C) int, 
     pi x\ pi y\ of x B int => of y (C x) int => dstep (Mm1 x y) (Mm2 x y).
 
-dstep (elim_colSigma M1 Pair Mm) (elim_colSigma M2 Pair Mm) :-
-        of Pair (colSigma B C) int, 
-        pi x\ pi y\
-                of x B int => of y (C x) int => dstep (M1 x y) (M2 x y).
+dstep (elim_colSigma Pair M1 Mm) (elim_colSigma Pair M2 Mm) :-
+        of Pair Ty int, 
+        pi z\ of z Ty int => dstep (M1 z) (M2 z).
 
 dstep (colSigma B C) (colSigma B' C) :- dstep B B'.
 dstep (colSigma B C) (colSigma B C') :- (pi x\ of x B int => dstep (C x) (C' x)).
