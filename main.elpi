@@ -18,7 +18,7 @@ test_library [Test | Tail] :- Test , test_library Tail.
 
 trad A B    :- announce (trad A B).
 tau A B C D :- announce (tau A B C D).
-tau' A B C  :- announce (tau' A B C).
+tau' A B C  :- announce (tau' A B C).                          
 hnf A B     :- announce (hnf A B).
 hstep A B   :- announce (hstep A B).
 dstep A B   :- announce (dstep A B).
@@ -34,7 +34,6 @@ sigm A B D  :- announce (sigm A B D).
 macro A B   :- announce (macro A B).
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % non contextual, non reflexive, maybe transitive closure
 % hstep A B
 
@@ -84,8 +83,47 @@ tau' TipoExt ElementoExt Output :-
 %accumulate calc_simpleProps.
 %accumulate calc_singleton.
 %accumulate calc_empty.
-accumulate united.
-s
+%accumulate united.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 makeline "-" :- print 
 "----------------------------------------------------------------------------\n".
 
@@ -93,9 +131,26 @@ isType A col :- isType A set.
 isType A col :- isType A prop.
 isType A set :- isType A props.
 isType A prop :- isType A props.
-%isType A col :- of _ A int.
 
 isa Term TY IE :- 
     of Term TY' IE, 
     conv TY TY'.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

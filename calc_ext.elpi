@@ -1,0 +1,294 @@
+
+% SINGLETON SET
+
+isType singleton set.
+
+of star singleton IE.
+
+of (elim_singleton T C CC) (C T) IE :- 
+    of T singleton IE,
+    of CC (C star) IE,
+    (pi z\ of z singleton IE => isType (C z) col).
+
+hstep (elim_singleton star C CC) CC :- 
+        of CC (C star) IE,
+        (pi z\ of z singleton IE => isType (C z) col ).
+
+dstep (elim_singleton T C CC) (elim_singleton T' C CC) :- dstep T T'.
+dstep (elim_singleton T C CC) (elim_singleton T C CC') :- dstep CC CC'.
+dstep (elim_singleton T C CC) (elim_singleton T C' CC) :- 
+        (pi z\ of z singleton IE => dstep (C z) (C' z)).
+
+sigm singleton singleton DIR.
+sigm W W DIR :- of W singleton int.
+
+%equ singleton X Y (propId(singleton, star star)) .
+%equ singleton (x \ y \ id singleton x y).
+
+trad singleton singleton.
+trad star star.
+
+trad (elim_singleton T C CC) (elim_singleton T' C' CC') :-
+ tau' singleton T T',
+% printW "1" T',
+% printW "1" T,
+% printW "1" C,
+% printW "1" CC,
+ (pi xe \ pi xi \ 
+    trad xe xi => 
+    of xi singleton int => 
+    of xe singleton ext =>
+    ( 
+     trad (C xe) (C' xi),
+%     printW "2: " C',
+     tau' (C star) CC CC'
+    ) 
+ ).
+
+tau singleton singleton star star.
+sigm DIR X X :- of X singleton int.
+
+%prove_eq (elim_singleton T1 C1) (elim_singleton T2 C2) P :-
+% pi x \ prove_eq x x => prove_eq (C1 x) (C2 x).
+
+%prove_eq star star (refl singleton star).
+
+equ singleton X1 X2 (propId singleton X1 X2).
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%-- calc_setPi.elpi
+
+isType set (setPi B C) :-
+    isType set B, 
+    pi x\ of x B int => isType (C x) set.
+
+of (lam B CC) (setPi B C) int :-
+        isType B int,
+        pi x\ of x B int => of (CC x) (C x) int.
+
+of (app Lam X) (C X) int :-
+        hnf Lam (lam B CC),
+        of (lam B CC) (setPi B C) int,
+        isa X B int. 
+
+
+hstep (app LAM BB) (CC BB) :- 
+        hnf LAM (lambda B CC),
+        isType B set,
+        isa BB B int,
+        (pi x\ of x B int => of (CC x) (C x) int ),
+        (pi x\ of x B int => isType (C x) set ).
+
+dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
+
+dstep (lambda B F1) (lambda B F2) :- 
+        pi b\ of b B int => dstep (F1 b) (F2 b).
+
+dstep (app L X1) (app L X2) :- dstep X1 X2.
+dstep (app L1 X) (app L2 X) :- dstep L1 L2.
+
+
+
+
+
+
+%%% DEPENDENT PRODUCT SET
+
+%trad 
+%    (setPi B C) 
+%    (colSigma 
+%        (setPi TradB TradC)
+%        (H\
+%            (forall TradB y1\
+%                (forall TradB y2\
+%                    (forall (EQUB y1 y2) d \
+%                        (EQUC y2 (SIGMA y1 y2 (app H y1)) (app H y2)
+%                        )
+%                    )
+%                )
+%            )
+%        )
+%    )
+%    :- trad B TradB ,
+%    (pi ye\ 
+%         pi yi\ trad ye yi 
+%             => of ye B ext 
+%             => of yi TradB int
+%             => trad (C ye) (TradC1 yi)) 
+%    equ TradB EQUB,
+%    (pi y \ equ (TradC y) (EQUC y)),
+%    (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigm z (SIGMA z)).
+
+%trad (lambda B Cc) (pair (lambda TradB TradCc) P )
+%    :- trad B TradB,
+%       (of  
+%            (lambda B Cc) 
+%            (setPi B T_inferred_ext)
+%            ext),
+%       (pi x \ trad x x => 
+%        trad (Cc x) (TradCc x), of (TradCc x) (T_inferred x),
+%         trad (T_inferred_ext x) (T_inferred_ext_trad x),
+%         tau (T_inferred x) (T_inferred_ext_trad x) (TAU x)),
+%       equ TradB EQU,
+%       (pi x1 \ pi x2 \ pi d \ prove_equ x1 x2 d => sigma x1 x2 =>
+%         sigma (TradCc x1) UUU,
+%         prove_equ UUU (TradCC x2) PROVEEQ),
+%       P = lambda TradB x1 \ lambda TradB x2 \ lambda (EQU x1 x2) d \
+%            PROVEEQ x1 x2 d.
+
+
+%%equ (setPi B C) something.
+
+%% ££££££££££££££ TODO ££££££££££££££££££££
+
+%% £££££££ sigm A B =====> sigm DIR A B
+
+%sigm DIR A B :- hsigm DIR A B.
+%sigm DIR A B :- dir_inv DIR INVDIR, hsigm INVDIR B A.
+
+%dir_inv forward backward.
+%dir_inv backward forward.
+
+%sigm DIR W W' :-
+% of int W (colSigma (setPi BI CI) _),
+% print "TIPAGGIO \n\n",
+% sigm DIR BI BI',
+% print "step2\n\n",
+% (pi x \ of int x BI => sigm DIR (CI x) (CI' x)),
+% print "step3\n",
+% (pi a \ pi b \ of int a BI => of int b BI => equ BI' a b (EQBI' a b)),
+% print "qweqwe\n",
+% (pi x2 \ pi a \ pi b \ of int x2 BI' => of int a (CI' x2) => of int b (CI' x2) =>
+%   equ (CI' x2) a b (EQCI'x2 x2 a b)),
+% print "qweqwe2\n",
+% (pi x1 \ pi x2 \ pi x \ of int x2 BI' => of int x1 BI' hsigm DIR x1 x2 => of int x (CI' x1) => sigm DIR x (SIGfx1 x1 x2 x)), 
+% print "qweqwe3\n",
+% 
+% W' = pair (setPi BI' CI')
+%  (f \ forall BI' x1 \ forall BI' x2\
+%    implies (EQBI' x1 x2) (EQCI'x2 x2 (SIGfx1 x1 x2 (app f x1)) (app f x2)))
+%  F' P',
+% 
+% macro (fst W) F,
+% macro (snd W) P,
+% print "SIGMI!!",
+% dir_inv INV INVDIR,
+% (pi y \ of int y BI' => sigm INVDIR (INVSIG y) y),
+% print "QWEQWEQWE 4\n\n",
+% (pi y \ pi x \ of int y BI' => of int x (CI (INVSIG y)) => hsigm DIR (INVSIG y) y => sigm DIR x (SIG2 x)),
+% print "QWEQWEQWQWEQWE\n",
+% F' = (lam BI' y \ SIG2 (F (INVSIG y))),
+% P' = delirio_assoluto.
+
+
+%testxxx W' :-
+% W = pair (setPi singleton x \ singleton) (x\singleton) (lam singleton x \ x) star,
+% sigm forward W W'.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%-- calc_setSum.elpi
+
+%%Disjoint Sum Type
+
+isType (setSum A B) set :- isType A set, isType B set.
+
+of (inr A B BB) (setSum A B) int :- isType B set, isType A set, isa BB B int.
+
+of (inl A B AA) (setSum A B) int :- isType A set, isType B set, isa AA A int.
+
+of (elim_setSum C W Cl Cr) (CW) int :- 
+    of W (setSum A B) int,
+    (pi z\ of z (setSum A B) int => isType (C z) set),
+    (pi x\ of x A int => of (Cl x) (C (inr A B x)) int) ,
+    (pi y\ of y B int => of (Cr y) (C (inl A B y)) int) ,
+    CW = C W.
+
+hstep (elim_setSum C W Cl Cr) (Cl Wl) :- hnf W (inl A B Wl).
+hstep (elim_setSum C W Cl Cr) (Cr Wr) :- hnf W (inr A B Wr).
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C W' Cl Cr) :- dstep W W'.
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl' Cr) :- 
+    pi w\ of w (setSum A B) int => dstep (Cl w) (Cl' w).
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl Cr') :- 
+    pi w\ of w (setSum A B) int => dstep (Cr w) (Cr' w).  
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C' W Cl Cr) :- 
+    pi w\ of w (setSum A B) int => dstep (C w) (C' w).  
+
+
+dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
+dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
+
+
+%%% Interpretation
+
+trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
+trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, tau' A AA AAi.
+trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, tau' B BB BBi.
+
+trad (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
+    of W (setSum A B) ext,
+    tau' (setSum A B) W Wi,
+    (pi x\ of x (setSum A B) int => trad (C x) (Ci x) ),
+    (pi a\ of a A int => tau' (C (inl A B a)) (Cl a) (Cli a)),
+    (pi b\ of b B int => tau' (C (inl A B b)) (Cr b) (Cri b)).
+
+sigm X Y :- of X (setSum A B) int,
+    (pi a\ of a A int, sigm (Cl a) (Cl' a)),
+    (pi b\ of b B int, sigm (Cr b) (Cr' b)),
+    Y = elim_setSum (setSum A B) X Cl' Cr'.
+
+%TAU input Type    output Type   input     output
+tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
+tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
+
+%%equ --     non sono sicuro di che cosa dica il teorema 4.20 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%-- calc_empty.elpi
+
+isType empty set.
+
+of (emp Z A) (A Z) IE 
+   :- of Z empty IE
+    , (pi x\ of x empty IE => isType (A x) _)
+    .
+
+of bottom empty IE.
+
+
+tau empty empty A A.
+
+trad bottom bottom.
+trad empty empty.
+trad (emp X A) (emp X' A') 
+   :- tau' empty X X'
+    , (pi xe\ pi xi\ of xe empty ext 
+                     => of xi empty int 
+                     => trad xe xi 
+                     => trad (A xe) (A' xi))
+    .
+
+sigm Z Z :- of Z empty int.    
+
+
+equ empty X1 X2 (propId empty X1 X2).
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
