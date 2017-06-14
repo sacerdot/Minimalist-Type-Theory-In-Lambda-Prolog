@@ -7,13 +7,13 @@ isType (setSum A B) set IE :- isType A set IE, isType B set IE.
 of (inr A B Bb) (setSum A B) IE 
     :- isType B set IE
      , isType A set IE
-     , isa Bb B int IE
+     , isa Bb B IE
      .
 
-of (inl A B AA) (setSum A B) int 
+of (inl A B AA) (setSum A B) IE  
     :- isType A set IE
      , isType B set IE
-     , isa Aa A int IE
+     , isa Aa A IE
      .
 
 of (elim_setSum C W Cl Cr) (C W) IE 

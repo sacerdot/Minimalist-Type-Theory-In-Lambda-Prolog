@@ -189,8 +189,8 @@ trad (elim_setSum C W Cl Cr) (elim_setSum TradC TradW TradCl TradCr) :-
 
 sigm X (elim_setSum (setSum A B) X Cl' Cr') DIR 
     :- of X (setSum A B) int
-     , pi y\ of y A int => sigm y (Cl' y) DIR
-     , pi y\ of y B int => sigm y (Cr' y) DIR
+     , (pi y\ of y A int => sigm y (Cl' y) DIR)
+     , (pi y\ of y B int => sigm y (Cr' y) DIR)
      .
 
 tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) 
