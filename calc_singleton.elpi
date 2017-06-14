@@ -1,5 +1,7 @@
 %%-- calc_singleton.elpi
 
+ofType star singleton set IE.
+
 isType singleton set IE.
 
 of star singleton IE.
