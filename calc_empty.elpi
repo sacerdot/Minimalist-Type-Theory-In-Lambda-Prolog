@@ -4,7 +4,7 @@ isType empty set.
 
 of (emp Z A) (A Z) IE 
    :- of Z empty IE
-    , (pi x\ of x empty IE => isType (A x) _)
+    , (pi x\ of x empty IE => isType (A x) IE)
     .
 
 of bottom empty IE.
