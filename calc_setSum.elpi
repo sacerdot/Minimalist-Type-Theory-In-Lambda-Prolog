@@ -2,18 +2,26 @@
 
 %%Disjoint Sum Type
 
-isType (setSum A B) set :- isType A set, isType B set.
+isType (setSum A B) set IE :- isType A set IE, isType B set IE.
 
-of (inr A B BB) (setSum A B) int :- isType B set, isType A set, isa BB B int.
+of (inr A B Bb) (setSum A B) IE 
+    :- isType B set IE
+     , isType A set IE
+     , isa Bb B int IE
+     .
 
-of (inl A B AA) (setSum A B) int :- isType A set, isType B set, isa AA A int.
+of (inl A B AA) (setSum A B) int 
+    :- isType A set IE
+     , isType B set IE
+     , isa Aa A int IE
+     .
 
-of (elim_setSum C W Cl Cr) (CW) int :- 
-    of W (setSum A B) int,
-    (pi z\ of z (setSum A B) int => isType (C z) set),
-    (pi x\ of x A int => of (Cl x) (C (inr A B x)) int) ,
-    (pi y\ of y B int => of (Cr y) (C (inl A B y)) int) ,
-    CW = C W.
+of (elim_setSum C W Cl Cr) (C W) IE 
+    :- of W (setSum A B) IE 
+     , (pi z\ of z (setSum A B) IE => isType (C z) set IE)
+     , (pi x\ of x A IE => of (Cl x) (C (inr A B x)) IE) 
+     , (pi y\ of y B IE => of (Cr y) (C (inl A B y)) IE) 
+     .
 
 hstep (elim_setSum C W Cl Cr) (Cl Wl) :- hnf W (inl A B Wl).
 hstep (elim_setSum C W Cl Cr) (Cr Wr) :- hnf W (inr A B Wr).
