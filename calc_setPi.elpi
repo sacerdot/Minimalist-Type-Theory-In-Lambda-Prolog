@@ -4,13 +4,13 @@ isType (setPi B C) set IE :-
     isType B set IE, 
     pi x\ of x B IE => isType (C x) set IE.
 
-of (lam B F) (setPi B C) IE :-
+of (lambda B F) (setPi B C) IE :-
         isType B set IE,
         pi x\ of x B IE => isa (F x) (C x) IE.
 
 of (app Lam X) (C X) IE :-
-        hnf Lam (lam B F), 
-        isa (lam B F) (setPi B C) IE,
+        hnf Lam (lambda B F), 
+        isa (lambda B F) (setPi B C) IE,
         isa X B IE. 
 
 
