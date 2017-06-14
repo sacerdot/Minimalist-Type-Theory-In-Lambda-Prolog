@@ -1,49 +1,30 @@
-
 % SINGLETON SET
 
-isType singleton set.
-
-of star singleton IE.
-
-of (elim_singleton T C CC) (C T) IE :- 
-    of T singleton IE,
-    of CC (C star) IE,
-    (pi z\ of z singleton IE => isType (C z) col).
-
-hstep (elim_singleton star C CC) CC :- 
-        of CC (C star) IE,
-        (pi z\ of z singleton IE => isType (C z) col ).
-
-dstep (elim_singleton T C CC) (elim_singleton T' C CC) :- dstep T T'.
-dstep (elim_singleton T C CC) (elim_singleton T C CC') :- dstep CC CC'.
-dstep (elim_singleton T C CC) (elim_singleton T C' CC) :- 
-        (pi z\ of z singleton IE => dstep (C z) (C' z)).
-
-sigm singleton singleton DIR.
-sigm W W DIR :- of W singleton int.
-
-%equ singleton X Y (propId(singleton, star star)) .
-%equ singleton (x \ y \ id singleton x y).
+accumulate calc_singleton.
 
 trad singleton singleton.
 trad star star.
 
-trad (elim_singleton T C CC) (elim_singleton T' C' CC') :-
- tau' singleton T T',
-% printW "1" T',
-% printW "1" T,
-% printW "1" C,
-% printW "1" CC,
- (pi xe \ pi xi \ 
-    trad xe xi => 
-    of xi singleton int => 
-    of xe singleton ext =>
-    ( 
-     trad (C xe) (C' xi),
-%     printW "2: " C',
-     tau' (C star) CC CC'
-    ) 
- ).
+
+sigm singleton singleton DIR.
+sigm W W DIR :- of W singleton int.
+
+equ singleton X Y (propId singleton X Y)  
+    :- isa X singleton int 
+     , isa Y singleton int.
+
+trad (elim_singleton T  C  Cc ) 
+     (elim_singleton T' C' Cc') 
+    :- tau' singleton T T',
+     (pi xe \ pi xi \ 
+        trad xe xi => 
+        of xi singleton int => 
+        of xe singleton ext =>
+        ( 
+         trad (C xe) (C' xi),
+         tau' (C star) CC CC'
+        ) 
+     ).
 
 tau singleton singleton star star.
 sigm DIR X X :- of X singleton int.
