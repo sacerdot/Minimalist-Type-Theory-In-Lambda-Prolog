@@ -46,7 +46,7 @@ trad (emp X A) (emp X' A')
                      => trad (A xe) (A' xi))
     .
 
-sigm Z Z :- of Z empty int.    
+sigm Z Z DIR :- of Z empty int.    
 
 equ empty X1 X2 (propId empty X1 X2).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -187,10 +187,11 @@ trad (elim_setSum C W Cl Cr) (elim_setSum TradC TradW TradCl TradCr) :-
         pi xi \ trad xe xi => 
             tau' (C (inr A B xe)) (Cr xe) (TradCr xi)).
 
-sigm X Y :- of X (setSum A B) int,
-    (pi a\ of a A int, sigm (Cl a) (Cl' a)),
-    (pi b\ of b B int, sigm (Cr b) (Cr' b)),
-    Y = elim_setSum (setSum A B) X Cl' Cr'.
+sigm X (elim_setSum (setSum A B) X Cl' Cr') DIR 
+    :- of X (setSum A B) int
+     , pi y\ of y A int => sigm y (Cl' y) DIR
+     , pi y\ of y B int => sigm y (Cr' y) DIR
+     .
 
 %TAU input Type    output Type   input     output
 tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
