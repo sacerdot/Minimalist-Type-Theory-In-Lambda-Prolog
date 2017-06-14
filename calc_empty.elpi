@@ -1,6 +1,6 @@
 %%-- calc_empty.elpi
 
-isType empty set.
+isType empty set IE.
 
 of (emp Z A) (A Z) IE 
    :- of Z empty IE
