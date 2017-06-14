@@ -193,8 +193,5 @@ sigm X (elim_setSum (setSum A B) X Cl' Cr') DIR
      , pi y\ of y B int => sigm y (Cr' y) DIR
      .
 
-%TAU input Type    output Type   input     output
-tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
-tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
-
-%%equ --     non sono sicuro di che cosa dica il teorema 4.20 
+tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) 
+    :- tau A1 A2 AA1 AA2, tau B1 B2 BB1 BB2.

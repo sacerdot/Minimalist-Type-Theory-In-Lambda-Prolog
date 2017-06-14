@@ -41,27 +41,3 @@ dstep (elim_setSum C W Cl Cr) (elim_setSum C' W Cl Cr) :-
 dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
 dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 
-
-%%% Interpretation
-
-trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
-trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, tau' A AA AAi.
-trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, tau' B BB BBi.
-
-trad (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
-    of W (setSum A B) ext,
-    tau' (setSum A B) W Wi,
-    (pi x\ of x (setSum A B) int => trad (C x) (Ci x) ),
-    (pi a\ of a A int => tau' (C (inl A B a)) (Cl a) (Cli a)),
-    (pi b\ of b B int => tau' (C (inl A B b)) (Cr b) (Cri b)).
-
-sigm X Y :- of X (setSum A B) int,
-    (pi a\ of a A int, sigm (Cl a) (Cl' a)),
-    (pi b\ of b B int, sigm (Cr b) (Cr' b)),
-    Y = elim_setSum (setSum A B) X Cl' Cr'.
-
-%TAU input Type    output Type   input     output
-tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
-tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
-
-%%equ --     non sono sicuro di che cosa dica il teorema 4.20 
