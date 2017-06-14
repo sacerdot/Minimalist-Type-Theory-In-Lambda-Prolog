@@ -3,8 +3,8 @@
 
 % [NOTAZIONI]
 %   X Xx indicano tipo ed elemento
-%
-% 
+%   of elemento tipo IE
+%   isType tipo Kind IE
 %
 %
 %
@@ -94,7 +94,7 @@ tau' TipoExt ElementoExt Output :-
 %accumulate calc_setPi.
 %accumulate calc_setSum.
 %accumulate calc_simpleProps.
-%accumulate calc_singleton.
+accumulate calc_singleton.
 %accumulate calc_empty.
 %accumulate united.
 

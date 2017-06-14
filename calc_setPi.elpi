@@ -1,17 +1,17 @@
 %%-- calc_setPi.elpi
 
-isType set (setPi B C) :-
-    isType set B, 
-    pi x\ of x B int => isType (C x) set.
+isType (setPi B C) set IE :-
+    isType B set IE, 
+    pi x\ of x B IE => isType (C x) set IE.
 
-of (lam B CC) (setPi B C) int :-
-        isType B int,
-        pi x\ of x B int => of (CC x) (C x) int.
+of (lam B F) (setPi B C) IE :-
+        isType B set IE,
+        pi x\ of x B IE => of (F x) (C x) IE.
 
-of (app Lam X) (C X) int :-
-        hnf Lam (lam B CC),
-        of (lam B CC) (setPi B C) int,
-        isa X B int. 
+of (app Lam X) (C X) IE :-
+        hnf Lam (lam B F),
+        of (lam B F) (setPi B C) IE,
+        isa X B IE. 
 
 
 hstep (app LAM BB) (CC BB) :- 
