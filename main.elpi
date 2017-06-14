@@ -94,9 +94,11 @@ tau' TipoExt ElementoExt Output :-
 %accumulate calc_setPi.
 %accumulate calc_setSum.
 %accumulate calc_simpleProps.
-accumulate calc_singleton.
+%accumulate calc_singleton.
 %accumulate calc_empty.
 %accumulate united.
+accumulate calc_int.
+accumulate calc_ext.
 
 
 

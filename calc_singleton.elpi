@@ -19,3 +19,6 @@ dstep (elim_singleton T C CC) (elim_singleton T C' CC) :-
         (pi z\ of z singleton IE => dstep (C z) (C' z)).
 
 
+
+        
+        
