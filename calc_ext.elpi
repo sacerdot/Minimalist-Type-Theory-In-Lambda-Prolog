@@ -46,7 +46,7 @@ trad (emp X A) (emp X' A')
                      => trad (A xe) (A' xi))
     .
 
-sigm Z Z :- of Z empty int.    
+sigm Z Z DIR :- of Z empty int.    
 
 equ empty X1 X2 (propId empty X1 X2).
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -84,14 +84,17 @@ trad
    (pi y \ equ (TradC y) (EQUC y)),
    (pi y1 \ pi y2 \ pi z \ sigma y1 y2 => sigm z (SIGMA z)).
 
-trad (lambda B F) (pair _ _ (lambda TradB TradF) P )
-   :- trad B TradB,
-      pi xe \ pi xi\ trad xe xi => trad (F xe) (TradF xi),
-      tau'
-      (of (lambda B F) 
-          (setPi B T_inferred_ext)
-           ext
-      ).
+trad (lambda B F) 
+     (pair XX1 XX2 
+        (lambda TradB TradF) 
+        (emp bottom XX3) )
+   :- trad B TradB
+    , pi xe\ pi xi\ trad xe xi => trad (F xe) (TradF xi)
+    .
+      % (of (lambda B F) 
+          % (setPi B T_inferred_ext)
+           % ext
+      % )
                
       % (pi xe \ pi xi \ trad xe xi => 
        % trad (F xe) (TradF xi),
@@ -162,67 +165,34 @@ trad (lambda B F) (pair _ _ (lambda TradB TradF) P )
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%-- calc_setSum.elpi
 
-%%Disjoint Sum Type
-
-isType (setSum A B) set :- isType A set, isType B set.
-
-of (inr A B BB) (setSum A B) int :- isType B set, isType A set, isa BB B int.
-
-of (inl A B AA) (setSum A B) int :- isType A set, isType B set, isa AA A int.
-
-of (elim_setSum C W Cl Cr) (CW) int :- 
-    of W (setSum A B) int,
-    (pi z\ of z (setSum A B) int => isType (C z) set),
-    (pi x\ of x A int => of (Cl x) (C (inr A B x)) int) ,
-    (pi y\ of y B int => of (Cr y) (C (inl A B y)) int) ,
-    CW = C W.
-
-hstep (elim_setSum C W Cl Cr) (Cl Wl) :- hnf W (inl A B Wl).
-hstep (elim_setSum C W Cl Cr) (Cr Wr) :- hnf W (inr A B Wr).
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C W' Cl Cr) :- dstep W W'.
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl' Cr) :- 
-    pi w\ of w (setSum A B) int => dstep (Cl w) (Cl' w).
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl Cr') :- 
-    pi w\ of w (setSum A B) int => dstep (Cr w) (Cr' w).  
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C' W Cl Cr) :- 
-    pi w\ of w (setSum A B) int => dstep (C w) (C' w).  
-
-
-dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
-dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
-
-
 %%% Interpretation
 
-trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
-trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, tau' A AA AAi.
-trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, tau' B BB BBi.
+trad (setSum A B) (setSum TradA TradB)  
+    :- trad A TradA, trad B TradB.
+trad (inl A B Aa) (inl TradA TradB TradAa_expected) 
+    :- trad A TradA, trad B TradB, tau' A Aa TradAa_expected.
+trad (inr A B Bb) (inr Ai Bi TradBb_expected) 
+    :- trad A TradA, trad B TradB, tau' B Bb TradB_expected.
 
-trad (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
+trad (elim_setSum C W Cl Cr) (elim_setSum TradC TradW TradCl TradCr) :- 
     of W (setSum A B) ext,
-    tau' (setSum A B) W Wi,
-    (pi x\ of x (setSum A B) int => trad (C x) (Ci x) ),
-    (pi a\ of a A int => tau' (C (inl A B a)) (Cl a) (Cli a)),
-    (pi b\ of b B int => tau' (C (inl A B b)) (Cr b) (Cri b)).
+    trad (setsum A B) A+B,
+    tau' (setSum A B) W TradW,
+    (pi xe\ of xe (setSum A B) ext
+        pi xi \ trad xe xi => trad (C xe) (TradC xi) ),
+    (pi xe\ of xe A ext
+        pi xi \ trad xe xi => 
+            tau' (C (inl A B xe)) (Cl xe) (TradCl xi)),
+    (pi xe\ of xe B ext
+        pi xi \ trad xe xi => 
+            tau' (C (inr A B xe)) (Cr xe) (TradCr xi)).
 
-sigm X Y :- of X (setSum A B) int,
-    (pi a\ of a A int, sigm (Cl a) (Cl' a)),
-    (pi b\ of b B int, sigm (Cr b) (Cr' b)),
-    Y = elim_setSum (setSum A B) X Cl' Cr'.
+sigm X (elim_setSum (setSum A B) X Cl' Cr') DIR 
+    :- of X (setSum A B) int
+     , (pi y\ of y A int => sigm y (Cl' y) DIR)
+     , (pi y\ of y B int => sigm y (Cr' y) DIR)
+     .
 
-%TAU input Type    output Type   input     output
-tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
-tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
+tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) 
+    :- tau A1 A2 AA1 AA2, tau B1 B2 BB1 BB2.
 
-%%equ --     non sono sicuro di che cosa dica il teorema 4.20 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
