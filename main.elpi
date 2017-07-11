@@ -28,7 +28,7 @@ test_library [Test | Tail] :- Test , test_library Tail.
 
 trad A B    :- announce (trad A B).
 tau A B C D :- announce (tau A B C D).
-tau' A B C  :- announce (tau' A B C).                          
+tau' A B C  :- announce (tau' A B C).
 hnf A B     :- announce (hnf A B).
 hstep A B   :- announce (hstep A B).
 dstep A B   :- announce (dstep A B).
@@ -66,43 +66,44 @@ isType A col :- isType A prop.
 isType A set :- isType A props.
 isType A prop :- isType A props.
 
-isa Term TY IE :- 
-    of Term TY' IE, 
+isa Term TY IE :-
+    of Term TY' IE,
     conv TY TY'.
 
 
 %Is this ever needed?
-%trad (of Aa AA ext) 
+%trad (of Aa AA ext)
 %     (of(tau A_inferred (TradAA) (TradAa) )
 %        (TradAA)
-%        int 
-%     ) :- 
-%     (trad AA TradAA), 
-%     (trad Aa TradAa), 
-%     of (TradAa) A_inferred int. 
+%        int
+%     ) :-
+%     (trad AA TradAA),
+%     (trad Aa TradAa),
+%     of (TradAa) A_inferred int.
 
 %tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
+
 tau' TipoExt ElementoExt Output :-
-    trad ElementoExt ElementoInt, 
+    trad ElementoExt ElementoInt,
     trad TipoExt TipoInt,
     of ElementoInt Ty int,
     tau Ty TipoInt ElementoInt Output.
+%
+ %accumulate calc_colSigma.
+ %accumulate calc_id.
+ %accumulate calc_nat.
+ %accumulate calc_setPi.
+ %accumulate calc_setSum.
+ %accumulate calc_simpleProps.
+ %accumulate calc_singleton.
+ %accumulate calc_empty.
+ %accumulate united.
+ accumulate calc_int.
+ accumulate calc_ext.
 
-%accumulate calc_colSigma.
-%accumulate calc_id.
-%accumulate calc_nat.
-%accumulate calc_setPi.
-%accumulate calc_setSum.
-%accumulate calc_simpleProps.
-%accumulate calc_singleton.
-%accumulate calc_empty.
-%accumulate united.
-accumulate calc_int.
-accumulate calc_ext.
 
 
-
-makeline "-" :- print 
+makeline "-" :- print
 "----------------------------------------------------------------------------\n".
 
 
