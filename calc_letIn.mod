@@ -18,4 +18,5 @@ hstep X N
 
 hstep (letIn (locDef X T M) N) N'
     :-  locDef X T M
-    =>  conv N N'.
+    =>  conv N N'
+    .

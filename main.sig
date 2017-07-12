@@ -1,24 +1,27 @@
-module main.
-hnf A B :- hstep A C, !, hnf C B.
-hnf A A.
-dstep A B :- hstep A B.
+sig main.
 
-isa Term TY IE :-
-    of Term TY' IE,
-    conv TY TY'.
+kind ie type.
 
-% contextual, transitive, reflexive normal form
-nf A B :- dstep A C, !, nf C B.               %nf A A :- printW "HO TROVATO UNA FORMA NORMALE: "  A.
-nf A A.
-conv A A .
-conv A B :- nf A C, nf B C.
+type int, ext ie.
 
-isType A col B  :- isType A set   B.
-isType A col B  :- isType A prop  B.
-isType A set B  :- isType A propS B.
-isType A prop B :- isType A propS B.
+
+kind sort type.
+
+type set, col, prop, propS sort.
+
+kind term  type.
+
+kind ty    type.
+
+
+type of, isa term -> ty -> ie -> o.
+type isType ty -> sort -> ie -> o.
+
+type nf,hstep,hnf, dstep, conv term -> term -> o.
+
 
 end
+
 
 % non contextual, non reflexive, maybe transitive closure
 % hstep A B

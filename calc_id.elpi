@@ -3,12 +3,12 @@
 
 %-- calc_id.elpi
 
-isType (propId A AA1 AA2) prop :- 
+isType (propId A AA1 AA2) prop IE :-
     isa AA1 A int,
     isa AA2 A int,
     isType A _.
 
-of (id A AA1) (propId A' AA2 AA3) int :-    
+of (id A AA1) (propId A' AA2 AA3) int :-
     of AA1 A'' int,
     conv A A'',
     (conv AA1 AA2),
@@ -36,11 +36,11 @@ dstep (propId A Aa Ab) (propId A Aa' Ab) :- dstep Aa Aa'.
 dstep (propId A Aa Ab) (propId A Aa Ab') :- dstep Ab Ab'.
 
 dstep (elim_id P C CC) (elim_id P' C CC) :- dstep P P'.
-dstep (elim_id P C CC) (elim_id P C' CC) :- 
+dstep (elim_id P C CC) (elim_id P C' CC) :-
     of P (propId A _ _) int,
     pi x\ pi y\ of x A int => of y A int => dstep (C x y) (C' x y).
 
-dstep (elim_id P C CC) (elim_id P C CC')  :- 
+dstep (elim_id P C CC) (elim_id P C CC')  :-
     of P (propId A _ _) int,
     pi x\ of x A int => dstep (CC x) (CC' x).
 
@@ -49,8 +49,8 @@ dstep (elim_id P C CC) (elim_id P C CC')  :-
 %   :- of P (propId A AA1 AA2) int
 %    , of Q (propId A' AA3 AA4) int
 %    , conv A A'
-%    , conv AA2 AA3 
-    
+%    , conv AA2 AA3
+
 
 
 
@@ -58,12 +58,12 @@ dstep (elim_id P C CC) (elim_id P C CC')  :-
 
 %%-- calc_id.elpi
 
-isType (propId A AA1 AA2) prop :- 
+isType (propId A AA1 AA2) prop :-
     isa AA1 A int,
     isa AA2 A int,
     isType A _.
 
-of (id A AA1) (propId A' AA2 AA3) int :-    
+of (id A AA1) (propId A' AA2 AA3) int :-
     of AA1 A'' int,
     conv A A'',
     (conv AA1 AA2),
@@ -91,11 +91,11 @@ dstep (propId A Aa Ab) (propId A Aa' Ab) :- dstep Aa Aa'.
 dstep (propId A Aa Ab) (propId A Aa Ab') :- dstep Ab Ab'.
 
 dstep (elim_id P C CC) (elim_id P' C CC) :- dstep P P'.
-dstep (elim_id P C CC) (elim_id P C' CC) :- 
+dstep (elim_id P C CC) (elim_id P C' CC) :-
     of P (propId A _ _) int,
     pi x\ pi y\ of x A int => of y A int => dstep (C x y) (C' x y).
 
-dstep (elim_id P C CC) (elim_id P C CC')  :- 
+dstep (elim_id P C CC) (elim_id P C CC')  :-
     of P (propId A _ _) int,
     pi x\ of x A int => dstep (CC x) (CC' x).
 
@@ -104,8 +104,8 @@ dstep (elim_id P C CC) (elim_id P C CC')  :-
 %   :- of P (propId A AA1 AA2) int
 %    , of Q (propId A' AA3 AA4) int
 %    , conv A A'
-%    , conv AA2 AA3 
-    
+%    , conv AA2 AA3
+
 
 */
 

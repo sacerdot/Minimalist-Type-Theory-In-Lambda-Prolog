@@ -59,7 +59,7 @@ of X T IE :- locDef X T M.
 hstep (letIn (locDef X T M) N) N'
     :-  locDef X T M
     =>  conv N' N.
-    
+
 
 
 
