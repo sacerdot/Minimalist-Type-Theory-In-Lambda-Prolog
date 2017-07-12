@@ -1,24 +1,5 @@
 module main.
-hnf A B :- hstep A C, !, hnf C B.
-hnf A A.
-dstep A B :- hstep A B.
 
-isa Term TY IE :-
-    of Term TY' IE,
-    conv TY TY'.
-
-% contextual, transitive, reflexive normal form
-nf A B :- dstep A C, !, nf C B.               %nf A A :- printW "HO TROVATO UNA FORMA NORMALE: "  A.
-nf A A.
-conv A A .
-conv A B :- nf A C, nf B C.
-
-isType A col B  :- isType A set   B.
-isType A col B  :- isType A prop  B.
-isType A set B  :- isType A propS B.
-isType A prop B :- isType A propS B.
-
-end
 
 % non contextual, non reflexive, maybe transitive closure
 % hstep A B
