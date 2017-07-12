@@ -1,4 +1,20 @@
 
+bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
+announce G :- bracket ">>" G "\n", fail.
+spy G :- (bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n";
+          bracket "]--]Leaving  " G "\n",  fail).
+
+printt A :- term_to_string A S, print S.
+printW S A :- print S, printt A, print "\n".
+
+load_library [] GOAL :- GOAL.
+load_library [ddd NAME BODY | TAIL ] GOAL :-
+ of BODY TYPE int,
+ defs NAME BODY TYPE => load_library TAIL GOAL.
+
+test_library [].
+test_library [Test | Tail] :- Test , test_library Tail.
+
 
 trad A B    :- announce (trad A B).
 tau A B C D :- announce (tau A B C D).
@@ -23,10 +39,7 @@ conv A B :- announce ( conv A B).
 testB A :- announce (testB A).
 hstep A B :- announce (hstep A B).
 
-hstep X N
-    :-  locDef X T M
-    ,   conv M N
-    .
+
 
 testB X
     :-  (locDef X singleton star) => nf (elim_singleton star (x\ singleton) star) X.
