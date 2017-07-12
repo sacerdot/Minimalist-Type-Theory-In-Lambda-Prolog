@@ -1,15 +1,6 @@
 %%-- main.elpi
 
 
-% [NOTAZIONI]
-%   X Xx indicano tipo ed elemento
-%   of elemento tipo IE
-%   isType tipo Kind IE
-%
-%
-%
-%
-
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
 spy G :- (bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n";
@@ -25,23 +16,6 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
 
 test_library [].
 test_library [Test | Tail] :- Test , test_library Tail.
-
-trad A B    :- announce (trad A B).
-tau A B C D :- announce (tau A B C D).
-tau' A B C  :- announce (tau' A B C).
-hnf A B     :- announce (hnf A B).
-hstep A B   :- announce (hstep A B).
-dstep A B   :- announce (dstep A B).
-nf A B      :- announce (nf A B).
-conv A B    :- announce (conv A B).
-of A B IE   :- announce (of A B IE).
-
-isType A K  :- announce (isType A K).
-isa BB B IE :- announce (isa BB B IE).
-conv A B    :- announce (conv A B).
-sigm A B D  :- announce (sigm A B D).
-equ T A B O :- announce (equ T A B O).
-macro A B   :- announce (macro A B).
 
 
 % non contextual, non reflexive, maybe transitive closure
@@ -70,6 +44,16 @@ isa Term TY IE :-
     of Term TY' IE,
     conv TY TY'.
 
+%tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
+
+tau' TipoExt ElementoExt Output :-
+    trad ElementoExt ElementoInt,
+    trad TipoExt TipoInt,
+    of ElementoInt Ty int,
+    tau Ty TipoInt ElementoInt Output.
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %Is this ever needed?
 %trad (of Aa AA ext)
@@ -81,66 +65,10 @@ isa Term TY IE :-
 %     (trad Aa TradAa),
 %     of (TradAa) A_inferred int.
 
-%tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
 
-tau' TipoExt ElementoExt Output :-
-    trad ElementoExt ElementoInt,
-    trad TipoExt TipoInt,
-    of ElementoInt Ty int,
-    tau Ty TipoInt ElementoInt Output.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+% [NOTAZIONI]
+%   X Xx indicano tipo ed elemento
+%   of elemento tipo IE
+%   isType tipo Kind IE
+%
 
