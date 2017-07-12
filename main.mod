@@ -61,10 +61,10 @@ conv A A :- ! .
 conv A B :- nf A C, nf B C.
 
 
-isType A col :- isType A set.
-isType A col :- isType A prop.
-isType A set :- isType A props.
-isType A prop :- isType A props.
+isType A col B  :- isType A set   B.
+isType A col B  :- isType A prop  B.
+isType A set B  :- isType A props B.
+isType A prop B :- isType A props B.
 
 isa Term TY IE :-
     of Term TY' IE,
@@ -88,23 +88,6 @@ tau' TipoExt ElementoExt Output :-
     trad TipoExt TipoInt,
     of ElementoInt Ty int,
     tau Ty TipoInt ElementoInt Output.
-%
- %accumulate calc_colSigma.
- %accumulate calc_id.
- %accumulate calc_nat.
- %accumulate calc_setPi.
- %accumulate calc_setSum.
- %accumulate calc_simpleProps.
- %accumulate calc_singleton.
- %accumulate calc_empty.
- %accumulate united.
- accumulate calc_int.
- accumulate calc_ext.
-
-
-
-makeline "-" :- print
-"----------------------------------------------------------------------------\n".
 
 
 

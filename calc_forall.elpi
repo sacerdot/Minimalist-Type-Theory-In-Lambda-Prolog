@@ -1,0 +1,50 @@
+
+%%%forall
+
+isType  (forall B C) prop :- 
+    isType B col,
+    (pi x\ of x B int => isType (C x) prop).
+
+isType  (forall B C) props :- 
+    isType B set,
+    (pi x\ of x B int => isType (C x) props).
+
+of (lam_for B CC) (forall B C) int :- 
+        isType B prop,
+        (pi x\ of x B int => of (CC x) (C x) int)
+        (pi x\ of x B int => isType  (C x) prop).
+
+of (app_for F BB) (C BB) int :- 
+        hnf F (lam_for B CC),
+        isa BB B int,
+        (pi x\ of x B int => of (CC x) (C x) int).
+
+hstep (app_for F BB) (CC BB) :-
+        hnf F (lam_for B CC),
+        isa BB B int,
+        (pi x\ of x B int => of (CC x) (C x) int).
+        
+dstep (app_for F BB) (app_for F' BB') :- dstep F F'.
+dstep (app_for F BB) (app_for F' BB') :- dstep BB BB'. 
+
+dstep (lam_for B CC) (lam_for B' CC') :- dstep B B'.
+dstep (lam_for B CC) (lam_for B' CC') :- 
+        pi x\ of x B int => dstep (CC x) (CC' x).
+
+
+
+dstep (forall A B) (forall A' B) :- dstep A A'.
+dstep (forall A B) (forall A B') :- 
+    pi x\ of x A int => dstep (B x) (B' x).
+
+%---------------------------------%
+
+of true (forall B C) ext :- 
+    (pi x\ of x B ext => of true (C x) ext),
+    (pi x\ of x B ext => isType (C x) prop).
+
+% Credo non ci sia modo di non far divergere questa regola 
+%of true (C BB) ext :-
+%    of BB B ext,
+%    of true (forall B C) ext.
+%    
