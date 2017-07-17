@@ -1,4 +1,0 @@
-main.lpo: main.mod main.sig lists.sig
-lists.lpo: lists.mod lists.sig 
-main.lp: main.lpo lists.lpo
-lists.lp: lists.lpo 
