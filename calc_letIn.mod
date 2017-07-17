@@ -3,7 +3,7 @@
 
 %letIn lDef N
 
-of (letIn (locDef X T M) N) T' IE
+of (letIn (locDef T M) N) T' IE
     :-  locDef X T M
     =>  of N T' IE
     .
@@ -20,3 +20,5 @@ hstep (letIn (locDef X T M) N) N'
     :-  locDef X T M
     =>  conv N N'
     .
+
+letIn (locDef T M) N %con N di tipo funzione

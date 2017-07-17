@@ -15,11 +15,7 @@ of (eqTrue C Cc) (propEq C Cc Cc) ext
     :-  of Cc C ext
     .
 
-%dstep Cc1 Cc2 :- equJ Cc1 Cc2.
 
+conv A B :- of _ (propEq _ A B).
 
-equJ Cc1 Cc2
-    :-  locDef H (propEq C Cc1 Cc2) M
-    ,   of H (propEq C Cc1 Cc2) ext
-    .
-
+conv A B :- locDef _ (propEq _ A B) _.
