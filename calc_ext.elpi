@@ -171,8 +171,8 @@ trad (setSum A B) (setSum TradA TradB)
     :- trad A TradA, trad B TradB.
 trad (inl A B Aa) (inl TradA TradB TradAa_expected) 
     :- trad A TradA, trad B TradB, tau' A Aa TradAa_expected.
-trad (inr A B Bb) (inr Ai Bi TradBb_expected) 
-    :- trad A TradA, trad B TradB, tau' B Bb TradB_expected.
+trad (inr A B Bb) (inr TradA TradB TradBb_expected) 
+    :- trad A TradA, trad B TradB, tau' B Bb TradBb_expected.
 
 trad (elim_setSum C W Cl Cr) (elim_setSum TradC TradW TradCl TradCr) :- 
     of W (setSum A B) ext,

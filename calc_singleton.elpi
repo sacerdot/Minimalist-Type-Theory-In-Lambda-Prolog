@@ -23,3 +23,5 @@ dstep (elim_singleton T C CC) (elim_singleton T C' CC) :-
 
 
 
+
+

@@ -19,7 +19,7 @@ nf A A.
 conv A A :- ! .
 conv A B :- nf A C, nf B C.
 
-isType A col B  :- isType A set   B.
+isType A col IE  :- isType A set  IE.
 isType A col B  :- isType A prop  B.
 isType A set B  :- isType A props B.
 isType A prop B :- isType A props B.
@@ -36,6 +36,11 @@ tau' TipoExt ElementoExt Output :-
     of ElementoInt Ty int,
     tau Ty TipoInt ElementoInt Output.
 
+end
+
+isType A Sort IE
+of X A IE
+locDef X A M IE
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
