@@ -36,11 +36,10 @@ tau' TipoExt ElementoExt Output :-
     of ElementoInt Ty int,
     tau Ty TipoInt ElementoInt Output.
 
-end
 
-isType A Sort IE
-of X A IE
-locDef X A M IE
+%isType A Sort IE
+%of X A IE
+%locDef X A M IE
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
