@@ -1,28 +1,28 @@
-module main.
 
 
-% non contextual, non reflexive, maybe transitive closure
-% hstep A B
+%-- non contextual, non reflexive, maybe transitive closure
+%-- hstep A B
 
 hstep X N :- locDef X T M , conv M N.
-% non contextual, transitive, reflexive normal form
 
+%---- non contextual, transitive, reflexive normal form
 hnf A B :- hstep A C, !, hnf C B.
 hnf A A.
-% contextual, non reflexive, maybe transitive closure
+
+%---- contextual, non reflexive, maybe transitive closure
 
 dstep A B :- hstep A B.
 
-% contextual, transitive, reflexive normal form
+%---- contextual, transitive, reflexive normal form
 nf A B :- dstep A C, !, nf C B.               %nf A A :- printW "HO TROVATO UNA FORMA NORMALE: "  A.
 nf A A.
 conv A A :- ! .
 conv A B :- nf A C, nf B C.
 
-isType A col IE  :- isType A set  IE.
-isType A col B  :- isType A prop  B.
-isType A set B  :- isType A props B.
-isType A prop B :- isType A props B.
+isType A col IE  :- isType A set   IE.
+isType A col IE  :- isType A prop  IE.
+isType A set IE  :- isType A props IE.
+isType A prop IE :- isType A props IE.
 
 isa Term TY IE :-
     of Term TY' IE,

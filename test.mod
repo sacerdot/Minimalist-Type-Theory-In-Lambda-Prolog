@@ -65,15 +65,27 @@ hstep (letIn (locDef X T M) N) N'
 testExt
     :-  Dom = singleton
     ,   println Dom
-    ,   Long =  (
+    ,   Long = (
         forall Dom x\
          forall Dom y\
           forall (propEq Dom x x) l\
-           forall (propEq Dom y y) f\
+           forall (setPi (propEq Dom y y) z\ Dom) f\
             implies (propEq Dom x y) (propEq Dom (apply f l) (apply f l))
             )
     ,   println Long
     ,   isType Long prop ext
+    .
+
+
+testshort Q :-
+        Dom = singleton
+    ,   Short = (
+         forall Dom y\
+          forall singleton l\
+           forall (setPi singleton z\Dom) f\
+            (propEq Dom (apply f l) (apply f l))
+            )
+    ,   isType Short Q ext
     .
 
 
@@ -84,7 +96,7 @@ isType (forall B C) prop ext :-
     .
 
 isType (implies B C) prop ext :-
-        println "--implies-----"
+        println "--implies-----\n\n\n\n\n\n\n"
     ,   isType B prop ext
     ,   isType C prop ext
     .
@@ -102,53 +114,8 @@ isType singleton set ext.
 isType A col ext :- isType A set ext.
 isType A set ext :- isType A prop ext.
 
-of (apply F X) (CX) ext :-
-        of X B ext
-    ,   print "------------\n--- printing the type of the domain of f: ", println (of X B ext)
-    ,   spy (of F (setPi B C) ext)
-    ,   print "------------\n--- printing the type of the codomain of f: ", println (of F (setPi B C))
-    ,   print "------------\n--- printing the type of f: ", println F
-    ,   CX = C X
-    .
+accumulate calc_Eq.
 
-of (lambda B F) (setPi B C) ext :-
-        print "---------of-lambdas-", println (of (lambda B F) (setPi B C) ext)
-    ,   isType B set ext
-    ,   spy (pi x\ of x B ext => of (F x) (C x) ext)
-    ,   spy (pi x\ of x B ext => isType (C x) set ext)
-    .
-
-testshort Q :-
-        Dom = singleton
-    ,   Short = (
-         forall Dom y\
-          forall singleton l\
-           forall (setPi singleton z\Dom) f\
-            (propEq Dom (apply f l) (apply f l))
-            )
-    ,   isType Short Q ext
-    .
-
-
-
-isType (propEq A AA1 AA2) propS ext :-
-    isa AA1 A ext,
-    isa AA2 A ext,
-    isType A set ext.
-
-isType (propEq A AA1 AA2) prop ext :-
-    isa AA1 A ext,
-    isa AA2 A ext,
-    isType A col ext.
-
-
-of (eqTrue C Cc) (propEq C Cc Cc) ext
-    :-  of Cc C ext
-    .
-
-
-conv A B :- of _ (propEq _ A B).
-
-conv A B :- locDef _ (propEq _ A B) _ .
+accumulate calc_setPi.
 
 
