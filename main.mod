@@ -3,7 +3,7 @@
 %-- non contextual, non reflexive, maybe transitive closure
 %-- hstep A B
 
-hstep X N :- locDef X T M , conv M N.
+%hstep X N :- locDef X T M , conv M N.
 
 %---- non contextual, transitive, reflexive normal form
 hnf A B :- hstep A C, !, hnf C B.
@@ -18,6 +18,9 @@ nf A B :- dstep A C, !, nf C B.               %nf A A :- printW "HO TROVATO UNA 
 nf A A.
 conv A A :- ! .
 conv A B :- nf A C, nf B C.
+
+%conv2 left A B :- dstep A A', conv2 right A' B.
+%conv2 right A B :- dstep B B', conv2 left A B'.
 
 isType A col IE  :- isType A set   IE.
 isType A col IE  :- isType A prop  IE.
@@ -40,6 +43,8 @@ tau' TipoExt ElementoExt Output :-
 %isType A Sort IE
 %of X A IE
 %locDef X A M IE
+
+of X Y IE :- locDecl X Y.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

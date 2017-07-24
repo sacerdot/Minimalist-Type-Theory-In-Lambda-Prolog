@@ -2,11 +2,11 @@
 
 isType (setPi B C) set IE :-
     isType B set IE, 
-    pi x\ of x B IE => isType (C x) set IE.
+    pi x\ locDecl x B => isType (C x) set IE.
 
 of (lambda B F) (setPi B C) IE :-
-        isType B set IE,
-        pi x\ of x B IE => isa (F x) (C x) IE.
+        spy (isType B set IE),
+        spy (pi x\ locDecl x B => isa (F x) (C x) IE).
 
 of (app Lam X) (C X) IE :-
         hnf Lam (lambda B F), 
@@ -18,13 +18,13 @@ hstep (app LAM Bb) (F Bb) :-
         hnf LAM (lambda B F),
         isType B set IE,
         isa Bb B IE,
-        (pi x\ of x B IE => isa (F x) (C x) IE ),
-        (pi x\ of x B IE => isType (C x) set IE ).
+        (pi x\ locDecl x B => isa (F x) (C x) IE ),
+        (pi x\ locDecl x B => isType (C x) set IE ).
 
 dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
 
 dstep (lambda B F1) (lambda B F2) :- 
-        pi b\ of b B int => dstep (F1 b) (F2 b).
+        pi b\ locDecl b B => dstep (F1 b) (F2 b).
 
 dstep (app L X1) (app L X2) :- dstep X1 X2.
 dstep (app L1 X) (app L2 X) :- dstep L1 L2.

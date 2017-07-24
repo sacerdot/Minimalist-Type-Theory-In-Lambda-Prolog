@@ -12,11 +12,13 @@ isType (propEq A AA1 AA2) prop ext :-
     isType A col ext.
 
 
-of (eqTrue C Cc) (propEq C Cc Cc) ext
+of (eqId C Cc) (propEq C Cc Cc) ext
     :-  of Cc C ext
     .
 
+of A B :- announce (of A B).
+dstep A B   :- announce (dstep A B).
 
-conv A B :- of _ (propEq _ A B).
+dstep A B :- locDecl _ (propEq _ A B).
 
-conv A B :- locDef _ (propEq _ A B) _ .
+dstep A B :- locDef _ (propEq _ A B) _ .

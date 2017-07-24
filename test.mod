@@ -1,4 +1,6 @@
 
+
+
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
 spy G :- bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n".
@@ -16,7 +18,7 @@ load_library [ddd NAME BODY | TAIL ] GOAL :-
 test_library [].
 test_library [Test | Tail] :- Test , test_library Tail.
 
-
+/*
 trad A B    :- announce (trad A B).
 tau A B C D :- announce (tau A B C D).
 tau' A B C  :- announce (tau' A B C).
@@ -34,32 +36,62 @@ equ T A B O :- announce (equ T A B O).
 macro A B   :- announce (macro A B).
 
 
+of A B :- announce (of A B).
+
 nf A B :- announce (nf A B).
 hstep A B :- announce (hstep A B).
 conv A B :- announce ( conv A B).
 testB A :- announce (testB A).
 hstep A B :- announce (hstep A B).
-
-
-
-testB X :- (locDef X singleton star) => nf (elim_singleton star (x\ singleton) star) X.
+*/
 
 
 
 
-of (letIn (locDef X T M) N) T' IE
-    :-  locDef X T M
-    =>  of N T' IE
+
+isType (forall B C) prop ext :-
+        println "--forall------"
+    ,   (pi x\ locDecl x B => isType (C x) prop ext)
     .
 
-of X T IE :- locDef X T M.
+isType (implies B C) prop ext :-
+        println "--implies-----\n\n\n\n\n\n\n"
+    ,   isType B prop ext
+    ,   isType C prop ext
+    .
+
+isType (propEq TypeC C1 C2) prop ext:-
+        println "--propEq------"
+    ,   isType TypeC col ext
+    ,   print "-.-.-.-." , println TypeC
+    ,   spy (of C1 TypeC ext)
+    ,   println "--first-spy-done"
+    ,   spy (of C2 TypeC ext)
+    .
 
 
 
-hstep (letIn (locDef X T M) N) N'
-    :-  locDef X T M
-    =>  conv N' N.
 
+accumulate calc_Eq.
+
+accumulate calc_setPi.
+
+accumulate calc_singleton.
+
+accumulate main.
+
+testC
+    :-  Long = (
+        forall singleton x\
+         forall singleton y\
+          forall (propEq singleton x star) l\
+           forall (setPi (propEq singleton y star) z\ singleton) f\
+            forall (propEq singleton x y) h\
+                (propEq singleton (apply f l) star)
+            )
+    ,   println Long
+    ,   isType Long prop ext
+    .
 
 
 testExt
@@ -88,34 +120,7 @@ testshort Q :-
     ,   isType Short Q ext
     .
 
-
-
-isType (forall B C) prop ext :-
-        println "--forall------"
-    ,   (pi x\ of x B ext => isType (C x) prop ext)
-    .
-
-isType (implies B C) prop ext :-
-        println "--implies-----\n\n\n\n\n\n\n"
-    ,   isType B prop ext
-    ,   isType C prop ext
-    .
-
-isType (propEq TypeC C1 C2) prop ext:-
-        println "--propEq------"
-    ,   isType TypeC col ext
-    ,   print "-.-.-.-." , println TypeC
-    ,   spy (of C1 TypeC ext)
-    ,   println "--first-spy-done"
-    ,   spy (of C2 TypeC ext)
-    .
-
-isType singleton set ext.
-isType A col ext :- isType A set ext.
-isType A set ext :- isType A prop ext.
-
-accumulate calc_Eq.
-
-accumulate calc_setPi.
+test sostituzione_diretta :- locDecl h (propEq singleton qwe star) => dstep qwe A.
+test sostituzione_indiretta :- (dstep a b :- locDef _ (propEq _ a b) _ ) .
 
 
