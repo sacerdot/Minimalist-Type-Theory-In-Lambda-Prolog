@@ -6,14 +6,14 @@ announce G :- bracket ">>" G "\n", fail.
 spy G :- bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n".
 spy G :- not G, bracket "]--]Leaving  " G "\n",  fail.
 
-printt A :- term_to_string A S, print S.
-println A :- printt A, print "\n".
+printt A :- printterm std_out A.
+println A :- printt A, print"\n".
 printW S A :- print S, printt A, print "\n".
 
-load_library [] GOAL :- GOAL.
-load_library [ddd NAME BODY | TAIL ] GOAL :-
- of BODY TYPE int,
- defs NAME BODY TYPE => load_library TAIL GOAL.
+%load_library [] GOAL :- GOAL.
+%load_library [ddd NAME BODY | TAIL ] GOAL :-
+% of BODY TYPE int,
+% defs NAME BODY TYPE => load_library TAIL GOAL.
 
 test_library [].
 test_library [Test | Tail] :- Test , test_library Tail.
@@ -36,7 +36,7 @@ equ T A B O :- announce (equ T A B O).
 macro A B   :- announce (macro A B).
 
 
-of A B :- announce (of A B).
+of A B IE :- announce (of A B IE).
 
 nf A B :- announce (nf A B).
 hstep A B :- announce (hstep A B).
@@ -49,34 +49,13 @@ hstep A B :- announce (hstep A B).
 
 
 
-isType (forall B C) prop ext :-
-        println "--forall------"
-    ,   (pi x\ locDecl x B => isType (C x) prop ext)
-    .
-
-isType (implies B C) prop ext :-
-        println "--implies-----\n\n\n\n\n\n\n"
-    ,   isType B prop ext
-    ,   isType C prop ext
-    .
-
-isType (propEq TypeC C1 C2) prop ext:-
-        println "--propEq------"
-    ,   isType TypeC col ext
-    ,   print "-.-.-.-." , println TypeC
-    ,   spy (of C1 TypeC ext)
-    ,   println "--first-spy-done"
-    ,   spy (of C2 TypeC ext)
-    .
 
 
+accumulate calc/Eq.
 
+accumulate calc/setPi.
 
-accumulate calc_Eq.
-
-accumulate calc_setPi.
-
-accumulate calc_singleton.
+accumulate calc/singleton.
 
 accumulate main.
 
@@ -122,5 +101,8 @@ testshort Q :-
 
 test sostituzione_diretta :- locDecl h (propEq singleton qwe star) => dstep qwe A.
 test sostituzione_indiretta :- (dstep a b :- locDef _ (propEq _ a b) _ ) .
+
+spy_depth N :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
+spy_add [0|LL] :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
 
 

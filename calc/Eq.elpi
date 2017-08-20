@@ -1,7 +1,10 @@
 %% calc_Eq.elpi
 
 
-isType (propEq A AA1 AA2) propS ext :-
+type propEq mttType -> mttTerm -> mttTerm -> mttType.
+type eqId   mttType -> mttTerm -> mttTerm.
+
+isType (propEq A AA1 AA2) props ext :-
     isa AA1 A ext,
     isa AA2 A ext,
     isType A set ext.
@@ -16,7 +19,7 @@ of (eqId C Cc) (propEq C Cc Cc) ext
     :-  of Cc C ext
     .
 
-of A B :- announce (of A B).
+of A B IE :- announce (of A B IE).
 dstep A B   :- announce (dstep A B).
 
 dstep A B :- locDecl _ (propEq _ A B).

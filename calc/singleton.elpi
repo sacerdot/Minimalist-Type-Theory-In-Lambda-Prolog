@@ -2,6 +2,10 @@
 
 %ofType star singleton set IE.
 
+type  singleton mttType.
+type  star mttTerm.
+type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm.
+
 isType singleton set IE.
 
 of star singleton IE.
