@@ -33,7 +33,7 @@ isa Term TY IE :-
     conv TY TY'.
 
 
-of X Y IE :- locDecl X Y.
+of X Y IE :- locDecl X Y .
 
 type locDef  mttTerm -> mttType -> mttTerm -> prop.
 type locDecl  mttTerm -> mttType -> prop.
