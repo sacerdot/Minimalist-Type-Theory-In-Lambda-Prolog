@@ -11,7 +11,7 @@ isType singleton set IE.
 of star singleton IE.
 
 of (elim_singleton Star C Cc) (C Star) IE :-
-    of Star singleton IE,
+    of Star singleton IE,p
     of Cc (C star) IE,
     (pi z\ locDecl z singleton => isType (C z) col IE).
 
