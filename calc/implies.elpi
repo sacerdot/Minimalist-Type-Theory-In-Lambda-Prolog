@@ -4,7 +4,7 @@ isType (implies B C) KIND IE :-
     isType B KIND IE, 
     pi x\ locDecl x B KIND IE => isType (C x) KIND IE.
 
-of (lambda B F) (setPi B C) IE :-
+of (lambda-impl B F) (implies B C) IE :-
         spy (isType B set IE),
         spy (pi x\ locDecl x B => isa (F x) (C x) IE).
 

@@ -1,0 +1,13 @@
+loc_decl var type    | loc_var_decl var type ie
+                     | loc_type_decl type kind ie
+
+find_kind type kind ie
+    ---- find_kind type kind ie :- loc_type_decl type kind ie
+    ---- find_kind (A+B) Kind ie :- find_kind A Kind ie,find_kind B Kind ie,
+    ---- find_kind (colSigma B C) Kind IE :- 
+                find_kind B Kind1 IE, 
+                (pi x\ 
+                    ( loc_var_decl x B
+                    , loc_type_decl B Kind1 
+                        => find_kind (C x) Kind2
+                    )
