@@ -1,8 +1,8 @@
-%%-- calc_setPi.elpi
+%%-- implies.elpi
 
-isType (setPi B C) set IE :-
-    isType B set IE, 
-    pi x\ locDecl x B => isType (C x) set IE.
+isType (implies B C) KIND IE :-
+    isType B KIND IE, 
+    pi x\ locDecl x B KIND IE => isType (C x) KIND IE.
 
 of (lambda B F) (setPi B C) IE :-
         spy (isType B set IE),

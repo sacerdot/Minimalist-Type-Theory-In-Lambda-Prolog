@@ -26,6 +26,8 @@ isType A col IE  :- isType A prop  IE.
 isType A set IE  :- isType A props IE.
 isType A prop IE :- isType A props IE.
 
+isType A KIND IE :- locDecl _ A KIND IE.
+
 type of, isa mttTerm -> mttType -> mttLevel -> prop.
 
 isa Term TY IE :-
