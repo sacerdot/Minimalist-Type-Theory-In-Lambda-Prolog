@@ -12,4 +12,6 @@ find_kind type kind ie
                         => find_kind (C x) Kind2
                     )
 
-Separare il predicato che dichiara le appartenenze loc_type_decl/loc_var_decl da i predicati usati per calcolare i tipi e i kind di termini e tipi
+Separare il predicato che dichiara le appartenenze loc_type_decl/loc_var_decl da i predicati usati per calcolare i tipi e i kind di termini e tipi.
+
+tuttavia il predicato per "calcolare" e il predicato per "controllare" i tipi dovrebbero coincidere

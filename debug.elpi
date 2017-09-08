@@ -1,0 +1,48 @@
+
+
+
+bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
+announce G :- bracket ">>" G "\n", fail.
+spy G :- bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n".
+spy G :- not G, bracket "]--]Leaving  " G "\n",  fail.
+
+printt A :- printterm std_out A.
+println A :- printt A, print"\n".
+printW S A :- print S, printt A, print "\n".
+
+%load_library [] GOAL :- GOAL.
+%load_library [ddd NAME BODY | TAIL ] GOAL :-
+% of BODY TYPE int,
+% defs NAME BODY TYPE => load_library TAIL GOAL.
+
+test_library [].
+test_library [Test | Tail] :- Test , test_library Tail.
+
+/*
+trad A B    :- announce (trad A B).
+tau A B C D :- announce (tau A B C D).
+tau' A B C  :- announce (tau' A B C).
+hnf A B     :- announce (hnf A B).
+hstep A B   :- announce (hstep A B).
+dstep A B   :- announce (dstep A B).
+nf A B      :- announce (nf A B).
+conv A B    :- announce (conv A B).
+of A B IE   :- announce (of A B IE).
+
+isType A K IE :- announce (isType A K IE).
+isa BB B IE :- announce (isa BB B IE).
+sigm A B D  :- announce (sigm A B D).
+equ T A B O :- announce (equ T A B O).
+macro A B   :- announce (macro A B).
+
+
+of A B IE :- announce (of A B IE).
+
+nf A B :- announce (nf A B).
+hstep A B :- announce (hstep A B).
+conv A B :- announce ( conv A B).
+testB A :- announce (testB A).
+hstep A B :- announce (hstep A B).
+*/
+
+
