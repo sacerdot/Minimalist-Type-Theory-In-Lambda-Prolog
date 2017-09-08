@@ -17,7 +17,7 @@ conv A A :- ! .
 conv A B :- nf A C, nf B C.
 
 kind mttTerm, mttType, mttKind, mttLevel type.
-type ext, int              mttLevel.
+type ext, int              mttLevel. 
 type col, set, prop, props mttKind.
 type isType  mttType -> mttKind -> mttLevel -> prop.
 
