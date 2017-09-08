@@ -11,3 +11,5 @@ find_kind type kind ie
                     , loc_type_decl B Kind1 
                         => find_kind (C x) Kind2
                     )
+
+Separare il predicato che dichiara le appartenenze loc_type_decl/loc_var_decl da i predicati usati per calcolare i tipi e i kind di termini e tipi
