@@ -15,8 +15,8 @@ printW S A :- print S, printt A, print "\n".
 % of BODY TYPE int,
 % defs NAME BODY TYPE => load_library TAIL GOAL.
 
-test_library [].
-test_library [Test | Tail] :- Test , test_library Tail.
+%test_library [].
+%test_library [Test | Tail] :- Test , test_library Tail.
 
 /*
 trad A B    :- announce (trad A B).

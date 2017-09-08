@@ -2,7 +2,6 @@ accumulate debug.
 
 
 
-
 accumulate calc/Eq.
 
 accumulate calc/setPi.
@@ -56,5 +55,4 @@ test sostituzione_indiretta :- (dstep a b :- locDef _ (propEq _ a b) _ ) .
 
 spy_depth N :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
 spy_add [0|LL] :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
-
 
