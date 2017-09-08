@@ -17,7 +17,7 @@ testC
          forall singleton y\
           forall (propEq singleton x star) l\
            forall (setPi (propEq singleton y star) z\ singleton) f\
-            forall (propEq singleton x y) h\
+            implies (propEq singleton x y)
                 (propEq singleton (apply f l) star)
             )
     ,   println Long
