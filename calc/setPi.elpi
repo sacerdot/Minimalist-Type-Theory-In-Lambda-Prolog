@@ -4,6 +4,7 @@ type setPi mttTerm -> (mttTerm -> mttType) -> mttType.
 type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type app mttTerm -> mttTerm -> mttTerm.
 
+
 isType (setPi B C) set IE :-
     isType B set IE, 
     pi x\ locDecl x B => isType (C x) set IE.
