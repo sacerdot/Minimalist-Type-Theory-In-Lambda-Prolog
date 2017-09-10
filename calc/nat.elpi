@@ -8,9 +8,9 @@ dstep (nrec T F K A1) (nrec T F K A2) :- dstep A1 A2.
 dstep (nrec T F K1 A) (nrec T F K2 A) :- dstep K1 K2.
 dstep (nrec T F1 K A) (nrec T F2 K A) :-
     pi x \ of int x nat =>
-     pi y \ of int y (T x) =>
+        pi y \ of int y (T x) =>
             dstep (F1 x y) (F2 x y).
-
+            
 dstep (succ E) (succ Q) :- bnf E Q.
 
 isType set nat.
