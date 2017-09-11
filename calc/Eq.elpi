@@ -19,6 +19,6 @@ of (eqId C Cc) (propEq C Cc Cc) ext
     :-  of Cc C ext
     .
 
-dstep A B :- locDecl _ (propEq _ A B).
+dstep A B :- of _ (propEq _ A B) ext.
 
 dstep A B :- locDef _ (propEq _ A B) _ .
