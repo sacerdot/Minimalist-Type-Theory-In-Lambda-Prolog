@@ -9,17 +9,17 @@
 type hstep, dstep, hnf, nf, conv A -> A -> prop.
 
 /*MTT PREDICATES*/
-kind mttTerm, mttType, mttKind, mttLevel type.
+kind mttTerm,               mttType, mttKind, mttLevel type.
 type ext, int               mttLevel.
 type col, set, propc, props mttKind.
-%type s, c mttSetCol.
-%type s, p mttSetProp.
-%type sort mttSetCol -> mttSetProp -> mttKind.
+%type s, c       mttSetCol.
+%type s, p       mttSetProp.
+%type sort       mttSetCol -> mttSetProp -> mttKind.
 
-type locDecl        mttTerm -> mttType -> prop.
-type locDeclType    mttType -> mttKind -> prop.
-type isType         mttType -> mttKind -> mttLevel -> prop.
-type of, isa        mttTerm -> mttType -> mttLevel -> prop.
+type locDecl            mttTerm -> mttType -> prop.
+type locDeclType        mttType -> mttKind -> prop.
+type isType,            mttType -> mttKind -> mttLevel -> prop.
+type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
 
@@ -47,8 +47,8 @@ isa Term TY IE :-
     conv TY TY'.
 
 
-of X Y IE :- locDecl X Y .
-
+of X Y ext :- locDecl X Y .
+isType X Y ext :- locDeclType X Y.
 
 %tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
 

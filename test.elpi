@@ -10,6 +10,28 @@ accumulate calc/setPi.
 
 accumulate calc/singleton.
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
 testB :- of star singleton ext.
 
 testC
@@ -58,3 +80,4 @@ test sostituzione_indiretta :- (dstep a b :- locDef _ (propEq _ a b) _ ) .
 spy_depth N :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
 spy_add [0|LL] :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
 
+*/
