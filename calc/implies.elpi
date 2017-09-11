@@ -1,33 +1,39 @@
 %%-- implies.elpi
 
+type implies    mttType -> mttType -> mttType.
+type impl_lam   mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type impl_app   mttTerm -> mttTerm -> mttTerm.
+
+
 isType (implies B C) KIND IE :-
     isType B KIND IE, 
-    pi x\ locDecl x B KIND IE => isType (C x) KIND IE.
+    pi x\ locDecl x B => isType C KIND IE.
 
 of (impl_lam B F) (implies B C) IE :-
-        spy (isType B set IE),
-        spy (pi x\ locDecl x B => isa (F x) (C x) IE).
+        (isType B KIND IE),
+        (KIND = props; KIND = propc),
+        (pi x\ locDecl x B => isa (F x) C IE).
 
-of (app Lam X) (C X) IE :-
-        hnf Lam (lambda B F), 
-        isa (lambda B F) (setPi B C) IE,
-        isa X B IE. 
+of (impl_app Lam X) C IE :-
+        hnf Lam (impl_lam B F), 
+        isa (impl_lam B F) (implies B C) IE,
+        isa X B IE.
 
-
-hstep (app LAM Bb) (F Bb) :- 
-        hnf LAM (lambda B F),
-        isType B set IE,
+hstep (impl_app LAM Bb) (F Bb) :- 
+        hnf LAM (impl_lam B F),
+        isType B KIND IE,
+        (KIND = props; KIND = propc),
         isa Bb B IE,
         (pi x\ locDecl x B => isa (F x) (C x) IE ),
-        (pi x\ locDecl x B => isType (C x) set IE ).
+        (pi x\ locDecl x B => isType (C x) KIND IE ).
 
-dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
+dstep (impl_lam B1 F) (impl_lam B2 F) :- dstep B1 B2.
 
-dstep (lambda B F1) (lambda B F2) :- 
+dstep (impl_lam B F1) (impl_lam B F2) :- 
         pi b\ locDecl b B => dstep (F1 b) (F2 b).
 
-dstep (app L X1) (app L X2) :- dstep X1 X2.
-dstep (app L1 X) (app L2 X) :- dstep L1 L2.
+dstep (impl_app L X1) (impl_app L X2) :- dstep X1 X2.
+dstep (impl_app L1 X) (impl_app L2 X) :- dstep L1 L2.
 
 
 

@@ -2,13 +2,15 @@ accumulate debug.
 
 
 
-accumulate calc/Eq.
+accumulate main.
 
+accumulate calc/Eq.
+accumulate calc/implies.
 accumulate calc/setPi.
 
 accumulate calc/singleton.
 
-accumulate main.
+testB :- of star singleton ext.
 
 testC
     :-  Long = (

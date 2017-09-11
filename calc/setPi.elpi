@@ -21,10 +21,10 @@ of (app Lam X) (C X) IE :-
 
 hstep (app LAM Bb) (F Bb) :- 
         hnf LAM (lambda B F),
-        isType B set IE,
+        isType B KIND IE,
         isa Bb B IE,
         (pi x\ locDecl x B => isa (F x) (C x) IE ),
-        (pi x\ locDecl x B => isType (C x) set IE ).
+        (pi x\ locDecl x B => isType (C x) KIND IE ).
 
 dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
 

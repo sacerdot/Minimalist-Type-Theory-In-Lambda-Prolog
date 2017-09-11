@@ -12,6 +12,9 @@ type hstep, dstep, hnf, nf, conv A -> A -> prop.
 kind mttTerm, mttType, mttKind, mttLevel type.
 type ext, int               mttLevel.
 type col, set, propc, props mttKind.
+%type s, c mttSetCol.
+%type s, p mttSetProp.
+%type sort mttSetCol -> mttSetProp -> mttKind.
 
 type locDecl        mttTerm -> mttType -> prop.
 type locDeclType    mttType -> mttKind -> prop.
@@ -47,28 +50,6 @@ isa Term TY IE :-
 of X Y IE :- locDecl X Y .
 
 
-isType (forall B C) propc ext :-
-        println "--forall------"
-    ,   (pi x\ locDecl x B => isType (C x) prop ext)
-    .
-
-isType (implies B C) prop ext :-
-        println "--implies-----\n\n\n\n\n\n\n"
-    ,   isType B prop ext
-    ,   isType C prop ext
-    .
-
-isType (propEq TypeC C1 C2) prop ext:-
-        println "--propEq------"
-    ,   isType TypeC col ext
-    ,   print "-.-.-.-." , println TypeC
-    ,   spy (of C1 TypeC ext)
-    ,   println "--first-spy-done"
-    ,   spy (of C2 TypeC ext)
-    .
-
-
-
 %tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
 
 tau' TipoExt ElementoExt Output :-
@@ -78,18 +59,24 @@ tau' TipoExt ElementoExt Output :-
     tau Ty TipoInt ElementoInt Output.
 
 
-%isType A Sort IE
-%of X A IE
-%locDef X A M IE
-
-
-
-
 
 
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+/*
+isType (forall B C) propc ext :-
+        (pi x\ locDecl x B => isType (C x) propc ext)
+    .
+
+
+*/
+
+%isType A Sort IE
+%of X A IE
+%locDef X A M IE
+
+
 
 %Is this ever needed?
 %trad (of Aa AA ext)
@@ -108,3 +95,18 @@ tau' TipoExt ElementoExt Output :-
 %   isType tipo Kind IE
 %
 
+/*
+isType (implies B C) prop ext :-
+        isType B prop ext
+    ,   isType C prop ext
+    .
+*/
+/*
+isType (propEq TypeC C1 C2) propc ext:-
+       isType TypeC col ext
+    ,   print "-.-.-.-." , println TypeC
+    ,   spy (of C1 TypeC ext)
+    ,   println "--first-spy-done"
+    ,   spy (of C2 TypeC ext)
+    .
+*/
