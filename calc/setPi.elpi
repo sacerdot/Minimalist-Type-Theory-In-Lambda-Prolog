@@ -1,16 +1,16 @@
 %%-- calc_setPi.elpi
 
-type setPi mttTerm -> (mttTerm -> mttType) -> mttType.
+type setPi mttType -> (mttTerm -> mttType) -> mttType.
 type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type app mttTerm -> mttTerm -> mttTerm.
 
 
-isType (setPi B C) set IE :-
-    isType B set IE, 
-    pi x\ locDecl x B => isType (C x) set IE.
+isType (setPi B C) KIND IE :-
+    isType B KIND IE, 
+    pi x\ locDecl x B  => isType (C x) KIND IE.
 
 of (lambda B F) (setPi B C) IE :-
-        spy (isType B set IE),
+        spy (isType B _ IE),
         spy (pi x\ locDecl x B => isa (F x) (C x) IE).
 
 of (app Lam X) (C X) IE :-

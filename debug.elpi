@@ -6,8 +6,9 @@ announce G :- bracket ">>" G "\n", fail.
 spy G :- bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n".
 spy G :- not G, bracket "]--]Leaving  " G "\n",  fail.
 
-printt A :- printterm std_out A.
-println A :- printt A, print"\n".
+%printt A :- printterm std_out A.
+printt A :- term_to_string A S, printterm std_out A.
+println A :- printt A, print "\n".
 printW S A :- print S, printt A, print "\n".
 
 %load_library [] GOAL :- GOAL.

@@ -4,14 +4,14 @@
 
 type  singleton mttType.
 type  star mttTerm.
-type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm.
+type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
 
 isType singleton set IE.
 
 of star singleton IE.
  
 of (elim_singleton Star C Cc) (C Star) IE :-
-    of Star singleton IE,p
+    of Star singleton IE,
     of Cc (C star) IE,
     (pi z\ locDecl z singleton => isType (C z) col IE).
 

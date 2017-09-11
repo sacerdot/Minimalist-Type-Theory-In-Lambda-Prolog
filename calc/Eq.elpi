@@ -9,7 +9,7 @@ isType (propEq A AA1 AA2) props ext :-
     isa AA2 A ext,
     isType A set ext.
 
-isType (propEq A AA1 AA2) prop ext :-
+isType (propEq A AA1 AA2) propc ext :-
     isa AA1 A ext,
     isa AA2 A ext,
     isType A col ext.
