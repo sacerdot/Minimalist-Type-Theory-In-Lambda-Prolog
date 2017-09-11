@@ -6,7 +6,7 @@
 %-- dstep A B
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
-type hstep, dstep, hnf, nf, conv A -> A -> prop.
+type hstep, dstep, hnf, nf, conv A -> A -> prop. 
 
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.
@@ -18,14 +18,14 @@ type col, set, propc, props mttKind.
 
 type locDecl            mttTerm -> mttType -> prop.
 type locDeclType        mttType -> mttKind -> prop.
-type isType,            mttType -> mttKind -> mttLevel -> prop.
+type isType             mttType -> mttKind -> mttLevel -> prop.
 type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
 
 type forall mttType -> (mttTerm -> mttType) -> mttType.
 
-
+ 
 hstep X N :- locDef X T M , conv M N.
 hnf A B :- hstep A C, !, hnf C B.
 hnf A A.
@@ -45,7 +45,7 @@ isType A KIND IE :- locDeclType A KIND .
 isa Term TY IE :-
     of Term TY' IE,
     conv TY TY'.
-
+ 
 
 of X Y ext :- locDecl X Y .
 isType X Y ext :- locDeclType X Y.

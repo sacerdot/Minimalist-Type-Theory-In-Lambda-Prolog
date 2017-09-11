@@ -31,7 +31,7 @@ accumulate calc/singleton.
 
 
 
-/*
+/* 
 testB :- of star singleton ext.
 
 testC
@@ -61,7 +61,7 @@ testExt
     ,   println Long
     ,   isType Long prop ext
     .
-
+ 
 
 testshort Q :-
         Dom = singleton

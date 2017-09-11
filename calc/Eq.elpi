@@ -19,9 +19,6 @@ of (eqId C Cc) (propEq C Cc Cc) ext
     :-  of Cc C ext
     .
 
-of A B IE :- announce (of A B IE).
-dstep A B   :- announce (dstep A B).
-
 dstep A B :- locDecl _ (propEq _ A B).
 
 dstep A B :- locDef _ (propEq _ A B) _ .
