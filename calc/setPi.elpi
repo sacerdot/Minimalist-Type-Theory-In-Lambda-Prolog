@@ -10,8 +10,8 @@ isType (setPi B C) KIND IE :-
     pi x\ locDecl x B  => isType (C x) KIND IE.
 
 of (lambda B F) (setPi B C) IE :-
-        spy (isType B _ IE),
-        spy (pi x\ locDecl x B => isa (F x) (C x) IE).
+        (isType B _ IE),
+        (pi x\ locDecl x B => isa (F x) (C x) IE).
 
 of (app Lam X) (C X) IE :-
         hnf Lam (lambda B F), 
@@ -36,7 +36,40 @@ dstep (app L1 X) (app L2 X) :- dstep L1 L2.
 
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+type fun        mttType -> mttType -> mttType.
+type fun_lam    mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type fun_app    mttTerm -> mttTerm -> mttTerm.
+
+
+isType (fun B C) KIND IE :-
+    isType B KIND IE, 
+    pi x\ locDecl x B  => isType C KIND IE.
+
+of (fun_lam B F) (fun B C) IE :-
+        isType B _ IE,
+        (pi x\ locDecl x B => isa (F x) C IE).
+
+of (fun_app Lam X) C IE :-
+        isa (Lam) (fun B C) IE,
+        isa X B IE.
+        
+hstep (fun_app LAM Bb) (F Bb) :- 
+        hnf LAM (fun_lam B F),
+        isType B KIND IE,
+        isa Bb B IE,
+        (pi x\ locDecl x B => isa (F x) C IE ),
+        (pi x\ locDecl x B => isType C KIND IE ).
+
+dstep (fun_lam B1 F) (fun_lam B2 F) :- dstep B1 B2.
+
+dstep (fun_lam B F1) (fun_lam B F2) :- 
+        pi b\ locDecl b B => dstep (F1 b) (F2 b).
+
+dstep (fun_app L X1) (fun_app L X2) :- dstep X1 X2.
+dstep (fun_app L1 X) (fun_app L2 X) :- dstep L1 L2.
 
 
 

@@ -20,18 +20,6 @@ accumulate calc/singleton.
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
 testB :- of star singleton ext.
 
 testC
@@ -42,18 +30,28 @@ testC
            forall (setPi (propEq singleton y star) z\ singleton) f\
             implies (propEq singleton x y)
                 (propEq singleton (apply f l) star)
-            )
-    ,   println Long
+            ),
+        println Long
     ,   isType Long prop ext
     .
-testA :- 
+testA Q :- 
  (pi x\ 
    pi y\ 
-    locDecl x singleton =>
-     locDecl y singleton =>
-      locDecl l (propEq singleton x x)).
+    pi l\ 
+     pi f\ pi h\ 
+      locDecl x singleton =>
+       locDecl y singleton =>
+        locDecl l (propEq singleton x x) =>
+         locDecl f (fun (propEq singleton y y) singleton) =>
+          locDecl h (propEq singleton x y) =>
+           ( hnf (fun_app f l) (Q f l)
+            ;(of  (fun_app f l) singleton ext)
+   
+           
+           )
+           ). 
 /*
-
+%           
 testExt
     :-  Dom = singleton
     ,   println Dom
