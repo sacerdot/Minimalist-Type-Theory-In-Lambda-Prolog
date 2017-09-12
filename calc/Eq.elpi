@@ -16,17 +16,18 @@ isType (propEq A AA1 AA2) propc ext :-
 
 
 of (eqId C Cc) (propEq C Cc Cc) ext
-    :-  of Cc C ext
+    :-  spy(of Cc C ext)
     .
 
 
-dstep A B :- of _ (propEq _ A B) ext.
 
-dstep A B :- locDef _ (propEq _ A B) _ .
+dstep A B :- spy(locDef _ (propEq _ A B) _ ).
 
-dstep (propEq A AA1 AA2) (propEq A' AA1 AA2) :- dstep A A'.
+dstep (propEq A AA1 AA2) (propEq A' AA1 AA2) :- spy(dstep A A').
 dstep (propEq A AA1 AA2) (propEq A AA1' AA2) :- dstep AA1 AA1'.
 dstep (propEq A AA1 AA2) (propEq A AA1 AA2') :- dstep AA2 AA2'.
 
 dstep (eqId A AA) (eqId A' AA) :- dstep A A'.
 dstep (eqId A AA) (eqId A AA') :- dstep AA AA'.
+
+dstep A B :- spy(of X (propEq T A B) ext).%, spy(not (X = eqId T Y)).
