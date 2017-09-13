@@ -1,11 +1,14 @@
 indent [].
-sublist [] Y.
-sublist [X | XX] [Y | YY] :-spy( X = Y, sublist XX YY).
-bigger_indent M N :- spy(indent M), spy(indent N), spy(sublist M N), spy(not (M = N)).
-is_max_indent M :- not (bigger_indent M _).
-max_indent NN :- spy (indent N), bigger_indent N M, (bigger_indent M ). 
+indent [1].
+indent [2,1].
 
+count P Old Tot :- P X, not (member X Old), !, count P [X | Old] Tot.
+count P Old Old.
+c_indent T :- count indent [] T.
 
+print_indent :- c_indent T, print_dash T. 
+print_dash [].
+print_dash [X|L] :- print "-", print_dash L.
 
 bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
@@ -17,6 +20,7 @@ spy G :- not G, bracket "]--]Leaving  " G "\n",  fail.
 trad A B      :- announce (trad A B).
 tau A B C D   :- announce (tau A B C D).
 tau' A B C    :- announce (tau' A B C).
+
 hnf A B       :- announce (hnf A B).
 hstep A B     :- announce (hstep A B).
 dstep A B     :- announce (dstep A B).
