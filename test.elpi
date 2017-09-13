@@ -12,17 +12,20 @@ accumulate calc/singleton.
 
 accumulate calc/forall.
 
+testB  :- pi X\ pi Y\ (locDecl _ (propEq singleton X Y) => spy(conv X Y)). 
 
 
 
 testC
  :- spy( isType (
         forall singleton x\
-         forall singleton y\
-          forall (propEq singleton x x) l\
-           forall (fun (propEq singleton y y) singleton) f\
-            forall (propEq singleton y x) h\
-                (propEq singleton (fun_app f l) (fun_app f l) )
+        forall (fun (propEq singleton star star) singleton) f\
+        ( implies (propEq singleton star x)
+            (propEq singleton 
+                    (fun_app f (eqId singleton star)) 
+                    (fun_app f (eqId singleton star)) 
+            )
+        )
         ) col ext).
 
 testA Q1 Q2 :- 
@@ -45,7 +48,58 @@ testA Q1 Q2 :-
             %isa l (Q1 x y l h f) ext
            
            )
-           ). 
+           ).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 /*
 %           
 testExt

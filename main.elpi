@@ -35,8 +35,8 @@ dstep A B :- spy(hstep A B).
 nf A B :- spy (dstep A C), !, nf C B. %con le regole di eq dstep è diventata riflessiva, 
 nf A A.                         % ho aggiunto il not in eq.elpi per evitare che ciò accada
 conv A A :- ! .
-conv A B :- spy(nf A C), spy(nf B C).
-convTo A B :- dstep A C, convTo C B.
+conv A B :- nf (A B; nf B A).
+conv A B :- spy(nf A C, nf B C).
 
 isType A col IE  :- isType A set   IE.
 isType A col IE  :- isType A propc  IE.
