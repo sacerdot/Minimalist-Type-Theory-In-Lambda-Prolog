@@ -19,10 +19,8 @@ hstep (elim_singleton star C Cc) Cc :-
     of Cc (C star) IE,
     (pi z\ locDecl z singleton => isType (C z) col IE ).
 
-dstep (elim_singleton T C CC) (elim_singleton T' C CC) :- dstep T T'.
-dstep (elim_singleton T C CC) (elim_singleton T C CC') :- dstep CC CC'.
-dstep (elim_singleton T C CC) (elim_singleton T C' CC) :-
-    (pi z\ locDecl z singleton => dstep (C z) (C' z)).
+dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC CC',
+    (pi z\ locDecl z singleton => conv (C z) (C' z)).
 
 
 

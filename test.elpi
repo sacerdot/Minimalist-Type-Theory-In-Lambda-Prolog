@@ -19,7 +19,7 @@ testB  :- pi X\ pi Y\ (locDecl _ (propEq singleton X Y) => spy(conv X Y)).
 testC
  :- spy( isType (
         forall singleton x\
-        forall (fun (propEq singleton star star) singleton) f\
+        forall (fun (propEq singleton x star) singleton) f\
         ( implies (propEq singleton star x)
             (propEq singleton 
                     (fun_app f (eqId singleton star)) 
@@ -41,8 +41,8 @@ testA Q1 Q2 :-
            ( 
             %hnf (fun_app f l) (Q f l)
          %spy   (of  (fun_app f l) (Q1 x y l h f) ext)
-    spy     (dstep  x (Q1 x y l h f))
-    %spy     (conv  (propEq singleton x x) (propEq singleton y y) ext)
+    %spy     (dstep  x (Q1 x y l h f))
+    spy     (conv  (propEq singleton x x) (propEq singleton y y) )
     %spy     (nf (propEq singleton x x) (Q1 x y l h f))
             %isa f (fun (Q1 x y l h f)(Q2 x y l h f) )ext
             %isa l (Q1 x y l h f) ext

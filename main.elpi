@@ -6,7 +6,7 @@
 %-- dstep A B
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
-type hstep, dstep, hnf, nf, conv A -> A -> prop. 
+type hstep, dconv, hnf,  conv A -> A -> prop. 
 
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.
@@ -26,17 +26,22 @@ type locDef         mttTerm -> mttType -> mttTerm -> prop.
 type forall mttType -> (mttTerm -> mttType) -> mttType.
 
  
-hstep X N :- locDef X T M , conv M N.
+%hstep X N :- locDef X T M , conv M N.
 
 hnf A B :- hstep A C, !, hnf C B.
 hnf A A.
 
-dstep A B :- spy(hstep A B).
-nf A B :- spy (dstep A C), !, nf C B. %con le regole di eq dstep è diventata riflessiva, 
-nf A A.                         % ho aggiunto il not in eq.elpi per evitare che ciò accada
+%dstep A B :- spy(hstep A B).
+%nf A B :- spy (dstep A C), !, spy(nf C B). %con le regole di eq dstep è diventata riflessiva, 
+%nf A A.                         % ho aggiunto il not in eq.elpi per evitare che ciò accada
+
 conv A A :- ! .
-conv A B :- nf (A B; nf B A).
-conv A B :- spy(nf A C, nf B C).
+conv A B :- spy(locDecl _ (propEq _ A B) ).
+conv A B :- spy(hnf A A'), spy( hnf B B'), dconv A' B'.
+
+dconv A A :- !.
+
+
 
 isType A col IE  :- isType A set   IE.
 isType A col IE  :- isType A propc  IE.
