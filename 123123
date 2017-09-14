@@ -1,0 +1,212 @@
+goal> "debug.elpi:   3: Warning: indent is undeclared"
+"debug.elpi:  17: Error: (print_indent) has type prop but is applied to S"
+"debug.elpi:  19: Error: (print_indent) has type prop but is applied to _2"
+"debug.elpi:  23: Warning: indent is undeclared"
+"main.elpi:  52: Warning: set:- is undeclared"
+"main.elpi:  78: Warning: trad is undeclared"
+"implies.elpi:  30: Error: B1 has type mttType but is used with type mttTerm"
+"setPi.elpi:  33: Error: B1 has type mttType but is used with type mttTerm"
+"setPi.elpi:  69: Error: B1 has type mttType but is used with type mttTerm"
+"forall.elpi:  29: Error: B1 has type mttType but is used with type mttTerm"
+[+[Entering isaT
+ (forall singleton x0 \
+   forall (fun (propEq singleton x0 star) singleton) x1 \
+    forall (propEq singleton star star) x2 \
+     implies (propEq singleton star x0)
+      (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) col ext
+-[+[Entering isType
+ (forall singleton x0 \
+   forall (fun (propEq singleton x0 star) singleton) x1 \
+    forall (propEq singleton star star) x2 \
+     implies (propEq singleton star x0)
+      (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X0 ext
+--[+[Entering isType singleton X1 ext
+--]-]Success  isType singleton set ext
+--[+[Entering pi x0 \
+ locDecl x0 singleton =>
+  spy
+   (isType
+     (forall (fun (propEq singleton x0 star) singleton) x1 \
+       forall (propEq singleton star star) x2 \
+        implies (propEq singleton star x0)
+         (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X2 ext)
+---[+[Entering isType
+ (forall (fun (propEq singleton x0 star) singleton) x1 \
+   forall (propEq singleton star star) x2 \
+    implies (propEq singleton star x0)
+     (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X2 ext
+----[+[Entering isType (fun (propEq singleton x0 star) singleton) X3^1 ext
+-----[+[Entering of x0 X4^1 ext
+-----]-]Success  of x0 singleton ext
+-----[+[Entering conv singleton singleton
+-----]-]Success  conv singleton singleton
+-----[+[Entering of star X5^1 ext
+-----]-]Success  of star singleton ext
+-----[+[Entering conv singleton singleton
+-----]-]Success  conv singleton singleton
+----]-]Success  isType (fun (propEq singleton x0 star) singleton) col ext
+----[+[Entering pi x1 \
+ locDecl x1 (fun (propEq singleton x0 star) singleton) =>
+  spy
+   (isType
+     (forall (propEq singleton star star) x2 \
+       implies (propEq singleton star x0)
+        (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X6^1 ext)
+-----[+[Entering isType
+ (forall (propEq singleton star star) x2 \
+   implies (propEq singleton star x0)
+    (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X6^1 ext
+------[+[Entering isType (propEq singleton star star) X7^2 ext
+-------[+[Entering of star X8^2 ext
+-------]-]Success  of star singleton ext
+-------[+[Entering conv singleton singleton
+-------]-]Success  conv singleton singleton
+-------[+[Entering of star X9^2 ext
+-------]-]Success  of star singleton ext
+-------[+[Entering conv singleton singleton
+-------]-]Success  conv singleton singleton
+------]-]Success  isType (propEq singleton star star) props ext
+------[+[Entering pi x2 \
+ locDecl x2 (propEq singleton star star) =>
+  spy
+   (isType
+     (implies (propEq singleton star x0)
+       (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X10^2 ext)
+-------[+[Entering isType
+ (implies (propEq singleton star x0)
+   (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) X10^2 ext
+--------[+[Entering of star X11^3 ext
+--------]-]Success  of star singleton ext
+--------[+[Entering conv singleton singleton
+--------]-]Success  conv singleton singleton
+--------[+[Entering of x0 X12^3 ext
+--------]-]Success  of x0 singleton ext
+--------[+[Entering conv singleton singleton
+--------]-]Success  conv singleton singleton
+--------[+[Entering of (fun_app x1 x2) X13^4 ext
+---------[+[Entering isa x1 (fun X14^4 X13^4) ext
+----------[+[Entering of x1 X15^4 ext
+----------]-]Success  of x1 (fun (propEq singleton x0 star) singleton) ext
+----------[+[Entering conv (fun (propEq singleton x0 star) singleton) (fun X14^4 X13^4)
+----------]-]Success  conv (fun (propEq singleton x0 star) singleton)
+ (fun (propEq singleton x0 star) singleton)
+---------]-]Success  isa x1 (fun (propEq singleton x0 star) singleton) ext
+---------[+[Entering isa x2 (propEq singleton x0 star) ext
+----------[+[Entering of x2 X16^4 ext
+----------]-]Success  of x2 (propEq singleton star star) ext
+----------[+[Entering conv (propEq singleton star star) (propEq singleton x0 star)
+-----------[+[Entering locDecl X17^4
+ (propEq X18^4 (propEq singleton star star) (propEq singleton x0 star))
+-----------].]Leaving  locDecl X17^4
+ (propEq X18^4 (propEq singleton star star) (propEq singleton x0 star))
+-----------[+[Entering hnf (propEq singleton star star) X19^4
+-----------]-]Success  hnf (propEq singleton star star) (propEq singleton star star)
+-----------[+[Entering hnf (propEq singleton x0 star) X20^4
+-----------]-]Success  hnf (propEq singleton x0 star) (propEq singleton x0 star)
+-----------[+[Entering dconv (propEq singleton star star) (propEq singleton x0 star)
+------------[+[Entering conv singleton singleton
+------------]-]Success  conv singleton singleton
+------------[+[Entering conv star x0
+-------------[+[Entering locDecl X21^4 (propEq X22^4 star x0)
+-------------]-]Success  locDecl x3 (propEq singleton star x0)
+------------]-]Success  conv star x0
+------------[+[Entering conv star star
+------------]-]Success  conv star star
+-----------]-]Success  dconv (propEq singleton star star) (propEq singleton x0 star)
+----------]-]Success  conv (propEq singleton star star) (propEq singleton x0 star)
+---------]-]Success  isa x2 (propEq singleton x0 star) ext
+--------]-]Success  of (fun_app x1 x2) singleton ext
+--------[+[Entering conv singleton singleton
+--------]-]Success  conv singleton singleton
+--------[+[Entering of (fun_app x1 x2) X23^4 ext
+---------[+[Entering isa x1 (fun X24^4 X23^4) ext
+----------[+[Entering of x1 X25^4 ext
+----------]-]Success  of x1 (fun (propEq singleton x0 star) singleton) ext
+----------[+[Entering conv (fun (propEq singleton x0 star) singleton) (fun X24^4 X23^4)
+----------]-]Success  conv (fun (propEq singleton x0 star) singleton)
+ (fun (propEq singleton x0 star) singleton)
+---------]-]Success  isa x1 (fun (propEq singleton x0 star) singleton) ext
+---------[+[Entering isa x2 (propEq singleton x0 star) ext
+----------[+[Entering of x2 X26^4 ext
+----------]-]Success  of x2 (propEq singleton star star) ext
+----------[+[Entering conv (propEq singleton star star) (propEq singleton x0 star)
+-----------[+[Entering locDecl X27^4
+ (propEq X28^4 (propEq singleton star star) (propEq singleton x0 star))
+-----------].]Leaving  locDecl X27^4
+ (propEq X28^4 (propEq singleton star star) (propEq singleton x0 star))
+-----------[+[Entering hnf (propEq singleton star star) X29^4
+-----------]-]Success  hnf (propEq singleton star star) (propEq singleton star star)
+-----------[+[Entering hnf (propEq singleton x0 star) X30^4
+-----------]-]Success  hnf (propEq singleton x0 star) (propEq singleton x0 star)
+-----------[+[Entering dconv (propEq singleton star star) (propEq singleton x0 star)
+------------[+[Entering conv singleton singleton
+------------]-]Success  conv singleton singleton
+------------[+[Entering conv star x0
+-------------[+[Entering locDecl X31^4 (propEq X32^4 star x0)
+-------------]-]Success  locDecl x3 (propEq singleton star x0)
+------------]-]Success  conv star x0
+------------[+[Entering conv star star
+------------]-]Success  conv star star
+-----------]-]Success  dconv (propEq singleton star star) (propEq singleton x0 star)
+----------]-]Success  conv (propEq singleton star star) (propEq singleton x0 star)
+---------]-]Success  isa x2 (propEq singleton x0 star) ext
+--------]-]Success  of (fun_app x1 x2) singleton ext
+--------[+[Entering conv singleton singleton
+--------]-]Success  conv singleton singleton
+-------]-]Success  isType
+ (implies (propEq singleton star x0)
+   (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext
+------]-]Success  pi x2 \
+ locDecl x2 (propEq singleton star star) =>
+  spy
+   (isType
+     (implies (propEq singleton star x0)
+       (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext)
+------[+[Entering pts_for props props X6^1
+------]-]Success  pts_for props props props
+"12312312312312312312"
+-----]-]Success  isType
+ (forall (propEq singleton star star) x2 \
+   implies (propEq singleton star x0)
+    (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext
+----]-]Success  pi x1 \
+ locDecl x1 (fun (propEq singleton x0 star) singleton) =>
+  spy
+   (isType
+     (forall (propEq singleton star star) x2 \
+       implies (propEq singleton star x0)
+        (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext)
+----[+[Entering pts_for col props X2
+----]-]Success  pts_for col props props
+"12312312312312312312"
+---]-]Success  isType
+ (forall (fun (propEq singleton x0 star) singleton) x1 \
+   forall (propEq singleton star star) x2 \
+    implies (propEq singleton star x0)
+     (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext
+--]-]Success  pi x0 \
+ locDecl x0 singleton =>
+  spy
+   (isType
+     (forall (fun (propEq singleton x0 star) singleton) x1 \
+       forall (propEq singleton star star) x2 \
+        implies (propEq singleton star x0)
+         (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext)
+--[+[Entering pts_for set props X0
+--]-]Success  pts_for set props props
+"12312312312312312312"
+-]-]Success  isType
+ (forall singleton x0 \
+   forall (fun (propEq singleton x0 star) singleton) x1 \
+    forall (propEq singleton star star) x2 \
+     implies (propEq singleton star x0)
+      (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) props ext
+--------------props
+-[+[Entering pts_leq props col
+-]-]Success  pts_leq props col
+]-]Success  isaT
+ (forall singleton x0 \
+   forall (fun (propEq singleton x0 star) singleton) x1 \
+    forall (propEq singleton star star) x2 \
+     implies (propEq singleton star x0)
+      (propEq singleton (fun_app x1 x2) (fun_app x1 x2))) col ext

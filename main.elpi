@@ -37,18 +37,32 @@ hnf A A.
 
 conv A A :- ! .
 conv A B :- spy(locDecl _ (propEq _ A B) ).
-conv A B :- spy(hnf A A'), spy( hnf B B'), dconv A' B'.
+conv A B :- spy(hnf A A'), spy( hnf B B'), spy( dconv A' B').
 
 dconv A A :- !.
 
+pts_leq A A.
+pts_leq props set.
+pts_leq props col.
+pts_leq props propc.
+pts_leq set col.
+pts_leq propc col.
 
 
-isType A col IE  :- isType A set   IE.
-isType A col IE  :- isType A propc  IE.
-isType A set IE  :- isType A props IE.
-isType A propc IE :- isType A props IE.
+pts_fun A B set:- pts_leq A set, pts_leq B set, !.
+pts_fun _ _ col.
 
-isType A KIND IE :- locDeclType A KIND .
+pts_for A props props :- pts_leq A set, !.
+pts_for _ _ propc. 
+
+
+%isType A KIND IE :- locDeclType A KIND .
+
+isaT Type Kind IE :-
+spy ( isType Type Kind' IE),
+spy  (pts_leq  Kind' Kind).
+
+
 
 isa Term TY IE :-
 spy    (of Term TY' IE),

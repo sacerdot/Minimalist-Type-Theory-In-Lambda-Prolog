@@ -4,15 +4,10 @@
 type propEq mttType -> mttTerm -> mttTerm -> mttType.
 type eqId   mttType -> mttTerm -> mttTerm.
 
-isType (propEq A AA1 AA2) props ext :-
+isType (propEq A AA1 AA2) KIND ext :-
+    (isType A set ext, KIND = props ; isType A col ext, KIND = propc),
     isa AA1 A ext,
-    isa AA2 A ext,
-    isType A set ext.
-
-isType (propEq A AA1 AA2) propc ext :-
-    isa AA1 A ext,
-    isa AA2 A ext,
-    isType A col ext.
+    isa AA2 A ext.
 
 
 of (eqId C Cc) (propEq C Cc Cc) ext
@@ -23,6 +18,6 @@ of (eqId C Cc) (propEq C Cc Cc) ext
 
 %dstep A B :- of _ ()
 
-dconv (propEq A AA1 AA2) (propEq A' AA1' AA2') :- spy(conv A A'), conv AA1 AA1', conv AA2 AA2'.
+dconv (propEq A AA1 AA2) (propEq A' AA1' AA2') :- spy(conv A A'), spy(conv AA1 AA1'), spy (conv AA2 AA2').
 
 dconv (eqId A AA) (eqId A' AA') :- conv A A', conv AA AA'.

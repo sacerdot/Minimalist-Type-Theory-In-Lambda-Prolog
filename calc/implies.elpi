@@ -7,7 +7,7 @@ type impl_app   mttTerm -> mttTerm -> mttTerm.
 
 isType (implies B C) KIND IE :-
     isType B KIND IE, 
-    pi x\ locDecl x B => isType C KIND IE.
+   spy( pi x\ locDecl x B => isType C KIND IE).
 
 of (impl_lam B F) (implies B C) IE :-
         (isType B KIND IE),

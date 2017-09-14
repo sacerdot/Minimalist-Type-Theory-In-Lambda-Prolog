@@ -7,7 +7,7 @@ accumulate main.
 accumulate calc/Eq.
 accumulate calc/implies.
 accumulate calc/setPi.
-
+accumulate calc/letIn.
 accumulate calc/singleton.
 
 accumulate calc/forall.
@@ -16,17 +16,36 @@ testB  :- pi X\ pi Y\ (locDecl _ (propEq singleton X Y) => spy(conv X Y)).
 
 
 
-testC
- :- spy( isType (
+
+testE
+ :- spy( 
+        isaT (
         forall singleton x\
         forall (fun (propEq singleton x star) singleton) f\
-        ( implies (propEq singleton star x)
-            (propEq singleton 
+        ( implies (propEq singleton x star)
+            ( letIn (propEq  singleton star x) (eqId singleton x) _\
+             (propEq singleton 
                     (fun_app f (eqId singleton star)) 
                     (fun_app f (eqId singleton star)) 
             )
+            )
         )
         ) col ext).
+
+
+testD 
+ :- spy( 
+        isaT (
+        forall singleton x\
+        forall (fun (propEq singleton x star) singleton) f\
+        forall (propEq singleton star star) l\
+        ( implies (propEq singleton star x)
+            (propEq singleton 
+                    (fun_app f l) 
+                    (fun_app f l) 
+            )
+        )
+        )col ext).
 
 testA Q1 Q2 :- 
  (pi x\ 
