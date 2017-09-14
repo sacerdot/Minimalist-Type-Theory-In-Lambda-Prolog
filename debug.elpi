@@ -1,19 +1,31 @@
 indent [].
 indent [1].
 indent [2,1].
+indent [0,0,0].
+member X [Y | L] :- X = Y ; member X L .
+count' Old Tot :- indent X, not (member X Old), !, count' [X | Old] Tot.
+count' Old Old.
+to_zero [] [].
+to_zero [X | L] [0|L'] :- to_zero L L'.
+c_indent TT :- count'  [] T, to_zero T TT.
 
-count P Old Tot :- P X, not (member X Old), !, count P [X | Old] Tot.
-count P Old Old.
-c_indent T :- count indent [] T.
+print_indent :- c_indent T,  print_dash T.
 
-print_indent :- c_indent T, print_dash T. 
 print_dash [].
 print_dash [X|L] :- print "-", print_dash L.
+str_dash [] "".
+str_dash [_ | L] S :- str_dash L SS, S is ("-" ^ SS).
+indent_str S :- c_indent T, str_dash T S.
 
-bracket Pre G Post :- print Pre, term_to_string G S, print S, print Post.
+
+
+bracket Pre G Post :- indent_str S, print S, print Pre, term_to_string G S, print S, print Post.
 announce G :- bracket ">>" G "\n", fail.
-spy G :- bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n".
-spy G :- not G, bracket "]--]Leaving  " G "\n",  fail.
+
+spy G :- c_indent T, indent [0 | T] => (
+            bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n").
+spy G :- c_indent T, indent [0 | T] => (
+            not G, bracket "]--]Leaving  " G "\n",  fail).
 
 /*
 
