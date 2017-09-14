@@ -1,5 +1,6 @@
 %%-- calc_nat.elpi
 
+type nat mttType.
 hstep (nrec T F K zero) K.
 hstep (nrec T F K (succ N)) (F N (nrec F K N)).
 

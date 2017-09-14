@@ -11,10 +11,11 @@
 %of (letIn T M N) T' ext :- announce(of (letIn T M N) T' ext).
 
 of (letIn T M N) T' ext :- 
-spy(isaT T propc ext),
+spy(    isaT T propc ext),
 spy(    isa M T ext), 
-spy(    pi x \ locDecl x T =>  of (N x) T' ext)
-    .
+spy(    pi x \ locDecl x T =>  of (N x) T' ext).
+
+
 isType (letIn T M N) T' ext :- 
 spy(    isaT T propc ext),
 spy(    isa M T ext), 
@@ -23,8 +24,8 @@ spy(    pi x \ locDecl x T =>  isType  (N x) T' ext)
 
 
 
-hstep (letIn T M N) (N M) :-
-    of (letIn T M N) _ ext.
+%hstep (letIn T M N) (N M) :-
+%    of (letIn T M N) _ ext.
 
 
 

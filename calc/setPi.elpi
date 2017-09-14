@@ -10,9 +10,11 @@ type fun_lam    mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type fun_app    mttTerm -> mttTerm -> mttTerm.
 
 
-isType (setPi B C) KIND IE :-
-    isType B KIND IE, 
-    pi x\ locDecl x B  => isType (C x) KIND IE.
+isType (setPi B C) KIND3 IE :-
+    isType B KIND1 IE, 
+    pi x\ locDecl x B  => isType (C x) KIND2 IE,
+    spy(pts_fun KIND1 KIND2 KIND3)
+    .
 
 of (lambda B F) (setPi B C) IE :-
         (isType B _ IE),
@@ -46,9 +48,9 @@ dstep (app L1 X) (app L2 X) :- dstep L1 L2.
 
 
 isType (fun B C) KIND3 IE :-
-    isType B KIND1 IE, 
-    (pi x\ locDecl x B  => isType C KIND2 IE),
-    pts_fun KIND1 KIND2 KIND3.
+    spy(isType B KIND1 IE), 
+    spy((pi x\ locDecl x B  => isType C KIND2 IE)),
+    spy(pts_fun KIND1 KIND2 KIND3).
 
 of (fun_lam B F) (fun B C) IE :-
         isType B _ IE,

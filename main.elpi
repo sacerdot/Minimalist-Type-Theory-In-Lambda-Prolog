@@ -69,17 +69,58 @@ spy    (of Term TY' IE),
 spy    (conv TY' TY).
  
 
-of X Y ext :-  locDecl X Y .
-isType X Y ext :- locDeclType X Y.
+of X Y _ :-  locDecl X Y .
+isType X Y _ :- locDeclType X Y.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 %tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
-
+/*
 tau' TipoExt ElementoExt Output :-
     trad ElementoExt ElementoInt,
     trad TipoExt TipoInt,
     of ElementoInt Ty int,
     tau Ty TipoInt ElementoInt Output.
-
+*/
 
 
 

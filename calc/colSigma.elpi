@@ -2,28 +2,28 @@
 
 %% STRONG INDEXED COL SUM
 
-isType (colSigma B C) col :-
-    isType B col,
-    pi b\ of b B int => isType (C b) col.
+isType (colSigma B C) set IE :-
+    spy(isaT B set IE),
+    spy(pi b\ locDecl b B => isaT (C b) set IE).
 
-of (pair B C BB CC) (colSigma B C) int :-
-    isType B col,
-    isType (C BB) col,
-    of BB B int,
-    of CC (C BB) int,
-    isType (colSigma B C) col.
+of (pair B C BB CC) (colSigma B C) IE :-
+    isType B col IE,
+    isType (C BB) col IE,
+    of BB B IE,
+    of CC (C BB) IE,
+    isaT (colSigma B C) col IE.
 
-of (elim_colSigma Pair M MM) (M Pair) int :-
-        of Pair (colSigma B C) int,
-        (pi z \ of z (colSigma B C) int => isType (M z) col),
-        (pi x \ pi y \
-            of x B int => of y (C x) int =>  
-                of (MM x y) (M (pair B C x y)) int ).
+of (elim_colSigma Pair M MM) (M Pair) IE :-
+        spy(of Pair (colSigma B C) IE),
+        spy (pi z \ locDecl z (colSigma B C) => isaT (M z) col IE),
+        spy (pi x \ pi y \
+            of x B IE => of y (C x) IE =>  
+                of (MM x y) (M (pair B C x y)) IE ).
 
 hstep (elim_colSigma (pair B C Bb Cc) M Mm) (Mm Bb Cc) :-
     of Bb B int,
     of Cc (C Bb) int,
-    (pi z\ of z (colSigma B C) int => isType (M z) col),
+    (pi z\ of z (colSigma B C) int => isType (M z) _),
     (pi x \ pi y \
         of x B int => of y (C x) int =>  
             of (Mm x y) (M (pair B C x y))  int

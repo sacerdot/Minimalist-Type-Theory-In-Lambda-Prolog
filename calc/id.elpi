@@ -3,10 +3,13 @@
 
 %-- calc_id.elpi
 
-isType (propId A AA1 AA2) prop IE :-
+isType (propId A AA1 AA2) KIND IE :-
     isa AA1 A int,
     isa AA2 A int,
-    isType A _.
+    isType A KIND1 int,
+    (spy(pts_leq KIND1 set , KIND = props), ! ;
+        KIND = propc)
+    .
 
 of (id A AA1) (propId A' AA2 AA3) int :-
     of AA1 A'' int,
