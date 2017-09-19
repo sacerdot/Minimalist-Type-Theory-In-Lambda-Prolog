@@ -68,6 +68,9 @@ hstep (fun_app LAM Bb) (F Bb) :-
         (pi x\ locDecl x B => isa (F x) C IE ),
         (pi x\ locDecl x B => isType C KIND IE ).
 
+dconv (fun_lam B F) (fun_lam B' F') :- (conv B B'), (conv F F').
+dconv (fun_app F X) (fun_app F' X') :- (conv F F'), (conv X X').
+
 dstep (fun_lam B1 F) (fun_lam B2 F) :- dstep B1 B2.
 
 dstep (fun_lam B F1) (fun_lam B F2) :- 
