@@ -7,36 +7,34 @@ type impl_app   mttTerm -> mttTerm -> mttTerm.
 
 isType (implies B C) KIND IE :-
     isType B KIND IE, 
-   spy( pi x\ locDecl x B => isType C KIND IE).
+   pi x\ locDecl x B => isType C KIND IE.
 
 of (impl_lam B F) (implies B C) IE :-
-        (isType B KIND IE),
-        (KIND = props; KIND = propc),
+        (isaT B propc IE),
+        (isaT C propc IE),
         (pi x\ locDecl x B => isa (F x) C IE).
 
 of (impl_app Lam X) C IE :-
-        hnf Lam (impl_lam B F), 
-        isa (impl_lam B F) (implies B C) IE,
+        of Lam (implies B C),
         isa X B IE.
 
 hstep (impl_app LAM Bb) (F Bb) :- 
         hnf LAM (impl_lam B F),
         isType B KIND IE,
-        (KIND = props; KIND = propc),
+        (pts_leq KIND propc),
         isa Bb B IE,
         (pi x\ locDecl x B => isa (F x) (C x) IE ),
-        (pi x\ locDecl x B => isType (C x) KIND IE ).
+        (pi x\ locDecl x B => isType (C x) KIND' IE ),
+        pts_leq KIND' propc.
 
-dstep (impl_lam B1 F) (impl_lam B2 F) :- dstep B1 B2.
-
-dstep (impl_lam B F1) (impl_lam B F2) :- 
-        pi b\ locDecl b B => dstep (F1 b) (F2 b).
-
-dstep (impl_app L X1) (impl_app L X2) :- dstep X1 X2.
-dstep (impl_app L1 X) (impl_app L2 X) :- dstep L1 L2.
-
-
-
+        
+dconv (implies B C) (implies B' C') :- (conv B B'), (conv C C').
+dconv (impl_app F X) (impl_app F' X') :- (conv F F'), (conv X X').
+dconv (impl_lam B F) (impl_lam B' F') :- (conv B B'), 
+        pi x\ locDecl x B =>
+                %locDecl x' B' =>
+                %hstep x x'    => 
+                (conv (F x) (F' x)).
 
 
 

@@ -25,21 +25,22 @@ hstep (forall_app LAM Bb) (F Bb) :-
         (pi x\ locDecl x B => isa (F x) (C x) IE ),
         (pi x\ locDecl x B => isType (C x) KIND IE ).
 
-dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
-
-dstep (lambda B F1) (lambda B F2) :- 
-        pi b\ locDecl b B => dstep (F1 b) (F2 b).
-
-dstep (app L X1) (app L X2) :- dstep X1 X2.
-dstep (app L1 X) (app L2 X) :- dstep L1 L2.
-
+dconv (forall B C) (forall B' C') :- 
+        (conv B B'), 
+        (pi x\ locDecl x B => conv (C x) (C' x)).
+dconv (forall_app F X) (forall_app F' X') :- (conv F F'), (conv X X').
+dconv (forall_lam B F) (forall_lam B' F') :- (conv B B'), 
+        pi x\ locDecl x B =>
+                %locDecl x' B' =>
+                %hstep x x'    => 
+                (conv (F x) (F' x)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 trad (forall B C) (forall B' C') :-
         spy (trad B B'),
-        spy (pi x\ pi x'\ trad x x' => locDecl x B => locDecl x' B' => trad (C x )(C'  x')).
+        spy (pi x\ pi x' \ trad x x' => locDecl x B => locDecl x' B' => trad (C x )(C'  x')).
 
 trad singleton singleton.
 trad star star.

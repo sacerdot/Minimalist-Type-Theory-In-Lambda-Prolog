@@ -1,14 +1,5 @@
 
-%locDef X T M
-%letIn lDef N
-
-
-
-%locDef X T M
-%letIn T M N
-%letIn (locDef T M) N %con N di tipo funzione
-
-%of (letIn T M N) T' ext :- announce(of (letIn T M N) T' ext).
+type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
 
 of (letIn T M N) T' ext :- 
 spy(    isaT T propc ext),

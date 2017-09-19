@@ -6,7 +6,7 @@
 %-- dstep A B
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
-type hstep, dconv, hnf,  conv A -> A -> prop. 
+type hstep, dconv, hnf,  conv, trad A -> A -> prop. 
 
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.

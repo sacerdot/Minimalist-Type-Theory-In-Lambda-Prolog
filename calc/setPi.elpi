@@ -5,10 +5,6 @@ type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type app mttTerm -> mttTerm -> mttTerm.
 
 
-type fun        mttType -> mttType -> mttType.
-type fun_lam    mttType -> (mttTerm -> mttTerm) -> mttTerm.
-type fun_app    mttTerm -> mttTerm -> mttTerm.
-
 
 isType (setPi B C) KIND3 IE :-
     isType B KIND1 IE, 
@@ -32,16 +28,23 @@ hstep (app LAM Bb) (F Bb) :-
         (pi x\ locDecl x B => isa (F x) (C x) IE ),
         (pi x\ locDecl x B => isType (C x) KIND2 IE ).
 
+dconv (setPi B C) (setPi B' C') :- 
+        (conv B B'), 
+        (pi x\ locDecl x B => conv (C x) (C' x)).
 dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
 dconv (lambda B F) (lambda B' F') :- (conv B B'), 
         pi x\ locDecl x B =>
                 %locDecl x' B' =>
                 %hstep x x'    => 
-                 (conv (F x) (F' x)).
+                (conv (F x) (F' x)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
+type fun        mttType -> mttType -> mttType.
+type fun_lam    mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type fun_app    mttTerm -> mttTerm -> mttTerm.
 
 
 
@@ -66,6 +69,7 @@ hstep (fun_app LAM Bb) (F Bb) :-
         (pi x\ locDecl x B => isa (F x) C IE ),
         (pi x\ locDecl x B => isType C KIND IE ).
 
+dconv (fun B C) (fun B' C') :- (conv B B'), (conv C C').
 dconv (fun_app F X) (fun_app F' X') :- (conv F F'), (conv X X').
 dconv (fun_lam B F) (fun_lam B' F') :- (conv B B'), 
         pi x\ locDecl x B =>

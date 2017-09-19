@@ -1,5 +1,6 @@
 
-
+type propId mttType -> mttTerm -> mttTerm -> mttType.
+type id     mttType -> mttTerm -> mttTerm.
 
 %-- calc_id.elpi
 
@@ -11,51 +12,26 @@ isType (propId A AA1 AA2) KIND IE :-
         KIND = propc)
     .
 
-of (id A AA1) (propId A' AA2 AA3) int :-
-    of AA1 A'' int,
-    conv A A'',
-    (conv AA1 AA2),
-    (conv AA1 AA3),
-    (conv A A'),
-    isType A col.
-
-of (elim_id P Cc C) (C AA1 AA2) int :-
+of (id A AA) (propId A AA AA) int :-
+    isType A _ int,
+    isa AA A int.
+    
+of (elim_id P C CC) (C AA1 AA2) int :-
      (of P (propId A AA1 AA2) int),
-    makeline "-",
-     (pi x\ pi y\ of x A int => of y A int => isType (C x y) prop),
-     (pi x\ of x A int => of (Cc x) (C x x) int).
+     (pi x\ pi y\ locDecl x A => locDecl y A => isaT (C x y) propc int),
+     (pi x\ locDecl x A => of (CC x) (C x x) int).
 
 hstep (elim_id (id A AA) C CC) (CC AA) :-
-    (of AA A int),
-    (pi x\ pi y\ of x A int => of y A int => isType (C x y) prop),
-    (pi x\ of x A int  => of (CC x) (C x x) int).
+    (isa AA A int),
+    (pi x\ pi y\ locDecl x A => locDecl y A => isaT (C x y) propc int),
+    (pi x\ locDecl x A => of (CC x) (C x x) int).
 
-dstep (id A AA) (id A' AA) :- dstep A A'.
+dconv (id A AA) (id A' AA') :- (conv A A'),(conv AA AA').
 
-dstep (id A AA) (id A AA') :- dstep AA AA'.
-
-dstep (propId A Aa Ab) (propId A' Aa Ab) :- (dstep A A').
-dstep (propId A Aa Ab) (propId A Aa' Ab) :- dstep Aa Aa'.
-dstep (propId A Aa Ab) (propId A Aa Ab') :- dstep Ab Ab'.
-
-dstep (elim_id P C CC) (elim_id P' C CC) :- dstep P P'.
-dstep (elim_id P C CC) (elim_id P C' CC) :-
-    of P (propId A _ _) int,
-    pi x\ pi y\ of x A int => of y A int => dstep (C x y) (C' x y).
-
-dstep (elim_id P C CC) (elim_id P C CC')  :-
-    of P (propId A _ _) int,
-    pi x\ of x A int => dstep (CC x) (CC' x).
-
-%macro (id_sym P) (elim_propId P (x\id A x) (y\x\propId A x y)).
-%macro (id_tra P Q) (elim_propId Q (x\id A x) (x\y\propId AA1 y))
-%   :- of P (propId A AA1 AA2) int
-%    , of Q (propId A' AA3 AA4) int
-%    , conv A A'
-%    , conv AA2 AA3
-
-
-
+dconv (propId A AA1 AA2) (propId A' AA1' AA2') :- (conv A A'), (conv AA1 AA1'), (conv AA2 AA2').
+dconv (elim_id P C CC) (elim_id P' C' CC') :-
+    (conv P P'),
+    (pi x\
 
 /*
 
