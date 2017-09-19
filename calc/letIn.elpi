@@ -7,11 +7,9 @@ spy(    isa M T ext),
 spy(    pi x \ locDecl x T =>  of (N x) T' ext).
 
 
-isType (letIn T M N) T' ext :- 
-spy(    isaT T propc ext),
-spy(    isa M T ext), 
-spy(    pi x \ locDecl x T =>  isType  (N x) T' ext)
-    .
+isType (letIn KIND1 T S) KIND2 ext :- 
+spy(    isaT T KIND1 ext), 
+spy(    pi x \ locDecl x KIND1 =>  isType  (N x) KIND2 ext).
 
 
 
