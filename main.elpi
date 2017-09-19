@@ -49,7 +49,7 @@ pts_leq set col.
 pts_leq propc col.
 
 
-pts_fun A B set:- pts_leq A set, pts_leq B set, !.
+pts_fun A B set :- spy(pts_leq A set), spy(pts_leq B set), !.
 pts_fun _ _ col.
 
 pts_for A props props :- pts_leq A set, !.

@@ -15,8 +15,8 @@ of (impl_lam B F) (implies B C) IE :-
         (pi x\ locDecl x B => isa (F x) C IE).
 
 of (impl_app Lam X) C IE :-
-        of Lam (implies B C),
-        isa X B IE.
+        spy(isa Lam (implies B C) IE),
+        spy(isa X B IE).
 
 hstep (impl_app LAM Bb) (F Bb) :- 
         hnf LAM (impl_lam B F),

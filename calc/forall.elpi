@@ -14,7 +14,7 @@ of (forall_lam B F) (forall B C) IE :-
         (pi x\ locDecl x B => isa (F x) (C x) IE).
 
 of (forall_app Lam X) (C X) IE :- 
-        isa (Lam) (setPi B C) IE,
+        isa (Lam) (forall B C) IE,
         isa X B IE. 
 
 
@@ -45,7 +45,7 @@ trad (forall B C) (forall B' C') :-
 trad singleton singleton.
 trad star star.
 
-trad (implies B C) (setPi B' C') :-
+trad (implies B C) (forall B' C') :-
         trad B B',
         spy(pi x\ pi x'\ (trad x x', locDecl x B, locDecl x' B') => trad C (C' x')) .
 
@@ -83,6 +83,7 @@ reflu singleton (x\ id singleton x).
 
 equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
+ 
 pippo (propEq T T1 T2) (propEq T T1' T2') (F) :- 
         spy(pippoequ T1 T1' F1),
         spy(pippoequ T2 T2' F2),
@@ -91,11 +92,23 @@ pippo (propEq T T1 T2) (propEq T T1' T2') (F) :-
         spy(trad T1' T1i'),
         spy(trad T2' T2i'),
         spy(trad T Ti),
-        F = x\ app ( app ( app ( app ( app ( app ( app ( app (k Ti) T1i) T1i') T2i) T2i') F1) F2) x).
-
+        F = x\ impl_app ( 
+                impl_app ( 
+                 forall_app ( 
+                  forall_app ( 
+                   impl_app ( 
+                    forall_app ( 
+                     forall_app (k_propId Ti) T1i) T1i') F1) T2i) T2i') F2)  x.
+ 
 pippoequ A A (id T' A' ) :-
         trad A A',
         of A' T' int.
 pippoequ A B H' :-
         spy(locDecl H (propEq _ A B)),
         trad H H'.
+
+locDecl (k_propId T) (forall T t1\ forall T t1'\ 
+        implies (propId T t1 t1') (forall T t2\ forall T t2'\ 
+                implies (propId T t2 t2') (implies (propId T t1 t2) (propId T t1' t2'))) ).
+
+
