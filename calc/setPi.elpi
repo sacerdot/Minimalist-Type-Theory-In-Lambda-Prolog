@@ -27,19 +27,17 @@ of (app Lam X) (C X) IE :-
 
 hstep (app LAM Bb) (F Bb) :- 
         hnf LAM (lambda B F),
-        isType B KIND IE,
+        isType B KIND1 IE,
         isa Bb B IE,
         (pi x\ locDecl x B => isa (F x) (C x) IE ),
-        (pi x\ locDecl x B => isType (C x) KIND IE ).
+        (pi x\ locDecl x B => isType (C x) KIND2 IE ).
 
-dstep (lambda B1 F) (lambda B2 F) :- dstep B1 B2.
-
-dstep (lambda B F1) (lambda B F2) :- 
-        pi b\ locDecl b B => dstep (F1 b) (F2 b).
-
-dstep (app L X1) (app L X2) :- dstep X1 X2.
-dstep (app L1 X) (app L2 X) :- dstep L1 L2.
-
+dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
+dconv (lambda B F) (lambda B' F') :- (conv B B'), 
+        pi x\ locDecl x B =>
+                %locDecl x' B' =>
+                %hstep x x'    => 
+                 (conv (F x) (F' x)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -68,16 +66,20 @@ hstep (fun_app LAM Bb) (F Bb) :-
         (pi x\ locDecl x B => isa (F x) C IE ),
         (pi x\ locDecl x B => isType C KIND IE ).
 
-dconv (fun_lam B F) (fun_lam B' F') :- (conv B B'), (conv F F').
 dconv (fun_app F X) (fun_app F' X') :- (conv F F'), (conv X X').
+dconv (fun_lam B F) (fun_lam B' F') :- (conv B B'), 
+        pi x\ locDecl x B =>
+                %locDecl x' B' =>
+                %hstep x x'    => 
+                (conv (F x) (F' x)).
 
-dstep (fun_lam B1 F) (fun_lam B2 F) :- dstep B1 B2.
+%dstep (fun_lam B1 F) (fun_lam B2 F) :- dstep B1 B2.
 
-dstep (fun_lam B F1) (fun_lam B F2) :- 
-        pi b\ locDecl b B => dstep (F1 b) (F2 b).
+%dstep (fun_lam B F1) (fun_lam B F2) :- 
+%        pi b\ locDecl b B => dstep (F1 b) (F2 b).
 
-dstep (fun_app L X1) (fun_app L X2) :- dstep X1 X2.
-dstep (fun_app L1 X) (fun_app L2 X) :- dstep L1 L2.
+%dstep (fun_app L X1) (fun_app L X2) :- dstep X1 X2.
+%dstep (fun_app L1 X) (fun_app L2 X) :- dstep L1 L2.
 
 
 
