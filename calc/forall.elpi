@@ -113,7 +113,7 @@ pippoequ A B H' :-
 pippoequ (fun_app F X1) (fun_app F X2) H :-
         pippoequ X1 X2 G,
         trad F F',
-        P2F' = elim_colSigma F' ...  (x\ y\ y),
+        P2F' = elim_colSigma F'   (x\ y\ y),
         trad X1 X1',
         trad X2 X2',
         H = forall_app (forall_app (forall_app P2F' X1') X2') G. 
