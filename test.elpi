@@ -19,6 +19,22 @@ testB  :- pi X\ pi Y\ (locDecl _ (propEq singleton X Y) => spy(conv X Y)).
 
 
 
+testC
+ :- spy( 
+        isaT (
+        forall singleton x\
+        forall (fun (propEq singleton x star) singleton) f\
+        (implies (propEq singleton star x)
+            (
+             (propEq singleton 
+                    (fun_app f (eqId singleton star)) 
+                    (fun_app f (eqId singleton star)) 
+            )
+            )
+        )
+        ) col ext).
+
+
 testE
  :- spy( 
         isaT (
