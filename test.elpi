@@ -13,6 +13,7 @@ accumulate calc/colSigma.
 accumulate calc/id.
 
 accumulate calc/forall.
+accumulate calc/trad.
 
 testB  :- pi X\ pi Y\ (locDecl _ (propEq singleton X Y) => spy(conv X Y)). 
 
