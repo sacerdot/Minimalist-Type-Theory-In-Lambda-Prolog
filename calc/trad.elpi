@@ -151,7 +151,7 @@ pippoequ A B ( H'') :-
         spy (symmu T Q),
         H'' = Q H'
         .
-        
+ symmu T (x\ fixMEEEEEE).       
 
 pippoequ (fun_app F X1) (fun_app F X2) H :-
         spy(pippoequ X1 X2 G),
