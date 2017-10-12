@@ -19,6 +19,22 @@ accumulate calc/singleton.
 accumulate calc/trad.
 
 
+testZ A B C
+    :- Long = (
+        forall singleton x\
+        forall (setPi (propEq singleton star x) y\
+                      (fun (propEq (propEq singleton star star) y (eqId singleton star)) 
+                            singleton)) f\ 
+               (implies (propEq singleton x star) (implies (propEq singleton star x) 
+        (propEq singleton (fun_app (app f (eqId singleton star) ) 
+        (eqId (propEq (propEq singleton star star) (eqId star) (eqId star) ) (eqId singleton star))
+        ) star)
+        ))
+    )
+    , isType Long A ext
+    .
+
+
 
 testG A Q Qy
  :- Long = (
@@ -146,6 +162,57 @@ testF A Q Qy
 
 
 
+testS A B C
+    :- Long = (
+        forall (setSum singleton singleton) x\
+        forall (fun (propEq (setSum singleton singleton) x (inl singleton singleton star)) (setSum singleton singleton)) f\
+        ( implies (propEq (setSum singleton singleton) (inl singleton singleton star) x)
+            (propEq (setSum singleton singleton) 
+                    (fun_app f (eqId (setSum singleton singleton) (inl singleton singleton star))) 
+                    (fun_app f (eqId (setSum singleton singleton) (inl singleton singleton star))) 
+            )
+        )
+        )
+    ,  spy(isType Long A ext)
+    ,  spy(trad Long B)
+    .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 testA Q1 Q2 :- 
  (pi x\ 
    pi y\ 
@@ -214,43 +281,4 @@ testA Q1 Q2 :-
 
 
 
-
-
-
-
-/*
-%           
-testExt
-    :-  Dom = singleton
-    ,   println Dom
-    ,   Long = (
-        forall Dom x\
-         forall Dom y\
-          forall (propEq Dom x x) l\
-           forall (setPi (propEq Dom y y) z\ Dom) f\
-            implies (propEq Dom x y) (propEq Dom (apply f l) (apply f l))
-            )
-    ,   println Long
-    ,   isType Long prop ext
-    .
- 
-
-testshort Q :-
-        Dom = singleton
-    ,   Short = (
-         forall Dom y\
-          forall singleton l\
-           forall (setPi singleton z\Dom) f\
-            (propEq Dom (apply f l) (apply f l))
-            )
-    ,   isType Short Q ext
-    .
-
-test sostituzione_diretta :- locDecl h (propEq singleton qwe star) => dstep qwe A.
-test sostituzione_indiretta :- (dstep a b :- locDef _ (propEq _ a b) _ ) .
-
-spy_depth N :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
-spy_add [0|LL] :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
-
-*/
 

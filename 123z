@@ -1,0 +1,135 @@
+"debug.elpi:   6: Warning: indent is undeclared"
+"debug.elpi:  21: Error: (print_indent) has type prop but is applied to C S N"
+"debug.elpi:  23: Error: (print_indent) has type prop but is applied to IC I N"
+"debug.elpi:  28: Warning: indent is undeclared"
+"debug.elpi:  28: Warning: indent is undeclared"
+"and.elpi:  14: Error: (C) has type mttType but is applied to x5"
+"and.elpi:  14: Error: (locDecl x5 B) has type prop but is used with type (list prop)"
+"and.elpi:  21: Warning: p1_and is undeclared"
+"and.elpi:  24: Warning: p2_and is undeclared"
+"and.elpi:  28: Warning: p1_and is undeclared"
+"and.elpi:  30: Error: (C) has type mttType but is applied to x8"
+"and.elpi:  30: Error: (locDecl x8 B) has type prop but is used with type (list prop)"
+"and.elpi:  36: Warning: p1_and is undeclared"
+"exist.elpi:  14: Error: C has type mttType but is used with type (mttTerm -> mttType)"
+"exist.elpi:  21: Warning: elim_exist is undeclared"
+"exist.elpi:  29: Warning: elim_exist is undeclared"
+"exist.elpi:  37: Error: (C) has type mttType but is applied to x8"
+"exist.elpi:  37: Error: (locDecl x8 B) has type prop but is used with type (list prop)"
+"exist.elpi:  43: Warning: elim_exist is undeclared"
+"id.elpi:  19: Warning: elim_id is undeclared"
+"id.elpi:  24: Warning: elim_id is undeclared"
+"letIn.elpi:  10: Error: (letIn KIND1 T S) has type mttTerm but is used with type mttType"
+"or.elpi:  24: Error: (Cl) has type mttTerm but is applied to x8"
+"or.elpi:  24: Error: (locDecl x8 A) has type prop but is used with type (list prop)"
+"or.elpi:  24: Error: (locDecl x8 (or A B)) has type prop but is used with type (list prop)"
+"or.elpi:  32: Error: (Cl) has type mttTerm but is applied to Wl"
+"or.elpi:  40: Error: (Cr) has type mttTerm but is applied to Wr"
+"or.elpi:  48: Error: (Cl) has type mttTerm but is applied to x11"
+"or.elpi:  48: Error: (locDecl x11 (or A B)) has type prop but is used with type (list prop)"
+"setSum.elpi:  25: Error: (C) has type mttType but is applied to W"
+"setSum.elpi:  33: Error: (Cl) has type mttTerm but is applied to Wl"
+"setSum.elpi:  40: Error: (Cr) has type mttTerm but is applied to Wr"
+"setSum.elpi:  48: Error: (C) has type mttType but is applied to x11"
+"setSum.elpi:  48: Error: (locDecl x11 (setSum A B)) has type prop but is used with type (list prop)"
+"trad.elpi:  19: Error: (setSum A' B') has type (X0^8 -> mttType) but is used with type mttType"
+"trad.elpi:  47: Error: (PIA Xi) has type mttTerm but is used with type mttType"
+"trad.elpi: 116: Warning: k_propId is undeclared"
+"trad.elpi: 156: Warning: k_propId is undeclared"
+"test.elpi:  22: Error: star has type mttTerm but is used with type mttType"
+"test.elpi: 115: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X1^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
+"test.elpi: 115: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X2^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
+"test.elpi: 115: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X3^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
+"test.elpi: 115: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X4^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
+"_1[+[Entering isType singleton X5 ext
+"
+"_1]-]Success  isType singleton set ext
+"
+"_1[+[Entering pi x0 \
+ locDecl x0 singleton =>
+  spy
+   (isType
+     (forall
+       (setPi (propEq singleton star x0) x1 \
+         fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+          singleton) x1 \
+       implies (propEq singleton x0 star)
+        (implies (propEq singleton star x0)
+          (propEq singleton
+            (fun_app (app x1 (eqId singleton star))
+              (eqId
+                (propEq (propEq singleton star star) (eqId star) (eqId star))
+                (eqId singleton star))) star))) X6 ext)
+"
+"__2[+[Entering isType
+ (forall
+   (setPi (propEq singleton star x0) x1 \
+     fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+      singleton) x1 \
+   implies (propEq singleton x0 star)
+    (implies (propEq singleton star x0)
+      (propEq singleton
+        (fun_app (app x1 (eqId singleton star))
+          (eqId (propEq (propEq singleton star star) (eqId star) (eqId star))
+            (eqId singleton star))) star))) X6 ext
+"
+"___3[+[Entering isType
+ (setPi (propEq singleton star x0) x1 \
+   fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+    singleton) X7^1 ext
+"
+"____4[+[Entering of star X8^1 ext
+"
+"____4]-]Success  of star singleton ext
+"
+"____4[+[Entering conv singleton singleton
+"
+"____4]-]Success  conv singleton singleton
+"
+"____4[+[Entering of x0 X9^1 ext
+"
+"____4]-]Success  of x0 singleton ext
+"
+"____4[+[Entering conv singleton singleton
+"
+"____4]-]Success  conv singleton singleton
+"
+"____4[+[Entering isType (propEq (propEq singleton star star) x1 (eqId singleton star)) X10^2
+ ext
+"
+"....4].]Leaving  isType (propEq (propEq singleton star star) x1 (eqId singleton star)) X10^2
+ ext
+"
+"...3].]Leaving  isType
+ (setPi (propEq singleton star x0) x1 \
+   fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+    singleton) X7^1 ext
+"
+"..2].]Leaving  isType
+ (forall
+   (setPi (propEq singleton star x0) x1 \
+     fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+      singleton) x1 \
+   implies (propEq singleton x0 star)
+    (implies (propEq singleton star x0)
+      (propEq singleton
+        (fun_app (app x1 (eqId singleton star))
+          (eqId (propEq (propEq singleton star star) (eqId star) (eqId star))
+            (eqId singleton star))) star))) X6 ext
+"
+".1].]Leaving  pi x0 \
+ locDecl x0 singleton =>
+  spy
+   (isType
+     (forall
+       (setPi (propEq singleton star x0) x1 \
+         fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+          singleton) x1 \
+       implies (propEq singleton x0 star)
+        (implies (propEq singleton star x0)
+          (propEq singleton
+            (fun_app (app x1 (eqId singleton star))
+              (eqId
+                (propEq (propEq singleton star star) (eqId star) (eqId star))
+                (eqId singleton star))) star))) X6 ext)
+"
