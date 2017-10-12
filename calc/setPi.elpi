@@ -70,13 +70,11 @@ hstep (fun_app LAM Bb) (F Bb) :-
         (pi x\ locDecl x B => isa (F x) C IE ),
         (pi x\ locDecl x B => isType C KIND IE ).
 
-dconv (fun B C) (fun B' C') :- (conv B B'), (conv C C').
-dconv (fun_app F X) (fun_app F' X') :- (conv F F'), (conv X X').
-dconv (fun_lam B F) (fun_lam B' F') :- (conv B B'), 
+dconv (fun B C) (fun B' C') :- spy(conv B B'), spy(conv C C').
+dconv (fun_app F X) (fun_app F' X') :- spy(conv F F'), spy(conv X X').
+dconv (fun_lam B F) (fun_lam B' F') :- spy(conv B B'), 
         pi x\ locDecl x B =>
-                %locDecl x' B' =>
-                %hstep x x'    => 
-                (conv (F x) (F' x)).
+                spy(conv (F x) (F' x)).
 
 %dstep (fun_lam B1 F) (fun_lam B2 F) :- dstep B1 B2.
 

@@ -28,7 +28,7 @@ hstep (elim_id (id A AA) C CC) (CC AA) :-
 
 dconv (id A AA) (id A' AA') :- (conv A A'),(conv AA AA').
 
-dconv (propId A AA1 AA2) (propId A' AA1' AA2') :- (conv A A'), (conv AA1 AA1'), (conv AA2 AA2').
+dconv (propId A AA1 AA2) (propId A' AA1' AA2') :- spy (conv A A'), spy (conv AA1 AA1'), spy(conv AA2 AA2').
 %dconv (elim_id P C CC) (elim_id P' C' CC') :-
 %    (conv P P'),
 %    (pi x\
