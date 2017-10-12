@@ -723,6 +723,14 @@
  (fun (propEq (propEq singleton star star) x7 (eqId singleton star))
    singleton) (X67^6 x9 x10 x11)
 "
+"________8[+[Entering pippoequ x7 x6 X68^12
+"
+"_________9[+[Entering locDecl X69^12 (propEq _ x7 x6)
+"
+".........9].]Leaving  locDecl X69^12 (propEq _ x7 x6)
+"
+"........8].]Leaving  pippoequ x7 x6 X68^12
+"
 ".......7].]Leaving  pippo
  (fun (propEq (propEq singleton star star) x6 (eqId singleton star))
    singleton)
