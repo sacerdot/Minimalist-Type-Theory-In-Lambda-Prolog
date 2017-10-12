@@ -4,9 +4,10 @@ accumulate debug.
 
 accumulate main.
 
+accumulate calc/and.
 accumulate calc/colSigma.
 accumulate calc/Eq.
-%accumulate calc/exist.
+accumulate calc/exist.
 accumulate calc/forall.
 accumulate calc/id.
 accumulate calc/implies.

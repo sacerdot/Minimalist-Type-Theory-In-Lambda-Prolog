@@ -1,7 +1,7 @@
 
 type exist mttType -> (mttTerm -> mttType) -> mttType.
 type and mttType -> mttType -> mttType.
-type pair_exist, pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
+type pair_exist mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
 
 %%%Exist
 
@@ -27,7 +27,7 @@ of (elim_exist Pair M MM) M IE
     .
 
 hstep (elim_exist W M MM) (MM Bb Cc) 
-    :- hnf W (pair B C Bb Cc)
+    :- hnf W (pair_exist B C Bb Cc)
     ,  isa Bb B IE
     ,  isa Cc (C Bb) IE
     ,  (pi x \ pi y \ locDecl x B => of y (C x) =>  
@@ -53,4 +53,3 @@ dconv (exist B C) (exist B' C')
     ,  (pi x\ locDecl x A => conv (C x) (C' x))
     .
 
-    
