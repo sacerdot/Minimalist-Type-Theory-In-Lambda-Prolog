@@ -4,8 +4,12 @@
 type propEq mttType -> mttTerm -> mttTerm -> mttType.
 type eqId   mttType -> mttTerm -> mttTerm.
 
+pts_eq K props :- pts_leq K set, !.
+pts_eq _ propc.
+
 isType (propEq A AA1 AA2) KIND ext :-
-    (isType A set ext, KIND = props ; isType A col ext, KIND = propc),
+    isType A KIND' ext,
+    pts_eq KIND' KIND,
     isa AA1 A ext,
     isa AA2 A ext.
 

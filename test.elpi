@@ -20,15 +20,28 @@ accumulate calc/trad.
 
 
 testZ A B C
-    :- Long = (
-        forall singleton x\
-        forall (setPi (propEq singleton star x) y\
-                      (fun (propEq (propEq singleton star star) y (eqId singleton star)) 
-                            singleton)) f\ 
-               (implies (propEq singleton x star) (implies (propEq singleton star x) 
-        (propEq singleton (fun_app (app f (eqId singleton star) ) 
-        (eqId (propEq (propEq singleton star star) (eqId star) (eqId star) ) (eqId singleton star))
-        ) star)
+  :- Long = (
+    forall singleton x\
+      forall 
+        (setPi (propEq singleton star x) y\
+          (fun 
+            (propEq (propEq singleton star star) y (eqId singleton star)) 
+            singleton)) f\ 
+          (implies 
+            (propEq singleton x star) 
+            (implies 
+              (propEq singleton star x) 
+              (propEq 
+                singleton 
+                (fun_app 
+                  (app f (eqId singleton star) ) 
+                  (eqId 
+                    (propEq 
+                      (propEq singleton star star) 
+                      (eqId star) 
+                      (eqId star)) 
+                    (eqId singleton star))) 
+                star)
         ))
     )
     , isType Long A ext
