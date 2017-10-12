@@ -31,17 +31,17 @@ testZ A B C
           (fun 
             (propEq (propEq singleton star star) y (eqId singleton star)) 
             singleton)) f\   
-        (propEq 
-        singleton 
+        (propEq singleton 
         (fun_app 
-            (app f (eqId singleton star) ) 
-            (eqId 
-            (propEq singleton star star) 
-            (eqId singleton star))) 
+            (app f (eqId singleton star))
+            (eqId (propEq singleton star star) 
+            (eqId singleton star)
+            )) 
         star)
             )  ))
     )
     , spy(isType Long A ext)
+    , spy(trad Long B)
     .
 
 

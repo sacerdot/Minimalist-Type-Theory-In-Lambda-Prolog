@@ -479,3 +479,169 @@
            (eqId (propEq singleton star star) (eqId singleton star))) star)))
  props ext
 "
+"_1[+[Entering trad
+ (forall singleton x0 \
+   implies (propEq singleton x0 star)
+    (implies (propEq singleton star x0)
+      (forall
+        (setPi (propEq singleton star x0) x1 \
+          fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+           singleton) x1 \
+        propEq singleton
+         (fun_app (app x1 (eqId singleton star))
+           (eqId (propEq singleton star star) (eqId singleton star))) star)))
+ X36
+"
+"__2[+[Entering trad singleton X37
+"
+"__2]-]Success  trad singleton singleton
+"
+"__2[+[Entering pi x0 \
+ pi x1 \
+  trad x0 x1 =>
+   locDecl x0 singleton =>
+    locDecl x1 singleton =>
+     trad
+      (implies (propEq singleton x0 star)
+        (implies (propEq singleton star x0)
+          (forall
+            (setPi (propEq singleton star x0) x2 \
+              fun
+               (propEq (propEq singleton star star) x2 (eqId singleton star))
+               singleton) x2 \
+            propEq singleton
+             (fun_app (app x2 (eqId singleton star))
+               (eqId (propEq singleton star star) (eqId singleton star)))
+             star))) (X38 x1)
+"
+"___3[+[Entering equ singleton X39^2
+"
+"___3]-]Success  equ singleton x2 \ x3 \ propId singleton x2 x3
+"
+"___3[+[Entering trad x0 X40^2
+"
+"___3]-]Success  trad x0 x1
+"
+"___3[+[Entering trad star X41^2
+"
+"___3]-]Success  trad star star
+"
+"___3[+[Entering X42 x1 = propId singleton x1 star
+"
+"___3]-]Success  propId singleton x1 star = propId singleton x1 star
+"
+"___3[+[Entering pi x2 \
+ pi x3 \
+  ((trad x2 x3), (locDecl x2 (propEq singleton x0 star)),
+   (locDecl x3 (propId singleton x1 star))) =>
+   trad
+    (implies (propEq singleton star x0)
+      (forall
+        (setPi (propEq singleton star x0) x4 \
+          fun (propEq (propEq singleton star star) x4 (eqId singleton star))
+           singleton) x4 \
+        propEq singleton
+         (fun_app (app x4 (eqId singleton star))
+           (eqId (propEq singleton star star) (eqId singleton star))) star))
+    (X43 x1 x3)
+"
+"____4[+[Entering equ singleton X44^4
+"
+"____4]-]Success  equ singleton x4 \ x5 \ propId singleton x4 x5
+"
+"____4[+[Entering trad star X45^4
+"
+"____4]-]Success  trad star star
+"
+"____4[+[Entering trad x0 X46^4
+"
+"____4]-]Success  trad x0 x1
+"
+"____4[+[Entering X47 x1 x3 = propId singleton star x1
+"
+"____4]-]Success  propId singleton star x1 = propId singleton star x1
+"
+"____4[+[Entering pi x4 \
+ pi x5 \
+  ((trad x4 x5), (locDecl x4 (propEq singleton star x0)),
+   (locDecl x5 (propId singleton star x1))) =>
+   trad
+    (forall
+      (setPi (propEq singleton star x0) x6 \
+        fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+         singleton) x6 \
+      propEq singleton
+       (fun_app (app x6 (eqId singleton star))
+         (eqId (propEq singleton star star) (eqId singleton star))) star)
+    (X48 x1 x3 x5)
+"
+"_____5[+[Entering trad
+ (setPi (propEq singleton star x0) x6 \
+   fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+    singleton) (X49 x1 x3 x5)
+"
+".....5].]Leaving  trad
+ (setPi (propEq singleton star x0) x6 \
+   fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+    singleton) (X49 x1 x3 x5)
+"
+"....4].]Leaving  pi x4 \
+ pi x5 \
+  ((trad x4 x5), (locDecl x4 (propEq singleton star x0)),
+   (locDecl x5 (propId singleton star x1))) =>
+   trad
+    (forall
+      (setPi (propEq singleton star x0) x6 \
+        fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+         singleton) x6 \
+      propEq singleton
+       (fun_app (app x6 (eqId singleton star))
+         (eqId (propEq singleton star star) (eqId singleton star))) star)
+    (X48 x1 x3 x5)
+"
+"...3].]Leaving  pi x2 \
+ pi x3 \
+  ((trad x2 x3), (locDecl x2 (propEq singleton x0 star)),
+   (locDecl x3 (propId singleton x1 star))) =>
+   trad
+    (implies (propEq singleton star x0)
+      (forall
+        (setPi (propEq singleton star x0) x4 \
+          fun (propEq (propEq singleton star star) x4 (eqId singleton star))
+           singleton) x4 \
+        propEq singleton
+         (fun_app (app x4 (eqId singleton star))
+           (eqId (propEq singleton star star) (eqId singleton star))) star))
+    (X43 x1 x3)
+"
+"..2].]Leaving  pi x0 \
+ pi x1 \
+  trad x0 x1 =>
+   locDecl x0 singleton =>
+    locDecl x1 singleton =>
+     trad
+      (implies (propEq singleton x0 star)
+        (implies (propEq singleton star x0)
+          (forall
+            (setPi (propEq singleton star x0) x2 \
+              fun
+               (propEq (propEq singleton star star) x2 (eqId singleton star))
+               singleton) x2 \
+            propEq singleton
+             (fun_app (app x2 (eqId singleton star))
+               (eqId (propEq singleton star star) (eqId singleton star)))
+             star))) (X38 x1)
+"
+".1].]Leaving  trad
+ (forall singleton x0 \
+   implies (propEq singleton x0 star)
+    (implies (propEq singleton star x0)
+      (forall
+        (setPi (propEq singleton star x0) x1 \
+          fun (propEq (propEq singleton star star) x1 (eqId singleton star))
+           singleton) x1 \
+        propEq singleton
+         (fun_app (app x1 (eqId singleton star))
+           (eqId (propEq singleton star star) (eqId singleton star))) star)))
+ X36
+"
