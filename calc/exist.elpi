@@ -53,18 +53,4 @@ dconv (exist B C) (exist B' C')
     ,  (pi x\ locDecl x A => conv (C x) (C' x))
     .
 
-
-
-%------------------------------%
-of true (exist B C) ext :-
-    isType B col,
-    (pi x\ of x B ext => isType (C x) prop) 
-    of BB B ext,
-    of true (C BB) ext.
-
-%of true M ext :-
-%    isType M prop,
-%    of true (exist B C) ext,
-%    (pi x\ pi y\
-%        of x B ext => of y (C x) ext =>
-%            of true M ext).
+    
