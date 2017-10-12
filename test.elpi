@@ -20,6 +20,26 @@ accumulate calc/trad.
 
 
 
+testG A Q Qy
+ :- Long = (
+        forall singleton x\
+        forall (fun singleton singleton) g\
+        forall (fun (propEq singleton (fun_app g x) (fun_app g star)) singleton) f\
+        ( implies (propEq singleton star x)
+            (propEq singleton 
+                    (fun_app f (eqId singleton (fun_app g star))) 
+                    (fun_app f (eqId singleton (fun_app g star))) 
+            )
+        )
+        ),
+    spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
+  ,  spy(isType Q Qy int)
+    .
+
+
 testSUM A Q Qy
  :- Long = (
     forall (setSum singleton singleton) x\
@@ -124,26 +144,6 @@ testF A Q Qy
     spy(isType Q Qy int)
     .
 
-
-
-testG A Q Qy
- :- Long = (
-        forall singleton x\
-        forall (fun singleton singleton) g\
-        forall (fun (propEq singleton (fun_app g x) (fun_app g star)) singleton) f\
-        ( implies (propEq singleton star x)
-            (propEq singleton 
-                    (fun_app f (eqId singleton (fun_app g star))) 
-                    (fun_app f (eqId singleton (fun_app g star))) 
-            )
-        )
-        ),
-    spy(isType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(trad Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(isType Q Qy int)
-    .
 
 
 testA Q1 Q2 :- 

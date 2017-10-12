@@ -7,13 +7,13 @@ trad (forall B C) (forall B' C') :-
 trad singleton singleton.
 trad star star.
 trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
-trad (inl A B Aa) (inl Ai Bi Aai') 
-        :- trad A Ai
+trad (inl A' B Aa) (inl Ai' Bi Aai') 
+        :- trad A' Ai'
         ,  trad B Bi
-        ,  of Aa A' ext
-        ,  pippo A' A PIPPO
+        ,  of Aa A ext
+        ,  pippo A A' PIPPO
         ,  trad Aa Aai
-        ,  Aai' = PIPPO Aa
+        ,  Aai' = PIPPO Aai
         .
 
 pippo (setSum A B) (setSum A' B') F 
@@ -25,6 +25,7 @@ pippo (setSum A B) (setSum A' B') F
                  (x \ inl A' B' (FA x)) 
                  (y \ inr A' B' (FB y)))
         .
+
 equ (setSum A B) P 
         :- isType A _ ext , equ A PA
         ,  isType B _ ext , equ B PB
@@ -47,24 +48,27 @@ pippoequ (inl A B X) (inl A B X') H
         :- pippoequ X X' K
         ,  trad X Xi
         ,  trad X' Xi'
+        ,  of X Ae ext
+        ,  pippo Ae A PIA
+        ,  pippo Ae' A PIA'
         ,  equ A PA
         ,  equ B PB
         ,  inl_or (exist (A) (x \ 
                    exist (A) (x'\ and (and 
-                         (propId (setSum A B) Xi  (inl A B x)) 
-                         (propId (setSum A B) Xi' (inl A B x')) ) 
+                         (propId (setSum A B) (inl A B (PIA Xi))  (inl A B x)) 
+                         (propId (setSum A B) (inl A B (PIA' Xi')) (inl A B x')) ) 
                          (PA x x')
                    ))) 
                   (exist (B) (x \ 
                    exist (B) (x'\ and (and 
-                         (propId (setSum A B) Xi  (inr A B x)) 
-                         (propId (setSum A B) Xi' (inr A B x')) ) 
+                         (propId (setSum A B) (inr A B (PIA Xi))  (inr A B x)) 
+                         (propId (setSum A B) (inr A B (PIA'Xi')) (inr A B x')) ) 
                          (PB x x')
                    ))) 
-                  (pair_exist Xi (pair_exist Xi' 
+                  (pair_exist (PIA Xi) (pair_exist (PIA' Xi') 
                    pair_and (pair_and 
-                        (id (setSum A B) (inl A B Xi)) 
-                        (id (setSum A B) (inl A B Xi'))) 
+                        (id (setSum A B) (inl A B (PIA Xi) )) 
+                        (id (setSum A B) (inl A B (PIA' Xi') ))) 
                         (K)
                   ))
         .
@@ -136,11 +140,13 @@ pippoequ A B H' :-
         trad H H'.
 
 pippoequ (fun_app F X1) (fun_app F X2) H :-
-        pippoequ X1 X2 G,
-        trad F F',
-        P2F' = elim_colSigma F' _ (x\ y\ y),
-        trad X1 X1',
-        trad X2 X2',
+        spy(pippoequ X1 X2 G),
+        spy(trad F F'),
+        spy(of F' (colSigma TyF MorF) int),
+        PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x)),
+        P2F' = elim_colSigma F' (c \ MorF (PI1 c)) (x\ y\ y),
+        spy(trad X1 X1'),
+        spy(trad X2 X2'),
         H = forall_app (forall_app (forall_app P2F' X1') X2') G. 
 
 
