@@ -158,3 +158,30 @@ locDecl (k_propId T) (forall T t1\ forall T t1'\
                 implies (propId T t2 t2') (implies (propId T t1 t2) (propId T t1' t2'))) ).
 
 
+trad (setPi B C) T 
+    :- (trad B Bi)
+    ,  (pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+    ,  (equ B EquB)
+    ,  (pi x\ locDecl x B => equ (C x) (EquC x))
+    ,  (pi x1 \ pi x2 \ pi h\
+        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
+        => locDecl x1i Bi
+        => locDecl x2i Bi
+        => trad x1 x1i
+        => trad x2 x2i
+        => (locDecl h (propEq B x1 x2)) 
+        => (locDecl hi (EquB x1i x2i))
+        => trad h hi
+        => (pippo (C x1) (C x2) (PippoC x1i x2i hi)))
+    ,  T = colSigma (setPi Bi Ci) f\ (forall (Bi) x1\ (forall Bi x2\ (forall (EquB x1 x2) h\
+    (
+            EquC x2 
+            (
+                PippoC x1 x2 h (app f x1)
+            ) 
+            (app f x2)
+    )
+    )
+    
+    ) )
+    .
