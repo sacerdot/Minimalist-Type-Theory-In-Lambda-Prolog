@@ -2,6 +2,9 @@
 
 %%-- calc_setSum.elpi
 
+type setSum mttType -> mttType -> mttType.
+type inl, inr mttType -> mttType -> mttTerm -> mttTerm.
+type elim_setSum mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
 %%Disjoint Sum Type
 
 isType (setSum A B) KIND IE :- isType A KIND1 IE, isType B KIND2 IE,
@@ -49,47 +52,6 @@ dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
     ,  (pi z \ locDecl z (setSum A B) => (conv (Cl z) (Cl' z) ) )
     ,  (pi z \ locDecl z (setSum A B) => (conv (Cr z) (Cr' z) ) )
     .
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl' Cr) :- 
-    pi w\ of w (setSum A B) int => dstep (Cl w) (Cl' w).
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl Cr') :- 
-    pi w\ of w (setSum A B) int => dstep (Cr w) (Cr' w).  
-
-dstep (elim_setSum C W Cl Cr) (elim_setSum C' W Cl Cr) :- 
-    pi w\ of w (setSum A B) int => dstep (C w) (C' w).  
-
-
-dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
-dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

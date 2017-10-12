@@ -47,8 +47,20 @@ pippoequ (inl A B X) (inl A B X') H
         :- pippoequ X X' K
         ,  trad X Xi
         ,  trad X' Xi'
-        ,  inl_or () 
-                  () 
+        ,  equ A PA
+        ,  equ B PB
+        ,  inl_or (exist (A) (x \ 
+                   exist (A) (x'\ and (and 
+                         (propId (setSum A B) Xi  (inl A B x)) 
+                         (propId (setSum A B) Xi' (inl A B x')) ) 
+                         (PA x x')
+                   ))) 
+                  (exist (B) (x \ 
+                   exist (B) (x'\ and (and 
+                         (propId (setSum A B) Xi  (inr A B x)) 
+                         (propId (setSum A B) Xi' (inr A B x')) ) 
+                         (PB x x')
+                   ))) 
                   (pair_exist Xi (pair_exist Xi' 
                   pair_and (pair_and 
                         (id (setSum A B) (inl A B Xi)) 

@@ -4,15 +4,17 @@ accumulate debug.
 
 accumulate main.
 
-accumulate calc/Eq.
-accumulate calc/implies.
-accumulate calc/setPi.
-accumulate calc/letIn.
-accumulate calc/singleton.
 accumulate calc/colSigma.
-accumulate calc/id.
-accumulate calc/setSum.
+accumulate calc/Eq.
+accumulate calc/exist.
 accumulate calc/forall.
+accumulate calc/id.
+accumulate calc/implies.
+accumulate calc/letIn.
+accumulate calc/or.
+accumulate calc/setPi.
+accumulate calc/setSum.
+accumulate calc/singleton.
 accumulate calc/trad.
 
 
