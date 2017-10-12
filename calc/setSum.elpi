@@ -1,10 +1,11 @@
 %%%
-/*
+
 %%-- calc_setSum.elpi
 
 %%Disjoint Sum Type
 
-isType (setSum A B) set IE :- isType A set IE, isType B set IE.
+isType (setSum A B) KIND IE :- isType A KIND1 IE, isType B KIND2 IE,
+    pts_fun KIND1 KIND2 KIND.
 
 of (inr A B Bb) (setSum A B) IE 
     :- isType B set IE
@@ -19,16 +20,35 @@ of (inl A B AA) (setSum A B) IE
      .
 
 of (elim_setSum C W Cl Cr) (C W) IE 
-    :- of W (setSum A B) IE 
-     , (pi z\ of z (setSum A B) IE => isType (C z) set IE)
-     , (pi x\ of x A IE => of (Cl x) (C (inr A B x)) IE) 
-     , (pi y\ of y B IE => of (Cr y) (C (inl A B y)) IE) 
+    :- of W (setSum A B) IE
+     , isType (setSum A B) _ IE 
+     , (pi z\ locDecl z (setSum A B) => isType (C z) KIND IE)
+     , (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+     , (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE) 
      .
 
-hstep (elim_setSum C W Cl Cr) (Cl Wl) :- hnf W (inl A B Wl).
-hstep (elim_setSum C W Cl Cr) (Cr Wr) :- hnf W (inr A B Wr).
+hstep (elim_setSum C W Cl Cr) (Cl Wl) 
+    :- hnf W (inl A B Wl)
+    ,  isa W (setSum A B) IE
+    ,  (pi z\ locDecl z (setSum A B) => isType (C z) KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE)
+    .
+hstep (elim_setSum C W Cl Cr) (Cr Wr) 
+    :- hnf W (inr A B Wr)
+    ,  isa W (setSum A B) IE
+    ,  (pi z\ locDecl z (setSum A B) => isType (C z) KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE)
+    .
 
-dstep (elim_setSum C W Cl Cr) (elim_setSum C W' Cl Cr) :- dstep W W'.
+dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
+    :- (conv W W')
+    ,  (of W (setSum A B) IE)
+    ,  (pi z \ locDecl z (setSum A B) => (conv (C z) (C' z) ) )
+    ,  (pi z \ locDecl z (setSum A B) => (conv (Cl z) (Cl' z) ) )
+    ,  (pi z \ locDecl z (setSum A B) => (conv (Cr z) (Cr' z) ) )
+    .
 
 dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl' Cr) :- 
     pi w\ of w (setSum A B) int => dstep (Cl w) (Cl' w).
@@ -44,7 +64,6 @@ dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
 dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 
 
-*/
 
 
 
@@ -59,6 +78,7 @@ dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 
 
 
+/*
 
 
 
@@ -116,14 +136,12 @@ sigm X Y :- of X (setSum A B) int,
     (pi b\ of b B int, sigm (Cr b) (Cr' b)),
     Y = elim_setSum (setSum A B) X Cl' Cr'.
 
-%TAU input Type    output Type   input     output
-tau (setPi A1 B1) (setPi A2 B2) (inl AA1) (inl AA2) :- tau A1 A2 AA1 AA2.
-tau (setPi A1 B1) (setPi A2 B2) (inr BB1) (inr BB2) :- tau B1 B2 BB1 BB2.
 
 %%equ --     non sono sicuro di che cosa dica il teorema 4.20 
-
+qwe12.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/
