@@ -1,3 +1,6 @@
+len [] 0 :- !.
+len [_ | L] N :- len L M, N is M + 1.
+len_str L NS :- len L N, term_to_string N NS.
 
 member X [Y | L] :- X = Y ; member X L .
 count' Old Tot :- indent X, not (member X Old), !, count' [X | Old] Tot.
@@ -13,10 +16,12 @@ print_dash [X|L] :- print "-", print_dash L.
 str_dash [] "".
 str_dash [_ | E] "" :- E = [], !.
 str_dash [_ | L] S :- str_dash L SS, S is ("-" ^ SS), !.
-indent_str S :- c_indent T, str_dash T S.
-print_indent S :- indent_str S, print S.
 
-bracket Pre G Post :- print_indent _, print Pre, term_to_string G S, print S, print Post.
+indent_str S N :- c_indent T, str_dash T S, len_str T N.
+print_indent S N :- indent_str S N.
+
+bracket Pre G Post :- print_indent I N, term_to_string G S, 
+    Q is (I ^ N ^ Pre ^ S ^ Post), print Q.
 
 announce G :- bracket ">>" G "\n", fail.
 

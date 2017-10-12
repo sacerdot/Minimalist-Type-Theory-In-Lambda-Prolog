@@ -11,7 +11,7 @@ accumulate calc/letIn.
 accumulate calc/singleton.
 accumulate calc/colSigma.
 accumulate calc/id.
-
+accumulate calc/setSum.
 accumulate calc/forall.
 accumulate calc/trad.
 
