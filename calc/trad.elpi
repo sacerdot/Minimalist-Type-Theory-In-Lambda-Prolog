@@ -111,6 +111,13 @@ reflu singleton (x\ id singleton x).
 
 equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
+equ (fun B C) P
+        :- trad B Bi
+        ,  trad C Ci , equ C EquC
+        ,  P = (f\ g\ forall Bi x\ EquC (fun_app f x) (fun_app g x))
+        .
+
+
 pippo A A x \ x.
  
 pippo (propEq T T1 T2) (propEq T T1' T2') (F) :- 

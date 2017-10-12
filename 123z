@@ -34,8 +34,8 @@
 "setSum.elpi:  48: Error: (locDecl x11 (setSum A B)) has type prop but is used with type (list prop)"
 "trad.elpi:  19: Error: (setSum A' B') has type (X0^8 -> mttType) but is used with type mttType"
 "trad.elpi:  47: Error: (PIA Xi) has type mttTerm but is used with type mttType"
-"trad.elpi: 116: Warning: k_propId is undeclared"
-"trad.elpi: 156: Warning: k_propId is undeclared"
+"trad.elpi: 123: Warning: k_propId is undeclared"
+"trad.elpi: 163: Warning: k_propId is undeclared"
 "test.elpi: 125: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X1^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
 "test.elpi: 125: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X2^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
 "test.elpi: 125: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X3^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
@@ -662,6 +662,14 @@
   equ
    (fun (propEq (propEq singleton star star) x6 (eqId singleton star))
      singleton) (X62^6 x6)
+"
+"_______7[+[Entering equ (propEq singleton star star) X63^7
+"
+"_______7]-]Success  equ (propEq singleton star star) x7 \ x8 \ propId singleton star star
+"
+"_______7[+[Entering trad x6 X64^7
+"
+".......7].]Leaving  trad x6 X64^7
 "
 "......6].]Leaving  pi x6 \
  locDecl x6 (propEq singleton star x0) =>
