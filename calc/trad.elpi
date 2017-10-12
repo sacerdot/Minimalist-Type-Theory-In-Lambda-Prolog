@@ -20,17 +20,41 @@ pippo (setSum A B) (setSum A' B') F
         :- (pippo A A' FA)
         ,  (pippo B B' FB)
         ,  F = (z \elim_setSum 
-                (_\ setSum A' B') 
-                z 
-                (x \ inl A' B' (FA x)) 
-                (y \ inr A' B' (FB y)))
+                 (_ \ setSum A' B') 
+                 z 
+                 (x \ inl A' B' (FA x)) 
+                 (y \ inr A' B' (FB y)))
         .
-
-sumpippot Q 
-        :- spy (Z = (setSum singleton singleton))
-        ,  pi z\ locDecl z Z 
-        => spy(   Q 
-                  ext)
+equ (setSum A B) P 
+        :- isType A _ ext , equ A PA
+        ,  isType B _ ext , equ B PB
+        ,  P = (z\ z'\ or 
+               (exist (A) (x \ 
+                exist (A) (x'\ and (and 
+                        (propId (setSum A B) z  (inl A B x)) 
+                        (propId (setSum A B) z' (inl A B x')) ) 
+                        (PA x x')
+                ))) 
+               (exist (B) (x \ 
+                exist (B) (x'\ and (and 
+                        (propId (setSum A B) z  (inr A B x)) 
+                        (propId (setSum A B) z' (inr A B x')) ) 
+                        (PB x x')
+                )))
+        )
+        .
+pippoequ (inl A B X) (inl A B X') H 
+        :- pippoequ X X' K
+        ,  trad X Xi
+        ,  trad X' Xi'
+        ,  inl_or () 
+                  () 
+                  (pair_exist Xi (pair_exist Xi' 
+                  pair_and (pair_and 
+                        (id (setSum A B) (inl A B Xi)) 
+                        (id (setSum A B) (inl A B Xi'))) 
+                        (K)
+                  ))
         .
 
 trad (implies B C) (forall B' C') :-
