@@ -14,7 +14,7 @@ print_indent :- c_indent T,  print_dash T.
 print_dash [].
 print_dash [X|L] :- print "-", print_dash L.
 str_dash C [] "".
-str_dash C [_ | E] "" :- E = [], !.
+%str_dash C [_ | E] "" :- E = [], !.
 str_dash C [_ | L] S :- str_dash C L SS, S is (C ^ SS), !.
 
 indent_str C S N :- c_indent T, str_dash C T S, len_str T N.

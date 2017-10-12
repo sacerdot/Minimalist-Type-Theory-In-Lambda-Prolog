@@ -16,6 +16,22 @@ trad (inl A B Aa) (inl Ai Bi Aai')
         ,  Aai' = PIPPO Aa
         .
 
+pippo (setSum A B) (setSum A' B') F 
+        :- (pippo A A' FA)
+        ,  (pippo B B' FB)
+        ,  F = (z \elim_setSum 
+                (_\ setSum A' B') 
+                z 
+                (x \ inl A' B' (FA x)) 
+                (y \ inr A' B' (FB y)))
+        .
+
+sumpippot Q 
+        :- spy (Z = (setSum singleton singleton))
+        ,  pi z\ locDecl z Z 
+        => spy(   Q 
+                  ext)
+        .
 
 trad (implies B C) (forall B' C') :-
         trad B B',
