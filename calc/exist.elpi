@@ -1,52 +1,57 @@
 
+type exist mttType -> (mttTerm -> mttType) -> mttType.
+type and mttType -> mttType -> mttType.
+type pair_exist, pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
 
 %%%Exist
 
-isType (exist B C) prop :- 
-    isType B col,
-    (pi x\ of x B int => isType (C x) prop).
-isType (exist B C) props :- 
-    isType B set,
-    (pi x\ of x B int => isType (C x) props).
+isType (exist B C) KIND IE
+    :- isType B KIND1 IE
+    ,  (pi x\ locDecl x B  => isType (C x) KIND2 IE)
+    ,  pts_for KIND1 KIND2 KIND
+    .
+    
+of (pair_exist B C BB CC) (exist B C) IE 
+    :- isType B _ IE
+    ,  (isa BB B IE)
+    ,  (isa CC (C BB) IE)
+    ,  (pi x\ locDecl x B => isType (C x) _ IE)
+    .
 
-of (exist_p B C BB CC) (exist B C) int :- 
-        isType B col,
-        of BB B int,
-        of CC (C BB) int,
-        (pi x\ of x B int => isType (C x) prop).
+of (elim_exist Pair M MM) M IE 
+    :- of Pair (exist B C) IE
+    ,  isType M KIND IE
+    ,  pts_leq KIND propc
+    ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
+                of (MM x y) M IE)
+    .
 
+hstep (elim_exist W M MM) (MM Bb Cc) 
+    :- hnf W (pair B C Bb Cc)
+    ,  isa Bb B IE
+    ,  isa Cc (C Bb) IE
+    ,  (pi x \ pi y \ locDecl x B => of y (C x) =>  
+            of (MM x y) M IE)
+    .
 
-of (elim_exist Pair M MM) M int :-
-        of Pair (exist B C) int,
-        isType M prop,
-        (pi x \ pi y \
-            of x B int => of y (C x) int =>  
-                of (MM x y) M int ).
+dconv (pair_exist B C Bb Cc) (pair_exist B' C' Bb' Cc')
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    ,  (conv Bb Bb')
+    ,  (conv Cc Cc')
+    .
+dconv (elim_exist Pair M Mm) (elim_exist Pair' M' Mm') 
+    :- (conv Pair Pair')
+    ,  (of Pair (exist B C) IE)
+    ,  (pi x\ pi y\ locDecl x B => locDecl y (C x)
+        => conv (Mm x y) (Mm' x y))
+    ,  (conv M M')
+    .
 
-hstep (elim_exist (pair B C Bb Cc) M Mm) (Mm Bb Cc) :-
-    of Bb B int,
-    of Cc (C Bb) int,
-    (pi x \ pi y \
-        of x B int => of y (C x) int =>  
-            of (Mm x y) M  int).
-        
-dstep (exist_p B C BB CC) (exist_p B' C BB CC) :- dstep B B'.
-dstep (exist_p B C BB CC) (exist_p B C' BB CC) :- (pi x\ of x B int => dstep (C x) (C' x)).
-dstep (exist_p B C BB CC) (exist_p B C BB' CC) :- dstep BB BB'.
-dstep (exist_p B C BB CC) (exist_p B C BB CC') :- dstep CC CC'.
-
-dstep (elim_exist Pair M MM) (elim_exist Pair' M MM) :- dstep Pair Pair'.
-
-dstep (elim_exist Pair M MM) (elim_exist Pair M MM') :- 
-    of Pair (exist B C) int,
-    pi x\ pi y\ of x B int => of y (C x) int => dstep (MM x y) (MM' x y).
-
-dstep (elim_exist Pair M MM) (elim_exist Pair M' MM) :- dstep M M'.
-
-
-dstep (exist A B) (exist A' B) :- dstep A A'.
-dstep (exist A B) (exist A B') :- 
-    pi x\ of x A int => dstep (B x) (B' x).
+dconv (exist B C) (exist B' C') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x A => conv (C x) (C' x))
+    .
 
 
 
