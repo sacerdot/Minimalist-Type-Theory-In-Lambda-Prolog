@@ -35,7 +35,8 @@
 "trad.elpi:  19: Error: (setSum A' B') has type (X0^8 -> mttType) but is used with type mttType"
 "trad.elpi:  47: Error: (PIA Xi) has type mttTerm but is used with type mttType"
 "trad.elpi: 123: Warning: k_propId is undeclared"
-"trad.elpi: 163: Warning: k_propId is undeclared"
+"trad.elpi: 148: Warning: symmu is undeclared"
+"trad.elpi: 170: Warning: k_propId is undeclared"
 "test.elpi: 125: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X1^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
 "test.elpi: 125: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X2^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
 "test.elpi: 125: Error: (propEq singleton (fun_app x1 (eqId singleton star)) (fun_app x1 (eqId singleton star))) has type (X3^2 -> mttType) but is used with type (mttTerm -> mttTerm)"
@@ -731,6 +732,10 @@
 "__________10[+[Entering locDecl X70^12 (propEq _ x7 x6)
 "
 "..........10].]Leaving  locDecl X70^12 (propEq _ x7 x6)
+"
+"__________10[+[Entering locDecl X71^12 (propEq X72^12 x6 x7)
+"
+"__________10]-]Success  locDecl x8 (propEq (propEq singleton star x0) x6 x7)
 "
 ".........9].]Leaving  pippoequ x7 x6 X69^12
 "
