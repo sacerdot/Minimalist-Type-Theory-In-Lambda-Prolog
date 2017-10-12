@@ -737,6 +737,10 @@
 "
 "__________10]-]Success  locDecl x8 (propEq (propEq singleton star x0) x6 x7)
 "
+"__________10[+[Entering symmu (propEq singleton star x0) X73^12
+"
+"..........10].]Leaving  symmu (propEq singleton star x0) X73^12
+"
 ".........9].]Leaving  pippoequ x7 x6 X69^12
 "
 "........8].]Leaving  pippo (propEq (propEq singleton star star) x7 (eqId singleton star))

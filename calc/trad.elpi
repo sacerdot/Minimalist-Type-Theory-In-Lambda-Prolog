@@ -148,7 +148,7 @@ pippoequ A B H' :-
 pippoequ A B ( H'') :-
         spy(locDecl H (propEq T B A)),
         trad H H',
-        (symmu T Q),
+        spy (symmu T Q),
         H'' = Q H'
         .
         
