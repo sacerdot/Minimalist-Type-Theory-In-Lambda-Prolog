@@ -195,8 +195,8 @@ trad (setPi B C) T
 
 
 pippo (fun B C) (fun B' C') F
-        :- (pippo B' B FB)
-        ,  (pippo C C' FC)
-        ,  (trad C' Ci')
+        :- spy(pippo B' B FB)
+        ,  spy(pippo C C' FC)
+        ,  spy(trad C' Ci')
         ,  F = f\ fun_lam Ci' x\ FC (fun_app f (FB x))
         .
