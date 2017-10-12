@@ -6,37 +6,42 @@ type app mttTerm -> mttTerm -> mttTerm.
 
 
 
-isType (setPi B C) KIND3 IE :-
-    isType B KIND1 IE, 
-    pi x\ locDecl x B  => isType (C x) KIND2 IE,
-    spy(pts_fun KIND1 KIND2 KIND3)
+isType (setPi B C) KIND3 IE
+    :- (isType B KIND1 IE)
+    ,  (pi x\ locDecl x B
+        => (isType (C x) KIND2 IE))
+    ,  spy(pts_fun KIND1 KIND2 KIND3)
     .
 
-of (lambda B F) (setPi B C) IE :-
-        (isType B _ IE),
-        (pi x\ locDecl x B => isa (F x) (C x) IE).
+of (lambda B F) (setPi B C) IE
+    :- (isType B _ IE)
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
+    .
 
-of (app Lam X) (C X) IE :- 
-        isa (Lam) (setPi B C) IE,
-        isa X B IE. 
+of (app Lam X) (C X) IE
+    :- (of Lam (setPi B C) IE)
+    ,  (isa X B IE)
+    .
 
 
-hstep (app LAM Bb) (F Bb) :- 
-        hnf LAM (lambda B F),
-        isType B KIND1 IE,
-        isa Bb B IE,
-        (pi x\ locDecl x B => isa (F x) (C x) IE ),
-        (pi x\ locDecl x B => isType (C x) KIND2 IE ).
+hstep (app LAM Bb) (F Bb)
+    :- of LAM (setPi B C) IE
+    ,  (isType B _ IE)
+    ,  (isa Bb B IE)
+    ,  hnf LAM (lambda B' F)
+    ,  conv B B'
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
+    ,  (pi x\ locDecl x B => isType (C x) _ IE)
+    .
 
-dconv (setPi B C) (setPi B' C') :- 
-        (conv B B'), 
-        (pi x\ locDecl x B => conv (C x) (C' x)).
+dconv (setPi B C) (setPi B' C') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    .
 dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
-dconv (lambda B F) (lambda B' F') :- (conv B B'), 
-        pi x\ locDecl x B =>
-                %locDecl x' B' =>
-                %hstep x x'    => 
-                (conv (F x) (F' x)).
+dconv (lambda B F) (lambda B' F') 
+    :- (conv B B')
+    ,  pi x\  locDecl x B => (conv (F x) (F' x)).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -48,27 +53,30 @@ type fun_app    mttTerm -> mttTerm -> mttTerm.
 
 
 
-isType (fun B C) KIND3 IE :-
-    spy(isType B KIND1 IE), 
-    spy((pi x\ locDecl x B  => isType C KIND2 IE)),
-    spy(pts_fun KIND1 KIND2 KIND3).
+isType (fun B C) KIND3 IE
+    :- spy(isType B KIND1 IE)
+    ,  spy((pi x\ locDecl x B  => isType C KIND2 IE))
+    ,  spy(pts_fun KIND1 KIND2 KIND3)
+    .
 
-of (fun_lam B F) (fun B C) IE :-
-        isType B _ IE,
-        (pi x\ locDecl x B => isType C _ IE),
-        (pi x\ locDecl x B => of (F x) C IE).
+of (fun_lam B F) (fun B C) IE 
+    :- isType B _ IE
+    ,  (pi x\ locDecl x B => isType C _ IE)
+    ,  (pi x\ locDecl x B => of (F x) C IE)
+    .
 
-of (fun_app Lam X) C IE :-
-spy        (isa (Lam) (fun B C) IE),
+of (fun_app Lam X) C IE
+    :- spy(isa (Lam) (fun B C) IE)
+    ,  spy(isa X B IE)
+    .
 
-spy        (isa X B IE).
-        
-hstep (fun_app LAM Bb) (F Bb) :- 
-        hnf LAM (fun_lam B F),
-        isType B KIND IE,
-        isa Bb B IE,
-        (pi x\ locDecl x B => isa (F x) C IE ),
-        (pi x\ locDecl x B => isType C KIND IE ).
+hstep (fun_app LAM Bb) (F Bb)
+    :- hnf LAM (fun_lam B F)
+    ,  (isType B KIND IE)
+    ,  (isa Bb B IE)
+    ,  (pi x\ locDecl x B => isa (F x) C IE )
+    ,  (pi x\ locDecl x B => isType C KIND IE )
+    .
 
 dconv (fun B C) (fun B' C') :- spy(conv B B'), spy(conv C C').
 dconv (fun_app F X) (fun_app F' X') :- spy(conv F F'), spy(conv X X').
