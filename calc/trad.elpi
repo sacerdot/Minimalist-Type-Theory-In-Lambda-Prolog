@@ -169,7 +169,7 @@ trad (setPi B C) T
     :- spy(trad B Bi)
     ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
     ,  spy(equ B EquB)
-    ,  spy(pi x\ locDecl x B => equ (C x) (EquC x))
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => equ (C x) (EquC xi))
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
         => locDecl x1i Bi
