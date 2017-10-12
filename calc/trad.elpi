@@ -62,7 +62,7 @@ pippoequ (inl A B X) (inl A B X') H
                          (PB x x')
                    ))) 
                   (pair_exist Xi (pair_exist Xi' 
-                  pair_and (pair_and 
+                   pair_and (pair_and 
                         (id (setSum A B) (inl A B Xi)) 
                         (id (setSum A B) (inl A B Xi'))) 
                         (K)
