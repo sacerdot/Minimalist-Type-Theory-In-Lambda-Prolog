@@ -32,11 +32,11 @@ testG A Q Qy
             )
         )
         ),
-    spy(isType Long A ext),
+    %spy(isType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(trad Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(isType Q Qy int)
+  %,  spy(isType Q Qy int)
     .
 
 
