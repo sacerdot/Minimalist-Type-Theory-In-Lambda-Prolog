@@ -172,7 +172,7 @@ trad (setPi B C) T
         => (locDecl h (propEq B x1 x2)) 
         => (locDecl hi (EquB x1i x2i))
         => trad h hi
-        => (pippo (C x1) (C x2) (PippoC x1i x2i hi)))
+        => spy(pippo (C x1) (C x2) (PippoC x1i x2i hi)))
     ,  T = colSigma (setPi Bi Ci) f\ (forall (Bi) x1\ (forall Bi x2\ (forall (EquB x1 x2) h\
     (
             EquC x2 

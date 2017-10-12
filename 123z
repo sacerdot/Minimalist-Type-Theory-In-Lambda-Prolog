@@ -580,6 +580,95 @@
    fun (propEq (propEq singleton star star) x6 (eqId singleton star))
     singleton) (X49 x1 x3 x5)
 "
+"______6[+[Entering trad (propEq singleton star x0) X50^6
+"
+"_______7[+[Entering equ singleton X51^6
+"
+"_______7]-]Success  equ singleton x6 \ x7 \ propId singleton x6 x7
+"
+"_______7[+[Entering trad star X52^6
+"
+"_______7]-]Success  trad star star
+"
+"_______7[+[Entering trad x0 X53^6
+"
+"_______7]-]Success  trad x0 x1
+"
+"_______7[+[Entering X50^6 = propId singleton star x1
+"
+"_______7]-]Success  propId singleton star x1 = propId singleton star x1
+"
+"______6]-]Success  trad (propEq singleton star x0) (propId singleton star x1)
+"
+"______6[+[Entering pi x6 \
+ pi x7 \
+  locDecl x6 (propEq singleton star x0) =>
+   locDecl x7 (propId singleton star x1) =>
+    trad x6 x7 =>
+     trad
+      (fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+        singleton) (X54^6 x7)
+"
+"_______7[+[Entering trad (propEq (propEq singleton star star) x6 (eqId singleton star)) X55^8
+"
+"________8[+[Entering equ (propEq singleton star star) X56^8
+"
+"________8]-]Success  equ (propEq singleton star star) x8 \ x9 \ propId singleton star star
+"
+"________8[+[Entering trad x6 X57^8
+"
+"________8]-]Success  trad x6 x7
+"
+"________8[+[Entering trad (eqId singleton star) X58^8
+"
+"________8]-]Success  trad (eqId singleton star) (id singleton star)
+"
+"________8[+[Entering X55^8 = propId singleton star star
+"
+"________8]-]Success  propId singleton star star = propId singleton star star
+"
+"_______7]-]Success  trad (propEq (propEq singleton star star) x6 (eqId singleton star))
+ (propId singleton star star)
+"
+"_______7[+[Entering trad singleton X59^8
+"
+"_______7]-]Success  trad singleton singleton
+"
+"_______7[+[Entering equ (propEq (propEq singleton star star) x6 (eqId singleton star)) X60^8
+"
+"_______7]-]Success  equ (propEq (propEq singleton star star) x6 (eqId singleton star)) x8 \ x9 \
+ propId singleton star star
+"
+"______6]-]Success  pi x6 \
+ pi x7 \
+  locDecl x6 (propEq singleton star x0) =>
+   locDecl x7 (propId singleton star x1) =>
+    trad x6 x7 =>
+     trad
+      (fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+        singleton)
+      (colSigma (fun (propId singleton star star) singleton) x8 \
+        forall (propId singleton star star) x9 \
+         forall (propId singleton star star) x10 \
+          forall (propId singleton star star) x11 \
+           propId singleton (fun_app x8 x9) (fun_app x8 x10))
+"
+"______6[+[Entering equ (propEq singleton star x0) X61^6
+"
+"______6]-]Success  equ (propEq singleton star x0) x6 \ x7 \ propId singleton star star
+"
+"______6[+[Entering pi x6 \
+ locDecl x6 (propEq singleton star x0) =>
+  equ
+   (fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+     singleton) (X62^6 x6)
+"
+"......6].]Leaving  pi x6 \
+ locDecl x6 (propEq singleton star x0) =>
+  equ
+   (fun (propEq (propEq singleton star star) x6 (eqId singleton star))
+     singleton) (X62^6 x6)
+"
 ".....5].]Leaving  trad
  (setPi (propEq singleton star x0) x6 \
    fun (propEq (propEq singleton star star) x6 (eqId singleton star))
