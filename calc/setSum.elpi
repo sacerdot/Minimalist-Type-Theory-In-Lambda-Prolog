@@ -8,14 +8,14 @@ isType (setSum A B) KIND IE :- isType A KIND1 IE, isType B KIND2 IE,
     pts_fun KIND1 KIND2 KIND.
 
 of (inr A B Bb) (setSum A B) IE 
-    :- isType B set IE
-     , isType A set IE
+    :- isType B _ IE
+     , isType A _ IE
      , isa Bb B IE
      .
 
-of (inl A B AA) (setSum A B) IE  
-    :- isType A set IE
-     , isType B set IE
+of (inl A B Aa) (setSum A B) IE  
+    :- isType A _ IE
+     , isType B _ IE
      , isa Aa A IE
      .
 

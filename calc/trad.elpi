@@ -6,6 +6,16 @@ trad (forall B C) (forall B' C') :-
 
 trad singleton singleton.
 trad star star.
+trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
+trad (inl A B Aa) (inl Ai Bi Aai') 
+        :- trad A Ai
+        ,  trad B Bi
+        ,  of Aa A' ext
+        ,  pippo A' A PIPPO
+        ,  trad Aa Aai
+        ,  Aai' = PIPPO Aa
+        .
+
 
 trad (implies B C) (forall B' C') :-
         trad B B',

@@ -13,22 +13,22 @@ print_indent :- c_indent T,  print_dash T.
 
 print_dash [].
 print_dash [X|L] :- print "-", print_dash L.
-str_dash [] "".
-str_dash [_ | E] "" :- E = [], !.
-str_dash [_ | L] S :- str_dash L SS, S is ("-" ^ SS), !.
+str_dash C [] "".
+str_dash C [_ | E] "" :- E = [], !.
+str_dash C [_ | L] S :- str_dash C L SS, S is (C ^ SS), !.
 
-indent_str S N :- c_indent T, str_dash T S, len_str T N.
-print_indent S N :- indent_str S N.
+indent_str C S N :- c_indent T, str_dash C T S, len_str T N.
+print_indent C S N :- indent_str C S N.
 
-bracket Pre G Post :- print_indent I N, term_to_string G S, 
+bracket IC Pre G Post :- print_indent IC I N, term_to_string G S, 
     Q is (I ^ N ^ Pre ^ S ^ Post), print Q.
 
-announce G :- bracket ">>" G "\n", fail.
+announce G :- bracket " " ">>" G "\n", fail.
 
 spy G :- c_indent T, indent [0 | T] => spy2 G.
 
-spy2 G :-  (bracket "[+[Entering " G "\n", G, bracket "]-]Success  " G "\n") , !. 
-spy2 G :-  bracket "].]Leaving  " G "\n",  fail.
+spy2 G :-  (bracket "_" "[+[Entering " G "\n", G, bracket "_" "]-]Success  " G "\n") , !. 
+spy2 G :-  bracket "." "].]Leaving  " G "\n",  fail.
 
 
 

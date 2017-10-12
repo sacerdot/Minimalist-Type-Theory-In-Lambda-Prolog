@@ -15,6 +15,43 @@ accumulate calc/setSum.
 accumulate calc/forall.
 accumulate calc/trad.
 
+
+
+testSUM A Q Qy
+ :- Long = (
+    forall (setSum singleton singleton) x\
+     forall (fun (propEq (setSum singleton singleton) x (inl singleton singleton star)) 
+                 (setSum singleton singleton)) f\
+            (implies (propEq (setSum singleton singleton)
+                             (inl singleton singleton star) 
+                             x)
+                     (propEq (setSum singleton singleton) 
+                             (fun_app f 
+                                      (eqId (setSum singleton singleton) 
+                                            (inl singleton singleton star))) 
+                             (fun_app f 
+                                      (eqId (setSum singleton singleton) 
+                                            (inl singleton singleton star)))
+            )
+        )
+        ),
+    spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(isType Q Qy int)
+    .
+
+
+
+
+
+
+
+
+
+
+
 testB  :- pi X\ pi Y\ (locDecl _ (propEq singleton X Y) => spy(conv X Y)). 
 
 
@@ -213,3 +250,4 @@ spy_depth N :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
 spy_add [0|LL] :- sigma L\ spy_indent L , pi L'\ spy_indent L' => sublist L' L.
 
 */
+
