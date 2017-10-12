@@ -143,8 +143,15 @@ pippoequ A A (id T' A' ) :-
         trad A A',
         of A' T' int.
 pippoequ A B H' :-
-        spy(locDecl H (propEq _ A B)),
+        spy(locDecl H (propEq _ A B)), !,
         trad H H'.
+pippoequ A B ( H'') :-
+        spy(locDecl H (propEq T B A)),
+        trad H H',
+        (symmu T Q),
+        H'' = Q H'
+        .
+        
 
 pippoequ (fun_app F X1) (fun_app F X2) H :-
         spy(pippoequ X1 X2 G),
