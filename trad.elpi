@@ -90,10 +90,12 @@ trad (propEq A Aa1 Aa2) R
     ,  spy(R = (EquA Aa1' Aa2'))
     .
 
-trad (eqId  A Aa)  (ReflA Aa') 
-    :- reflu A ReflA
-    ,  trad Aa Aa'
+trad (eqId  A Aa)  T
+    :- spy(reflu A ReflA)
+    ,  spy(trad Aa Aa')
+    ,  T = (ReflA Aa') 
     .
+reflu (propEq A Aa Aa) (id A Aa).
 
 trad (fun B C) R 
     :- spy(trad B B')
@@ -117,6 +119,16 @@ trad (fun_app F X) R
     ,  spy( of F' T int)
     ,  spy(T = (colSigma B' _))
     ,  R = (fun_app (elim_colSigma F' (_\B') (x\y\x) ) (PIPPO X'))
+    .
+trad (app F X) R 
+    :- spy(of F (setPi B C) ext)
+    ,  spy(of X B2 ext)
+    ,  spy(pippo B2 B PIPPO)
+    ,  spy(trad X X')
+    ,  spy(trad F F')
+    ,  spy( of F' T int)
+    ,  spy(T = (colSigma B' _))
+    ,  R = (app (elim_colSigma F' (_\B') (x\y\x) ) (PIPPO X'))
     .
 
 equ singleton (x\ y\ propId singleton x y).

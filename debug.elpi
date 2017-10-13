@@ -27,8 +27,8 @@ announce G :- bracket " " ">>" G "\n", fail.
 
 spy G :- c_indent T, indent [0 | T] => spy2 G.
 
-spy2 G :-  (bracket "_" "[+[Entering " G "\n", G, bracket "_" "]-]Success  " G "\n") , !. 
-spy2 G :-  bracket "." "].]Leaving  " G "\n",  fail.
+spy2 G :-  (bracket "_" "[+[Begin " G "\n", G, bracket "_" "]-]Success  " G "\n") , !. 
+spy2 G :-  bracket "." "].]Fail  " G "\n",  fail.
 
 
 
