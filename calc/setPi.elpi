@@ -84,11 +84,11 @@ trad (app F X) R
     :- spy(of F (setPi B C) ext)
     ,  spy(of X B2 ext)
     ,  spy(pippo B2 B PIPPO)
-    ,  spy(trad X X')
-    ,  spy(trad F F')
-    ,  spy( of F' T int)
-    ,  spy(T = (colSigma B' _))
-    ,  R = (app (elim_colSigma F' (_\B') (x\y\x) ) (PIPPO X'))
+    ,  spy(trad X Xi)
+    ,  spy(trad F Fi)
+    ,  spy(of Fi T int)
+    ,  spy(T = (colSigma Bi _))
+    ,  R = (app (elim_colSigma Fi (_\Bi) (x\y\x) ) (PIPPO Xi))
     .
 
 
@@ -97,13 +97,15 @@ equ (setPi B C) P
     ,  (pi x\pi xi\locDecl x B 
         => locDecl xi Bi
             => trad x xi
-                => (trad (C x) (Ci x), equ (C x) (EquC x))
-       )
-    ,  P = (f\ g\ forall Bi x\ EquC (fun_app f x) (fun_app g x))
+                => (trad (C x) (Ci x), equ (C x) (EquC x)))
+    ,  P = (f\ g\ 
+        forall Bi x\ 
+            EquC x 
+            (app (elim_colSigma f (_\Bi) (x\y\x) ) x) 
+            (app (elim_colSigma g (_\Bi) (x\y\x) ) x))
     .
 
-
-pippoequ (fun_app F X1) (fun_app F X2) H 
+pippoequ (app F X1) (app F X2) H 
     :- spy(pippoequ X1 X2 G)
     ,  spy(trad F F')
     ,  spy(of F' (colSigma TyF MorF) int)
