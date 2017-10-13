@@ -38,3 +38,60 @@ dconv (fun_lam B F) (fun_lam B' F')
     ,  (pi x\ locDecl x B 
         => spy(conv (F x) (F' x)))
     .
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   TRADUZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+trad (fun B C) R 
+    :- spy(trad B B')
+    ,  spy(trad C C')
+    ,  spy(equ B EquB)
+    ,  equ C EquC
+    ,  R = (colSigma (fun B' C') h\ 
+               forall B' y1\ 
+                   forall B' y2\ 
+                       forall (EquB y1 y2) d\ 
+                           EquC (fun_app h y1 ) (fun_app h y2)
+        )
+    .
+
+trad (fun_app F X) R 
+    :- spy(of F (fun B C) ext)
+    ,  spy(of X B2 ext)
+    ,  spy(pippo B2 B PIPPO)
+    ,  spy(trad X X')
+    ,  spy(trad F F')
+    ,  spy( of F' T int)
+    ,  spy(T = (colSigma B' _))
+    ,  R = (fun_app (elim_colSigma F' (_\B') (x\y\x) ) (PIPPO X'))
+    .
+
+
+equ (fun B C) P
+    :- trad B Bi
+    ,  trad C Ci , equ C EquC
+    ,  P = (f\ g\ forall Bi x\ EquC (fun_app f x) (fun_app g x))
+    .
+
+
+pippoequ (fun_app F X1) (fun_app F X2) H 
+    :- spy(pippoequ X1 X2 G)
+    ,  spy(trad F F')
+    ,  spy(of F' (colSigma TyF MorF) int)
+    ,  PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x))
+    ,  P2F' = elim_colSigma F' (c \ MorF (PI1 c)) (x\ y\ y)
+    ,  spy(trad X1 X1')
+    ,  spy(trad X2 X2')
+    ,  H = forall_app (forall_app (forall_app P2F' X1') X2') G
+    .
+
+
+
+pippo (fun B C) (fun B' C') F
+    :- spy(pippo B' B FB)
+    ,  spy(pippo C C' FC)
+    ,  spy(trad C' Ci')
+    ,  F = f\ fun_lam Ci' x\ FC (fun_app f (FB x))
+    .
