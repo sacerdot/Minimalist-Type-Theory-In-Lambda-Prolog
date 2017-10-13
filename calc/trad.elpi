@@ -1,4 +1,3 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 trad (forall B C) (forall B' C') :-
         spy (trad B B'),
@@ -155,23 +154,24 @@ pippoequ A B H'
     ,  trad H H'
     .
 pippoequ A B ( H'')
-    :-
-        spy(locDecl H (propEq T B A)),
-        trad H H',
-        spy (symmu T Q),
-        H'' = Q H'
-        .
- symmu T (x\ fixMEEEEEE).       
+    :- spy(locDecl H (propEq T B A))
+    ,  trad H H'
+    ,  spy (symmu T Q)
+    ,  H'' = Q H'
+    .
 
-pippoequ (fun_app F X1) (fun_app F X2) H :-
-        spy(pippoequ X1 X2 G),
-        spy(trad F F'),
-        spy(of F' (colSigma TyF MorF) int),
-        PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x)),
-        P2F' = elim_colSigma F' (c \ MorF (PI1 c)) (x\ y\ y),
-        spy(trad X1 X1'),
-        spy(trad X2 X2'),
-        H = forall_app (forall_app (forall_app P2F' X1') X2') G. 
+symmu T (x\ fixMEEEEEE).
+
+pippoequ (fun_app F X1) (fun_app F X2) H 
+    :- spy(pippoequ X1 X2 G)
+    ,  spy(trad F F')
+    ,  spy(of F' (colSigma TyF MorF) int)
+    ,  PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x))
+    ,  P2F' = elim_colSigma F' (c \ MorF (PI1 c)) (x\ y\ y)
+    ,  spy(trad X1 X1')
+    ,  spy(trad X2 X2')
+    ,  H = forall_app (forall_app (forall_app P2F' X1') X2') G
+    .
 
 
 
