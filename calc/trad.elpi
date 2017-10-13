@@ -88,23 +88,29 @@ trad (eqId  A Aa)  (ReflA Aa') :-
         reflu A ReflA,
         trad Aa Aa'.
 
-trad (fun B C) R :-
-        spy(trad B B') ,
-        spy(trad C C') ,
-        spy(equ B EquB) ,
-        equ C EquC,
-        R = (colSigma (fun B' C') h\ forall B' y1\ forall B' y2\ 
-        forall (EquB y1 y2) d\ EquC (fun_app h y1 ) (fun_app h y2))
-        .
-trad (fun_app F X) R :-
-        spy(of F (fun B C) ext),
-        spy(of X B2 ext),
-        spy(pippo B2 B PIPPO),
-        spy(trad X X'),
-        spy(trad F F'),
-        spy( of F' T int),
-        spy(T = (colSigma B' _)),
-        R = (fun_app (elim_colSigma F' (_\B') (x\y\x) ) (PIPPO X')).
+trad (fun B C) R 
+    :- spy(trad B B')
+    ,  spy(trad C C')
+    ,  spy(equ B EquB)
+    ,  equ C EquC
+    ,  R = (colSigma (fun B' C') h\ 
+               forall B' y1\ 
+                   forall B' y2\ 
+                       forall (EquB y1 y2) d\ 
+                           EquC (fun_app h y1 ) (fun_app h y2)
+        )
+    .
+
+trad (fun_app F X) R 
+    :- spy(of F (fun B C) ext)
+    ,  spy(of X B2 ext)
+    ,  spy(pippo B2 B PIPPO)
+    ,  spy(trad X X')
+    ,  spy(trad F F')
+    ,  spy( of F' T int)
+    ,  spy(T = (colSigma B' _))
+    ,  R = (fun_app (elim_colSigma F' (_\B') (x\y\x) ) (PIPPO X'))
+    .
 
 equ singleton (x\ y\ propId singleton x y).
 reflu singleton (x\ id singleton x).
@@ -112,40 +118,44 @@ reflu singleton (x\ id singleton x).
 equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 equ (fun B C) P
-        :- trad B Bi
-        ,  trad C Ci , equ C EquC
-        ,  P = (f\ g\ forall Bi x\ EquC (fun_app f x) (fun_app g x))
-        .
+    :- trad B Bi
+    ,  trad C Ci , equ C EquC
+    ,  P = (f\ g\ forall Bi x\ EquC (fun_app f x) (fun_app g x))
+    .
 
 
 pippo A A x \ x.
- 
-pippo (propEq T T1 T2) (propEq T T1' T2') (F) :- 
-        spy(pippoequ T1 T1' F1),
-        spy(pippoequ T2 T2' F2),
-        spy(trad T1 T1i),
-        spy(trad T2 T2i),
-        spy(trad T1' T1i'),
-        spy(trad T2' T2i'),
-        spy(trad T Ti),
-        F = x\ impl_app ( 
+
+pippo (propEq T T1 T2) (propEq T T1' T2') (F)
+    :- spy(pippoequ T1 T1' F1)
+    ,  spy(pippoequ T2 T2' F2)
+    ,  spy(trad T1 T1i)
+    ,  spy(trad T2 T2i)
+    ,  spy(trad T1' T1i')
+    ,  spy(trad T2' T2i')
+    ,  spy(trad T Ti)
+    ,  F = x\ impl_app ( 
                 impl_app ( 
                  forall_app ( 
                   forall_app ( 
                    impl_app ( 
                     forall_app ( 
-                     forall_app (k_propId Ti) T1i) T1i') F1) T2i) T2i') F2)  x.
- 
+                     forall_app (k_propId Ti) T1i) T1i') F1) T2i) T2i') F2) x
+    .
+
 % supponiamo che conv X Y per poter usare pippoequ X Y H
 %       H è la prova che i tradotti siano uguali nel loro setoide
-% RINOMINARE pippoequ in tradConv
-pippoequ A A (id T' A' ) :-
-        trad A A',
-        of A' T' int.
-pippoequ A B H' :-
-        spy(locDecl H (propEq _ A B)), !,
-        trad H H'.
-pippoequ A B ( H'') :-
+
+pippoequ A A (id T' A' )
+    :- trad A A'
+    ,  of A' T' int
+    .
+pippoequ A B H'
+    :- spy(locDecl H (propEq _ A B)), !
+    ,  trad H H'
+    .
+pippoequ A B ( H'')
+    :-
         spy(locDecl H (propEq T B A)),
         trad H H',
         spy (symmu T Q),
