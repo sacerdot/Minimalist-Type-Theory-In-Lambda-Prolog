@@ -72,20 +72,28 @@ pippoequ (inl A B X) (inl A B X') H
                   ))
         .
 
-trad (implies B C) (forall B' C') :-
-        trad B B',
-        spy(pi x\ pi x'\ (trad x x', locDecl x B, locDecl x' B') => trad C (C' x')) .
+trad (implies B C) (forall B' C') 
+    :- trad B B'
+    ,  spy(pi x\ pi x'\ 
+        (  trad x x'
+        ,  locDecl x B
+        ,  locDecl x' B') 
+            =>  trad C (C' x')
+    )
+    .
 
 
-trad (propEq A Aa1 Aa2) R :-
-        spy(equ  A EquA),
-        spy(trad Aa1 Aa1'),
-        spy (trad Aa2 Aa2'),
-        spy(R = (EquA Aa1' Aa2')).
+trad (propEq A Aa1 Aa2) R 
+    :- spy(equ  A EquA)
+    ,  spy(trad Aa1 Aa1')
+    ,  spy (trad Aa2 Aa2')
+    ,  spy(R = (EquA Aa1' Aa2'))
+    .
 
-trad (eqId  A Aa)  (ReflA Aa') :-
-        reflu A ReflA,
-        trad Aa Aa'.
+trad (eqId  A Aa)  (ReflA Aa') 
+    :- reflu A ReflA
+    ,  trad Aa Aa'
+    .
 
 trad (fun B C) R 
     :- spy(trad B B')

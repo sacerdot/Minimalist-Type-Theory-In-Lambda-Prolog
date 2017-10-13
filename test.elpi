@@ -17,7 +17,7 @@ accumulate calc/or.
 accumulate calc/setPi.
 accumulate calc/setSum.
 accumulate calc/singleton.
-accumulate calc/trad.
+accumulate trad.
 
 
 testZ A B C
