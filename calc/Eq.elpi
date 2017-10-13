@@ -7,11 +7,12 @@ type eqId   mttType -> mttTerm -> mttTerm.
 pts_eq K props :- pts_leq K set, !.
 pts_eq _ propc.
 
-isType (propEq A AA1 AA2) KIND ext :-
-    isType A KIND' ext,
-    pts_eq KIND' KIND,
-    isa AA1 A ext,
-    isa AA2 A ext.
+isType (propEq A AA1 AA2) KIND ext 
+    :- isType A KIND' ext
+    ,  pts_eq KIND' KIND
+    ,  isa AA1 A ext
+    ,  isa AA2 A ext
+    .
 
 
 of (eqId C Cc) (propEq C Cc Cc) ext
