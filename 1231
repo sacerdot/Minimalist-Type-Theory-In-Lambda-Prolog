@@ -2674,7 +2674,7 @@
            fun (propId singleton star star) singleton) x4 \ x5 \ x4)
          (id singleton star (id singleton star))) star)
 "
-"_1[+[Begin of
+"_1[+[Begin isType
  (forall singleton x0 \
    forall (propId singleton x0 star) x1 \
     forall (propId singleton star x0) x2 \
@@ -2729,58 +2729,1087 @@
            fun (propId singleton star star) singleton) x4 \ x5 \ x4)
          (id singleton star (id singleton star))) star) X199 int
 "
-".1].]Fail  of
- (forall singleton x0 \
-   forall (propId singleton x0 star) x1 \
-    forall (propId singleton star x0) x2 \
-     forall
-      (colSigma
-        (setPi (propId singleton star x0) x3 \
-          colSigma (fun (propId singleton star star) singleton) x4 \
-           forall (propId singleton star star) x5 \
+"__2[+[Begin isType singleton X200 int
+"
+"__2]-]Success  isType singleton set int
+"
+"__2[+[Begin pi x0 \
+ locDecl x0 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x0 star) x1 \
+       forall (propId singleton star x0) x2 \
+        forall
+         (colSigma
+           (setPi (propId singleton star x0) x3 \
+             colSigma (fun (propId singleton star star) singleton) x4 \
+              forall (propId singleton star star) x5 \
+               forall (propId singleton star star) x6 \
+                forall (propId singleton star star) x7 \
+                 propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+           forall (propId singleton star x0) x4 \
+            forall (propId singleton star x0) x5 \
+             forall (propId singleton star star) x6 \
+              forall (propId singleton star star) x7 \
+               propId singleton
+                (fun_app
+                  (fun_lam singleton x8 \
+                    fun_app (app x3 x4)
+                     (impl_app
+                       (impl_app
+                         (forall_app
+                           (forall_app
+                             (impl_app
+                               (forall_app
+                                 (forall_app
+                                   (k_propId (propId singleton star star)) x5)
+                                 x4) fixMEEEEEE) (id singleton star))
+                           (id singleton star))
+                         (id (propId singleton star star) (id singleton star)))
+                       x8)) x7) (fun_app (app x3 x5) x7)) x3 \
+         propId singleton
+          (fun_app
+            (elim_colSigma
+              (app
+                (elim_colSigma x3 (x4 \
+                  setPi (propId singleton star x0) x5 \
+                   colSigma (fun (propId singleton star star) singleton) x6 \
+                    forall (propId singleton star star) x7 \
+                     forall (propId singleton star star) x8 \
+                      forall (propId singleton star star) x9 \
+                       propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \
+                  x5 \ x4)
+                (impl_app
+                  (impl_app
+                    (forall_app
+                      (forall_app
+                        (impl_app
+                          (forall_app (forall_app (k_propId singleton) star)
+                            star) (id singleton star)) star) x0) x2)
+                  (id singleton star))) (x4 \
+              fun (propId singleton star star) singleton) x4 \ x5 \ x4)
+            (id singleton star (id singleton star))) star) X201 int)
+"
+"___3[+[Begin isType
+ (forall (propId singleton x0 star) x1 \
+   forall (propId singleton star x0) x2 \
+    forall
+     (colSigma
+       (setPi (propId singleton star x0) x3 \
+         colSigma (fun (propId singleton star star) singleton) x4 \
+          forall (propId singleton star star) x5 \
+           forall (propId singleton star star) x6 \
+            forall (propId singleton star star) x7 \
+             propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+       forall (propId singleton star x0) x4 \
+        forall (propId singleton star x0) x5 \
+         forall (propId singleton star star) x6 \
+          forall (propId singleton star star) x7 \
+           propId singleton
+            (fun_app
+              (fun_lam singleton x8 \
+                fun_app (app x3 x4)
+                 (impl_app
+                   (impl_app
+                     (forall_app
+                       (forall_app
+                         (impl_app
+                           (forall_app
+                             (forall_app
+                               (k_propId (propId singleton star star)) x5) x4)
+                           fixMEEEEEE) (id singleton star))
+                       (id singleton star))
+                     (id (propId singleton star star) (id singleton star)))
+                   x8)) x7) (fun_app (app x3 x5) x7)) x3 \
+     propId singleton
+      (fun_app
+        (elim_colSigma
+          (app
+            (elim_colSigma x3 (x4 \
+              setPi (propId singleton star x0) x5 \
+               colSigma (fun (propId singleton star star) singleton) x6 \
+                forall (propId singleton star star) x7 \
+                 forall (propId singleton star star) x8 \
+                  forall (propId singleton star star) x9 \
+                   propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \
+              x5 \ x4)
+            (impl_app
+              (impl_app
+                (forall_app
+                  (forall_app
+                    (impl_app
+                      (forall_app (forall_app (k_propId singleton) star) star)
+                      (id singleton star)) star) x0) x2) (id singleton star)))
+          (x4 \ fun (propId singleton star star) singleton) x4 \ x5 \ x4)
+        (id singleton star (id singleton star))) star) X201 int
+"
+"____4[+[Begin isType (propId singleton x0 star) X202^1 int
+"
+"_____5[+[Begin of x0 X203^1 int
+"
+"_____5]-]Success  of x0 singleton int
+"
+"_____5[+[Begin conv singleton singleton
+"
+"_____5]-]Success  conv singleton singleton
+"
+"_____5[+[Begin of star X204^1 int
+"
+"_____5]-]Success  of star singleton int
+"
+"_____5[+[Begin conv singleton singleton
+"
+"_____5]-]Success  conv singleton singleton
+"
+"_____5[+[Begin (pts_leq set set),
+(X202^1 = props)
+"
+"_____5]-]Success  (pts_leq set set),
+(props = props)
+"
+"____4]-]Success  isType (propId singleton x0 star) props int
+"
+"____4[+[Begin pi x1 \
+ locDecl x1 (propId singleton x0 star) =>
+  spy
+   (isType
+     (forall (propId singleton star x0) x2 \
+       forall
+        (colSigma
+          (setPi (propId singleton star x0) x3 \
+            colSigma (fun (propId singleton star star) singleton) x4 \
+             forall (propId singleton star star) x5 \
+              forall (propId singleton star star) x6 \
+               forall (propId singleton star star) x7 \
+                propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+          forall (propId singleton star x0) x4 \
+           forall (propId singleton star x0) x5 \
             forall (propId singleton star star) x6 \
              forall (propId singleton star star) x7 \
-              propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
-        forall (propId singleton star x0) x4 \
-         forall (propId singleton star x0) x5 \
+              propId singleton
+               (fun_app
+                 (fun_lam singleton x8 \
+                   fun_app (app x3 x4)
+                    (impl_app
+                      (impl_app
+                        (forall_app
+                          (forall_app
+                            (impl_app
+                              (forall_app
+                                (forall_app
+                                  (k_propId (propId singleton star star)) x5)
+                                x4) fixMEEEEEE) (id singleton star))
+                          (id singleton star))
+                        (id (propId singleton star star) (id singleton star)))
+                      x8)) x7) (fun_app (app x3 x5) x7)) x3 \
+        propId singleton
+         (fun_app
+           (elim_colSigma
+             (app
+               (elim_colSigma x3 (x4 \
+                 setPi (propId singleton star x0) x5 \
+                  colSigma (fun (propId singleton star star) singleton) x6 \
+                   forall (propId singleton star star) x7 \
+                    forall (propId singleton star star) x8 \
+                     forall (propId singleton star star) x9 \
+                      propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \
+                 x5 \ x4)
+               (impl_app
+                 (impl_app
+                   (forall_app
+                     (forall_app
+                       (impl_app
+                         (forall_app (forall_app (k_propId singleton) star)
+                           star) (id singleton star)) star) x0) x2)
+                 (id singleton star))) (x4 \
+             fun (propId singleton star star) singleton) x4 \ x5 \ x4)
+           (id singleton star (id singleton star))) star) X205^1 int)
+"
+"_____5[+[Begin isType
+ (forall (propId singleton star x0) x2 \
+   forall
+    (colSigma
+      (setPi (propId singleton star x0) x3 \
+        colSigma (fun (propId singleton star star) singleton) x4 \
+         forall (propId singleton star star) x5 \
           forall (propId singleton star star) x6 \
            forall (propId singleton star star) x7 \
-            propId singleton
-             (fun_app
-               (fun_lam singleton x8 \
-                 fun_app (app x3 x4)
+            propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+      forall (propId singleton star x0) x4 \
+       forall (propId singleton star x0) x5 \
+        forall (propId singleton star star) x6 \
+         forall (propId singleton star star) x7 \
+          propId singleton
+           (fun_app
+             (fun_lam singleton x8 \
+               fun_app (app x3 x4)
+                (impl_app
                   (impl_app
-                    (impl_app
+                    (forall_app
                       (forall_app
-                        (forall_app
-                          (impl_app
+                        (impl_app
+                          (forall_app
                             (forall_app
-                              (forall_app
-                                (k_propId (propId singleton star star)) x5)
-                              x4) fixMEEEEEE) (id singleton star))
-                        (id singleton star))
-                      (id (propId singleton star star) (id singleton star)))
-                    x8)) x7) (fun_app (app x3 x5) x7)) x3 \
-      propId singleton
-       (fun_app
-         (elim_colSigma
-           (app
-             (elim_colSigma x3 (x4 \
-               setPi (propId singleton star x0) x5 \
-                colSigma (fun (propId singleton star star) singleton) x6 \
-                 forall (propId singleton star star) x7 \
-                  forall (propId singleton star star) x8 \
-                   forall (propId singleton star star) x9 \
-                    propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \
-               x5 \ x4)
+                              (k_propId (propId singleton star star)) x5) x4)
+                          fixMEEEEEE) (id singleton star))
+                      (id singleton star))
+                    (id (propId singleton star star) (id singleton star))) x8))
+             x7) (fun_app (app x3 x5) x7)) x3 \
+    propId singleton
+     (fun_app
+       (elim_colSigma
+         (app
+           (elim_colSigma x3 (x4 \
+             setPi (propId singleton star x0) x5 \
+              colSigma (fun (propId singleton star star) singleton) x6 \
+               forall (propId singleton star star) x7 \
+                forall (propId singleton star star) x8 \
+                 forall (propId singleton star star) x9 \
+                  propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \ x5 \
+             x4)
+           (impl_app
+             (impl_app
+               (forall_app
+                 (forall_app
+                   (impl_app
+                     (forall_app (forall_app (k_propId singleton) star) star)
+                     (id singleton star)) star) x0) x2) (id singleton star)))
+         (x4 \ fun (propId singleton star star) singleton) x4 \ x5 \ x4)
+       (id singleton star (id singleton star))) star) X205^1 int
+"
+"______6[+[Begin isType (propId singleton star x0) X206^2 int
+"
+"_______7[+[Begin of star X207^2 int
+"
+"_______7]-]Success  of star singleton int
+"
+"_______7[+[Begin conv singleton singleton
+"
+"_______7]-]Success  conv singleton singleton
+"
+"_______7[+[Begin of x0 X208^2 int
+"
+"_______7]-]Success  of x0 singleton int
+"
+"_______7[+[Begin conv singleton singleton
+"
+"_______7]-]Success  conv singleton singleton
+"
+"_______7[+[Begin (pts_leq set set),
+(X206^2 = props)
+"
+"_______7]-]Success  (pts_leq set set),
+(props = props)
+"
+"______6]-]Success  isType (propId singleton star x0) props int
+"
+"______6[+[Begin pi x2 \
+ locDecl x2 (propId singleton star x0) =>
+  spy
+   (isType
+     (forall
+       (colSigma
+         (setPi (propId singleton star x0) x3 \
+           colSigma (fun (propId singleton star star) singleton) x4 \
+            forall (propId singleton star star) x5 \
+             forall (propId singleton star star) x6 \
+              forall (propId singleton star star) x7 \
+               propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+         forall (propId singleton star x0) x4 \
+          forall (propId singleton star x0) x5 \
+           forall (propId singleton star star) x6 \
+            forall (propId singleton star star) x7 \
+             propId singleton
+              (fun_app
+                (fun_lam singleton x8 \
+                  fun_app (app x3 x4)
+                   (impl_app
+                     (impl_app
+                       (forall_app
+                         (forall_app
+                           (impl_app
+                             (forall_app
+                               (forall_app
+                                 (k_propId (propId singleton star star)) x5)
+                               x4) fixMEEEEEE) (id singleton star))
+                         (id singleton star))
+                       (id (propId singleton star star) (id singleton star)))
+                     x8)) x7) (fun_app (app x3 x5) x7)) x3 \
+       propId singleton
+        (fun_app
+          (elim_colSigma
+            (app
+              (elim_colSigma x3 (x4 \
+                setPi (propId singleton star x0) x5 \
+                 colSigma (fun (propId singleton star star) singleton) x6 \
+                  forall (propId singleton star star) x7 \
+                   forall (propId singleton star star) x8 \
+                    forall (propId singleton star star) x9 \
+                     propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \
+                x5 \ x4)
+              (impl_app
+                (impl_app
+                  (forall_app
+                    (forall_app
+                      (impl_app
+                        (forall_app (forall_app (k_propId singleton) star)
+                          star) (id singleton star)) star) x0) x2)
+                (id singleton star))) (x4 \
+            fun (propId singleton star star) singleton) x4 \ x5 \ x4)
+          (id singleton star (id singleton star))) star) X209^2 int)
+"
+"_______7[+[Begin isType
+ (forall
+   (colSigma
+     (setPi (propId singleton star x0) x3 \
+       colSigma (fun (propId singleton star star) singleton) x4 \
+        forall (propId singleton star star) x5 \
+         forall (propId singleton star star) x6 \
+          forall (propId singleton star star) x7 \
+           propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+     forall (propId singleton star x0) x4 \
+      forall (propId singleton star x0) x5 \
+       forall (propId singleton star star) x6 \
+        forall (propId singleton star star) x7 \
+         propId singleton
+          (fun_app
+            (fun_lam singleton x8 \
+              fun_app (app x3 x4)
+               (impl_app
+                 (impl_app
+                   (forall_app
+                     (forall_app
+                       (impl_app
+                         (forall_app
+                           (forall_app
+                             (k_propId (propId singleton star star)) x5) x4)
+                         fixMEEEEEE) (id singleton star)) (id singleton star))
+                   (id (propId singleton star star) (id singleton star))) x8))
+            x7) (fun_app (app x3 x5) x7)) x3 \
+   propId singleton
+    (fun_app
+      (elim_colSigma
+        (app
+          (elim_colSigma x3 (x4 \
+            setPi (propId singleton star x0) x5 \
+             colSigma (fun (propId singleton star star) singleton) x6 \
+              forall (propId singleton star star) x7 \
+               forall (propId singleton star star) x8 \
+                forall (propId singleton star star) x9 \
+                 propId singleton (fun_app x6 x7) (fun_app x6 x8)) x4 \ x5 \
+            x4)
+          (impl_app
+            (impl_app
+              (forall_app
+                (forall_app
+                  (impl_app
+                    (forall_app (forall_app (k_propId singleton) star) star)
+                    (id singleton star)) star) x0) x2) (id singleton star)))
+        (x4 \ fun (propId singleton star star) singleton) x4 \ x5 \ x4)
+      (id singleton star (id singleton star))) star) X209^2 int
+"
+"________8[+[Begin isType
+ (colSigma
+   (setPi (propId singleton star x0) x3 \
+     colSigma (fun (propId singleton star star) singleton) x4 \
+      forall (propId singleton star star) x5 \
+       forall (propId singleton star star) x6 \
+        forall (propId singleton star star) x7 \
+         propId singleton (fun_app x4 x5) (fun_app x4 x6)) x3 \
+   forall (propId singleton star x0) x4 \
+    forall (propId singleton star x0) x5 \
+     forall (propId singleton star star) x6 \
+      forall (propId singleton star star) x7 \
+       propId singleton
+        (fun_app
+          (fun_lam singleton x8 \
+            fun_app (app x3 x4)
              (impl_app
                (impl_app
                  (forall_app
                    (forall_app
                      (impl_app
-                       (forall_app (forall_app (k_propId singleton) star)
-                         star) (id singleton star)) star) x0) x2)
-               (id singleton star))) (x4 \
-           fun (propId singleton star star) singleton) x4 \ x5 \ x4)
-         (id singleton star (id singleton star))) star) X199 int
+                       (forall_app
+                         (forall_app (k_propId (propId singleton star star))
+                           x5) x4) fixMEEEEEE) (id singleton star))
+                   (id singleton star))
+                 (id (propId singleton star star) (id singleton star))) x8))
+          x7) (fun_app (app x3 x5) x7)) X210^3 int
+"
+"_________9[+[Begin isType
+ (setPi (propId singleton star x0) x3 \
+   colSigma (fun (propId singleton star star) singleton) x4 \
+    forall (propId singleton star star) x5 \
+     forall (propId singleton star star) x6 \
+      forall (propId singleton star star) x7 \
+       propId singleton (fun_app x4 x5) (fun_app x4 x6)) X211^3 int
+"
+"__________10[+[Begin of star X212^3 int
+"
+"__________10]-]Success  of star singleton int
+"
+"__________10[+[Begin conv singleton singleton
+"
+"__________10]-]Success  conv singleton singleton
+"
+"__________10[+[Begin of x0 X213^3 int
+"
+"__________10]-]Success  of x0 singleton int
+"
+"__________10[+[Begin conv singleton singleton
+"
+"__________10]-]Success  conv singleton singleton
+"
+"__________10[+[Begin (pts_leq set set),
+(X214^3 = props)
+"
+"__________10]-]Success  (pts_leq set set),
+(props = props)
+"
+"__________10[+[Begin isType (fun (propId singleton star star) singleton) X215^4 int
+"
+"___________11[+[Begin isType (propId singleton star star) X216^4 int
+"
+"____________12[+[Begin of star X217^4 int
+"
+"____________12]-]Success  of star singleton int
+"
+"____________12[+[Begin conv singleton singleton
+"
+"____________12]-]Success  conv singleton singleton
+"
+"____________12[+[Begin of star X218^4 int
+"
+"____________12]-]Success  of star singleton int
+"
+"____________12[+[Begin conv singleton singleton
+"
+"____________12]-]Success  conv singleton singleton
+"
+"____________12[+[Begin (pts_leq set set),
+(X216^4 = props)
+"
+"____________12]-]Success  (pts_leq set set),
+(props = props)
+"
+"___________11]-]Success  isType (propId singleton star star) props int
+"
+"___________11[+[Begin pi x4 \
+ locDecl x4 (propId singleton star star) => isType singleton X219^4 int
+"
+"___________11]-]Success  pi x4 \ locDecl x4 (propId singleton star star) => isType singleton set int
+"
+"___________11[+[Begin pts_fun props set X215^4
+"
+"____________12[+[Begin pts_leq props set
+"
+"____________12]-]Success  pts_leq props set
+"
+"____________12[+[Begin pts_leq set set
+"
+"____________12]-]Success  pts_leq set set
+"
+"___________11]-]Success  pts_fun props set set
+"
+"__________10]-]Success  isType (fun (propId singleton star star) singleton) set int
+"
+"__________10[+[Begin pi x4 \
+ locDecl x4 (fun (propId singleton star star) singleton) =>
+  isType
+   (forall (propId singleton star star) x5 \
+     forall (propId singleton star star) x6 \
+      forall (propId singleton star star) x7 \
+       propId singleton (fun_app x4 x5) (fun_app x4 x6)) X220^4 int
+"
+"___________11[+[Begin isType (propId singleton star star) X221^5 int
+"
+"____________12[+[Begin of star X222^5 int
+"
+"____________12]-]Success  of star singleton int
+"
+"____________12[+[Begin conv singleton singleton
+"
+"____________12]-]Success  conv singleton singleton
+"
+"____________12[+[Begin of star X223^5 int
+"
+"____________12]-]Success  of star singleton int
+"
+"____________12[+[Begin conv singleton singleton
+"
+"____________12]-]Success  conv singleton singleton
+"
+"____________12[+[Begin (pts_leq set set),
+(X221^5 = props)
+"
+"____________12]-]Success  (pts_leq set set),
+(props = props)
+"
+"___________11]-]Success  isType (propId singleton star star) props int
+"
+"___________11[+[Begin pi x5 \
+ locDecl x5 (propId singleton star star) =>
+  spy
+   (isType
+     (forall (propId singleton star star) x6 \
+       forall (propId singleton star star) x7 \
+        propId singleton (fun_app x4 x5) (fun_app x4 x6)) X224^5 int)
+"
+"____________12[+[Begin isType
+ (forall (propId singleton star star) x6 \
+   forall (propId singleton star star) x7 \
+    propId singleton (fun_app x4 x5) (fun_app x4 x6)) X224^5 int
+"
+"_____________13[+[Begin isType (propId singleton star star) X225^6 int
+"
+"______________14[+[Begin of star X226^6 int
+"
+"______________14]-]Success  of star singleton int
+"
+"______________14[+[Begin conv singleton singleton
+"
+"______________14]-]Success  conv singleton singleton
+"
+"______________14[+[Begin of star X227^6 int
+"
+"______________14]-]Success  of star singleton int
+"
+"______________14[+[Begin conv singleton singleton
+"
+"______________14]-]Success  conv singleton singleton
+"
+"______________14[+[Begin (pts_leq set set),
+(X225^6 = props)
+"
+"______________14]-]Success  (pts_leq set set),
+(props = props)
+"
+"_____________13]-]Success  isType (propId singleton star star) props int
+"
+"_____________13[+[Begin pi x6 \
+ locDecl x6 (propId singleton star star) =>
+  spy
+   (isType
+     (forall (propId singleton star star) x7 \
+       propId singleton (fun_app x4 x5) (fun_app x4 x6)) X228^6 int)
+"
+"______________14[+[Begin isType
+ (forall (propId singleton star star) x7 \
+   propId singleton (fun_app x4 x5) (fun_app x4 x6)) X228^6 int
+"
+"_______________15[+[Begin isType (propId singleton star star) X229^7 int
+"
+"________________16[+[Begin of star X230^7 int
+"
+"________________16]-]Success  of star singleton int
+"
+"________________16[+[Begin conv singleton singleton
+"
+"________________16]-]Success  conv singleton singleton
+"
+"________________16[+[Begin of star X231^7 int
+"
+"________________16]-]Success  of star singleton int
+"
+"________________16[+[Begin conv singleton singleton
+"
+"________________16]-]Success  conv singleton singleton
+"
+"________________16[+[Begin (pts_leq set set),
+(X229^7 = props)
+"
+"________________16]-]Success  (pts_leq set set),
+(props = props)
+"
+"_______________15]-]Success  isType (propId singleton star star) props int
+"
+"_______________15[+[Begin pi x7 \
+ locDecl x7 (propId singleton star star) =>
+  spy (isType (propId singleton (fun_app x4 x5) (fun_app x4 x6)) X232^7 int)
+"
+"________________16[+[Begin isType (propId singleton (fun_app x4 x5) (fun_app x4 x6)) X232^7 int
+"
+"_________________17[+[Begin of (fun_app x4 x5) X233^8 int
+"
+"__________________18[+[Begin isa x4 (fun X234^8 X233^8) int
+"
+"___________________19[+[Begin of x4 X235^8 int
+"
+"___________________19]-]Success  of x4 (fun (propId singleton star star) singleton) int
+"
+"___________________19[+[Begin conv (fun (propId singleton star star) singleton) (fun X234^8 X233^8)
+"
+"___________________19]-]Success  conv (fun (propId singleton star star) singleton)
+ (fun (propId singleton star star) singleton)
+"
+"__________________18]-]Success  isa x4 (fun (propId singleton star star) singleton) int
+"
+"__________________18[+[Begin isa x5 (propId singleton star star) int
+"
+"___________________19[+[Begin of x5 X236^8 int
+"
+"___________________19]-]Success  of x5 (propId singleton star star) int
+"
+"___________________19[+[Begin conv (propId singleton star star) (propId singleton star star)
+"
+"___________________19]-]Success  conv (propId singleton star star) (propId singleton star star)
+"
+"__________________18]-]Success  isa x5 (propId singleton star star) int
+"
+"_________________17]-]Success  of (fun_app x4 x5) singleton int
+"
+"_________________17[+[Begin conv singleton singleton
+"
+"_________________17]-]Success  conv singleton singleton
+"
+"_________________17[+[Begin of (fun_app x4 x6) X237^8 int
+"
+"__________________18[+[Begin isa x4 (fun X238^8 X237^8) int
+"
+"___________________19[+[Begin of x4 X239^8 int
+"
+"___________________19]-]Success  of x4 (fun (propId singleton star star) singleton) int
+"
+"___________________19[+[Begin conv (fun (propId singleton star star) singleton) (fun X238^8 X237^8)
+"
+"___________________19]-]Success  conv (fun (propId singleton star star) singleton)
+ (fun (propId singleton star star) singleton)
+"
+"__________________18]-]Success  isa x4 (fun (propId singleton star star) singleton) int
+"
+"__________________18[+[Begin isa x6 (propId singleton star star) int
+"
+"___________________19[+[Begin of x6 X240^8 int
+"
+"___________________19]-]Success  of x6 (propId singleton star star) int
+"
+"___________________19[+[Begin conv (propId singleton star star) (propId singleton star star)
+"
+"___________________19]-]Success  conv (propId singleton star star) (propId singleton star star)
+"
+"__________________18]-]Success  isa x6 (propId singleton star star) int
+"
+"_________________17]-]Success  of (fun_app x4 x6) singleton int
+"
+"_________________17[+[Begin conv singleton singleton
+"
+"_________________17]-]Success  conv singleton singleton
+"
+"_________________17[+[Begin (pts_leq set set),
+(X232^7 = props)
+"
+"_________________17]-]Success  (pts_leq set set),
+(props = props)
+"
+"________________16]-]Success  isType (propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int
+"
+"_______________15]-]Success  pi x7 \
+ locDecl x7 (propId singleton star star) =>
+  spy (isType (propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int)
+"
+"_______________15[+[Begin pts_for props props X228^6
+"
+"_______________15]-]Success  pts_for props props props
+"
+"______________14]-]Success  isType
+ (forall (propId singleton star star) x7 \
+   propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int
+"
+"_____________13]-]Success  pi x6 \
+ locDecl x6 (propId singleton star star) =>
+  spy
+   (isType
+     (forall (propId singleton star star) x7 \
+       propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int)
+"
+"_____________13[+[Begin pts_for props props X224^5
+"
+"_____________13]-]Success  pts_for props props props
+"
+"____________12]-]Success  isType
+ (forall (propId singleton star star) x6 \
+   forall (propId singleton star star) x7 \
+    propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int
+"
+"___________11]-]Success  pi x5 \
+ locDecl x5 (propId singleton star star) =>
+  spy
+   (isType
+     (forall (propId singleton star star) x6 \
+       forall (propId singleton star star) x7 \
+        propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int)
+"
+"___________11[+[Begin pts_for props props X220^4
+"
+"___________11]-]Success  pts_for props props props
+"
+"__________10]-]Success  pi x4 \
+ locDecl x4 (fun (propId singleton star star) singleton) =>
+  isType
+   (forall (propId singleton star star) x5 \
+     forall (propId singleton star star) x6 \
+      forall (propId singleton star star) x7 \
+       propId singleton (fun_app x4 x5) (fun_app x4 x6)) props int
+"
+"__________10[+[Begin pts_leq set set
+"
+"__________10]-]Success  pts_leq set set
+"
+"__________10[+[Begin pts_leq props set
+"
+"__________10]-]Success  pts_leq props set
+"
+"__________10[+[Begin pts_fun props set X211^3
+"
+"___________11[+[Begin pts_leq props set
+"
+"___________11]-]Success  pts_leq props set
+"
+"___________11[+[Begin pts_leq set set
+"
+"___________11]-]Success  pts_leq set set
+"
+"__________10]-]Success  pts_fun props set set
+"
+"_________9]-]Success  isType
+ (setPi (propId singleton star x0) x3 \
+   colSigma (fun (propId singleton star star) singleton) x4 \
+    forall (propId singleton star star) x5 \
+     forall (propId singleton star star) x6 \
+      forall (propId singleton star star) x7 \
+       propId singleton (fun_app x4 x5) (fun_app x4 x6)) set int
+"
+"_________9[+[Begin pi x3 \
+ locDecl x3
+  (setPi (propId singleton star x0) x4 \
+    colSigma (fun (propId singleton star star) singleton) x5 \
+     forall (propId singleton star star) x6 \
+      forall (propId singleton star star) x7 \
+       forall (propId singleton star star) x8 \
+        propId singleton (fun_app x5 x6) (fun_app x5 x7)) =>
+  isType
+   (forall (propId singleton star x0) x4 \
+     forall (propId singleton star x0) x5 \
+      forall (propId singleton star star) x6 \
+       forall (propId singleton star star) x7 \
+        propId singleton
+         (fun_app
+           (fun_lam singleton x8 \
+             fun_app (app x3 x4)
+              (impl_app
+                (impl_app
+                  (forall_app
+                    (forall_app
+                      (impl_app
+                        (forall_app
+                          (forall_app (k_propId (propId singleton star star))
+                            x5) x4) fixMEEEEEE) (id singleton star))
+                    (id singleton star))
+                  (id (propId singleton star star) (id singleton star))) x8))
+           x7) (fun_app (app x3 x5) x7)) X241^3 int
+"
+"__________10[+[Begin isType (propId singleton star x0) X242^4 int
+"
+"___________11[+[Begin of star X243^4 int
+"
+"___________11]-]Success  of star singleton int
+"
+"___________11[+[Begin conv singleton singleton
+"
+"___________11]-]Success  conv singleton singleton
+"
+"___________11[+[Begin of x0 X244^4 int
+"
+"___________11]-]Success  of x0 singleton int
+"
+"___________11[+[Begin conv singleton singleton
+"
+"___________11]-]Success  conv singleton singleton
+"
+"___________11[+[Begin (pts_leq set set),
+(X242^4 = props)
+"
+"___________11]-]Success  (pts_leq set set),
+(props = props)
+"
+"__________10]-]Success  isType (propId singleton star x0) props int
+"
+"__________10[+[Begin pi x4 \
+ locDecl x4 (propId singleton star x0) =>
+  spy
+   (isType
+     (forall (propId singleton star x0) x5 \
+       forall (propId singleton star star) x6 \
+        forall (propId singleton star star) x7 \
+         propId singleton
+          (fun_app
+            (fun_lam singleton x8 \
+              fun_app (app x3 x4)
+               (impl_app
+                 (impl_app
+                   (forall_app
+                     (forall_app
+                       (impl_app
+                         (forall_app
+                           (forall_app
+                             (k_propId (propId singleton star star)) x5) x4)
+                         fixMEEEEEE) (id singleton star)) (id singleton star))
+                   (id (propId singleton star star) (id singleton star))) x8))
+            x7) (fun_app (app x3 x5) x7)) X245^4 int)
+"
+"___________11[+[Begin isType
+ (forall (propId singleton star x0) x5 \
+   forall (propId singleton star star) x6 \
+    forall (propId singleton star star) x7 \
+     propId singleton
+      (fun_app
+        (fun_lam singleton x8 \
+          fun_app (app x3 x4)
+           (impl_app
+             (impl_app
+               (forall_app
+                 (forall_app
+                   (impl_app
+                     (forall_app
+                       (forall_app (k_propId (propId singleton star star)) x5)
+                       x4) fixMEEEEEE) (id singleton star))
+                 (id singleton star))
+               (id (propId singleton star star) (id singleton star))) x8)) x7)
+      (fun_app (app x3 x5) x7)) X245^4 int
+"
+"____________12[+[Begin isType (propId singleton star x0) X246^5 int
+"
+"_____________13[+[Begin of star X247^5 int
+"
+"_____________13]-]Success  of star singleton int
+"
+"_____________13[+[Begin conv singleton singleton
+"
+"_____________13]-]Success  conv singleton singleton
+"
+"_____________13[+[Begin of x0 X248^5 int
+"
+"_____________13]-]Success  of x0 singleton int
+"
+"_____________13[+[Begin conv singleton singleton
+"
+"_____________13]-]Success  conv singleton singleton
+"
+"_____________13[+[Begin (pts_leq set set),
+(X246^5 = props)
+"
+"_____________13]-]Success  (pts_leq set set),
+(props = props)
+"
+"____________12]-]Success  isType (propId singleton star x0) props int
+"
+"____________12[+[Begin pi x5 \
+ locDecl x5 (propId singleton star x0) =>
+  spy
+   (isType
+     (forall (propId singleton star star) x6 \
+       forall (propId singleton star star) x7 \
+        propId singleton
+         (fun_app
+           (fun_lam singleton x8 \
+             fun_app (app x3 x4)
+              (impl_app
+                (impl_app
+                  (forall_app
+                    (forall_app
+                      (impl_app
+                        (forall_app
+                          (forall_app (k_propId (propId singleton star star))
+                            x5) x4) fixMEEEEEE) (id singleton star))
+                    (id singleton star))
+                  (id (propId singleton star star) (id singleton star))) x8))
+           x7) (fun_app (app x3 x5) x7)) X249^5 int)
+"
+"_____________13[+[Begin isType
+ (forall (propId singleton star star) x6 \
+   forall (propId singleton star star) x7 \
+    propId singleton
+     (fun_app
+       (fun_lam singleton x8 \
+         fun_app (app x3 x4)
+          (impl_app
+            (impl_app
+              (forall_app
+                (forall_app
+                  (impl_app
+                    (forall_app
+                      (forall_app (k_propId (propId singleton star star)) x5)
+                      x4) fixMEEEEEE) (id singleton star))
+                (id singleton star))
+              (id (propId singleton star star) (id singleton star))) x8)) x7)
+     (fun_app (app x3 x5) x7)) X249^5 int
+"
+"______________14[+[Begin isType (propId singleton star star) X250^6 int
+"
+"_______________15[+[Begin of star X251^6 int
+"
+"_______________15]-]Success  of star singleton int
+"
+"_______________15[+[Begin conv singleton singleton
+"
+"_______________15]-]Success  conv singleton singleton
+"
+"_______________15[+[Begin of star X252^6 int
+"
+"_______________15]-]Success  of star singleton int
+"
+"_______________15[+[Begin conv singleton singleton
+"
+"_______________15]-]Success  conv singleton singleton
+"
+"_______________15[+[Begin (pts_leq set set),
+(X250^6 = props)
+"
+"_______________15]-]Success  (pts_leq set set),
+(props = props)
+"
+"______________14]-]Success  isType (propId singleton star star) props int
+"
+"______________14[+[Begin pi x6 \
+ locDecl x6 (propId singleton star star) =>
+  spy
+   (isType
+     (forall (propId singleton star star) x7 \
+       propId singleton
+        (fun_app
+          (fun_lam singleton x8 \
+            fun_app (app x3 x4)
+             (impl_app
+               (impl_app
+                 (forall_app
+                   (forall_app
+                     (impl_app
+                       (forall_app
+                         (forall_app (k_propId (propId singleton star star))
+                           x5) x4) fixMEEEEEE) (id singleton star))
+                   (id singleton star))
+                 (id (propId singleton star star) (id singleton star))) x8))
+          x7) (fun_app (app x3 x5) x7)) X253^6 int)
+"
+"_______________15[+[Begin isType
+ (forall (propId singleton star star) x7 \
+   propId singleton
+    (fun_app
+      (fun_lam singleton x8 \
+        fun_app (app x3 x4)
+         (impl_app
+           (impl_app
+             (forall_app
+               (forall_app
+                 (impl_app
+                   (forall_app
+                     (forall_app (k_propId (propId singleton star star)) x5)
+                     x4) fixMEEEEEE) (id singleton star)) (id singleton star))
+             (id (propId singleton star star) (id singleton star))) x8)) x7)
+    (fun_app (app x3 x5) x7)) X253^6 int
+"
+"________________16[+[Begin isType (propId singleton star star) X254^7 int
+"
+"_________________17[+[Begin of star X255^7 int
+"
+"_________________17]-]Success  of star singleton int
+"
+"_________________17[+[Begin conv singleton singleton
+"
+"_________________17]-]Success  conv singleton singleton
+"
+"_________________17[+[Begin of star X256^7 int
+"
+"_________________17]-]Success  of star singleton int
+"
+"_________________17[+[Begin conv singleton singleton
+"
+"_________________17]-]Success  conv singleton singleton
+"
+"_________________17[+[Begin (pts_leq set set),
+(X254^7 = props)
+"
+"_________________17]-]Success  (pts_leq set set),
+(props = props)
+"
+"________________16]-]Success  isType (propId singleton star star) props int
+"
+"________________16[+[Begin pi x7 \
+ locDecl x7 (propId singleton star star) =>
+  spy
+   (isType
+     (propId singleton
+       (fun_app
+         (fun_lam singleton x8 \
+           fun_app (app x3 x4)
+            (impl_app
+              (impl_app
+                (forall_app
+                  (forall_app
+                    (impl_app
+                      (forall_app
+                        (forall_app (k_propId (propId singleton star star))
+                          x5) x4) fixMEEEEEE) (id singleton star))
+                  (id singleton star))
+                (id (propId singleton star star) (id singleton star))) x8))
+         x7) (fun_app (app x3 x5) x7)) X257^7 int)
+"
+"_________________17[+[Begin isType
+ (propId singleton
+   (fun_app
+     (fun_lam singleton x8 \
+       fun_app (app x3 x4)
+        (impl_app
+          (impl_app
+            (forall_app
+              (forall_app
+                (impl_app
+                  (forall_app
+                    (forall_app (k_propId (propId singleton star star)) x5)
+                    x4) fixMEEEEEE) (id singleton star)) (id singleton star))
+            (id (propId singleton star star) (id singleton star))) x8)) x7)
+   (fun_app (app x3 x5) x7)) X257^7 int
+"
+"__________________18[+[Begin of
+ (fun_app
+   (fun_lam singleton x8 \
+     fun_app (app x3 x4)
+      (impl_app
+        (impl_app
+          (forall_app
+            (forall_app
+              (impl_app
+                (forall_app
+                  (forall_app (k_propId (propId singleton star star)) x5) x4)
+                fixMEEEEEE) (id singleton star)) (id singleton star))
+          (id (propId singleton star star) (id singleton star))) x8)) x7)
+ X258^8 int
+"
+"___________________19[+[Begin isa
+ (fun_lam singleton x8 \
+   fun_app (app x3 x4)
+    (impl_app
+      (impl_app
+        (forall_app
+          (forall_app
+            (impl_app
+              (forall_app
+                (forall_app (k_propId (propId singleton star star)) x5) x4)
+              fixMEEEEEE) (id singleton star)) (id singleton star))
+        (id (propId singleton star star) (id singleton star))) x8))
+ (fun X259^8 X258^8) int
+"
+"____________________20[+[Begin of
+ (fun_lam singleton x8 \
+   fun_app (app x3 x4)
+    (impl_app
+      (impl_app
+        (forall_app
+          (forall_app
+            (impl_app
+              (forall_app
+                (forall_app (k_propId (propId singleton star star)) x5) x4)
+              fixMEEEEEE) (id singleton star)) (id singleton star))
+        (id (propId singleton star star) (id singleton star))) x8)) X260^8
+ int
 "
