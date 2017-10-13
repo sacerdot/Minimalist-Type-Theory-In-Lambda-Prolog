@@ -43,6 +43,7 @@ testZ A B C
     )
     , spy(isType Long A ext)
     , spy(trad Long B)
+    , spy(of B C int)
     .
 
 
