@@ -13,8 +13,8 @@ isType (fun B C) KIND3 IE
 
 of (fun_lam B F) (fun B C) IE 
     :- isType B _ IE
-    ,  (pi x\ locDecl x B => isType C _ IE)
     ,  (pi x\ locDecl x B => of (F x) C IE)
+    ,  (pi x\ locDecl x B => isType C _ IE)
     .
 
 of (fun_app Lam X) C IE

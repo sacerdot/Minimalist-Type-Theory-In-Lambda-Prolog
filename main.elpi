@@ -36,7 +36,7 @@ hnf A A.
 %nf A A.                         % ho aggiunto il not in eq.elpi per evitare che ciò accada
 
 conv A A :- ! .
-conv A B :- spy(locDecl _ (propEq _ A B) ).
+conv A B :- (locDecl _ (propEq _ A B) ).
 conv A B :- spy(hnf A A'), spy( hnf B B'), spy( dconv A' B').
 
 dconv A A :- !.
@@ -73,7 +73,7 @@ spy    (conv TY' TY).
  
 
 of X Y _ :-  locDecl X Y .
-isType X Y _ :- locDeclType X Y.
+%isType X Y _ :- locDeclType X Y.
 
 
 

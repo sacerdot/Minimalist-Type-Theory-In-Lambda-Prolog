@@ -36,7 +36,7 @@ spy2 G :-  bracket "." "].]Fail  " G "\n",  fail.
 
 
 
-
+/*
 trad A B      :- announce (trad A B).
 tau A B C D   :- announce (tau A B C D).
 tau' A B C    :- announce (tau' A B C).
@@ -65,3 +65,4 @@ hstep A B :- announce (hstep A B).
 conv A B :- announce ( conv A B).
 testB A :- announce (testB A).
 hstep A B :- announce (hstep A B). 
+*/
