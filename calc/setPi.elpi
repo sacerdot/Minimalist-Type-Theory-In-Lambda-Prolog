@@ -104,15 +104,18 @@ equ (setPi B C) P
             (app (elim_colSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
 
-pippoequ (app F X1) (app F X2) H 
-    :- spy(pippoequ X1 X2 G)
-    ,  spy(trad F F')
-    ,  spy(of F' (colSigma TyF MorF) int)
+pippoequ (app F X1) (app F X2) T H 
+    :- of F (setPi B T') ext
+    ,  spy(pippoequ X1 X2 B G)
+    ,  spy(trad F Fi)
+    ,  spy(of Fi (colSigma TyF MorF) int)
     ,  PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x))
-    ,  P2F' = elim_colSigma F' (c \ MorF (PI1 c)) (x\ y\ y)
-    ,  spy(trad X1 X1')
-    ,  spy(trad X2 X2')
-    ,  H = forall_app (forall_app (forall_app P2F' X1') X2') G
+    ,  P2Fi = elim_colSigma Fi (c \ MorF (PI1 c)) (x\ y\ y)
+    ,  spy(trad_isa X1 B X1i)
+    ,  spy(trad_isa X2 B X2i)
+    ,  pippo  (propEq (T' X2) (app F X1) (app F X2))
+               (propEq (T) (app F X1) (app F X2)) PIPPO
+    ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
     .
 
 pippo (setPi B C) (setPi B' C') P

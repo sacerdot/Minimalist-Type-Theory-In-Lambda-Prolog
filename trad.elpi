@@ -10,72 +10,6 @@ trad (forall B C) (forall B' C') :-
 
 trad singleton singleton.
 trad star star.
-trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
-trad (inl A' B Aa) (inl Ai' Bi Aai') 
-        :- trad A' Ai'
-        ,  trad B Bi
-        ,  of Aa A ext
-        ,  pippo A A' PIPPO
-        ,  trad Aa Aai
-        ,  Aai' = PIPPO Aai
-        .
-
-pippo (setSum A B) (setSum A' B') F 
-        :- (pippo A A' FA)
-        ,  (pippo B B' FB)
-        ,  F = (z \elim_setSum 
-                 (_ \ setSum A' B') 
-                 z 
-                 (x \ inl A' B' (FA x)) 
-                 (y \ inr A' B' (FB y)))
-        .
-
-equ (setSum A B) P 
-        :- isType A _ ext , equ A PA
-        ,  isType B _ ext , equ B PB
-        ,  P = (z\ z'\ or 
-               (exist (A) (x \ 
-                exist (A) (x'\ and (and 
-                        (propId (setSum A B) z  (inl A B x)) 
-                        (propId (setSum A B) z' (inl A B x')) ) 
-                        (PA x x')
-                ))) 
-               (exist (B) (x \ 
-                exist (B) (x'\ and (and 
-                        (propId (setSum A B) z  (inr A B x)) 
-                        (propId (setSum A B) z' (inr A B x')) ) 
-                        (PB x x')
-                )))
-        )
-        .
-pippoequ (inl A B X) (inl A B X') H 
-        :- pippoequ X X' K
-        ,  trad X Xi
-        ,  trad X' Xi'
-        ,  of X Ae ext
-        ,  pippo Ae A PIA
-        ,  pippo Ae' A PIA'
-        ,  equ A PA
-        ,  equ B PB
-        ,  inl_or (exist (A) (x \ 
-                   exist (A) (x'\ and (and 
-                         (propId (setSum A B) (inl A B (PIA Xi))  (inl A B x)) 
-                         (propId (setSum A B) (inl A B (PIA' Xi')) (inl A B x')) ) 
-                         (PA x x')
-                   ))) 
-                  (exist (B) (x \ 
-                   exist (B) (x'\ and (and 
-                         (propId (setSum A B) (inr A B (PIA Xi))  (inr A B x)) 
-                         (propId (setSum A B) (inr A B (PIA'Xi')) (inr A B x')) ) 
-                         (PB x x')
-                   ))) 
-                  (pair_exist (PIA Xi) (pair_exist (PIA' Xi') 
-                   pair_and (pair_and 
-                        (id (setSum A B) (inl A B (PIA Xi) )) 
-                        (id (setSum A B) (inl A B (PIA' Xi') ))) 
-                        (K)
-                  ))
-        .
 
 trad (implies B C) (forall B' C') 
     :- trad B B'
@@ -138,19 +72,20 @@ pippo (propEq T T1 T2) (propEq T T1' T2') (F)
 % supponiamo che conv X Y per poter usare pippoequ X Y H
 %       H è la prova che i tradotti siano uguali nel loro setoide
 
-pippoequ A A (id T' A' )
-    :- trad A A'
-    ,  of A' T' int
+pippoequ A A T (id Ti Ai )
+    :- trad_isa A T Ai
+    ,  trad T Ti
     .
-pippoequ A B H'
-    :- (locDecl H (propEq _ A B)), !
-    ,  trad H H'
+pippoequ A B T H
+    :- (locDecl H (propEq T' A B)), !
+    ,  trad_isa H (propEq T A B) Hi
     .
-pippoequ A B ( H'')
-    :- (locDecl H (propEq T B A))
-    ,  trad H H'
+
+pippoequ A B T Hi
+    :- (locDecl H (propEq T' B A))
+    ,  trad_isa H (propEq T B A) Hi'
     ,  spy (symmu T Q)
-    ,  H'' = Q H'
+    ,  Hi = Q Hi'
     .
 
 symmu T (x\ fixMe "prova di symmetria").

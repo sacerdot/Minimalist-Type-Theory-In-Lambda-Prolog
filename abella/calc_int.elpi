@@ -1,6 +1,74 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%/*
+trad (setSum A B) (setSum Ai Bi) :- trad A Ai, trad B Bi.
+trad (inl A' B Aa) (inl Ai' Bi Aai') 
+        :- trad A' Ai'
+        ,  trad B Bi
+        ,  of Aa A ext
+        ,  pippo A A' PIPPO
+        ,  trad Aa Aai
+        ,  Aai' = PIPPO Aai
+        .
+
+pippo (setSum A B) (setSum A' B') F 
+        :- (pippo A A' FA)
+        ,  (pippo B B' FB)
+        ,  F = (z \elim_setSum 
+                 (_ \ setSum A' B') 
+                 z 
+                 (x \ inl A' B' (FA x)) 
+                 (y \ inr A' B' (FB y)))
+        .
+
+equ (setSum A B) P 
+        :- isType A _ ext , equ A PA
+        ,  isType B _ ext , equ B PB
+        ,  P = (z\ z'\ or 
+               (exist (A) (x \ 
+                exist (A) (x'\ and (and 
+                        (propId (setSum A B) z  (inl A B x)) 
+                        (propId (setSum A B) z' (inl A B x')) ) 
+                        (PA x x')
+                ))) 
+               (exist (B) (x \ 
+                exist (B) (x'\ and (and 
+                        (propId (setSum A B) z  (inr A B x)) 
+                        (propId (setSum A B) z' (inr A B x')) ) 
+                        (PB x x')
+                )))
+        )
+        .
+pippoequ (inl A B X) (inl A B X') H 
+        :- pippoequ X X' K
+        ,  trad X Xi
+        ,  trad X' Xi'
+        ,  of X Ae ext
+        ,  pippo Ae A PIA
+        ,  pippo Ae' A PIA'
+        ,  equ A PA
+        ,  equ B PB
+        ,  inl_or (exist (A) (x \ 
+                   exist (A) (x'\ and (and 
+                         (propId (setSum A B) (inl A B (PIA Xi))  (inl A B x)) 
+                         (propId (setSum A B) (inl A B (PIA' Xi')) (inl A B x')) ) 
+                         (PA x x')
+                   ))) 
+                  (exist (B) (x \ 
+                   exist (B) (x'\ and (and 
+                         (propId (setSum A B) (inr A B (PIA Xi))  (inr A B x)) 
+                         (propId (setSum A B) (inr A B (PIA'Xi')) (inr A B x')) ) 
+                         (PB x x')
+                   ))) 
+                  (pair_exist (PIA Xi) (pair_exist (PIA' Xi') 
+                   pair_and (pair_and 
+                        (id (setSum A B) (inl A B (PIA Xi) )) 
+                        (id (setSum A B) (inl A B (PIA' Xi') ))) 
+                        (K)
+                  ))
+        .
+*/
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
