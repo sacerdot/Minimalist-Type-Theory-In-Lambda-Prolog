@@ -34,7 +34,7 @@ trad (eqId  A Aa)  T
     ,  spy(trad Aa Aa')
     ,  T = (ReflA Aa') 
     .
-reflu (propEq A Aa Aa) (id A Aa).
+reflu (propEq _ _ _) (_\id singleton star).
 
 equ singleton (x\ y\ propId singleton x y).
 reflu singleton (x\ id singleton x).
@@ -72,17 +72,18 @@ pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
 locDecl (k_propId Te) (forall T t1\ forall T t1'\ 
         implies (E t1 t1') (forall T t2\ forall T t2'\ 
                 implies (E t2 t2') (implies (E t1 t2) (E t1' t2'))) )
-                :- equ T E
-                ,  trad Te T
+                :- trad Te T
+                ,  equ Te E
                 .
 
 
 % supponiamo che conv X Y per poter usare pippoequ X Y H
 %       H è la prova che i tradotti siano uguali nel loro setoide
 
-pippoequ A A T (id Ti Ai )
+pippoequ A A T H'
     :- trad_isa A T Ai
-    ,  trad T Ti
+    ,  reflu T H
+    ,  H' = H Ai
     .
 pippoequ A B T Hi
     :- (locDecl H (propEq T' A B)), !
