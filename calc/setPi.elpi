@@ -94,6 +94,7 @@ trad (app F X) R
 
 equ (setPi B C) P
     :- trad B Bi
+    ,  (pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
     ,  (pi x\pi xi\locDecl x B 
         => locDecl xi Bi
             => trad x xi
