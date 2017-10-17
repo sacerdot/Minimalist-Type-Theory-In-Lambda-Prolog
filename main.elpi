@@ -66,6 +66,12 @@ spy ( isType Type Kind' IE),
 spy  (pts_leq  Kind' Kind).
 
 
+isa (fixMe M) T int :- !,
+  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+  print M,
+  term_to_string T S, print S, 
+  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n".
+
 
 isa Term TY IE :-
 spy    (of Term TY' IE),

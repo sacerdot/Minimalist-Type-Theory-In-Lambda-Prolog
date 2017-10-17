@@ -93,7 +93,6 @@ symmu T (x\ fixMe "prova di symmetria").
 
 
 
-
 locDecl (k_propId T) (forall T t1\ forall T t1'\ 
         implies (propId T t1 t1') (forall T t2\ forall T t2'\ 
                 implies (propId T t2 t2') (implies (propId T t1 t2) (propId T t1' t2'))) ).

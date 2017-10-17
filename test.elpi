@@ -1,6 +1,7 @@
 accumulate debug.
 
 
+accumulate trad.
 
 accumulate main.
 
@@ -17,7 +18,6 @@ accumulate calc/or.
 accumulate calc/setPi.
 accumulate calc/setSum.
 accumulate calc/singleton.
-accumulate trad.
 
 
 testZ A B C
