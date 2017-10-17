@@ -66,13 +66,14 @@ pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
                   forall_app ( 
                    impl_app ( 
                     forall_app ( 
-                     forall_app (k_propId Ti) T1i) T1i') F1) T2i) T2i') F2) x
+                     forall_app (k_propId T) T1i) T1i') F1) T2i) T2i') F2) x
     .
 
-locDecl (k_propId T) (forall T t1\ forall T t1'\ 
+locDecl (k_propId Te) (forall T t1\ forall T t1'\ 
         implies (E t1 t1') (forall T t2\ forall T t2'\ 
                 implies (E t2 t2') (implies (E t1 t2) (E t1' t2'))) )
                 :- equ T E
+                ,  trad Te T
                 .
 
 
