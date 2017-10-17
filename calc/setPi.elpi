@@ -139,10 +139,11 @@ pippoequ (app F X1) (app F X2) T H
     ,  pippo  (propEq (T' X2) (app F X1) (app F X2))
                (propEq (T) (app F X1) (app F X2)) PIPPO
     ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
-    .
+    . 
 
 pippo (setPi B C) (setPi B' C') P
     :- (trad B' Bi')
+    ,  (equ B' EquB')
     ,  (trad B Bi)
     ,  spy(pippo B' B FB)
     ,  spy(pi x\ pi x'\ pi xi\ pi xi'\ 
@@ -151,7 +152,45 @@ pippo (setPi B C) (setPi B' C') P
             => pippo (C x) (C' x') (FC xi xi'))
     ,  ( pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
     ,  (trad (setPi B' C') (colSigma T1 T2)), T1 = setPi Bi' Ci'
-    ,  P = f\ pair T1 T2
-        (lambda Bi' x\ FC (FB x) x (app (elim_colSigma f (_\setPi Bi Ci) (x\y\x) ) (FB x)))
-        (fixMe "prova eta setPi preserva uguaglianza")
+    ,  (pippo_trasp B B' KB'), (pippo_trasp B' B KB)
+    ,  (pi x\ pi x'\ locDecl x B => locDecl x' B' 
+           => (pippo_trasp (C x) (C' x') (KC' x'), pippo_trasp (C' x') (C x) (KC x)))
+    ,  macro_trad B (_\x2\_\_x2i\_\ equ (C x2) (EquC x2i)) 
+    ,  P = (f\ pair T1 T
+        (lambda Bi' x\ 
+            FC (FB x) x (app (elim_colSigma f (_\setPi Bi Ci) (x\y\x) ) (FB x)))
+        ((forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB' x1 x2) h\
+            qweqwe
+            )))
+    . 
+ 
+pippo_trasp (setPi B C) (setPi B' C') (f\g\h\ popopopo).
+ 
+ 
+
+ 
+trad (lambda B F) R                
+    :- spy(of (lambda B F) (setPi B C) ext)
+    ,  spy(trad (setPi B C) (colSigma (setPi Bi Ci) H ))
+    ,  macro_trad B ( x\_\_\xi\_\_\ trad (F x) (Fi xi))
+    ,  equ B EquB
+    ,  macro_trad B (x1\x2\h\x1i\x2i\hi\pippoequ (F x1) (F x2) (C x2) (K_EQU x1i x2i hi))
+    ,  R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
+        (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
+            K_EQU x1 x2 h)
+    . 
+ 
+macro_trad B Q 
+    :- equ B EquB
+    ,  spy(pi x1 \ pi x2 \ pi h\
+        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
+        => locDecl x1i Bi
+        => locDecl x2i Bi
+        => trad x1 x1i
+        => trad x2 x2i
+        => (locDecl h (propEq B x1 x2)) 
+        => (locDecl hi (EquB x1i x2i))
+        => trad h hi
+        => Q x1 x2 h x1i x2i hi
+        )
     .

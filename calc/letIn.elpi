@@ -27,6 +27,9 @@ hstep (letIn (locDef X T M) N) N'
 */
 %hstep (letIn T M N) (N M).
 
-
-
+/*
+syntax direcyed
+conv extensionae
+xi rule
+*/
 

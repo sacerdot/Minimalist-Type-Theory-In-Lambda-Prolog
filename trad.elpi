@@ -43,7 +43,10 @@ equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 
 
-pippo A A x \ x.
+pippo A A (x \ x) :- !.
+
+pippo_trasp A A (x\y\h\ h) :- !.
+
 
 %traduce X:_ext T in un Xi di tipi Ti
 trad_isa X T Xi 
@@ -68,6 +71,9 @@ pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
                     forall_app ( 
                      forall_app (k_propId T) T1i) T1i') F1) T2i) T2i') F2) x
     .
+pippo_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
+
+
 
 locDecl (k_propId Te) (forall T t1\ forall T t1'\ 
         implies (E t1 t1') (forall T t2\ forall T t2'\ 
