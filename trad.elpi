@@ -23,9 +23,9 @@ trad (implies B C) (forall B' C')
 
 
 trad (propEq A Aa1 Aa2) R 
-    :- spy(equ  A EquA)
-    ,  spy(trad Aa1 Aa1')
-    ,  spy (trad Aa2 Aa2')
+    :- spy(equ A EquA)
+    ,  spy(trad_isa Aa1 A Aa1')
+    ,  spy(trad_isa Aa2 A Aa2')
     ,  spy(R = (EquA Aa1' Aa2'))
     .
 
@@ -76,7 +76,7 @@ pippoequ A A T (id Ti Ai )
     :- trad_isa A T Ai
     ,  trad T Ti
     .
-pippoequ A B T H
+pippoequ A B T Hi
     :- (locDecl H (propEq T' A B)), !
     ,  spy(trad_isa H (propEq T A B) Hi)
     .
