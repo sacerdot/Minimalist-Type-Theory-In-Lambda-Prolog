@@ -82,7 +82,7 @@ trad (setPi B C) T
 
 trad (app F X) R 
     :- spy(of F (setPi B C) ext)
-    ,  spy(trad X B Xi)
+    ,  spy(trad_isa X B Xi)
     ,  spy(trad F Fi)
     ,  spy(of Fi T int)
     ,  spy(T = (colSigma PI _))
