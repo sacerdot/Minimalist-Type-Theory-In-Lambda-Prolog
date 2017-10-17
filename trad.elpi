@@ -1,4 +1,9 @@
 
+% trad è uno-a-molto nei tipi
+% il tipo intensionale può variare per lo stesso elemento estensionale
+
+
+
 trad (forall B C) (forall B' C') :-
         spy (trad B B'),
         spy (pi x\ pi x' \ trad x x' => locDecl x B => locDecl x' B' => trad (C x )(C'  x')).
@@ -106,13 +111,20 @@ equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 pippo A A x \ x.
 
+%traduce X:_ext T in un Xi di tipi Ti
+trad_isa X T Xi 
+        :- of X T_inf ext
+        ,  trad X Xi'
+        ,  pippo T_inf T F 
+        ,  Xi = F Xi'
+        .
 pippo (propEq T T1 T2) (propEq T T1' T2') (F)
-    :- spy(pippoequ T1 T1' F1)
+    :- spy(pippoequ T1 T1' F1) %ASSERT-TODO F1 lavora su Ti
     ,  spy(pippoequ T2 T2' F2)
-    ,  spy(trad T1 T1i)
-    ,  spy(trad T2 T2i)
-    ,  spy(trad T1' T1i')
-    ,  spy(trad T2' T2i')
+    ,  spy(trad_isa T1 T T1i)
+    ,  spy(trad_isa T2 T T2i)
+    ,  spy(trad_isa T1' T T1i')
+    ,  spy(trad_isa T2' T T2i')
     ,  spy(trad T Ti)
     ,  F = x\ impl_app ( 
                 impl_app ( 
