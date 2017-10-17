@@ -47,10 +47,10 @@ pippo A A x \ x.
 
 %traduce X:_ext T in un Xi di tipi Ti
 trad_isa X T Xi 
-        :- of X T_inf ext
-        ,  trad X Xi'
-        ,  pippo T_inf T F 
-        ,  Xi = F Xi'
+        :- spy(of X T_inf ext)
+        ,  spy(trad X Xi')
+        ,  spy(pippo T_inf T F)
+        ,  spy(Xi = F Xi')
         .
 pippo (propEq T T1 T2) (propEq T T1' T2') (F)
     :- spy(pippoequ T1 T1' T F1)

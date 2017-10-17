@@ -51,12 +51,12 @@ testZ A B C
 testG A Q Qy
  :- Long = (
         forall singleton x\
-        forall (fun singleton singleton) g\
-        forall (fun (propEq singleton (fun_app g x) (fun_app g star)) singleton) f\
-        ( implies (propEq singleton star x)
+        forall (setPi singleton _\singleton) g\
+        forall (setPi (propEq singleton (app g x) (app g star)) _\singleton) f\
+        (implies (propEq singleton star x)
             (propEq singleton 
-                    (fun_app f (eqId singleton (fun_app g star))) 
-                    (fun_app f (eqId singleton (fun_app g star))) 
+                    (app f (eqId singleton (app g star))) 
+                    (app f (eqId singleton (app g star))) 
             )
         )
         ),
