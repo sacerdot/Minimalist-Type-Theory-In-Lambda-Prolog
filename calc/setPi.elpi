@@ -117,4 +117,17 @@ pippoequ (app F X1) (app F X2) H
     ,  H = forall_app (forall_app (forall_app P2F' X1') X2') G
     .
 
-
+pippo (setPi B C) (setPi B' C') P
+    :- (trad B' Bi')
+    ,  (trad B Bi)
+    ,  spy(pippo B' B FB)
+    ,  spy(pi x\ pi x'\ pi xi\ pi xi'\ 
+            locDecl x B => locDecl xi Bi => trad x xi
+            locDecl x' B' => locDecl xi' Bi' => trad x' xi'
+            => pippo (C x) (C' x') (FC xi xi'))
+    ,  ( pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+    ,  (trad (setPi B' C') (colSigma T1 T2)), T1 = setPi Bi' Ci'
+    ,  P = f\ pair T1 T2
+        (lambda Bi' x\ FC (FB x) x (app (elim_colSigma f (_\setPi Bi Ci) (x\y\x) ) (FB x)))
+        (fixMe "prova eta setPi preserva uguaglianza")
+    .

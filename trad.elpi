@@ -141,7 +141,7 @@ pippoequ A B ( H'')
     ,  H'' = Q H'
     .
 
-symmu T (x\ fixMEEEEEE).
+symmu T (x\ fixMe "prova di symmetria").
 
 
 
