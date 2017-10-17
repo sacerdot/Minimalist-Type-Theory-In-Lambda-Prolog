@@ -9,7 +9,7 @@ accumulate calc/colSigma.
 accumulate calc/Eq.
 accumulate calc/exist.
 accumulate calc/forall.
-accumulate calc/fun.
+%accumulate calc/fun.
 accumulate calc/id.
 accumulate calc/implies.
 accumulate calc/letIn.
@@ -29,11 +29,11 @@ testZ A B C
         (setPi 
           (propEq 
             singleton star x) y\
-          (fun 
-            (propEq (propEq singleton star star) y (eqId singleton star)) 
+          (setPi 
+            (propEq (propEq singleton star star) y (eqId singleton star)) _\
             singleton)) f\   
         (propEq singleton 
-        (fun_app 
+        (app 
             (app f (eqId singleton star))
             (eqId (propEq singleton star star) 
             (eqId singleton star)
@@ -157,11 +157,11 @@ testD
 testF A Q Qy
  :- Long = (
         forall singleton x\
-        forall (fun (propEq singleton x star) singleton) f\
+        forall (setPi (propEq singleton x star) _\singleton) f\
         ( implies (propEq singleton star x)
             (propEq singleton 
-                    (fun_app f (eqId singleton star)) 
-                    (fun_app f (eqId singleton star)) 
+                    (app f (eqId singleton star)) 
+                    (app f (eqId singleton star)) 
             )
         )
         ),
