@@ -87,8 +87,8 @@ trad (app F X) R
     ,  spy(trad X Xi)
     ,  spy(trad F Fi)
     ,  spy(of Fi T int)
-    ,  spy(T = (colSigma Bi _))
-    ,  R = (app (elim_colSigma Fi (_\Bi) (x\y\x) ) (PIPPO Xi))
+    ,  spy(T = (colSigma PI _))
+    ,  R = (app (elim_colSigma Fi (_\PI) (x\y\x) ) (PIPPO Xi))
     .
 
 
@@ -102,8 +102,8 @@ equ (setPi B C) P
     ,  P = (f\ g\ 
         forall Bi x\ 
             EquC x 
-            (app (elim_colSigma f (_\Bi) (x\y\x) ) x) 
-            (app (elim_colSigma g (_\Bi) (x\y\x) ) x))
+            (app (elim_colSigma f (_\setPi Bi Ci) (x\y\x) ) x) 
+            (app (elim_colSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
 
 pippoequ (app F X1) (app F X2) H 
