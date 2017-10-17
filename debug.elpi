@@ -24,7 +24,7 @@ bracket IC Pre G Post :- print_indent IC I N, term_to_string G S,
     Q is (I ^ N ^ Pre ^ S ^ Post), print Q.
 
 announce G :- bracket " " ">>" G "\n", fail.
-spy G :- c_indent T, indent [0 | T] => G , !.
+%spy G :- c_indent T, indent [0 | T] => G , !.
 spy G :- c_indent T, indent [0 | T] => spy2 G.
 
 spy2 G :-  (bracket "_" "[+[Begin " G "\n", G, bracket "_" "]-]Success  " G "\n") , !. 
