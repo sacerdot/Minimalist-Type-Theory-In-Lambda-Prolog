@@ -52,7 +52,7 @@ trad_isa X T Xi
         ,  spy(pippo T_inf T F)
         ,  spy(Xi = F Xi')
         .
-pippo (propEq T T1 T2) (propEq T T1' T2') (F)
+pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
     :- spy(pippoequ T1 T1' T F1)
     ,  spy(pippoequ T2 T2' T F2)
     ,  spy(trad_isa T1 T T1i)
