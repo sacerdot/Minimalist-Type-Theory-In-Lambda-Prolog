@@ -24,7 +24,7 @@ bracket IC Pre G Post :- print_indent IC I N, term_to_string G S,
     Q is (I ^ N ^ Pre ^ S ^ Post), print Q.
 
 announce G :- bracket " " ">>" G "\n", fail.
-
+spy G :- c_indent T, indent [0 | T] => G , !.
 spy G :- c_indent T, indent [0 | T] => spy2 G.
 
 spy2 G :-  (bracket "_" "[+[Begin " G "\n", G, bracket "_" "]-]Success  " G "\n") , !. 
@@ -36,17 +36,6 @@ spy2 G :-  bracket "." "].]Fail  " G "\n",  fail.
 
 
 
-/*
-
-bracket Pre G Post :-  print Pre, term_to_string G S, print S, print Post.
-
-spy G :- bracket "[--[Entering " G "\n", G, bracket "]--]Success  " G "\n".
-spy G :- not G, bracket "]--]Leaving  " G "\n",  fail.
-
-*/
-
-
-/*
 
 trad A B      :- announce (trad A B).
 tau A B C D   :- announce (tau A B C D).
@@ -76,22 +65,3 @@ hstep A B :- announce (hstep A B).
 conv A B :- announce ( conv A B).
 testB A :- announce (testB A).
 hstep A B :- announce (hstep A B). 
-*/
-
-/*
-%printt A :- printterm std_out A.
-%printt A :- term_to_string A S, printterm std_out A.
-%println A :- printt A, print "\n".
-%printW S A :- print S, printt A, print "\n".
-
-%load_library [] GOAL :- GOAL.
-%load_library [ddd NAME BODY | TAIL ] GOAL :-
-% of BODY TYPE int,
-% defs NAME BODY TYPE => load_library TAIL GOAL.
-
-%test_library [].
-%test_library [Test | Tail] :- Test , test_library Tail.
-
-
-
-*/
