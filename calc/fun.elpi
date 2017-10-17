@@ -73,8 +73,8 @@ equ (fun B C) P
     :- trad B Bi
     ,  trad C Ci , equ C EquC
     ,  P = (f\ g\ forall Bi x\ EquC 
-            (app (elim_colSigma f (_\Bi) (x\y\x) ) x) 
-            (app (elim_colSigma g (_\Bi) (x\y\x) ) x))
+            (app (elim_colSigma f (_\fun Bi Ci) (x\y\x) ) x) 
+            (app (elim_colSigma g (_\fun Bi Ci) (x\y\x) ) x))
     .
 
 
