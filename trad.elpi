@@ -131,11 +131,11 @@ pippoequ A A (id T' A' )
     ,  of A' T' int
     .
 pippoequ A B H'
-    :- spy(locDecl H (propEq _ A B)), !
+    :- (locDecl H (propEq _ A B)), !
     ,  trad H H'
     .
 pippoequ A B ( H'')
-    :- spy(locDecl H (propEq T B A))
+    :- (locDecl H (propEq T B A))
     ,  trad H H'
     ,  spy (symmu T Q)
     ,  H'' = Q H'

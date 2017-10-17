@@ -118,10 +118,3 @@ pippoequ (app F X1) (app F X2) H
     .
 
 
-
-pippo (fun B C) (fun B' C') F
-    :- spy(pippo B' B FB)
-    ,  spy(pippo C C' FC)
-    ,  spy(trad C' Ci')
-    ,  F = f\ fun_lam Ci' x\ FC (fun_app f (FB x))
-    .

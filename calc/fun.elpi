@@ -94,6 +94,12 @@ pippoequ (fun_app F X1) (fun_app F X2) H
 pippo (fun B C) (fun B' C') F
     :- spy(pippo B' B FB)
     ,  spy(pippo C C' FC)
+    ,  (trad B Bi)
+    ,  (trad C Ci)
     ,  spy(trad C' Ci')
-    ,  F = f\ fun_lam Ci' x\ FC (fun_app f (FB x))
+    ,  (trad B' Bi')
+    ,  (trad (fun B' C') (colSigma T1 T2))
+    ,  F = f\ pair T1 T2
+        (fun_lam Ci' x\ FC (fun_app (elim_colSigma f (_\fun Bi Ci) (x\y\x) ) (FB x)))
+        (fixMEE2)
     .
