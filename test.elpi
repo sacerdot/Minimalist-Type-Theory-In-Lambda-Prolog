@@ -19,6 +19,23 @@ accumulate calc/setPi.
 accumulate calc/setSum.
 accumulate calc/singleton.
 
+testF A Q Qy
+ :- Long = (
+        forall singleton x\
+        forall (setPi (propEq singleton x star) _\singleton) f\
+        ( implies (propEq singleton star x)
+            (propEq singleton 
+                    (app f (eqId singleton star)) 
+                    (app f (eqId singleton star)) 
+            )
+        )
+        ),
+    spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(isType Q Qy int)
+    .
 
 testZ A B C
   :- Long = 
@@ -68,192 +85,29 @@ testG A Q Qy
     .
 
 
-testB  :- pi x\ pi y\ (locDecl _ (propEq singleton x y) => spy(conv x y)). 
 
-
-testC
- :- spy( 
-        isaT (
-        forall singleton x\
-        forall (fun (propEq singleton x star) singleton) f\
-        (implies (propEq singleton star x)
-            (
-             (propEq singleton 
-                    (fun_app f (eqId singleton star)) 
-                    (fun_app f (eqId singleton star)) 
-            )
-            )
-        )
-        ) col ext).
-
-
-testE
- :- spy( 
-        isaT (
-        forall singleton x\
-        forall (fun (propEq singleton x star) singleton) f\
-        ( implies (propEq singleton x star)
-            ( letIn (propEq  singleton star x) (eqId singleton x) _\
-             (propEq singleton 
-                    (fun_app f (eqId singleton star)) 
-                    (fun_app f (eqId singleton star)) 
-            )
-            )
-        )
-        ) col ext).
-
-
-testD 
- :- spy( 
-        isaT (
-        forall singleton x\
-        forall (fun (propEq singleton x star) singleton) f\
-        forall (propEq singleton star star) l\
-        ( implies (propEq singleton star x)
-            (propEq singleton 
-                    (fun_app f l) 
-                    (fun_app f l) 
-            )
-        )
-        )col ext).
-
-testF A Q Qy
- :- Long = (
-        forall singleton x\
-        forall (setPi (propEq singleton x star) _\singleton) f\
-        ( implies (propEq singleton star x)
-            (propEq singleton 
-                    (app f (eqId singleton star)) 
-                    (app f (eqId singleton star)) 
-            )
-        )
-        ),
-    spy(isType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(trad Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(isType Q Qy int)
+testMAD A B C
+  :- Long = 
+(forall 
+  (propEq singleton star star) x\
+  (implies (propEq (propEq singleton star star) x (eqId singleton star)) (implies (propEq (propEq singleton star star) (eqId singleton star) x) 
+      (forall 
+        (setPi 
+          (propEq 
+            (propEq singleton star star) (eqId singleton star) x) y\
+          (setPi 
+            (propEq (propEq (propEq singleton star star) (eqId singleton star) (eqId singleton star)) y (eqId (propEq singleton star star) (eqId singleton star))) _\
+            (propEq singleton star star))) f\   
+        (propEq (propEq singleton star star) 
+        (app 
+            (app f (eqId (propEq singleton star star) (eqId singleton star)))
+            (eqId (propEq (propEq singleton star star) (eqId singleton star) (eqId singleton star)) 
+            (eqId (propEq singleton star star) (eqId singleton star))
+            )) 
+        (eqId singleton star))
+            )  ))
+    )
+    , spy(isType Long A ext)
+    , spy(trad Long B)
+    , spy(isType B C int)
     .
-
-
-
-testS A B C
-    :- Long = (
-        forall (setSum singleton singleton) x\
-        forall (fun (propEq (setSum singleton singleton) x (inl singleton singleton star)) (setSum singleton singleton)) f\
-        ( implies (propEq (setSum singleton singleton) (inl singleton singleton star) x)
-            (propEq (setSum singleton singleton) 
-                    (fun_app f (eqId (setSum singleton singleton) (inl singleton singleton star))) 
-                    (fun_app f (eqId (setSum singleton singleton) (inl singleton singleton star))) 
-            )
-        )
-        )
-    ,  spy(isType Long A ext)
-    ,  spy(trad Long B)
-    .
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-testA Q1 Q2 :- 
- (pi x\ 
-   pi y\ 
-    pi l\ 
-     pi f\ pi h\ 
-      locDecl x singleton =>
-       locDecl y singleton =>
-        locDecl l (propEq singleton x x) =>
-         locDecl f (fun (propEq singleton y y) singleton) =>
-          locDecl h (propEq singleton x y) =>
-           ( 
-            %hnf (fun_app f l) (Q f l)
-         %spy   (of  (fun_app f l) (Q1 x y l h f) ext)
-    %spy     (dstep  x (Q1 x y l h f))
-    spy     (conv  (propEq singleton x x) (propEq singleton y y) )
-    %spy     (nf (propEq singleton x x) (Q1 x y l h f))
-            %isa f (fun (Q1 x y l h f)(Q2 x y l h f) )ext
-            %isa l (Q1 x y l h f) ext
-           
-           )
-           ).
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
