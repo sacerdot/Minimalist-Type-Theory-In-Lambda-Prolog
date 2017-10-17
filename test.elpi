@@ -1,15 +1,15 @@
 accumulate debug.
 
-
+ 
 accumulate trad.
-
+ 
 accumulate main.
 
 accumulate calc/and.
 accumulate calc/colSigma.
 accumulate calc/Eq.
 accumulate calc/exist.
-accumulate calc/forall.
+accumulate calc/forall. 
 %accumulate calc/fun.
 accumulate calc/id.
 accumulate calc/implies.
@@ -18,6 +18,20 @@ accumulate calc/or.
 accumulate calc/setPi.
 accumulate calc/setSum.
 accumulate calc/singleton.
+
+testH A Q Qy
+ :- Long = (
+        forall (setPi (setPi singleton _\singleton) _\singleton) f\
+        (propEq singleton (app f (lambda singleton x\ x)) star) 
+        ),
+    %spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
+  ,  spy(isType Q Qy int)
+    .
+
+
 
 testF A Q Qy
  :- Long = (
@@ -111,3 +125,4 @@ testMAD A B C
     , spy(trad Long B)
     , spy(isType B C int)
     .
+

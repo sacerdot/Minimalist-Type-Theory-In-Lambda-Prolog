@@ -7,14 +7,12 @@
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
 type hstep, dconv, hnf,  conv, trad A -> A -> prop. 
-
+ 
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.
 type ext, int               mttLevel.
 type col, set, propc, props mttKind.
-%type s, c       mttSetCol.
-%type s, p       mttSetProp.
-%type sort       mttSetCol -> mttSetProp -> mttKind.
+
 
 type locDecl            mttTerm -> mttType -> prop.
 type locDeclType        mttType -> mttKind -> prop.
@@ -26,7 +24,6 @@ type locDef         mttTerm -> mttType -> mttTerm -> prop.
 type forall mttType -> (mttTerm -> mttType) -> mttType.
 
  
-%hstep X N :- locDef X T M , conv M N.
 
 hnf A B :- hstep A C, !, hnf C B.
 hnf A A.
@@ -40,7 +37,7 @@ conv A B :- (locDecl _ (propEq _ A B) ).
 conv A B :- spy(hnf A A'), spy( hnf B B'), spy( dconv A' B').
 
 dconv A A :- !.
-
+ 
 pts_leq A A.
 pts_leq props set.
 pts_leq props col.
@@ -80,7 +77,7 @@ isa (fixMe M) T int
     ,  term_to_string T S, print S
     ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     .
-
+ 
 
 isa Term TY IE :-
 spy    (of Term TY' IE),
@@ -88,110 +85,3 @@ spy    (conv TY' TY).
  
 
 of X Y _ :-  locDecl X Y .
-%isType X Y _ :- locDeclType X Y.
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-%tau Tipo_di_partenza Tipo_di_arrivo Input Output :- fail.
-/*
-tau' TipoExt ElementoExt Output :-
-    trad ElementoExt ElementoInt,
-    trad TipoExt TipoInt,
-    of ElementoInt Ty int,
-    tau Ty TipoInt ElementoInt Output.
-*/
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-/*
-isType (forall B C) propc ext :-
-        (pi x\ locDecl x B => isType (C x) propc ext)
-    .
-
-
-*/
-
-%isType A Sort IE
-%of X A IE
-%locDef X A M IE
-
-
-
-%Is this ever needed?
-%trad (of Aa AA ext)
-%     (of(tau A_inferred (TradAA) (TradAa) )
-%        (TradAA)
-%        int
-%     ) :-
-%     (trad AA TradAA),
-%     (trad Aa TradAa),
-%     of (TradAa) A_inferred int.
-
-
-% [NOTAZIONI]
-%   X Xx indicano tipo ed elemento
-%   of elemento tipo IE
-%   isType tipo Kind IE
-%
-
-/*
-isType (implies B C) prop ext :-
-        isType B prop ext
-    ,   isType C prop ext
-    .
-*/
-/*
-isType (propEq TypeC C1 C2) propc ext:-
-       isType TypeC col ext
-    ,   print "-.-.-.-." , println TypeC
-    ,   spy (of C1 TypeC ext)
-    ,   println "--first-spy-done"
-    ,   spy (of C2 TypeC ext)
-    .
-*/
-
-
-%dstep A B :- locDecl X _, !, fail.
-%hstep A B :- locDecl X _, !, fail.
