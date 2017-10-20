@@ -164,7 +164,7 @@ pippo (setPi B C) (setPi B' C') P
             )))
     . 
  
-pippo_trasp (setPi B C) (setPi B' C') (f\g\h\ popopopo).
+pippo_trasp (setPi B C) (setPi B' C') (f\g\h\ todo).
  
  
 
