@@ -183,14 +183,14 @@ pippo (setPi B C) (setPi B' C') P
                             (FB y2'))
                         KB y1' y2' d')
                 )
-        )
+        ) 
     . 
 
 pippo_trasp (setPi B C) (setPi B' C') (f\g\h\ todo).
 
 
 macro_pippo B B' Q 
-    :- trad B Bi,
+    :- trad B Bi
     ,  trad B' Bi'
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
@@ -202,8 +202,8 @@ macro_pippo B B' Q
         => (locDecl hi (EquB x1i x2i))
         => trad h hi
         => Q x1 x2 h x1i x2i hi
-        )
-    .
+        ) 
+    . 
 macro_trad B Q 
     :- equ B EquB
     ,  trad B Bi
