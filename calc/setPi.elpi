@@ -174,7 +174,8 @@ pippo (setPi B C) (setPi B' C') P
             f\p\ pair T1' T2'
                 (lambda Bi' x\ FC' (FB x) x (app f (FB x)))
                 (forall_lam Bi' y1'\ forall_lam Bi' y2'\ forall_lam (EquB' y1' y2') d'\
-                    KC' (FB y2') y2' 
+                    KC' (FB y2') 
+                        y2' 
                         (FCC (FB y1') (FB y2') (app f (FB y1')))
                         (app f (FB y2'))
                         (forall_app
@@ -186,7 +187,16 @@ pippo (setPi B C) (setPi B' C') P
         ) 
     . 
 
-pippo_trasp (setPi B C) (setPi B' C') (f\g\h\ todo).
+pippo_trasp (setPi B C) (setPi B' C') P 
+    :- (macro_pippo B B' x\x'\_\xi\xi'\_\ pippo_trasp (C x) (C' x') (KC' xi xi'))
+    ,  (pippo B' B FB)
+    ,  P = f\g\d\ forall_lam B' y'\ 
+            KC' (FB y') 
+                y'
+                (app f (FB y'))
+                (app g (FB y'))
+                (forall_app d (FB y'))
+    .
 
 
 macro_pippo B B' Q 

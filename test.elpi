@@ -19,6 +19,18 @@ accumulate calc/setPi.
 accumulate calc/setSum.
 accumulate calc/singleton.
 
+testI A B C 
+ :- Long = (
+        forall (setPi (setPi singleton _\singleton) _\singleton) f\
+        (propEq singleton (app f (lambda singleton x\ x)) star) 
+        ),
+    %spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
+  ,  spy(isType Q Qy int)
+    .
+
 testH A Q Qy
  :- Long = (
         forall (setPi (setPi singleton _\singleton) _\singleton) f\
