@@ -21,7 +21,7 @@ indent_str C S N :- c_indent T, str_dash C T S, len_str T N.
 print_indent C S N :- indent_str C S N.
 
 bracket IC Pre G Post :- print_indent IC I N, term_to_string G S, 
-    Q is (I ^ N ^ Pre ^ S ^ Post), print Q.
+    Q is (N ^ I ^ Pre ^ S ^ Post), print Q.
 
 announce G :- bracket " " ">>" G "\n", fail.
 %spy G :- c_indent T, indent [0 | T] => G , !.
@@ -34,9 +34,13 @@ spy2 G :-  bracket "." "].]Fail  \n" G "\n",  fail.
 
 
 
+pippo_trasp A B C :- announce (pippo_trasp A B C).
+macro_trad A P :- announce (macro_trad A P).
+equ A B :- announce (equ A B).
+pippo A B C :- announce (pippo A B C).
+pippoequ A B C D :- announce (pippoequ A B C D).
 
 
-/*
 trad A B      :- announce (trad A B).
 tau A B C D   :- announce (tau A B C D).
 tau' A B C    :- announce (tau' A B C).
@@ -51,7 +55,6 @@ of A B IE     :- announce (of A B IE).
 isType A K IE :- announce (isType A K IE).
 isa BB B IE   :- announce (isa BB B IE) .
 sigm A B D    :- announce (sigm A B D).
-equ T A B O   :- announce (equ T A B O) .
 %macro A B    :- announce (macro A B). 
 
 
@@ -65,4 +68,3 @@ hstep A B :- announce (hstep A B).
 conv A B :- announce ( conv A B).
 testB A :- announce (testB A).
 hstep A B :- announce (hstep A B). 
-*/
