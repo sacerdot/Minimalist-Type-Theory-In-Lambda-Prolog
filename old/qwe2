@@ -63,7 +63,7 @@ isType singleton X1 ext
 "
 "2  >>isType singleton X1 ext
 "
-"2__]-]Success  
+"2--]-]Success  
 isType singleton set ext
 "
 "2__[+[Begin 
@@ -136,7 +136,7 @@ isType singleton X3^1 ext
 "
 "4    >>isType singleton X3^1 ext
 "
-"4____]-]Success  
+"4----]-]Success  
 isType singleton set ext
 "
 "4____[+[Begin 
@@ -214,7 +214,7 @@ of x0 X6^2 ext
 "
 "6      >>of x0 X6^2 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x0 singleton ext
 "
 "6______[+[Begin 
@@ -224,7 +224,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isa x1 singleton ext
@@ -236,7 +236,7 @@ of x1 X7^2 ext
 "
 "6      >>of x1 X7^2 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x1 singleton ext
 "
 "6______[+[Begin 
@@ -246,7 +246,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isType
@@ -280,7 +280,7 @@ of x1 X9^3 ext
 "
 "6      >>of x1 X9^3 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x1 singleton ext
 "
 "6______[+[Begin 
@@ -290,7 +290,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isa x0 singleton ext
@@ -302,7 +302,7 @@ of x0 X10^3 ext
 "
 "6      >>of x0 X10^3 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x0 singleton ext
 "
 "6______[+[Begin 
@@ -312,7 +312,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isType
@@ -345,7 +345,7 @@ of x0 X12^4 ext
 "
 "6      >>of x0 X12^4 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x0 singleton ext
 "
 "6______[+[Begin 
@@ -355,7 +355,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isa star singleton ext
@@ -369,7 +369,7 @@ of star X13^4 ext
 "
 "6      >>locDecl star X13^4
 "
-"6______]-]Success  
+"6------]-]Success  
 of star singleton ext
 "
 "6______[+[Begin 
@@ -379,7 +379,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isType
@@ -411,7 +411,7 @@ of x1 X15^5 ext
 "
 "6      >>of x1 X15^5 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x1 singleton ext
 "
 "6______[+[Begin 
@@ -421,7 +421,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isa star singleton ext
@@ -435,7 +435,7 @@ of star X16^5 ext
 "
 "6      >>locDecl star X16^5
 "
-"6______]-]Success  
+"6------]-]Success  
 of star singleton ext
 "
 "6______[+[Begin 
@@ -445,7 +445,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isType
@@ -477,7 +477,7 @@ of star X18^6 ext
 "
 "6      >>locDecl star X18^6
 "
-"6______]-]Success  
+"6------]-]Success  
 of star singleton ext
 "
 "6______[+[Begin 
@@ -487,7 +487,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isa x0 singleton ext
@@ -499,7 +499,7 @@ of x0 X19^6 ext
 "
 "6      >>of x0 X19^6 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x0 singleton ext
 "
 "6______[+[Begin 
@@ -509,7 +509,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isType
@@ -540,7 +540,7 @@ of star X21^7 ext
 "
 "6      >>locDecl star X21^7
 "
-"6______]-]Success  
+"6------]-]Success  
 of star singleton ext
 "
 "6______[+[Begin 
@@ -550,7 +550,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isa x1 singleton ext
@@ -562,7 +562,7 @@ of x1 X22^7 ext
 "
 "6      >>of x1 X22^7 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x1 singleton ext
 "
 "6______[+[Begin 
@@ -572,7 +572,7 @@ conv singleton singleton
 "
 "6      >>conv singleton singleton
 "
-"6______]-]Success  
+"6------]-]Success  
 conv singleton singleton
 "
 "5     >>isType
@@ -612,7 +612,7 @@ of x0 X26^8 ext
 "
 "7       >>of x0 X26^8 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
@@ -622,7 +622,7 @@ conv singleton singleton
 "
 "7       >>conv singleton singleton
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv singleton singleton
 "
 "6      >>isa x0 singleton ext
@@ -634,7 +634,7 @@ of x0 X27^8 ext
 "
 "7       >>of x0 X27^8 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
@@ -644,7 +644,7 @@ conv singleton singleton
 "
 "7       >>conv singleton singleton
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv singleton singleton
 "
 "6      >>isType
@@ -665,7 +665,7 @@ of x0 X31^9 ext
 "
 "7       >>of x0 X31^9 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
@@ -675,7 +675,7 @@ conv singleton singleton
 "
 "7       >>conv singleton singleton
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv singleton singleton
 "
 "6      >>isa x0 singleton ext
@@ -687,7 +687,7 @@ of x0 X32^9 ext
 "
 "7       >>of x0 X32^9 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
@@ -697,7 +697,7 @@ conv singleton singleton
 "
 "7       >>conv singleton singleton
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv singleton singleton
 "
 "6      >>isType
@@ -717,7 +717,7 @@ of x0 X36^10 ext
 "
 "7       >>of x0 X36^10 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
@@ -727,7 +727,7 @@ conv singleton singleton
 "
 "7       >>conv singleton singleton
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv singleton singleton
 "
 "6      >>isa x0 singleton ext
@@ -739,7 +739,7 @@ of x0 X37^10 ext
 "
 "7       >>of x0 X37^10 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
@@ -749,7 +749,7 @@ conv singleton singleton
 "
 "7       >>conv singleton singleton
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv singleton singleton
 "
 "6      >>isa (eqId singleton x0) (propEq singleton x0 x0) ext
@@ -770,10 +770,10 @@ of x0 singleton ext
 "
 "8        >>of x0 singleton ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of x0 singleton ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "7_______[+[Begin 
@@ -783,7 +783,7 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "7       >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "6      >>isa (eqId singleton x1) (propEq singleton x0 x0) ext
@@ -804,10 +804,10 @@ of x1 singleton ext
 "
 "8        >>of x1 singleton ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of x1 singleton ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of (eqId singleton x1) (propEq singleton x1 x1) ext
 "
 "7_______[+[Begin 
@@ -830,7 +830,7 @@ hnf (propEq singleton x1 x1) X41^10
 "
 "8        >>hstep (propEq singleton x1 x1) X42^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 hnf (propEq singleton x1 x1) (propEq singleton x1 x1)
 "
 "8________[+[Begin 
@@ -844,7 +844,7 @@ hnf (propEq singleton x0 x0) X43^10
 "
 "8        >>hstep (propEq singleton x0 x0) X44^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 hnf (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "8________[+[Begin 
@@ -857,7 +857,7 @@ conv singleton singleton
 "
 "9         >>conv singleton singleton
 "
-"9_________]-]Success  
+"9---------]-]Success  
 conv singleton singleton
 "
 "9_________[+[Begin 
@@ -867,7 +867,7 @@ conv x1 x0
 "
 "9         >>conv x1 x0
 "
-"9_________]-]Success  
+"9---------]-]Success  
 conv x1 x0
 "
 "9_________[+[Begin 
@@ -877,13 +877,13 @@ conv x1 x0
 "
 "9         >>conv x1 x0
 "
-"9_________]-]Success  
+"9---------]-]Success  
 conv x1 x0
 "
-"8________]-]Success  
+"8--------]-]Success  
 dconv (propEq singleton x1 x1) (propEq singleton x0 x0)
 "
-"7_______]-]Success  
+"7-------]-]Success  
 conv (propEq singleton x1 x1) (propEq singleton x0 x0)
 "
 "7_______[+[Begin 
@@ -892,16 +892,16 @@ pts_fun props props X28^8
 "8________[+[Begin 
 pts_leq props set
 "
-"8________]-]Success  
+"8--------]-]Success  
 pts_leq props set
 "
 "8________[+[Begin 
 pts_leq props set
 "
-"8________]-]Success  
+"8--------]-]Success  
 pts_leq props set
 "
-"7_______]-]Success  
+"7-------]-]Success  
 pts_fun props props set
 "
 "7_______[+[Begin 
@@ -910,19 +910,19 @@ pts_fun props set X23^8
 "8________[+[Begin 
 pts_leq props set
 "
-"8________]-]Success  
+"8--------]-]Success  
 pts_leq props set
 "
 "8________[+[Begin 
 pts_leq set set
 "
-"8________]-]Success  
+"8--------]-]Success  
 pts_leq set set
 "
-"7_______]-]Success  
+"7-------]-]Success  
 pts_fun props set set
 "
-"6______]-]Success  
+"6------]-]Success  
 isType
  (setPi (propEq singleton x0 x0) x8 \
    setPi (propEq singleton x0 x0) x9 \
@@ -974,7 +974,7 @@ of x0 X49^9 ext
 "
 "8        >>of x0 X49^9 ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of x0 singleton ext
 "
 "8________[+[Begin 
@@ -984,7 +984,7 @@ conv singleton singleton
 "
 "8        >>conv singleton singleton
 "
-"8________]-]Success  
+"8--------]-]Success  
 conv singleton singleton
 "
 "7       >>isa x0 singleton ext
@@ -996,7 +996,7 @@ of x0 X50^9 ext
 "
 "8        >>of x0 X50^9 ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of x0 singleton ext
 "
 "8________[+[Begin 
@@ -1006,7 +1006,7 @@ conv singleton singleton
 "
 "8        >>conv singleton singleton
 "
-"8________]-]Success  
+"8--------]-]Success  
 conv singleton singleton
 "
 "7       >>isa (eqId singleton x0) (propEq singleton x0 x0) ext
@@ -1027,10 +1027,10 @@ of x0 singleton ext
 "
 "9         >>of x0 singleton ext
 "
-"9_________]-]Success  
+"9---------]-]Success  
 of x0 singleton ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "8________[+[Begin 
@@ -1040,7 +1040,7 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "8        >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"8________]-]Success  
+"8--------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "7       >>isa (eqId singleton x0) (propEq singleton x0 x0) ext
@@ -1061,10 +1061,10 @@ of x0 singleton ext
 "
 "9         >>of x0 singleton ext
 "
-"9_________]-]Success  
+"9---------]-]Success  
 of x0 singleton ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "8________[+[Begin 
@@ -1074,7 +1074,7 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "8        >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"8________]-]Success  
+"8--------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "7       >>isa (app (app x8 (eqId singleton x0)) (eqId singleton x0))
@@ -1106,7 +1106,7 @@ of x8 (setPi X56^9 X57^9) ext
 "
 "10          >>of x8 (setPi X56^9 X57^9) ext
 "
-"10__________]-]Success  
+"10----------]-]Success  
 of x8
  (setPi (propEq singleton x0 x0) x9 \
    setPi (propEq singleton x0 x0) x10 \
@@ -1134,10 +1134,10 @@ of x0 singleton ext
 "
 "12            >>of x0 singleton ext
 "
-"12____________]-]Success  
+"12------------]-]Success  
 of x0 singleton ext
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "11___________[+[Begin 
@@ -1147,13 +1147,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "11           >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"9_________]-]Success  
+"9---------]-]Success  
 of (app x8 (eqId singleton x0))
  (setPi (propEq singleton x0 x0) x9 \
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
@@ -1180,10 +1180,10 @@ of x0 singleton ext
 "
 "11           >>of x0 singleton ext
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 of x0 singleton ext
 "
-"10__________]-]Success  
+"10----------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "10__________[+[Begin 
@@ -1193,13 +1193,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "10          >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"9_________]-]Success  
+"9---------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of (app (app x8 (eqId singleton x0)) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  ext
@@ -1241,7 +1241,7 @@ hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  X62^9
 "
-"9_________]-]Success  
+"9---------]-]Success  
 hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
 "
@@ -1264,7 +1264,7 @@ hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  X64^9
 "
-"9_________]-]Success  
+"9---------]-]Success  
 hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
 "
@@ -1280,7 +1280,7 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "10          >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "10__________[+[Begin 
@@ -1290,7 +1290,7 @@ conv (eqId singleton x0) (eqId singleton x0)
 "
 "10          >>conv (eqId singleton x0) (eqId singleton x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (eqId singleton x0) (eqId singleton x0)
 "
 "10__________[+[Begin 
@@ -1313,7 +1313,7 @@ hnf (eqId singleton x1) X66^9
 "
 "11           >>hstep (eqId singleton x1) X67^9
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 hnf (eqId singleton x1) (eqId singleton x1)
 "
 "11___________[+[Begin 
@@ -1327,7 +1327,7 @@ hnf (eqId singleton x0) X68^9
 "
 "11           >>hstep (eqId singleton x0) X69^9
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 hnf (eqId singleton x0) (eqId singleton x0)
 "
 "11___________[+[Begin 
@@ -1341,18 +1341,18 @@ dconv (eqId singleton x1) (eqId singleton x0)
 "
 "11           >>conv x1 x0
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 dconv (eqId singleton x1) (eqId singleton x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (eqId singleton x1) (eqId singleton x0)
 "
-"9_________]-]Success  
+"9---------]-]Success  
 dconv
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
 "
-"8________]-]Success  
+"8--------]-]Success  
 conv
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
@@ -1386,7 +1386,7 @@ of x8 (setPi X73^9 X74^9) ext
 "
 "10          >>of x8 (setPi X73^9 X74^9) ext
 "
-"10__________]-]Success  
+"10----------]-]Success  
 of x8
  (setPi (propEq singleton x0 x0) x9 \
    setPi (propEq singleton x0 x0) x10 \
@@ -1414,10 +1414,10 @@ of x0 singleton ext
 "
 "12            >>of x0 singleton ext
 "
-"12____________]-]Success  
+"12------------]-]Success  
 of x0 singleton ext
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "11___________[+[Begin 
@@ -1427,13 +1427,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "11           >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"9_________]-]Success  
+"9---------]-]Success  
 of (app x8 (eqId singleton x0))
  (setPi (propEq singleton x0 x0) x9 \
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
@@ -1460,10 +1460,10 @@ of x0 singleton ext
 "
 "11           >>of x0 singleton ext
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 of x0 singleton ext
 "
-"10__________]-]Success  
+"10----------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "10__________[+[Begin 
@@ -1473,13 +1473,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "10          >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"9_________]-]Success  
+"9---------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of (app (app x8 (eqId singleton x0)) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  ext
@@ -1521,7 +1521,7 @@ hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  X79^9
 "
-"9_________]-]Success  
+"9---------]-]Success  
 hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
 "
@@ -1544,7 +1544,7 @@ hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  X81^9
 "
-"9_________]-]Success  
+"9---------]-]Success  
 hnf (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
 "
@@ -1560,7 +1560,7 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "10          >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "10__________[+[Begin 
@@ -1570,7 +1570,7 @@ conv (eqId singleton x0) (eqId singleton x0)
 "
 "10          >>conv (eqId singleton x0) (eqId singleton x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (eqId singleton x0) (eqId singleton x0)
 "
 "10__________[+[Begin 
@@ -1593,7 +1593,7 @@ hnf (eqId singleton x1) X83^9
 "
 "11           >>hstep (eqId singleton x1) X84^9
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 hnf (eqId singleton x1) (eqId singleton x1)
 "
 "11___________[+[Begin 
@@ -1607,7 +1607,7 @@ hnf (eqId singleton x0) X85^9
 "
 "11           >>hstep (eqId singleton x0) X86^9
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 hnf (eqId singleton x0) (eqId singleton x0)
 "
 "11___________[+[Begin 
@@ -1621,30 +1621,30 @@ dconv (eqId singleton x1) (eqId singleton x0)
 "
 "11           >>conv x1 x0
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 dconv (eqId singleton x1) (eqId singleton x0)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 conv (eqId singleton x1) (eqId singleton x0)
 "
-"9_________]-]Success  
+"9---------]-]Success  
 dconv
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
 "
-"8________]-]Success  
+"8--------]-]Success  
 conv
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x1))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
 "
-"7_______]-]Success  
+"7-------]-]Success  
 isType
  (propEq
    (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
    (app (app x8 (eqId singleton x0)) (eqId singleton x0))
    (app (app x8 (eqId singleton x0)) (eqId singleton x0))) props ext
 "
-"6______]-]Success  
+"6------]-]Success  
 pi x8 \
  locDecl x8
   (setPi (propEq singleton x0 x0) x9 \
@@ -1662,10 +1662,10 @@ pi x8 \
 "6______[+[Begin 
 pts_for set props props
 "
-"6______]-]Success  
+"6------]-]Success  
 pts_for set props props
 "
-"5_____]-]Success  
+"5-----]-]Success  
 isType
  (implies (propEq singleton x0 x1)
    (implies (propEq singleton x1 x0)
@@ -1685,7 +1685,7 @@ isType
                 (app (app x2 (eqId singleton x0)) (eqId singleton x0)))))))))
  props ext
 "
-"4____]-]Success  
+"4----]-]Success  
 pi x1 \
  locDecl x1 singleton =>
   spy
@@ -1711,10 +1711,10 @@ pi x1 \
 "4____[+[Begin 
 pts_for set props X2
 "
-"4____]-]Success  
+"4----]-]Success  
 pts_for set props props
 "
-"3___]-]Success  
+"3---]-]Success  
 isType
  (forall singleton x1 \
    implies (propEq singleton x0 x1)
@@ -1735,7 +1735,7 @@ isType
                  (app (app x2 (eqId singleton x0)) (eqId singleton x0)))))))))
  props ext
 "
-"2__]-]Success  
+"2--]-]Success  
 pi x0 \
  locDecl x0 singleton =>
   spy
@@ -1762,10 +1762,10 @@ pi x0 \
 "2__[+[Begin 
 pts_for set props X0
 "
-"2__]-]Success  
+"2--]-]Success  
 pts_for set props props
 "
-"1_]-]Success  
+"1-]-]Success  
 isType
  (forall singleton x0 \
    forall singleton x1 \
@@ -1837,7 +1837,7 @@ trad singleton X88
 "
 "2  >>trad singleton X88
 "
-"2__]-]Success  
+"2--]-]Success  
 trad singleton singleton
 "
 "2__[+[Begin 
@@ -1891,7 +1891,7 @@ trad singleton (X90 x1)
 "
 "3   >>trad singleton (X90 x1)
 "
-"3___]-]Success  
+"3---]-]Success  
 trad singleton singleton
 "
 "3___[+[Begin 
@@ -1945,7 +1945,7 @@ equ singleton X93^4
 "
 "4    >>equ singleton X93^4
 "
-"4____]-]Success  
+"4----]-]Success  
 equ singleton x4 \ x5 \ propId singleton x4 x5
 "
 "4____[+[Begin 
@@ -1958,13 +1958,13 @@ of x0 X95^4 ext
 "
 "5     >>of x0 X95^4 ext
 "
-"5_____]-]Success  
+"5-----]-]Success  
 of x0 singleton ext
 "
 "5_____[+[Begin 
 trad x0 X96^4
 "
-"5_____]-]Success  
+"5-----]-]Success  
 trad x0 x1
 "
 "5_____[+[Begin 
@@ -1972,16 +1972,16 @@ pippo singleton singleton X97^4
 "
 "5     >>pippo singleton singleton X97^4
 "
-"5_____]-]Success  
+"5-----]-]Success  
 pippo singleton singleton x4 \ x4
 "
 "5_____[+[Begin 
 X94^4 = x1
 "
-"5_____]-]Success  
+"5-----]-]Success  
 x1 = x1
 "
-"4____]-]Success  
+"4----]-]Success  
 trad_isa x0 singleton x1
 "
 "4____[+[Begin 
@@ -1994,13 +1994,13 @@ of x2 X99^4 ext
 "
 "5     >>of x2 X99^4 ext
 "
-"5_____]-]Success  
+"5-----]-]Success  
 of x2 singleton ext
 "
 "5_____[+[Begin 
 trad x2 X100^4
 "
-"5_____]-]Success  
+"5-----]-]Success  
 trad x2 x3
 "
 "5_____[+[Begin 
@@ -2008,22 +2008,22 @@ pippo singleton singleton X101^4
 "
 "5     >>pippo singleton singleton X101^4
 "
-"5_____]-]Success  
+"5-----]-]Success  
 pippo singleton singleton x4 \ x4
 "
 "5_____[+[Begin 
 X98^4 = x3
 "
-"5_____]-]Success  
+"5-----]-]Success  
 x3 = x3
 "
-"4____]-]Success  
+"4----]-]Success  
 trad_isa x2 singleton x3
 "
 "4____[+[Begin 
 X92 x1 x3 = propId singleton x1 x3
 "
-"4____]-]Success  
+"4----]-]Success  
 propId singleton x1 x3 = propId singleton x1 x3
 "
 "4____[+[Begin 
@@ -2074,7 +2074,7 @@ equ singleton X104^6
 "
 "5     >>equ singleton X104^6
 "
-"5_____]-]Success  
+"5-----]-]Success  
 equ singleton x6 \ x7 \ propId singleton x6 x7
 "
 "5_____[+[Begin 
@@ -2087,13 +2087,13 @@ of x2 X106^6 ext
 "
 "6      >>of x2 X106^6 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x2 singleton ext
 "
 "6______[+[Begin 
 trad x2 X107^6
 "
-"6______]-]Success  
+"6------]-]Success  
 trad x2 x3
 "
 "6______[+[Begin 
@@ -2101,16 +2101,16 @@ pippo singleton singleton X108^6
 "
 "6      >>pippo singleton singleton X108^6
 "
-"6______]-]Success  
+"6------]-]Success  
 pippo singleton singleton x6 \ x6
 "
 "6______[+[Begin 
 X105^6 = x3
 "
-"6______]-]Success  
+"6------]-]Success  
 x3 = x3
 "
-"5_____]-]Success  
+"5-----]-]Success  
 trad_isa x2 singleton x3
 "
 "5_____[+[Begin 
@@ -2123,13 +2123,13 @@ of x0 X110^6 ext
 "
 "6      >>of x0 X110^6 ext
 "
-"6______]-]Success  
+"6------]-]Success  
 of x0 singleton ext
 "
 "6______[+[Begin 
 trad x0 X111^6
 "
-"6______]-]Success  
+"6------]-]Success  
 trad x0 x1
 "
 "6______[+[Begin 
@@ -2137,22 +2137,22 @@ pippo singleton singleton X112^6
 "
 "6      >>pippo singleton singleton X112^6
 "
-"6______]-]Success  
+"6------]-]Success  
 pippo singleton singleton x6 \ x6
 "
 "6______[+[Begin 
 X109^6 = x1
 "
-"6______]-]Success  
+"6------]-]Success  
 x1 = x1
 "
-"5_____]-]Success  
+"5-----]-]Success  
 trad_isa x0 singleton x1
 "
 "5_____[+[Begin 
 X103 x1 x3 x5 = propId singleton x3 x1
 "
-"5_____]-]Success  
+"5-----]-]Success  
 propId singleton x3 x1 = propId singleton x3 x1
 "
 "5_____[+[Begin 
@@ -2201,7 +2201,7 @@ equ singleton X115^8
 "
 "6      >>equ singleton X115^8
 "
-"6______]-]Success  
+"6------]-]Success  
 equ singleton x8 \ x9 \ propId singleton x8 x9
 "
 "6______[+[Begin 
@@ -2214,13 +2214,13 @@ of x0 X117^8 ext
 "
 "7       >>of x0 X117^8 ext
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of x0 singleton ext
 "
 "7_______[+[Begin 
 trad x0 X118^8
 "
-"7_______]-]Success  
+"7-------]-]Success  
 trad x0 x1
 "
 "7_______[+[Begin 
@@ -2228,16 +2228,16 @@ pippo singleton singleton X119^8
 "
 "7       >>pippo singleton singleton X119^8
 "
-"7_______]-]Success  
+"7-------]-]Success  
 pippo singleton singleton x8 \ x8
 "
 "7_______[+[Begin 
 X116^8 = x1
 "
-"7_______]-]Success  
+"7-------]-]Success  
 x1 = x1
 "
-"6______]-]Success  
+"6------]-]Success  
 trad_isa x0 singleton x1
 "
 "6______[+[Begin 
@@ -2252,7 +2252,7 @@ of star X121^8 ext
 "
 "7       >>locDecl star X121^8
 "
-"7_______]-]Success  
+"7-------]-]Success  
 of star singleton ext
 "
 "7_______[+[Begin 
@@ -2260,7 +2260,7 @@ trad star X122^8
 "
 "7       >>trad star X122^8
 "
-"7_______]-]Success  
+"7-------]-]Success  
 trad star star
 "
 "7_______[+[Begin 
@@ -2268,22 +2268,22 @@ pippo singleton singleton X123^8
 "
 "7       >>pippo singleton singleton X123^8
 "
-"7_______]-]Success  
+"7-------]-]Success  
 pippo singleton singleton x8 \ x8
 "
 "7_______[+[Begin 
 X120^8 = star
 "
-"7_______]-]Success  
+"7-------]-]Success  
 star = star
 "
-"6______]-]Success  
+"6------]-]Success  
 trad_isa star singleton star
 "
 "6______[+[Begin 
 X114 x1 x3 x5 x7 = propId singleton x1 star
 "
-"6______]-]Success  
+"6------]-]Success  
 propId singleton x1 star = propId singleton x1 star
 "
 "6______[+[Begin 
@@ -2330,7 +2330,7 @@ equ singleton X126^10
 "
 "7       >>equ singleton X126^10
 "
-"7_______]-]Success  
+"7-------]-]Success  
 equ singleton x10 \ x11 \ propId singleton x10 x11
 "
 "7_______[+[Begin 
@@ -2343,13 +2343,13 @@ of x2 X128^10 ext
 "
 "8        >>of x2 X128^10 ext
 "
-"8________]-]Success  
+"8--------]-]Success  
 of x2 singleton ext
 "
 "8________[+[Begin 
 trad x2 X129^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 trad x2 x3
 "
 "8________[+[Begin 
@@ -2357,16 +2357,16 @@ pippo singleton singleton X130^10
 "
 "8        >>pippo singleton singleton X130^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 pippo singleton singleton x10 \ x10
 "
 "8________[+[Begin 
 X127^10 = x3
 "
-"8________]-]Success  
+"8--------]-]Success  
 x3 = x3
 "
-"7_______]-]Success  
+"7-------]-]Success  
 trad_isa x2 singleton x3
 "
 "7_______[+[Begin 
@@ -2381,7 +2381,7 @@ of star X132^10 ext
 "
 "8        >>locDecl star X132^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 of star singleton ext
 "
 "8________[+[Begin 
@@ -2389,7 +2389,7 @@ trad star X133^10
 "
 "8        >>trad star X133^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 trad star star
 "
 "8________[+[Begin 
@@ -2397,22 +2397,22 @@ pippo singleton singleton X134^10
 "
 "8        >>pippo singleton singleton X134^10
 "
-"8________]-]Success  
+"8--------]-]Success  
 pippo singleton singleton x10 \ x10
 "
 "8________[+[Begin 
 X131^10 = star
 "
-"8________]-]Success  
+"8--------]-]Success  
 star = star
 "
-"7_______]-]Success  
+"7-------]-]Success  
 trad_isa star singleton star
 "
 "7_______[+[Begin 
 X125 x1 x3 x5 x7 x9 = propId singleton x3 star
 "
-"7_______]-]Success  
+"7-------]-]Success  
 propId singleton x3 star = propId singleton x3 star
 "
 "7_______[+[Begin 
@@ -2457,7 +2457,7 @@ equ singleton X137^12
 "
 "8        >>equ singleton X137^12
 "
-"8________]-]Success  
+"8--------]-]Success  
 equ singleton x12 \ x13 \ propId singleton x12 x13
 "
 "8________[+[Begin 
@@ -2472,7 +2472,7 @@ of star X139^12 ext
 "
 "9         >>locDecl star X139^12
 "
-"9_________]-]Success  
+"9---------]-]Success  
 of star singleton ext
 "
 "9_________[+[Begin 
@@ -2480,7 +2480,7 @@ trad star X140^12
 "
 "9         >>trad star X140^12
 "
-"9_________]-]Success  
+"9---------]-]Success  
 trad star star
 "
 "9_________[+[Begin 
@@ -2488,16 +2488,16 @@ pippo singleton singleton X141^12
 "
 "9         >>pippo singleton singleton X141^12
 "
-"9_________]-]Success  
+"9---------]-]Success  
 pippo singleton singleton x12 \ x12
 "
 "9_________[+[Begin 
 X138^12 = star
 "
-"9_________]-]Success  
+"9---------]-]Success  
 star = star
 "
-"8________]-]Success  
+"8--------]-]Success  
 trad_isa star singleton star
 "
 "8________[+[Begin 
@@ -2510,13 +2510,13 @@ of x0 X143^12 ext
 "
 "9         >>of x0 X143^12 ext
 "
-"9_________]-]Success  
+"9---------]-]Success  
 of x0 singleton ext
 "
 "9_________[+[Begin 
 trad x0 X144^12
 "
-"9_________]-]Success  
+"9---------]-]Success  
 trad x0 x1
 "
 "9_________[+[Begin 
@@ -2524,22 +2524,22 @@ pippo singleton singleton X145^12
 "
 "9         >>pippo singleton singleton X145^12
 "
-"9_________]-]Success  
+"9---------]-]Success  
 pippo singleton singleton x12 \ x12
 "
 "9_________[+[Begin 
 X142^12 = x1
 "
-"9_________]-]Success  
+"9---------]-]Success  
 x1 = x1
 "
-"8________]-]Success  
+"8--------]-]Success  
 trad_isa x0 singleton x1
 "
 "8________[+[Begin 
 X136 x1 x3 x5 x7 x9 x11 = propId singleton star x1
 "
-"8________]-]Success  
+"8--------]-]Success  
 propId singleton star x1 = propId singleton star x1
 "
 "8________[+[Begin 
@@ -2582,7 +2582,7 @@ equ singleton X148^14
 "
 "9         >>equ singleton X148^14
 "
-"9_________]-]Success  
+"9---------]-]Success  
 equ singleton x14 \ x15 \ propId singleton x14 x15
 "
 "9_________[+[Begin 
@@ -2597,7 +2597,7 @@ of star X150^14 ext
 "
 "10          >>locDecl star X150^14
 "
-"10__________]-]Success  
+"10----------]-]Success  
 of star singleton ext
 "
 "10__________[+[Begin 
@@ -2605,7 +2605,7 @@ trad star X151^14
 "
 "10          >>trad star X151^14
 "
-"10__________]-]Success  
+"10----------]-]Success  
 trad star star
 "
 "10__________[+[Begin 
@@ -2613,16 +2613,16 @@ pippo singleton singleton X152^14
 "
 "10          >>pippo singleton singleton X152^14
 "
-"10__________]-]Success  
+"10----------]-]Success  
 pippo singleton singleton x14 \ x14
 "
 "10__________[+[Begin 
 X149^14 = star
 "
-"10__________]-]Success  
+"10----------]-]Success  
 star = star
 "
-"9_________]-]Success  
+"9---------]-]Success  
 trad_isa star singleton star
 "
 "9_________[+[Begin 
@@ -2635,13 +2635,13 @@ of x2 X154^14 ext
 "
 "10          >>of x2 X154^14 ext
 "
-"10__________]-]Success  
+"10----------]-]Success  
 of x2 singleton ext
 "
 "10__________[+[Begin 
 trad x2 X155^14
 "
-"10__________]-]Success  
+"10----------]-]Success  
 trad x2 x3
 "
 "10__________[+[Begin 
@@ -2649,22 +2649,22 @@ pippo singleton singleton X156^14
 "
 "10          >>pippo singleton singleton X156^14
 "
-"10__________]-]Success  
+"10----------]-]Success  
 pippo singleton singleton x14 \ x14
 "
 "10__________[+[Begin 
 X153^14 = x3
 "
-"10__________]-]Success  
+"10----------]-]Success  
 x3 = x3
 "
-"9_________]-]Success  
+"9---------]-]Success  
 trad_isa x2 singleton x3
 "
 "9_________[+[Begin 
 X147 x1 x3 x5 x7 x9 x11 x13 = propId singleton star x3
 "
-"9_________]-]Success  
+"9---------]-]Success  
 propId singleton star x3 = propId singleton star x3
 "
 "9_________[+[Begin 
@@ -2720,7 +2720,7 @@ equ singleton X160^16
 "
 "12            >>equ singleton X160^16
 "
-"12____________]-]Success  
+"12------------]-]Success  
 equ singleton x16 \ x17 \ propId singleton x16 x17
 "
 "12____________[+[Begin 
@@ -2733,13 +2733,13 @@ of x0 X162^16 ext
 "
 "13             >>of x0 X162^16 ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of x0 singleton ext
 "
 "13_____________[+[Begin 
 trad x0 X163^16
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad x0 x1
 "
 "13_____________[+[Begin 
@@ -2747,16 +2747,16 @@ pippo singleton singleton X164^16
 "
 "13             >>pippo singleton singleton X164^16
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo singleton singleton x16 \ x16
 "
 "13_____________[+[Begin 
 X161^16 = x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 x1 = x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa x0 singleton x1
 "
 "12____________[+[Begin 
@@ -2769,13 +2769,13 @@ of x0 X166^16 ext
 "
 "13             >>of x0 X166^16 ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of x0 singleton ext
 "
 "13_____________[+[Begin 
 trad x0 X167^16
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad x0 x1
 "
 "13_____________[+[Begin 
@@ -2783,25 +2783,25 @@ pippo singleton singleton X168^16
 "
 "13             >>pippo singleton singleton X168^16
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo singleton singleton x16 \ x16
 "
 "13_____________[+[Begin 
 X165^16 = x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 x1 = x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa x0 singleton x1
 "
 "12____________[+[Begin 
 X159^16 = propId singleton x1 x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 propId singleton x1 x1 = propId singleton x1 x1
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 trad (propEq singleton x0 x0) (propId singleton x1 x1)
 "
 "11___________[+[Begin 
@@ -2830,7 +2830,7 @@ equ singleton X171^18
 "
 "13             >>equ singleton X171^18
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 equ singleton x18 \ x19 \ propId singleton x18 x19
 "
 "13_____________[+[Begin 
@@ -2843,13 +2843,13 @@ of x0 X173^18 ext
 "
 "14              >>of x0 X173^18 ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x0 singleton ext
 "
 "14______________[+[Begin 
 trad x0 X174^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x0 x1
 "
 "14______________[+[Begin 
@@ -2857,16 +2857,16 @@ pippo singleton singleton X175^18
 "
 "14              >>pippo singleton singleton X175^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippo singleton singleton x18 \ x18
 "
 "14______________[+[Begin 
 X172^18 = x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 x1 = x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad_isa x0 singleton x1
 "
 "13_____________[+[Begin 
@@ -2879,13 +2879,13 @@ of x0 X177^18 ext
 "
 "14              >>of x0 X177^18 ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x0 singleton ext
 "
 "14______________[+[Begin 
 trad x0 X178^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x0 x1
 "
 "14______________[+[Begin 
@@ -2893,25 +2893,25 @@ pippo singleton singleton X179^18
 "
 "14              >>pippo singleton singleton X179^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippo singleton singleton x18 \ x18
 "
 "14______________[+[Begin 
 X176^18 = x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 x1 = x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad_isa x0 singleton x1
 "
 "13_____________[+[Begin 
 X170^18 = propId singleton x1 x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 propId singleton x1 x1 = propId singleton x1 x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad (propEq singleton x0 x0) (propId singleton x1 x1)
 "
 "12____________[+[Begin 
@@ -2933,7 +2933,7 @@ equ (propEq singleton x0 x0) X181^20
 "
 "13             >>equ (propEq singleton x0 x0) X181^20
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 equ (propEq singleton x0 x0) x20 \ x21 \ propId singleton star star
 "
 "13_____________[+[Begin 
@@ -2955,10 +2955,10 @@ of x0 singleton ext
 "
 "15               >>of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "14______________[+[Begin 
@@ -2969,16 +2969,16 @@ trad (eqId singleton x0) X184^20
 "15_______________[+[Begin 
 reflu singleton X185^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 reflu singleton x20 \ id singleton x20
 "
 "15_______________[+[Begin 
 trad x0 X186^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad (eqId singleton x0) (id singleton x1)
 "
 "14______________[+[Begin 
@@ -2986,16 +2986,16 @@ pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X187^20
 "
 "14              >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X187^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x20 \ x20
 "
 "14______________[+[Begin 
 X182^20 = id singleton x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 id singleton x1 = id singleton x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad_isa (eqId singleton x0) (propEq singleton x0 x0) (id singleton x1)
 "
 "13_____________[+[Begin 
@@ -3017,10 +3017,10 @@ of x2 singleton ext
 "
 "15               >>of x2 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x2 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of (eqId singleton x2) (propEq singleton x2 x2) ext
 "
 "14______________[+[Begin 
@@ -3031,16 +3031,16 @@ trad (eqId singleton x2) X190^20
 "15_______________[+[Begin 
 reflu singleton X191^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 reflu singleton x20 \ id singleton x20
 "
 "15_______________[+[Begin 
 trad x2 X192^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x2 x3
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad (eqId singleton x2) (id singleton x3)
 "
 "14______________[+[Begin 
@@ -3062,7 +3062,7 @@ x2 = eqId X195^20 X196^20
 "16________________[+[Begin 
 locDecl X197^20 (propEq X198^20 x2 x0)
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 locDecl x6 (propEq singleton x2 x0)
 "
 "16________________[+[Begin 
@@ -3075,13 +3075,13 @@ of x6 X199^20 ext
 "
 "17                 >>of x6 X199^20 ext
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 of x6 (propEq singleton x2 x0) ext
 "
 "17_________________[+[Begin 
 trad x6 X200^20
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 trad x6 x7
 "
 "17_________________[+[Begin 
@@ -3089,19 +3089,19 @@ pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X201^20
 "
 "17                 >>pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X201^20
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pippo (propEq singleton x2 x0) (propEq singleton x2 x0) x20 \ x20
 "
 "17_________________[+[Begin 
 X194^20 = x7
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 x7 = x7
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad_isa x6 (propEq singleton x2 x0) x7
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippoequ x2 x0 singleton x7
 "
 "15_______________[+[Begin 
@@ -3118,7 +3118,7 @@ x2 = eqId X203^20 X204^20
 "16________________[+[Begin 
 locDecl X205^20 (propEq X206^20 x2 x0)
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 locDecl x6 (propEq singleton x2 x0)
 "
 "16________________[+[Begin 
@@ -3131,13 +3131,13 @@ of x6 X207^20 ext
 "
 "17                 >>of x6 X207^20 ext
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 of x6 (propEq singleton x2 x0) ext
 "
 "17_________________[+[Begin 
 trad x6 X208^20
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 trad x6 x7
 "
 "17_________________[+[Begin 
@@ -3145,19 +3145,19 @@ pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X209^20
 "
 "17                 >>pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X209^20
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pippo (propEq singleton x2 x0) (propEq singleton x2 x0) x20 \ x20
 "
 "17_________________[+[Begin 
 X202^20 = x7
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 x7 = x7
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad_isa x6 (propEq singleton x2 x0) x7
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippoequ x2 x0 singleton x7
 "
 "15_______________[+[Begin 
@@ -3170,13 +3170,13 @@ of x2 X211^20 ext
 "
 "16                >>of x2 X211^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x2 singleton ext
 "
 "16________________[+[Begin 
 trad x2 X212^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x2 x3
 "
 "16________________[+[Begin 
@@ -3184,16 +3184,16 @@ pippo singleton singleton X213^20
 "
 "16                >>pippo singleton singleton X213^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "16________________[+[Begin 
 X210^20 = x3
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x3 = x3
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x2 singleton x3
 "
 "15_______________[+[Begin 
@@ -3206,13 +3206,13 @@ of x2 X215^20 ext
 "
 "16                >>of x2 X215^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x2 singleton ext
 "
 "16________________[+[Begin 
 trad x2 X216^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x2 x3
 "
 "16________________[+[Begin 
@@ -3220,16 +3220,16 @@ pippo singleton singleton X217^20
 "
 "16                >>pippo singleton singleton X217^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "16________________[+[Begin 
 X214^20 = x3
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x3 = x3
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x2 singleton x3
 "
 "15_______________[+[Begin 
@@ -3242,13 +3242,13 @@ of x0 X219^20 ext
 "
 "16                >>of x0 X219^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x0 singleton ext
 "
 "16________________[+[Begin 
 trad x0 X220^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x0 x1
 "
 "16________________[+[Begin 
@@ -3256,16 +3256,16 @@ pippo singleton singleton X221^20
 "
 "16                >>pippo singleton singleton X221^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "16________________[+[Begin 
 X218^20 = x1
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x1 = x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x0 singleton x1
 "
 "15_______________[+[Begin 
@@ -3278,13 +3278,13 @@ of x0 X223^20 ext
 "
 "16                >>of x0 X223^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x0 singleton ext
 "
 "16________________[+[Begin 
 trad x0 X224^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x0 x1
 "
 "16________________[+[Begin 
@@ -3292,16 +3292,16 @@ pippo singleton singleton X225^20
 "
 "16                >>pippo singleton singleton X225^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "16________________[+[Begin 
 X222^20 = x1
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x1 = x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x0 singleton x1
 "
 "15_______________[+[Begin 
@@ -3309,10 +3309,10 @@ trad singleton X226^20
 "
 "15               >>trad singleton X226^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad singleton singleton
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippo (propEq singleton x2 x2) (propEq singleton x0 x0) x20 \
  impl_app
   (impl_app
@@ -3330,7 +3330,7 @@ X188^20 =
         (impl_app (forall_app (forall_app (k_propId singleton) x3) x1) x7) x3)
       x1) x7) (id singleton x3)
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 impl_app
  (impl_app
    (forall_app
@@ -3344,7 +3344,7 @@ impl_app
         (impl_app (forall_app (forall_app (k_propId singleton) x3) x1) x7) x3)
       x1) x7) (id singleton x3)
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad_isa (eqId singleton x2) (propEq singleton x0 x0)
  (impl_app
    (impl_app
@@ -3356,10 +3356,10 @@ trad_isa (eqId singleton x2) (propEq singleton x0 x0)
 "13_____________[+[Begin 
 X180^18 x19 = propId singleton star star
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 propId singleton star star = propId singleton star star
 "
-"12____________]-]Success  
+"12------------]-]Success  
 pi x18 \
  pi x19 \
   locDecl x18 (propEq singleton x0 x0) =>
@@ -3374,7 +3374,7 @@ equ (propEq singleton x0 x0) X227^18
 "
 "12            >>equ (propEq singleton x0 x0) X227^18
 "
-"12____________]-]Success  
+"12------------]-]Success  
 equ (propEq singleton x0 x0) x18 \ x19 \ propId singleton star star
 "
 "12____________[+[Begin 
@@ -3390,7 +3390,7 @@ pi x18 \
 "12            >>equ (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  (X228^18 x19)
 "
-"12____________]-]Success  
+"12------------]-]Success  
 pi x18 \
  pi x19 \
   locDecl x18 (propEq singleton x0 x0) =>
@@ -3434,13 +3434,13 @@ pippo
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  (X229^18 x21 x22 x23)
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  x24 \ x24
 "
-"12____________]-]Success  
+"12------------]-]Success  
 pi x18 \
  pi x19 \
   pi x20 \
@@ -3463,7 +3463,7 @@ pi x18 \
                   (propEq (propEq singleton x0 x0) (eqId singleton x0)
                     (eqId singleton x2)) x24 \ x24)
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 pi x16 \
  pi x17 \
   locDecl x16 (propEq singleton x0 x0) =>
@@ -3486,7 +3486,7 @@ equ (propEq singleton x0 x0) X230^16
 "
 "11           >>equ (propEq singleton x0 x0) X230^16
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 equ (propEq singleton x0 x0) x16 \ x17 \ propId singleton star star
 "
 "11___________[+[Begin 
@@ -3512,7 +3512,7 @@ equ singleton X233^18
 "
 "12            >>equ singleton X233^18
 "
-"12____________]-]Success  
+"12------------]-]Success  
 equ singleton x18 \ x19 \ propId singleton x18 x19
 "
 "12____________[+[Begin 
@@ -3525,13 +3525,13 @@ of x0 X235^18 ext
 "
 "13             >>of x0 X235^18 ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of x0 singleton ext
 "
 "13_____________[+[Begin 
 trad x0 X236^18
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad x0 x1
 "
 "13_____________[+[Begin 
@@ -3539,16 +3539,16 @@ pippo singleton singleton X237^18
 "
 "13             >>pippo singleton singleton X237^18
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo singleton singleton x18 \ x18
 "
 "13_____________[+[Begin 
 X234^18 = x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 x1 = x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa x0 singleton x1
 "
 "12____________[+[Begin 
@@ -3561,13 +3561,13 @@ of x0 X239^18 ext
 "
 "13             >>of x0 X239^18 ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of x0 singleton ext
 "
 "13_____________[+[Begin 
 trad x0 X240^18
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad x0 x1
 "
 "13_____________[+[Begin 
@@ -3575,22 +3575,22 @@ pippo singleton singleton X241^18
 "
 "13             >>pippo singleton singleton X241^18
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo singleton singleton x18 \ x18
 "
 "13_____________[+[Begin 
 X238^18 = x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 x1 = x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa x0 singleton x1
 "
 "12____________[+[Begin 
 X232^18 = propId singleton x1 x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 propId singleton x1 x1 = propId singleton x1 x1
 "
 "11           >>trad
@@ -3602,7 +3602,7 @@ equ (propEq singleton x0 x0) X243^20
 "
 "12            >>equ (propEq singleton x0 x0) X243^20
 "
-"12____________]-]Success  
+"12------------]-]Success  
 equ (propEq singleton x0 x0) x20 \ x21 \ propId singleton star star
 "
 "12____________[+[Begin 
@@ -3624,10 +3624,10 @@ of x0 singleton ext
 "
 "14              >>of x0 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x0 singleton ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "13_____________[+[Begin 
@@ -3638,16 +3638,16 @@ trad (eqId singleton x0) X246^20
 "14______________[+[Begin 
 reflu singleton X247^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 reflu singleton x20 \ id singleton x20
 "
 "14______________[+[Begin 
 trad x0 X248^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x0 x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad (eqId singleton x0) (id singleton x1)
 "
 "13_____________[+[Begin 
@@ -3655,16 +3655,16 @@ pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X249^20
 "
 "13             >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X249^20
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x20 \ x20
 "
 "13_____________[+[Begin 
 X244^20 = id singleton x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 id singleton x1 = id singleton x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa (eqId singleton x0) (propEq singleton x0 x0) (id singleton x1)
 "
 "12____________[+[Begin 
@@ -3686,10 +3686,10 @@ of x2 singleton ext
 "
 "14              >>of x2 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x2 singleton ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of (eqId singleton x2) (propEq singleton x2 x2) ext
 "
 "13_____________[+[Begin 
@@ -3700,16 +3700,16 @@ trad (eqId singleton x2) X252^20
 "14______________[+[Begin 
 reflu singleton X253^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 reflu singleton x20 \ id singleton x20
 "
 "14______________[+[Begin 
 trad x2 X254^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x2 x3
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad (eqId singleton x2) (id singleton x3)
 "
 "13_____________[+[Begin 
@@ -3731,7 +3731,7 @@ x2 = eqId X257^20 X258^20
 "15_______________[+[Begin 
 locDecl X259^20 (propEq X260^20 x2 x0)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 locDecl x6 (propEq singleton x2 x0)
 "
 "15_______________[+[Begin 
@@ -3744,13 +3744,13 @@ of x6 X261^20 ext
 "
 "16                >>of x6 X261^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x6 (propEq singleton x2 x0) ext
 "
 "16________________[+[Begin 
 trad x6 X262^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x6 x7
 "
 "16________________[+[Begin 
@@ -3758,19 +3758,19 @@ pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X263^20
 "
 "16                >>pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X263^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo (propEq singleton x2 x0) (propEq singleton x2 x0) x20 \ x20
 "
 "16________________[+[Begin 
 X256^20 = x7
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x7 = x7
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x6 (propEq singleton x2 x0) x7
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippoequ x2 x0 singleton x7
 "
 "14______________[+[Begin 
@@ -3787,7 +3787,7 @@ x2 = eqId X265^20 X266^20
 "15_______________[+[Begin 
 locDecl X267^20 (propEq X268^20 x2 x0)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 locDecl x6 (propEq singleton x2 x0)
 "
 "15_______________[+[Begin 
@@ -3800,13 +3800,13 @@ of x6 X269^20 ext
 "
 "16                >>of x6 X269^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x6 (propEq singleton x2 x0) ext
 "
 "16________________[+[Begin 
 trad x6 X270^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x6 x7
 "
 "16________________[+[Begin 
@@ -3814,19 +3814,19 @@ pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X271^20
 "
 "16                >>pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X271^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo (propEq singleton x2 x0) (propEq singleton x2 x0) x20 \ x20
 "
 "16________________[+[Begin 
 X264^20 = x7
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x7 = x7
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x6 (propEq singleton x2 x0) x7
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippoequ x2 x0 singleton x7
 "
 "14______________[+[Begin 
@@ -3839,13 +3839,13 @@ of x2 X273^20 ext
 "
 "15               >>of x2 X273^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x2 singleton ext
 "
 "15_______________[+[Begin 
 trad x2 X274^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x2 x3
 "
 "15_______________[+[Begin 
@@ -3853,16 +3853,16 @@ pippo singleton singleton X275^20
 "
 "15               >>pippo singleton singleton X275^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X272^20 = x3
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x3 = x3
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x2 singleton x3
 "
 "14______________[+[Begin 
@@ -3875,13 +3875,13 @@ of x2 X277^20 ext
 "
 "15               >>of x2 X277^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x2 singleton ext
 "
 "15_______________[+[Begin 
 trad x2 X278^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x2 x3
 "
 "15_______________[+[Begin 
@@ -3889,16 +3889,16 @@ pippo singleton singleton X279^20
 "
 "15               >>pippo singleton singleton X279^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X276^20 = x3
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x3 = x3
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x2 singleton x3
 "
 "14______________[+[Begin 
@@ -3911,13 +3911,13 @@ of x0 X281^20 ext
 "
 "15               >>of x0 X281^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
 "15_______________[+[Begin 
 trad x0 X282^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
 "15_______________[+[Begin 
@@ -3925,16 +3925,16 @@ pippo singleton singleton X283^20
 "
 "15               >>pippo singleton singleton X283^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X280^20 = x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x1 = x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x0 singleton x1
 "
 "14______________[+[Begin 
@@ -3947,13 +3947,13 @@ of x0 X285^20 ext
 "
 "15               >>of x0 X285^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
 "15_______________[+[Begin 
 trad x0 X286^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
 "15_______________[+[Begin 
@@ -3961,16 +3961,16 @@ pippo singleton singleton X287^20
 "
 "15               >>pippo singleton singleton X287^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X284^20 = x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x1 = x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x0 singleton x1
 "
 "14______________[+[Begin 
@@ -3978,10 +3978,10 @@ trad singleton X288^20
 "
 "14              >>trad singleton X288^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad singleton singleton
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo (propEq singleton x2 x2) (propEq singleton x0 x0) x20 \
  impl_app
   (impl_app
@@ -3999,7 +3999,7 @@ X250^20 =
         (impl_app (forall_app (forall_app (k_propId singleton) x3) x1) x7) x3)
       x1) x7) (id singleton x3)
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 impl_app
  (impl_app
    (forall_app
@@ -4013,7 +4013,7 @@ impl_app
         (impl_app (forall_app (forall_app (k_propId singleton) x3) x1) x7) x3)
       x1) x7) (id singleton x3)
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa (eqId singleton x2) (propEq singleton x0 x0)
  (impl_app
    (impl_app
@@ -4025,7 +4025,7 @@ trad_isa (eqId singleton x2) (propEq singleton x0 x0)
 "12____________[+[Begin 
 X242^18 x19 = propId singleton star star
 "
-"12____________]-]Success  
+"12------------]-]Success  
 propId singleton star star = propId singleton star star
 "
 "11           >>trad
@@ -4037,7 +4037,7 @@ equ (propEq singleton x0 x0) X289^20
 "
 "12            >>equ (propEq singleton x0 x0) X289^20
 "
-"12____________]-]Success  
+"12------------]-]Success  
 equ (propEq singleton x0 x0) x20 \ x21 \ propId singleton star star
 "
 "12____________[+[Begin 
@@ -4059,10 +4059,10 @@ of x0 singleton ext
 "
 "14              >>of x0 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x0 singleton ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "13_____________[+[Begin 
@@ -4073,16 +4073,16 @@ trad (eqId singleton x0) X292^20
 "14______________[+[Begin 
 reflu singleton X293^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 reflu singleton x20 \ id singleton x20
 "
 "14______________[+[Begin 
 trad x0 X294^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x0 x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad (eqId singleton x0) (id singleton x1)
 "
 "13_____________[+[Begin 
@@ -4090,16 +4090,16 @@ pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X295^20
 "
 "13             >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X295^20
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x20 \ x20
 "
 "13_____________[+[Begin 
 X290^20 = id singleton x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 id singleton x1 = id singleton x1
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa (eqId singleton x0) (propEq singleton x0 x0) (id singleton x1)
 "
 "12____________[+[Begin 
@@ -4121,10 +4121,10 @@ of x2 singleton ext
 "
 "14              >>of x2 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x2 singleton ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of (eqId singleton x2) (propEq singleton x2 x2) ext
 "
 "13_____________[+[Begin 
@@ -4135,16 +4135,16 @@ trad (eqId singleton x2) X298^20
 "14______________[+[Begin 
 reflu singleton X299^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 reflu singleton x20 \ id singleton x20
 "
 "14______________[+[Begin 
 trad x2 X300^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x2 x3
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad (eqId singleton x2) (id singleton x3)
 "
 "13_____________[+[Begin 
@@ -4166,7 +4166,7 @@ x2 = eqId X303^20 X304^20
 "15_______________[+[Begin 
 locDecl X305^20 (propEq X306^20 x2 x0)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 locDecl x6 (propEq singleton x2 x0)
 "
 "15_______________[+[Begin 
@@ -4179,13 +4179,13 @@ of x6 X307^20 ext
 "
 "16                >>of x6 X307^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x6 (propEq singleton x2 x0) ext
 "
 "16________________[+[Begin 
 trad x6 X308^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x6 x7
 "
 "16________________[+[Begin 
@@ -4193,19 +4193,19 @@ pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X309^20
 "
 "16                >>pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X309^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo (propEq singleton x2 x0) (propEq singleton x2 x0) x20 \ x20
 "
 "16________________[+[Begin 
 X302^20 = x7
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x7 = x7
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x6 (propEq singleton x2 x0) x7
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippoequ x2 x0 singleton x7
 "
 "14______________[+[Begin 
@@ -4222,7 +4222,7 @@ x2 = eqId X311^20 X312^20
 "15_______________[+[Begin 
 locDecl X313^20 (propEq X314^20 x2 x0)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 locDecl x6 (propEq singleton x2 x0)
 "
 "15_______________[+[Begin 
@@ -4235,13 +4235,13 @@ of x6 X315^20 ext
 "
 "16                >>of x6 X315^20 ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x6 (propEq singleton x2 x0) ext
 "
 "16________________[+[Begin 
 trad x6 X316^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x6 x7
 "
 "16________________[+[Begin 
@@ -4249,19 +4249,19 @@ pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X317^20
 "
 "16                >>pippo (propEq singleton x2 x0) (propEq singleton x2 x0) X317^20
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pippo (propEq singleton x2 x0) (propEq singleton x2 x0) x20 \ x20
 "
 "16________________[+[Begin 
 X310^20 = x7
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 x7 = x7
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad_isa x6 (propEq singleton x2 x0) x7
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippoequ x2 x0 singleton x7
 "
 "14______________[+[Begin 
@@ -4274,13 +4274,13 @@ of x2 X319^20 ext
 "
 "15               >>of x2 X319^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x2 singleton ext
 "
 "15_______________[+[Begin 
 trad x2 X320^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x2 x3
 "
 "15_______________[+[Begin 
@@ -4288,16 +4288,16 @@ pippo singleton singleton X321^20
 "
 "15               >>pippo singleton singleton X321^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X318^20 = x3
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x3 = x3
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x2 singleton x3
 "
 "14______________[+[Begin 
@@ -4310,13 +4310,13 @@ of x2 X323^20 ext
 "
 "15               >>of x2 X323^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x2 singleton ext
 "
 "15_______________[+[Begin 
 trad x2 X324^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x2 x3
 "
 "15_______________[+[Begin 
@@ -4324,16 +4324,16 @@ pippo singleton singleton X325^20
 "
 "15               >>pippo singleton singleton X325^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X322^20 = x3
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x3 = x3
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x2 singleton x3
 "
 "14______________[+[Begin 
@@ -4346,13 +4346,13 @@ of x0 X327^20 ext
 "
 "15               >>of x0 X327^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
 "15_______________[+[Begin 
 trad x0 X328^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
 "15_______________[+[Begin 
@@ -4360,16 +4360,16 @@ pippo singleton singleton X329^20
 "
 "15               >>pippo singleton singleton X329^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X326^20 = x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x1 = x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x0 singleton x1
 "
 "14______________[+[Begin 
@@ -4382,13 +4382,13 @@ of x0 X331^20 ext
 "
 "15               >>of x0 X331^20 ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
 "15_______________[+[Begin 
 trad x0 X332^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
 "15_______________[+[Begin 
@@ -4396,16 +4396,16 @@ pippo singleton singleton X333^20
 "
 "15               >>pippo singleton singleton X333^20
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo singleton singleton x20 \ x20
 "
 "15_______________[+[Begin 
 X330^20 = x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 x1 = x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa x0 singleton x1
 "
 "14______________[+[Begin 
@@ -4413,10 +4413,10 @@ trad singleton X334^20
 "
 "14              >>trad singleton X334^20
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad singleton singleton
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippo (propEq singleton x2 x2) (propEq singleton x0 x0) x20 \
  impl_app
   (impl_app
@@ -4434,7 +4434,7 @@ X296^20 =
         (impl_app (forall_app (forall_app (k_propId singleton) x3) x1) x7) x3)
       x1) x7) (id singleton x3)
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 impl_app
  (impl_app
    (forall_app
@@ -4448,7 +4448,7 @@ impl_app
         (impl_app (forall_app (forall_app (k_propId singleton) x3) x1) x7) x3)
       x1) x7) (id singleton x3)
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad_isa (eqId singleton x2) (propEq singleton x0 x0)
  (impl_app
    (impl_app
@@ -4460,13 +4460,13 @@ trad_isa (eqId singleton x2) (propEq singleton x0 x0)
 "12____________[+[Begin 
 propId singleton star star = propId singleton star star
 "
-"12____________]-]Success  
+"12------------]-]Success  
 propId singleton star star = propId singleton star star
 "
 "11           >>equ (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  (X335^18 x18)
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 pi x16 \
  pi x17 \
   locDecl x16 (propEq singleton x0 x0) =>
@@ -4518,7 +4518,7 @@ pippo
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  (X336^16 x19 x20 x21)
 "
-"12____________]-]Success  
+"12------------]-]Success  
 pippo
  (setPi (propEq singleton x0 x0) x22 \
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
@@ -4526,7 +4526,7 @@ pippo
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  x22 \ x22
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 pi x16 \
  pi x17 \
   pi x18 \
@@ -4551,7 +4551,7 @@ pi x16 \
                     propEq (propEq singleton x0 x0) (eqId singleton x0)
                      (eqId singleton x2)) x22 \ x22)
 "
-"10__________]-]Success  
+"10----------]-]Success  
 trad
  (setPi (propEq singleton x0 x0) x16 \
    setPi (propEq singleton x0 x0) x17 \
@@ -4615,7 +4615,7 @@ equ (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
 "11           >>equ (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  X338^18
 "
-"11___________]-]Success  
+"11-----------]-]Success  
 equ (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x0))
  x18 \ x19 \ propId singleton star star
 "
@@ -4649,7 +4649,7 @@ of x16 (setPi X343^18 X344^18) ext
 "
 "14              >>of x16 (setPi X343^18 X344^18) ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x16
  (setPi (propEq singleton x0 x0) x18 \
    setPi (propEq singleton x0 x0) x19 \
@@ -4677,10 +4677,10 @@ of x0 singleton ext
 "
 "16                >>of x0 singleton ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "15_______________[+[Begin 
@@ -4690,13 +4690,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "15               >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of (app x16 (eqId singleton x0))
  (setPi (propEq singleton x0 x0) x18 \
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
@@ -4723,10 +4723,10 @@ of x0 singleton ext
 "
 "15               >>of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "14______________[+[Begin 
@@ -4736,13 +4736,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "14              >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"12____________]-]Success  
+"12------------]-]Success  
 of (app (app x16 (eqId singleton x0)) (eqId singleton x0))
  (propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
  ext
@@ -4768,7 +4768,7 @@ of x16 (setPi X350^18 X351^18) ext
 "
 "14              >>of x16 (setPi X350^18 X351^18) ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x16
  (setPi (propEq singleton x0 x0) x18 \
    setPi (propEq singleton x0 x0) x19 \
@@ -4796,10 +4796,10 @@ of x0 singleton ext
 "
 "16                >>of x0 singleton ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "15_______________[+[Begin 
@@ -4809,13 +4809,13 @@ conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
 "15               >>conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 conv (propEq singleton x0 x0) (propEq singleton x0 x0)
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 isa (eqId singleton x0) (propEq singleton x0 x0) ext
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of (app x16 (eqId singleton x0))
  (setPi (propEq singleton x0 x0) x18 \
    propEq (propEq singleton x0 x0) (eqId singleton x0) (eqId singleton x2))
@@ -4840,10 +4840,10 @@ of x0 singleton ext
 "
 "15               >>of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "14______________[+[Begin 
@@ -4854,16 +4854,16 @@ trad (eqId singleton x0) X355^18
 "15_______________[+[Begin 
 reflu singleton X356^18
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 reflu singleton x18 \ id singleton x18
 "
 "15_______________[+[Begin 
 trad x0 X357^18
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad (eqId singleton x0) (id singleton x1)
 "
 "14______________[+[Begin 
@@ -4871,16 +4871,16 @@ pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X358^18
 "
 "14              >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X358^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x18 \ x18
 "
 "14______________[+[Begin 
 X353^18 = id singleton x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 id singleton x1 = id singleton x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad_isa (eqId singleton x0) (propEq singleton x0 x0) (id singleton x1)
 "
 "13_____________[+[Begin 
@@ -4895,7 +4895,7 @@ of x16 (setPi X360^18 X361^18) ext
 "
 "14              >>of x16 (setPi X360^18 X361^18) ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x16
  (setPi (propEq singleton x0 x0) x18 \
    setPi (propEq singleton x0 x0) x19 \
@@ -4921,10 +4921,10 @@ of x0 singleton ext
 "
 "16                >>of x0 singleton ext
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "15_______________[+[Begin 
@@ -4935,16 +4935,16 @@ trad (eqId singleton x0) X364^18
 "16________________[+[Begin 
 reflu singleton X365^18
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 reflu singleton x18 \ id singleton x18
 "
 "16________________[+[Begin 
 trad x0 X366^18
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 trad x0 x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad (eqId singleton x0) (id singleton x1)
 "
 "15_______________[+[Begin 
@@ -4952,22 +4952,22 @@ pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X367^18
 "
 "15               >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X367^18
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x18 \ x18
 "
 "15_______________[+[Begin 
 X362^18 = id singleton x1
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 id singleton x1 = id singleton x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad_isa (eqId singleton x0) (propEq singleton x0 x0) (id singleton x1)
 "
 "14______________[+[Begin 
 trad x16 X368^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad x16 x17
 "
 "14______________[+[Begin 
@@ -4977,7 +4977,7 @@ of x17 X369^18 int
 "
 "14              >>of x17 X369^18 int
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of x17
  (colSigma
    (setPi (propId singleton x1 x1) x18 \
@@ -5007,7 +5007,7 @@ of x17
      forall (propId singleton x1 x1) x22 \ propId singleton star star) =
  colSigma X370^18 _
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 (colSigma
   (setPi (propId singleton x1 x1) x18 \
     colSigma
@@ -5029,7 +5029,7 @@ of x17
        forall (propId singleton star star) x22 \ propId singleton star star)
   _
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 trad (app x16 (eqId singleton x0))
  (app
    (elim_colSigma x17 (x18 \
@@ -5139,7 +5139,7 @@ of x17 (colSigma X374^18 X375^18) int
 "
 "15               >>of x17 (colSigma X374^18 X375^18) int
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x17
  (colSigma
    (setPi (propId singleton x1 x1) x18 \
@@ -5199,7 +5199,7 @@ of x1 X378^19 int
 "
 "16                >>of x1 X378^19 int
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x1 singleton int
 "
 "16________________[+[Begin 
@@ -5209,7 +5209,7 @@ conv singleton singleton
 "
 "16                >>conv singleton singleton
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 conv singleton singleton
 "
 "15               >>isa x1 singleton int
@@ -5221,7 +5221,7 @@ of x1 X379^19 int
 "
 "16                >>of x1 X379^19 int
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x1 singleton int
 "
 "16________________[+[Begin 
@@ -5231,7 +5231,7 @@ conv singleton singleton
 "
 "16                >>conv singleton singleton
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 conv singleton singleton
 "
 "15               >>isType singleton X380^19 int
@@ -5240,7 +5240,7 @@ conv singleton singleton
 (pts_leq set set),
 (X377^19 = props)
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
@@ -5270,7 +5270,7 @@ of x1 X384^20 int
 "
 "17                 >>of x1 X384^20 int
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 of x1 singleton int
 "
 "17_________________[+[Begin 
@@ -5280,7 +5280,7 @@ conv singleton singleton
 "
 "17                 >>conv singleton singleton
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 conv singleton singleton
 "
 "16                >>isa x1 singleton int
@@ -5292,7 +5292,7 @@ of x1 X385^20 int
 "
 "17                 >>of x1 X385^20 int
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 of x1 singleton int
 "
 "17_________________[+[Begin 
@@ -5302,7 +5302,7 @@ conv singleton singleton
 "
 "17                 >>conv singleton singleton
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 conv singleton singleton
 "
 "16                >>isType singleton X386^20 int
@@ -5311,7 +5311,7 @@ conv singleton singleton
 (pts_leq set set),
 (X383^20 = props)
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
@@ -5328,7 +5328,7 @@ of star X388^21 int
 "
 "17                 >>locDecl star X388^21
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 of star singleton int
 "
 "17_________________[+[Begin 
@@ -5338,7 +5338,7 @@ conv singleton singleton
 "
 "17                 >>conv singleton singleton
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 conv singleton singleton
 "
 "16                >>isa star singleton int
@@ -5352,7 +5352,7 @@ of star X389^21 int
 "
 "17                 >>locDecl star X389^21
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 of star singleton int
 "
 "17_________________[+[Begin 
@@ -5362,7 +5362,7 @@ conv singleton singleton
 "
 "17                 >>conv singleton singleton
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 conv singleton singleton
 "
 "16                >>isType singleton X390^21 int
@@ -5371,7 +5371,7 @@ conv singleton singleton
 (pts_leq set set),
 (X387^20 = props)
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
@@ -5381,19 +5381,19 @@ pts_fun props props X382^20
 "18__________________[+[Begin 
 pts_leq props set
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 pts_leq props set
 "
 "18__________________[+[Begin 
 pts_leq props set
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 pts_leq props set
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pts_fun props props set
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 isType (setPi (propId singleton x1 x1) x20 \ propId singleton star star) set
  int
 "
@@ -5427,7 +5427,7 @@ of x1 X393^21 int
 "
 "18                  >>of x1 X393^21 int
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 of x1 singleton int
 "
 "18__________________[+[Begin 
@@ -5437,7 +5437,7 @@ conv singleton singleton
 "
 "18                  >>conv singleton singleton
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 conv singleton singleton
 "
 "17                 >>isa x1 singleton int
@@ -5449,7 +5449,7 @@ of x1 X394^21 int
 "
 "18                  >>of x1 X394^21 int
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 of x1 singleton int
 "
 "18__________________[+[Begin 
@@ -5459,7 +5459,7 @@ conv singleton singleton
 "
 "18                  >>conv singleton singleton
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 conv singleton singleton
 "
 "17                 >>isType singleton X395^21 int
@@ -5468,11 +5468,11 @@ conv singleton singleton
 (pts_leq set set),
 (X392^21 = props)
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 isType (propId singleton x1 x1) props int
 "
 "17_________________[+[Begin 
@@ -5509,7 +5509,7 @@ of x1 X398^22 int
 "
 "20                    >>of x1 X398^22 int
 "
-"20____________________]-]Success  
+"20--------------------]-]Success  
 of x1 singleton int
 "
 "20____________________[+[Begin 
@@ -5519,7 +5519,7 @@ conv singleton singleton
 "
 "20                    >>conv singleton singleton
 "
-"20____________________]-]Success  
+"20--------------------]-]Success  
 conv singleton singleton
 "
 "19                   >>isa x1 singleton int
@@ -5531,7 +5531,7 @@ of x1 X399^22 int
 "
 "20                    >>of x1 X399^22 int
 "
-"20____________________]-]Success  
+"20--------------------]-]Success  
 of x1 singleton int
 "
 "20____________________[+[Begin 
@@ -5541,7 +5541,7 @@ conv singleton singleton
 "
 "20                    >>conv singleton singleton
 "
-"20____________________]-]Success  
+"20--------------------]-]Success  
 conv singleton singleton
 "
 "19                   >>isType singleton X400^22 int
@@ -5550,11 +5550,11 @@ conv singleton singleton
 (pts_leq set set),
 (X397^22 = props)
 "
-"20____________________]-]Success  
+"20--------------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
-"19___________________]-]Success  
+"19-------------------]-]Success  
 isType (propId singleton x1 x1) props int
 "
 "19___________________[+[Begin 
@@ -5588,7 +5588,7 @@ of star X403^23 int
 "
 "22                      >>locDecl star X403^23
 "
-"22______________________]-]Success  
+"22----------------------]-]Success  
 of star singleton int
 "
 "22______________________[+[Begin 
@@ -5598,7 +5598,7 @@ conv singleton singleton
 "
 "22                      >>conv singleton singleton
 "
-"22______________________]-]Success  
+"22----------------------]-]Success  
 conv singleton singleton
 "
 "21                     >>isa star singleton int
@@ -5612,7 +5612,7 @@ of star X404^23 int
 "
 "22                      >>locDecl star X404^23
 "
-"22______________________]-]Success  
+"22----------------------]-]Success  
 of star singleton int
 "
 "22______________________[+[Begin 
@@ -5622,7 +5622,7 @@ conv singleton singleton
 "
 "22                      >>conv singleton singleton
 "
-"22______________________]-]Success  
+"22----------------------]-]Success  
 conv singleton singleton
 "
 "21                     >>isType singleton X405^23 int
@@ -5631,11 +5631,11 @@ conv singleton singleton
 (pts_leq set set),
 (X402^23 = props)
 "
-"22______________________]-]Success  
+"22----------------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
-"21_____________________]-]Success  
+"21---------------------]-]Success  
 isType (propId singleton star star) props int
 "
 "21_____________________[+[Begin 
@@ -5659,7 +5659,7 @@ of star X407^24 int
 "
 "23                       >>locDecl star X407^24
 "
-"23_______________________]-]Success  
+"23-----------------------]-]Success  
 of star singleton int
 "
 "23_______________________[+[Begin 
@@ -5669,7 +5669,7 @@ conv singleton singleton
 "
 "23                       >>conv singleton singleton
 "
-"23_______________________]-]Success  
+"23-----------------------]-]Success  
 conv singleton singleton
 "
 "22                      >>isa star singleton int
@@ -5683,7 +5683,7 @@ of star X408^24 int
 "
 "23                       >>locDecl star X408^24
 "
-"23_______________________]-]Success  
+"23-----------------------]-]Success  
 of star singleton int
 "
 "23_______________________[+[Begin 
@@ -5693,7 +5693,7 @@ conv singleton singleton
 "
 "23                       >>conv singleton singleton
 "
-"23_______________________]-]Success  
+"23-----------------------]-]Success  
 conv singleton singleton
 "
 "22                      >>isType singleton X409^24 int
@@ -5702,14 +5702,14 @@ conv singleton singleton
 (pts_leq set set),
 (X406^23 = props)
 "
-"23_______________________]-]Success  
+"23-----------------------]-]Success  
 (pts_leq set set),
 (props = props)
 "
-"22______________________]-]Success  
+"22----------------------]-]Success  
 isType (propId singleton star star) props int
 "
-"21_____________________]-]Success  
+"21---------------------]-]Success  
 pi x23 \
  locDecl x23 (propId singleton star star) =>
   spy (isType (propId singleton star star) props int)
@@ -5717,14 +5717,14 @@ pi x23 \
 "21_____________________[+[Begin 
 pts_for props props X401^22
 "
-"21_____________________]-]Success  
+"21---------------------]-]Success  
 pts_for props props props
 "
-"20____________________]-]Success  
+"20--------------------]-]Success  
 isType (forall (propId singleton star star) x23 \ propId singleton star star)
  props int
 "
-"19___________________]-]Success  
+"19-------------------]-]Success  
 pi x22 \
  locDecl x22 (propId singleton x1 x1) =>
   spy
@@ -5735,16 +5735,16 @@ pi x22 \
 "19___________________[+[Begin 
 pts_for props props X396^21
 "
-"19___________________]-]Success  
+"19-------------------]-]Success  
 pts_for props props props
 "
-"18__________________]-]Success  
+"18------------------]-]Success  
 isType
  (forall (propId singleton x1 x1) x22 \
    forall (propId singleton star star) x23 \ propId singleton star star)
  props int
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pi x21 \
  locDecl x21 (propId singleton x1 x1) =>
   spy
@@ -5756,10 +5756,10 @@ pi x21 \
 "17_________________[+[Begin 
 pts_for props props X391^20
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pts_for props props props
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pi x20 \
  locDecl x20
   (setPi (propId singleton x1 x1) x21 \ propId singleton star star) =>
@@ -5772,13 +5772,13 @@ pi x20 \
 "16________________[+[Begin 
 pts_leq set set
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pts_leq set set
 "
 "16________________[+[Begin 
 pts_leq props set
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pts_leq props set
 "
 "16________________[+[Begin 
@@ -5787,19 +5787,19 @@ pts_fun props set X410^19
 "17_________________[+[Begin 
 pts_leq props set
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pts_leq props set
 "
 "17_________________[+[Begin 
 pts_leq set set
 "
-"17_________________]-]Success  
+"17-----------------]-]Success  
 pts_leq set set
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 pts_fun props set set
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pi x18 \
  locDecl x18
   (colSigma
@@ -5866,7 +5866,7 @@ of x18 X411^20 int
 "
 "16                >>of x18 X411^20 int
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x18
  (setPi (propId singleton x1 x1) x20 \
    colSigma (setPi (propId singleton x1 x1) x21 \ propId singleton star star)
@@ -5919,7 +5919,7 @@ conv
      forall (propId singleton x1 x1) x23 \
       forall (propId singleton star star) x24 \ propId singleton star star)
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 conv
  (setPi (propId singleton x1 x1) x20 \
    colSigma (setPi (propId singleton x1 x1) x21 \ propId singleton star star)
@@ -5934,7 +5934,7 @@ conv
      forall (propId singleton x1 x1) x23 \
       forall (propId singleton star star) x24 \ propId singleton star star)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 pi x18 \
  pi x19 \
   locDecl x18
@@ -5960,7 +5960,7 @@ pi x18 \
           forall (propId singleton star star) x24 \
            propId singleton star star) int
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of
  (elim_colSigma x17 (x18 \
    setPi (propId singleton x1 x1) x19 \
@@ -6003,7 +6003,7 @@ of x1 X414^18 int
 "
 "16                >>of x1 X414^18 int
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 of x1 singleton int
 "
 "16________________[+[Begin 
@@ -6013,10 +6013,10 @@ conv singleton singleton
 "
 "16                >>conv singleton singleton
 "
-"16________________]-]Success  
+"16----------------]-]Success  
 conv singleton singleton
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of (id singleton x1) (propId singleton x1 x1) int
 "
 "15_______________[+[Begin 
@@ -6026,13 +6026,13 @@ conv (propId singleton x1 x1) (propId singleton x1 x1)
 "
 "15               >>conv (propId singleton x1 x1) (propId singleton x1 x1)
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 conv (propId singleton x1 x1) (propId singleton x1 x1)
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 isa (id singleton x1) (propId singleton x1 x1) int
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 of
  (app
    (elim_colSigma x17 (x18 \
@@ -6059,7 +6059,7 @@ of
     forall (propId singleton star star) x21 \ propId singleton star star) =
  colSigma X415^18 _
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 (colSigma (setPi (propId singleton x1 x1) x18 \ propId singleton star star)
   x18 \
   forall (propId singleton x1 x1) x19 \
@@ -6067,7 +6067,7 @@ of
     forall (propId singleton star star) x21 \ propId singleton star star) =
  colSigma (setPi (propId singleton x1 x1) x18 \ propId singleton star star) _
 "
-"12____________]-]Success  
+"12------------]-]Success  
 trad (app (app x16 (eqId singleton x0)) (eqId singleton x0))
  (app
    (elim_colSigma
@@ -6105,7 +6105,7 @@ pippoequ (eqId singleton x0) (eqId singleton x0) (propEq singleton x0 x0)
 "14______________[+[Begin 
 eqId singleton x0 = eqId X418^18 X419^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 eqId singleton x0 = eqId singleton x0
 "
 "14______________[+[Begin 
@@ -6130,10 +6130,10 @@ of x0 singleton ext
 "
 "15               >>of x0 singleton ext
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 of x0 singleton ext
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "14______________[+[Begin 
@@ -6144,16 +6144,16 @@ trad (eqId singleton x0) X422^18
 "15_______________[+[Begin 
 reflu singleton X423^18
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 reflu singleton x18 \ id singleton x18
 "
 "15_______________[+[Begin 
 trad x0 X424^18
 "
-"15_______________]-]Success  
+"15---------------]-]Success  
 trad x0 x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 trad (eqId singleton x0) (id singleton x1)
 "
 "14______________[+[Begin 
@@ -6161,16 +6161,16 @@ pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X425^18
 "
 "14              >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X425^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x18 \ x18
 "
 "14______________[+[Begin 
 X426^18 = id singleton x1
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 id singleton x1 = id singleton x1
 "
-"13_____________]-]Success  
+"13-------------]-]Success  
 pippoequ (eqId singleton x0) (eqId singleton x0) (propEq singleton x0 x0)
  (id singleton star)
 "
@@ -6184,7 +6184,7 @@ pippoequ (eqId singleton x2) (eqId singleton x0) (propEq singleton x0 x0)
 "14______________[+[Begin 
 eqId singleton x2 = eqId X428^18 X429^18
 "
-"14______________]-]Success  
+"14--------------]-]Success  
 eqId singleton x2 = eqId singleton x2
 "
 "14______________[+[Begin 

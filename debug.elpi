@@ -33,7 +33,7 @@ announce G :- bracket " " ">>" G "\n", fail.
 %spy G :- c_indent T, indent [0 | T] => G , !.
 spy G :- c_indent T, indent [0 | T] => spy2 G.
 
-spy2 G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "_" "]-]Success  \n" G "\n") , !. 
+spy2 G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "-" "]-]Success  \n" G "\n") , !. 
 spy2 G :-  bracket "." "].]Fail  \n" G "\n",  fail.
 
 list_eq L 
