@@ -21,15 +21,39 @@ accumulate calc/singleton.
 
 
 
-test l A Q Qy
+test m A Q Qy
  :- Long = ( forall singleton x\
-        forall 
+      implies (propEq singleton x star) 
+      (implies (propEq singleton star x)
+      (forall 
             (setPi 
-                (setPi singleton y\ propEq singleton star y) 
+                (setPi 
+                    (setPi singleton y\ propEq singleton star x) _\ 
+                    singleton) 
                 _\singleton
             ) f\
-            (implies (propEq singleton x star) 
-            (implies (propEq singleton star x)
+                (propEq singleton 
+                    (app f (lambda (setPi singleton y\ propEq singleton star star)
+                         x\ star)) 
+                    star) 
+            ))
+        ),
+    spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
+    ,spy(isType Q Qy int)
+    .
+
+test l A Q Qy
+ :- Long = ( forall singleton x\
+      implies (propEq singleton x star) 
+      (implies (propEq singleton star x)
+      ( forall 
+            (setPi 
+                (setPi singleton y\ propEq singleton star x) 
+                _\singleton
+            ) f\
                 (propEq singleton 
                     (app f (lambda singleton x\ (eqId singleton star))) 
                     star) 
@@ -39,7 +63,7 @@ test l A Q Qy
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(trad Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
- % ,  spy(isType Q Qy int)
+  ,  spy(isType Q Qy int)
     .
 
 test i A B C 
