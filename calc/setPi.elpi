@@ -107,7 +107,7 @@ trad (lambda B F) R
 equ (setPi B C) P
     :- spy(trad B Bi)
     ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
-    ,  spy(pi x\pi xi\locDecl x B 
+    ,  spy(pi x\ pi xi\locDecl x B 
         => locDecl xi Bi
             => trad x xi
                 => (trad (C x) (Ci xi), equ (C x) (EquC xi)))

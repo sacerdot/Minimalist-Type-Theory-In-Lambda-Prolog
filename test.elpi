@@ -22,10 +22,10 @@ accumulate calc/singleton.
 
 
 test l A Q Qy
- :- Long = (
+ :- Long = ( forall singleton x\
         forall 
             (setPi 
-                (setPi singleton x\ propEq singleton star x) 
+                (setPi singleton y\ propEq singleton star y) 
                 _\singleton
             ) f\
             (implies (propEq singleton x star) 
@@ -35,7 +35,7 @@ test l A Q Qy
                     star) 
             ))
         ),
-    %spy(isType Long A ext),
+    spy(isType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(trad Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
@@ -88,7 +88,7 @@ test h A Q Qy
         forall (setPi (setPi singleton _\singleton) _\singleton) f\
         (propEq singleton (app f (lambda singleton x\ x)) star) 
         ),
-    %spy(isType Long A ext),
+    spy(isType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(trad Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
@@ -107,7 +107,7 @@ test g A Q Qy
             )
         )
         ),
-    %spy(isType Long A ext),
+    spy(isType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(trad Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
