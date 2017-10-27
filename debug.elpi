@@ -42,6 +42,7 @@ list_eq L
     .
 
 
+/*
 pippo_trasp A B C :- announce (pippo_trasp A B C).
 macro_trad A P :- announce (macro_trad A P).
 equ A B :- announce (equ A B).
@@ -76,3 +77,4 @@ hstep A B :- announce (hstep A B).
 conv A B :- announce ( conv A B).
 testB A :- announce (testB A).
 hstep A B :- announce (hstep A B). 
+*/
