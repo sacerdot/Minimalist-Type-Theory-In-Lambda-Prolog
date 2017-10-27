@@ -23,6 +23,7 @@ accumulate calc/singleton.
 
 test m A Q Qy
  :- Long = ( forall singleton x\
+      implies (propEq singleton x star) 
       (implies (propEq singleton star x)
       (forall 
             (setPi 

@@ -41,20 +41,6 @@ reflu singleton (x\ id singleton x).
 
 equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
-
-
-pippo A A (x \ x) :- !.
-
-pippo_trasp A A (x\y\h\ h) :- !.
-
-
-%traduce X:_ext T in un Xi di tipi Ti
-trad_isa X T Xi 
-        :- spy(of X T_inf ext)
-        ,  spy(trad X Xi')
-        ,  spy(pippo T_inf T F)
-        ,  spy(Xi = F Xi')
-        .
 pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
     :- spy(pippoequ T1 T1' T F1)
     ,  spy(pippoequ T2 T2' T F2)
@@ -87,24 +73,6 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
 %       H è la prova che i tradotti siano uguali nel loro setoide
 
 pippoequ  _ _ (propEq T A B) (id singleton star).
-
-
-pippoequ A A T H'
-    :- trad_isa A T Ai
-    ,  reflu T H
-    ,  H' = H Ai
-    .
-pippoequ A B T Hi
-    :- spy(locDecl H (propEq T' A B)), !
-    ,  spy(trad_isa H (propEq T A B) Hi)
-    .
-
-pippoequ A B T Hi
-    :- (locDecl H (propEq T' B A))
-    ,  spy(trad_isa H (propEq T B A) Hi')
-    ,  spy (symmu T Q)
-    ,  Hi = Q Hi'
-    .
 
 symmu T (x\ fixMe "prova di symmetria").
 

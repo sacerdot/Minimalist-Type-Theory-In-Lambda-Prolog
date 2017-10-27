@@ -1,3 +1,6 @@
+
+
+
 len [] 0 :- !.
 len [_ | L] N :- len L M, N is M + 1.
 len_str L NS :- len L N, term_to_string N NS.
