@@ -119,3 +119,23 @@ trad_isa X T Xi
         ,  spy(Xi = F Xi')
         .
 
+locDecl (k_propId Te) (forall T t1\ forall T t1'\ 
+        implies (E t1 t1') (forall T t2\ forall T t2'\ 
+                implies (E t2 t2') (implies (E t1 t2) (E t1' t2'))) )
+                :- trad Te T
+                ,  equ Te E
+                .
+
+ 
+symmu T (x\ fixMe "prova di symmetria").
+
+
+
+% trad è molti-a-uno (e->i) nei tipi
+% il tipo intensionale può variare per lo stesso elemento estensionale
+
+
+% supponiamo che conv X Y per poter usare pippoequ X Y H
+%       H è la prova che i tradotti siano uguali nel loro setoide
+
+

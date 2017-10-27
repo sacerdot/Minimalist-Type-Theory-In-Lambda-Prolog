@@ -42,3 +42,16 @@ dconv (impl_lam B F) (impl_lam B' F')
 
 
 
+
+
+
+
+trad (implies B C) (forall B' C') 
+    :- trad B B'
+    ,  spy(pi x\ pi x'\ 
+        (  trad x x'
+        ,  locDecl x B
+        ,  locDecl x' B') 
+            =>  trad C (C' x')
+    )
+    .

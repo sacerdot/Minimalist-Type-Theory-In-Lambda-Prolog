@@ -42,3 +42,9 @@ dconv (forall_lam B F) (forall_lam B' F')
     .
 
 
+
+
+trad (forall B C) (forall B' C') :-
+        spy (trad B B'),
+        spy (pi x\ pi x' \ trad x x' => locDecl x B => locDecl x' B' => trad (C x )(C'  x')).
+

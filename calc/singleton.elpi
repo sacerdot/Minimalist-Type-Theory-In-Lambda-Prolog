@@ -24,6 +24,15 @@ dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC 
 
 
 
+equ singleton (x\ y\ propId singleton x y).
+reflu singleton (x\ id singleton x).
+
+
+
+trad singleton singleton.
+trad star star.
+
+
 
 
 
