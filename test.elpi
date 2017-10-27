@@ -5,21 +5,21 @@ accumulate trad.
  
 accumulate main.
 
-accumulate calc/and.
+%%accumulate calc/and.
 accumulate calc/colSigma.
 accumulate calc/Eq.
-accumulate calc/exist.
+%accumulate calc/exist.
 accumulate calc/forall. 
-%accumulate calc/fun.
+%%accumulate calc/fun.
 accumulate calc/id.
 accumulate calc/implies.
 accumulate calc/letIn.
-accumulate calc/or.
+%%accumulate calc/or.
 accumulate calc/setPi.
-accumulate calc/setSum.
+%%accumulate calc/setSum.
 accumulate calc/singleton.
 
-testI A B C 
+test i A B C 
  :- Long = ( forall singleton x\ forall singleton y\ 
     (implies 
         (propEq singleton x y) (implies 
@@ -48,8 +48,7 @@ testI A B C
                         (app f (eqId singleton x))
                         (eqId singleton x))
             )
-        )))))))
-            
+        )))))))     
     ,
     spy(isType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
@@ -57,7 +56,11 @@ testI A B C
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
   %,  spy(isType B C int)
     .
-testH A Q Qy
+
+
+
+
+test h A Q Qy
  :- Long = (
         forall (setPi (setPi singleton _\singleton) _\singleton) f\
         (propEq singleton (app f (lambda singleton x\ x)) star) 
@@ -69,9 +72,29 @@ testH A Q Qy
   ,  spy(isType Q Qy int)
     .
 
+test g A Q Qy
+ :- Long = (
+        forall singleton x\
+        forall (setPi singleton _\singleton) g\
+        forall (setPi (propEq singleton (app g x) (app g star)) _\singleton) f\
+        (implies (propEq singleton star x)
+            (propEq singleton 
+                    (app f (eqId singleton (app g star))) 
+                    (app f (eqId singleton (app g star))) 
+            )
+        )
+        ),
+    %spy(isType Long A ext),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(trad Long Q),
+    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
+  ,  spy(isType Q Qy int)
+    .
 
 
-testF A Q Qy
+
+
+test f A Q Qy
  :- Long = (
         forall singleton x\
         forall (setPi (propEq singleton x star) _\singleton) f\
@@ -117,28 +140,7 @@ testZ A B C
 
 
 
-testG A Q Qy
- :- Long = (
-        forall singleton x\
-        forall (setPi singleton _\singleton) g\
-        forall (setPi (propEq singleton (app g x) (app g star)) _\singleton) f\
-        (implies (propEq singleton star x)
-            (propEq singleton 
-                    (app f (eqId singleton (app g star))) 
-                    (app f (eqId singleton (app g star))) 
-            )
-        )
-        ),
-    %spy(isType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(trad Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(isType Q Qy int)
-    .
-
-
-
-testMAD A B C
+testE A B C
   :- Long = 
 (forall 
   (propEq singleton star star) x\

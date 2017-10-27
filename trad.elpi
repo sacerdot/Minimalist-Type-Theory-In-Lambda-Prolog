@@ -92,7 +92,8 @@ pippoequ A A T H'
     ,  H' = H Ai
     .
 pippoequ A B T Hi
-    :- (locDecl H (propEq T' A B)), !
+    :- (list_eq)
+    ,  spy(locDecl H (propEq T' A B)), !
     ,  spy(trad_isa H (propEq T A B) Hi)
     .
 

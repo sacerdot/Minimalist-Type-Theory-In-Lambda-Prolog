@@ -1,6 +1,10 @@
 
 type propId mttType -> mttTerm -> mttTerm -> mttType.
 type id     mttType -> mttTerm -> mttTerm.
+type elim_id    mttTerm 
+            -> (mttTerm -> mttTerm -> mttType) 
+            -> (mttTerm -> mttTerm)
+            -> mttTerm.
 
 %-- calc_id.elpi
 

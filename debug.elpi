@@ -5,6 +5,12 @@ len_str L NS :- len L N, term_to_string N NS.
 member X [Y | L] :- X = Y ; member X L .
 count' Old Tot :- indent X, not (member X Old), !, count' [X | Old] Tot.
 count' Old Old.
+countPred Pred Old Tot 
+    :- Pred X1 X2 X3 X4
+    ,  not (member [X3, X4, X1, X2] Old)
+    ,  !
+    ,  countPred Pred [[X3, X4, X1, X2] | Old] Tot.
+countPred Pred Old Old.
 to_zero [] [].
 to_zero [X | L] [0|L'] :- to_zero L L'.
 c_indent TT :- count'  [] T, to_zero T TT.
@@ -30,8 +36,11 @@ spy G :- c_indent T, indent [0 | T] => spy2 G.
 spy2 G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "_" "]-]Success  \n" G "\n") , !. 
 spy2 G :-  bracket "." "].]Fail  \n" G "\n",  fail.
 
-
-
+list_eq :- list_eq' L.
+list_eq' L 
+    :- countPred (h\ty\x\y\ locDecl h (propEq T x y)) [] L
+    ,  announce (list_eq' L)
+    .
 
 
 pippo_trasp A B C :- announce (pippo_trasp A B C).
