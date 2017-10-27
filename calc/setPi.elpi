@@ -105,12 +105,12 @@ trad (lambda B F) R
 
 
 equ (setPi B C) P
-    :- trad B Bi
-    ,  (pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
-    ,  (pi x\pi xi\locDecl x B 
+    :- spy(trad B Bi)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+    ,  spy(pi x\pi xi\locDecl x B 
         => locDecl xi Bi
             => trad x xi
-                => (trad (C x) (Ci x), equ (C x) (EquC x)))
+                => (trad (C x) (Ci xi), equ (C x) (EquC xi)))
     ,  P = (f\ g\ 
         forall Bi x\ 
             EquC x 

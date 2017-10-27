@@ -10,10 +10,10 @@
 "main.elpi:  73: Warning: fixMe is undeclared"
 "letIn.elpi:  10: Error: (letIn KIND1 T S) has type mttTerm but is used with type mttType"
 "test.elpi:  24: Warning: l is undeclared"
-"test.elpi:  38: Warning: i is undeclared"
-"test.elpi:  79: Warning: h is undeclared"
-"test.elpi:  91: Warning: g is undeclared"
-"test.elpi: 113: Warning: f is undeclared"
+"test.elpi:  45: Warning: i is undeclared"
+"test.elpi:  86: Warning: h is undeclared"
+"test.elpi:  98: Warning: g is undeclared"
+"test.elpi: 120: Warning: f is undeclared"
 "dummy:   1:query: Warning: l is undeclared"
 "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 "
@@ -536,198 +536,452 @@ equ (setPi singleton x0 \ propEq singleton star x0) X46
 "
 "3   >>equ (setPi singleton x0 \ propEq singleton star x0) X46
 "
-"3   >>trad singleton X47
+"4____[+[Begin 
+trad singleton X47
 "
-"3   >>trad (propEq singleton star x0) (X48 x1)
+"4    >>trad singleton X47
+"
+"4----]-]Success  
+trad singleton singleton
 "
 "4____[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 => trad (propEq singleton star x0) (X48 x1)
+"
+"4    >>trad (propEq singleton star x0) (X48 x1)
+"
+"5_____[+[Begin 
 equ singleton X49^2
 "
-"4    >>equ singleton X49^2
+"5     >>equ singleton X49^2
 "
-"4----]-]Success  
+"5-----]-]Success  
 equ singleton x2 \ x3 \ propId singleton x2 x3
 "
-"4____[+[Begin 
+"5_____[+[Begin 
 trad_isa star singleton X50^2
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 of star X51^2 ext
 "
-"5     >>of star X51^2 ext
+"6      >>of star X51^2 ext
 "
-"5     >>of star X51^2 ext
+"6      >>of star X51^2 ext
 "
-"5     >>locDecl star X51^2
+"6      >>locDecl star X51^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 of star singleton ext
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 trad star X52^2
 "
-"5     >>trad star X52^2
+"6      >>trad star X52^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 trad star star
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 pippo singleton singleton X53^2
 "
-"5     >>pippo singleton singleton X53^2
+"6      >>pippo singleton singleton X53^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 pippo singleton singleton x2 \ x2
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 X50^2 = star
 "
-"5-----]-]Success  
+"6------]-]Success  
 star = star
 "
-"4----]-]Success  
+"5-----]-]Success  
 trad_isa star singleton star
 "
-"4____[+[Begin 
+"5_____[+[Begin 
 trad_isa x0 singleton X54^2
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 of x0 X55^2 ext
 "
-"5     >>of x0 X55^2 ext
+"6      >>of x0 X55^2 ext
 "
-"5     >>of x0 X55^2 ext
+"6      >>of x0 X55^2 ext
 "
-"5-----]-]Success  
+"6------]-]Success  
 of x0 singleton ext
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 trad x0 X56^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 trad x0 x1
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 pippo singleton singleton X57^2
 "
-"5     >>pippo singleton singleton X57^2
+"6      >>pippo singleton singleton X57^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 pippo singleton singleton x2 \ x2
 "
-"5_____[+[Begin 
+"6______[+[Begin 
 X54^2 = x1
 "
-"5-----]-]Success  
+"6------]-]Success  
 x1 = x1
 "
-"4----]-]Success  
+"5-----]-]Success  
 trad_isa x0 singleton x1
 "
-"4____[+[Begin 
+"5_____[+[Begin 
 X48 x1 = propId singleton star x1
 "
-"4----]-]Success  
+"5-----]-]Success  
 propId singleton star x1 = propId singleton star x1
 "
-"3   >>trad (propEq singleton star x0) (propId singleton star x0)
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 => trad (propEq singleton star x0) (propId singleton star x1)
 "
 "4____[+[Begin 
-equ singleton X58^2
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 =>
+     ((trad (propEq singleton star x0) (propId singleton star x1)),
+     (equ (propEq singleton star x0) (X58 x1)))
 "
-"4    >>equ singleton X58^2
+"4    >>trad (propEq singleton star x0) (propId singleton star x1)
 "
-"4----]-]Success  
+"5_____[+[Begin 
+equ singleton X59^2
+"
+"5     >>equ singleton X59^2
+"
+"5-----]-]Success  
 equ singleton x2 \ x3 \ propId singleton x2 x3
 "
-"4____[+[Begin 
-trad_isa star singleton X59^2
-"
 "5_____[+[Begin 
-of star X60^2 ext
+trad_isa star singleton X60^2
 "
-"5     >>of star X60^2 ext
+"6______[+[Begin 
+of star X61^2 ext
 "
-"5     >>of star X60^2 ext
+"6      >>of star X61^2 ext
 "
-"5     >>locDecl star X60^2
+"6      >>of star X61^2 ext
 "
-"5-----]-]Success  
+"6      >>locDecl star X61^2
+"
+"6------]-]Success  
 of star singleton ext
 "
-"5_____[+[Begin 
-trad star X61^2
+"6______[+[Begin 
+trad star X62^2
 "
-"5     >>trad star X61^2
+"6      >>trad star X62^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 trad star star
 "
-"5_____[+[Begin 
-pippo singleton singleton X62^2
+"6______[+[Begin 
+pippo singleton singleton X63^2
 "
-"5     >>pippo singleton singleton X62^2
+"6      >>pippo singleton singleton X63^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 pippo singleton singleton x2 \ x2
 "
-"5_____[+[Begin 
-X59^2 = star
+"6______[+[Begin 
+X60^2 = star
 "
-"5-----]-]Success  
+"6------]-]Success  
 star = star
 "
-"4----]-]Success  
+"5-----]-]Success  
 trad_isa star singleton star
 "
-"4____[+[Begin 
-trad_isa x0 singleton X63^2
-"
 "5_____[+[Begin 
-of x0 X64^2 ext
+trad_isa x0 singleton X64^2
 "
-"5     >>of x0 X64^2 ext
+"6______[+[Begin 
+of x0 X65^2 ext
 "
-"5     >>of x0 X64^2 ext
+"6      >>of x0 X65^2 ext
 "
-"5-----]-]Success  
+"6      >>of x0 X65^2 ext
+"
+"6------]-]Success  
 of x0 singleton ext
 "
-"5_____[+[Begin 
-trad x0 X65^2
+"6______[+[Begin 
+trad x0 X66^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 trad x0 x1
 "
-"5_____[+[Begin 
-pippo singleton singleton X66^2
+"6______[+[Begin 
+pippo singleton singleton X67^2
 "
-"5     >>pippo singleton singleton X66^2
+"6      >>pippo singleton singleton X67^2
 "
-"5-----]-]Success  
+"6------]-]Success  
 pippo singleton singleton x2 \ x2
 "
-"5_____[+[Begin 
-X63^2 = x1
+"6______[+[Begin 
+X64^2 = x1
 "
-"5-----]-]Success  
+"6------]-]Success  
 x1 = x1
 "
-"4----]-]Success  
+"5-----]-]Success  
 trad_isa x0 singleton x1
 "
+"5_____[+[Begin 
+propId singleton star x1 = propId singleton star x1
+"
+"5-----]-]Success  
+propId singleton star x1 = propId singleton star x1
+"
+"4    >>equ (propEq singleton star x0) (X58 x1)
+"
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 =>
+     ((trad (propEq singleton star x0) (propId singleton star x1)),
+     (equ (propEq singleton star x0) x2 \ x3 \ propId singleton star star))
+"
+"3---]-]Success  
+equ (setPi singleton x0 \ propEq singleton star x0) x0 \ x1 \
+ forall singleton x2 \ propId singleton star star
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (setPi singleton x2 \ propEq singleton star x2) =>
+   locDecl x1
+    (colSigma (setPi singleton x2 \ propId singleton star x2) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \ propId singleton star star) =>
+    trad x0 x1 => equ singleton (X68 x1)
+"
+"3   >>equ singleton (X68 x1)
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (setPi singleton x2 \ propEq singleton star x2) =>
+   locDecl x1
+    (colSigma (setPi singleton x2 \ propId singleton star x2) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \ propId singleton star star) =>
+    trad x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 (setPi singleton x6 \ propEq singleton star x6) =>
+       locDecl x1 (setPi singleton x6 \ propEq singleton star x6) =>
+        locDecl x3
+         (colSigma (setPi singleton x6 \ propId singleton star x6) x6 \
+           forall singleton x7 \
+            forall singleton x8 \
+             forall (propId singleton x7 x8) x9 \ propId singleton star star)
+         =>
+         locDecl x4
+          (colSigma (setPi singleton x6 \ propId singleton star x6) x6 \
+            forall singleton x7 \
+             forall singleton x8 \
+              forall (propId singleton x7 x8) x9 \ propId singleton star star)
+          =>
+          trad x0 x3 =>
+           trad x1 x4 =>
+            locDecl x2
+             (propEq (setPi singleton x6 \ propEq singleton star x6) x0 x1)
+             =>
+             locDecl x5 (forall singleton x6 \ propId singleton star star) =>
+              trad x2 x5 => spy (pippo singleton singleton (X69 x3 x4 x5))
+"
 "4____[+[Begin 
-propId singleton star x0 = propId singleton star x1
+pippo singleton singleton (X69 x3 x4 x5)
+"
+"4    >>pippo singleton singleton (X69 x3 x4 x5)
+"
+"4----]-]Success  
+pippo singleton singleton x6 \ x6
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 (setPi singleton x6 \ propEq singleton star x6) =>
+       locDecl x1 (setPi singleton x6 \ propEq singleton star x6) =>
+        locDecl x3
+         (colSigma (setPi singleton x6 \ propId singleton star x6) x6 \
+           forall singleton x7 \
+            forall singleton x8 \
+             forall (propId singleton x7 x8) x9 \ propId singleton star star)
+         =>
+         locDecl x4
+          (colSigma (setPi singleton x6 \ propId singleton star x6) x6 \
+            forall singleton x7 \
+             forall singleton x8 \
+              forall (propId singleton x7 x8) x9 \ propId singleton star star)
+          =>
+          trad x0 x3 =>
+           trad x1 x4 =>
+            locDecl x2
+             (propEq (setPi singleton x6 \ propEq singleton star x6) x0 x1)
+             =>
+             locDecl x5 (forall singleton x6 \ propId singleton star star) =>
+              trad x2 x5 => spy (pippo singleton singleton x6 \ x6)
+"
+"2--]-]Success  
+trad (setPi (setPi singleton x0 \ propEq singleton star x0) x0 \ singleton)
+ (colSigma
+   (setPi
+     (colSigma (setPi singleton x0 \ propId singleton star x0) x0 \
+       forall singleton x1 \
+        forall singleton x2 \
+         forall (propId singleton x1 x2) x3 \ propId singleton star star)
+     x0 \ singleton) x0 \
+   forall
+    (colSigma (setPi singleton x1 \ propId singleton star x1) x1 \
+      forall singleton x2 \
+       forall singleton x3 \
+        forall (propId singleton x2 x3) x4 \ propId singleton star star) x1 \
+    forall
+     (colSigma (setPi singleton x2 \ propId singleton star x2) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \ propId singleton star star)
+     x2 \
+     forall (forall singleton x3 \ propId singleton star star) x3 \
+      propId singleton (app x0 x1) (app x0 x2))
+"
+"2__[+[Begin 
+pi x0 \
+ pi x1 \
+  trad x0 x1 =>
+   locDecl x0
+    (setPi (setPi singleton x2 \ propEq singleton star x2) x2 \ singleton) =>
+    locDecl x1
+     (colSigma
+       (setPi
+         (colSigma (setPi singleton x2 \ propId singleton star x2) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \ propId singleton star star)
+         x2 \ singleton) x2 \
+       forall
+        (colSigma (setPi singleton x3 \ propId singleton star x3) x3 \
+          forall singleton x4 \
+           forall singleton x5 \
+            forall (propId singleton x4 x5) x6 \ propId singleton star star)
+        x3 \
+        forall
+         (colSigma (setPi singleton x4 \ propId singleton star x4) x4 \
+           forall singleton x5 \
+            forall singleton x6 \
+             forall (propId singleton x5 x6) x7 \ propId singleton star star)
+         x4 \
+         forall (forall singleton x5 \ propId singleton star star) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) =>
+     trad
+      (implies (propEq singleton x star)
+        (implies (propEq singleton star x)
+          (propEq singleton
+            (app x0 (lambda singleton x2 \ eqId singleton star)) star)))
+      (X70 x1)
+"
+"2  >>trad
+ (implies (propEq singleton x star)
+   (implies (propEq singleton star x)
+     (propEq singleton (app x0 (lambda singleton x2 \ eqId singleton star))
+       star))) (X70 x1)
+"
+"2  >>trad (propEq singleton x star) (X71 x1)
+"
+"3___[+[Begin 
+equ singleton X72^2
+"
+"3   >>equ singleton X72^2
+"
+"3---]-]Success  
+equ singleton x2 \ x3 \ propId singleton x2 x3
+"
+"3___[+[Begin 
+trad_isa x singleton X73^2
+"
+"4____[+[Begin 
+of x X74^2 ext
+"
+"4    >>of x X74^2 ext
+"
+"4    >>of x X74^2 ext
+"
+"4    >>locDecl x X74^2
 "
 "4....].]Fail  
-propId singleton star x0 = propId singleton star x1
+of x X74^2 ext
 "
 "3...].]Fail  
-equ (setPi singleton x0 \ propEq singleton star x0) X46
+trad_isa x singleton X73^2
 "
 "2..].]Fail  
-trad (setPi (setPi singleton x0 \ propEq singleton star x0) x0 \ singleton)
- X1
+pi x0 \
+ pi x1 \
+  trad x0 x1 =>
+   locDecl x0
+    (setPi (setPi singleton x2 \ propEq singleton star x2) x2 \ singleton) =>
+    locDecl x1
+     (colSigma
+       (setPi
+         (colSigma (setPi singleton x2 \ propId singleton star x2) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \ propId singleton star star)
+         x2 \ singleton) x2 \
+       forall
+        (colSigma (setPi singleton x3 \ propId singleton star x3) x3 \
+          forall singleton x4 \
+           forall singleton x5 \
+            forall (propId singleton x4 x5) x6 \ propId singleton star star)
+        x3 \
+        forall
+         (colSigma (setPi singleton x4 \ propId singleton star x4) x4 \
+           forall singleton x5 \
+            forall singleton x6 \
+             forall (propId singleton x5 x6) x7 \ propId singleton star star)
+         x4 \
+         forall (forall singleton x5 \ propId singleton star star) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) =>
+     trad
+      (implies (propEq singleton x star)
+        (implies (propEq singleton star x)
+          (propEq singleton
+            (app x0 (lambda singleton x2 \ eqId singleton star)) star)))
+      (X70 x1)
 "
 "1.].]Fail  
 trad
