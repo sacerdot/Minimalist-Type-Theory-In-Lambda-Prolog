@@ -159,7 +159,7 @@ pippo (setPi B C) (setPi B' C') P
                           (forall_app
                             (forall_app p (FB y1'))
                             (FB y2'))
-                            (KB y1' y2' d')
+                          (KB y1' y2' d')
                          )
                 )
         ) 
