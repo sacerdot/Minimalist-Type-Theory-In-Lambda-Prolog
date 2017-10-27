@@ -1,24 +1,50 @@
 
+announce G :- bracket " " ">>" G "\n", fail.
 
 
-len [] 0 :- !.
-len [_ | L] N :- len L M, N is M + 1.
-len_str L NS :- len L N, term_to_string N NS.
+%The only entry point fot spy, is add a new indent and call the helper spy'
+spy G :- count_indent' T, indent [0 | T] => spy' G.
 
-member X [Y | L] :- X = Y ; member X L .
-count' Old Tot :- indent X, not (member X Old), !, count' [X | Old] Tot.
-count' Old Old.
+spy' G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "-" "]-]Success  \n" G "\n") , !. 
+spy' G :-  bracket "." "].]Fail  \n" G "\n",  fail.
+
+%basic printing function for all debugging
+bracket IC Pre G Post :- print_indent IC I N, term_to_string G S, 
+    Q is (N ^ I ^ Pre ^ S ^ Post), print Q.
+
+
+
+
+%Compute the lenght of a list
+list_len [] 0 :- !.
+list_len [_ | L] N :- list_len L M, N is M + 1.
+
+
+member X [Y | L] 
+    :- (X = Y ; member X L) 
+    .
+
+count_indent' Old Tot 
+    :- indent X
+    ,  not (member X Old)
+    ,  !
+    ,  count_indent' [X | Old] Tot
+    .
+count_indent' Old Old.
+
 countPred Pred Old Tot 
     :- Pred X1 X2 X3 X4
     ,  not (member [[X3, X4], X1] Old)
     ,  !
-    ,  countPred Pred [[[X3, X4], X1] | Old] Tot.
+    ,  countPred Pred [[[X3, X4], X1] | Old] Tot
+    .
 countPred Pred Old Old.
+
 to_zero [] [].
 to_zero [X | L] [0|L'] :- to_zero L L'.
-c_indent TT :- count'  [] T, to_zero T TT.
+count_indent' TT :- count_indent'  [] T, to_zero T TT.
 
-print_indent :- c_indent T,  print_dash T.
+print_indent :- count_indent' T,  print_dash T.
 
 print_dash [].
 print_dash [X|L] :- print "-", print_dash L.
@@ -26,23 +52,14 @@ str_dash C [] "".
 %str_dash C [_ | E] "" :- E = [], !.
 str_dash C [_ | L] S :- str_dash C L SS, S is (C ^ SS), !.
 
-indent_str C S N :- c_indent T, str_dash C T S, len_str T N.
+indent_str C S N :- count_indent' T, str_dash C T S, list_len T N', term_to_string N' N.
 print_indent C S N :- indent_str C S N.
 
-bracket IC Pre G Post :- print_indent IC I N, term_to_string G S, 
-    Q is (N ^ I ^ Pre ^ S ^ Post), print Q.
 
-announce G :- bracket " " ">>" G "\n", fail.
-%spy G :- c_indent T, indent [0 | T] => G , !.
-spy G :- c_indent T, indent [0 | T] => spy2 G.
 
-spy2 G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "-" "]-]Success  \n" G "\n") , !. 
-spy2 G :-  bracket "." "].]Fail  \n" G "\n",  fail.
 
-list_eq L 
-    :- countPred (h\ty\x\y\ locDecl h (propEq T x y)) [] L
-    ,  (announce (list_eq L); !)
-    .
+
+
 
 
 /*
