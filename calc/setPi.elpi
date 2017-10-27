@@ -144,8 +144,7 @@ pippo (setPi B C) (setPi B' C') P
         (x\x'\_\xi\xi'\_\ pippo (C x) (C' x') (FC' xi xi')))
     ,  spy(macro_trad B (x1\x2\_\x1i\x2i\_\ pippo (C x1) (C x2) (FCC x1i x2i)))
     ,  spy(pippo_trasp B' B KB)
-    ,  spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi'))
-    ,  spy(macro_trad B x1\x2\h\x1i\x2i\hi\ pippo_trasp (C x1) (C x2) (KCC))
+    ,  spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi' hi))
     ,  P = 
         (w\ elim_colSigma w (_\colSigma T1' T2')
             f\p\ pair T1' T2'
@@ -153,6 +152,7 @@ pippo (setPi B C) (setPi B' C') P
                 (forall_lam Bi' y1'\ forall_lam Bi' y2'\ forall_lam (EquB' y1' y2') d'\
                     KC' (FB y2') 
                         y2' 
+                        d' 
                         (FCC (FB y1') (FB y2') (app f (FB y1')))
                         (app f (FB y2'))
                         (forall_app
@@ -166,19 +166,22 @@ pippo (setPi B C) (setPi B' C') P
     . 
 
 pippo_trasp (setPi B C) (setPi B' C') P 
-    :- spy(macro_pippo B B' x\x'\_\xi\xi'\_\ pippo_trasp (C x) (C' x') (KC' xi xi'))
+    :- spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi' hi))
     ,  spy(pippo B' B FB)
     ,  P = f\g\d\ forall_lam B' y'\ 
             KC' (FB y') 
                 y'
+                d
                 (app f (FB y'))
                 (app g (FB y'))
                 (forall_app d (FB y'))
+                
     .
 
 
 macro_pippo B B' Q 
-    :- spy(trad B Bi)
+    :- spy(equ B EquB)
+    ,  spy(trad B Bi)
     ,  spy(trad B' Bi')
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
