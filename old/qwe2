@@ -5,7 +5,6 @@
 "debug.elpi:  34: Warning: indent is undeclared"
 "trad.elpi:  58: Warning: k_propId is undeclared"
 "trad.elpi:  78: Warning: k_propId is undeclared"
-"trad.elpi:  89: Warning: edId is undeclared"
 "trad.elpi: 118: Warning: fixMe is undeclared"
 "main.elpi:  65: Warning: fixMe2 is undeclared"
 "main.elpi:  73: Warning: fixMe is undeclared"
@@ -6109,19 +6108,53 @@ eqId singleton x0 = eqId X418^18 X419^18
 eqId singleton x0 = eqId singleton x0
 "
 "14______________[+[Begin 
-eqId singleton x0 = edId singleton X420^18
+eqId singleton x0 = eqId singleton X420^18
 "
-"14..............].]Fail  
-eqId singleton x0 = edId singleton X420^18
+"14--------------]-]Success  
+eqId singleton x0 = eqId singleton x0
 "
 "14______________[+[Begin 
-of (eqId singleton x0) X421^18 ext
+propEq singleton x0 x0 = propEq singleton X421^18 X422^18
 "
-"14              >>of (eqId singleton x0) X421^18 ext
+"14--------------]-]Success  
+propEq singleton x0 x0 = propEq singleton x0 x0
 "
-"14              >>of (eqId singleton x0) X421^18 ext
+"14______________[+[Begin 
+X417^18 = X423^18
 "
-"14              >>locDecl (eqId singleton x0) X421^18
+"14--------------]-]Success  
+X423^18 = X423^18
+"
+"14______________[+[Begin 
+list_eq X424^18
+"
+"14              >>locDecl X425^18 (propEq singleton X426^18 X427^18)
+"
+"14              >>list_eq
+ [[[x0, x2], x4], [[x2, x0], x6], [[x0, star], x8], [[x2, star], x10],
+  [[star, x0], x12], [[star, x2], x14]]
+"
+"14--------------]-]Success  
+list_eq
+ [[[x0, x2], x4], [[x2, x0], x6], [[x0, star], x8], [[x2, star], x10],
+  [[star, x0], x12], [[star, x2], x14]]
+"
+"14______________[+[Begin 
+locDecl _ (propEq singleton x0 x0)
+"
+"14              >>locDecl X428^18 (propEq singleton x0 x0)
+"
+"14..............].]Fail  
+locDecl _ (propEq singleton x0 x0)
+"
+"14______________[+[Begin 
+of (eqId singleton x0) X429^18 ext
+"
+"14              >>of (eqId singleton x0) X429^18 ext
+"
+"14              >>of (eqId singleton x0) X429^18 ext
+"
+"14              >>locDecl (eqId singleton x0) X429^18
 "
 "15_______________[+[Begin 
 of x0 singleton ext
@@ -6137,18 +6170,18 @@ of x0 singleton ext
 of (eqId singleton x0) (propEq singleton x0 x0) ext
 "
 "14______________[+[Begin 
-trad (eqId singleton x0) X422^18
+trad (eqId singleton x0) X430^18
 "
-"14              >>trad (eqId singleton x0) X422^18
+"14              >>trad (eqId singleton x0) X430^18
 "
 "15_______________[+[Begin 
-reflu singleton X423^18
+reflu singleton X431^18
 "
 "15---------------]-]Success  
 reflu singleton x18 \ id singleton x18
 "
 "15_______________[+[Begin 
-trad x0 X424^18
+trad x0 X432^18
 "
 "15---------------]-]Success  
 trad x0 x1
@@ -6157,15 +6190,15 @@ trad x0 x1
 trad (eqId singleton x0) (id singleton x1)
 "
 "14______________[+[Begin 
-pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X425^18
+pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X433^18
 "
-"14              >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X425^18
+"14              >>pippo (propEq singleton x0 x0) (propEq singleton x0 x0) X433^18
 "
 "14--------------]-]Success  
 pippo (propEq singleton x0 x0) (propEq singleton x0 x0) x18 \ x18
 "
 "14______________[+[Begin 
-X426^18 = id singleton x1
+X434^18 = id singleton x1
 "
 "14--------------]-]Success  
 id singleton x1 = id singleton x1
@@ -6176,36 +6209,76 @@ pippoequ (eqId singleton x0) (eqId singleton x0) (propEq singleton x0 x0)
 "
 "13_____________[+[Begin 
 pippoequ (eqId singleton x2) (eqId singleton x0) (propEq singleton x0 x0)
- X427^18
+ X435^18
 "
 "13             >>pippoequ (eqId singleton x2) (eqId singleton x0) (propEq singleton x0 x0)
- X427^18
+ X435^18
 "
 "14______________[+[Begin 
-eqId singleton x2 = eqId X428^18 X429^18
+eqId singleton x2 = eqId X436^18 X437^18
 "
 "14--------------]-]Success  
 eqId singleton x2 = eqId singleton x2
 "
 "14______________[+[Begin 
-eqId singleton x0 = edId singleton X430^18
+eqId singleton x0 = eqId singleton X438^18
 "
-"14..............].]Fail  
-eqId singleton x0 = edId singleton X430^18
+"14--------------]-]Success  
+eqId singleton x0 = eqId singleton x0
 "
 "14______________[+[Begin 
-locDecl X431^18 (propEq X432^18 (eqId singleton x2) (eqId singleton x0))
+propEq singleton x0 x0 = propEq singleton X439^18 X440^18
 "
-"14              >>locDecl X431^18 (propEq X432^18 (eqId singleton x2) (eqId singleton x0))
+"14--------------]-]Success  
+propEq singleton x0 x0 = propEq singleton x0 x0
+"
+"14______________[+[Begin 
+X435^18 = X441^18
+"
+"14--------------]-]Success  
+X441^18 = X441^18
+"
+"14______________[+[Begin 
+list_eq X442^18
+"
+"14              >>locDecl X443^18 (propEq singleton X444^18 X445^18)
+"
+"14              >>list_eq
+ [[[x0, x2], x4], [[x2, x0], x6], [[x0, star], x8], [[x2, star], x10],
+  [[star, x0], x12], [[star, x2], x14]]
+"
+"14--------------]-]Success  
+list_eq
+ [[[x0, x2], x4], [[x2, x0], x6], [[x0, star], x8], [[x2, star], x10],
+  [[star, x0], x12], [[star, x2], x14]]
+"
+"14______________[+[Begin 
+locDecl _ (propEq singleton x2 x0)
+"
+"14--------------]-]Success  
+locDecl _ (propEq singleton x2 x0)
+"
+"14______________[+[Begin 
+locDecl _ (propEq singleton x0 x0)
+"
+"14              >>locDecl X446^18 (propEq singleton x0 x0)
 "
 "14..............].]Fail  
-locDecl X431^18 (propEq X432^18 (eqId singleton x2) (eqId singleton x0))
+locDecl _ (propEq singleton x0 x0)
 "
-"13             >>locDecl X433^18 (propEq X434^18 (eqId singleton x0) (eqId singleton x2))
+"14______________[+[Begin 
+locDecl X447^18 (propEq X448^18 (eqId singleton x2) (eqId singleton x0))
+"
+"14              >>locDecl X447^18 (propEq X448^18 (eqId singleton x2) (eqId singleton x0))
+"
+"14..............].]Fail  
+locDecl X447^18 (propEq X448^18 (eqId singleton x2) (eqId singleton x0))
+"
+"13             >>locDecl X449^18 (propEq X450^18 (eqId singleton x0) (eqId singleton x2))
 "
 "13.............].]Fail  
 pippoequ (eqId singleton x2) (eqId singleton x0) (propEq singleton x0 x0)
- X427^18
+ X435^18
 "
 "12............].]Fail  
 pippo

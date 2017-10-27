@@ -88,7 +88,7 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
 
 pippoequ Q W E R 
     :- spy(Q = eqId T X1) 
-    ,  spy(W = edId T X2)
+    ,  spy(W = eqId T X2)
     ,  spy(E = propEq T A B)
     ,  spy(R = H)
     ,  spy(list_eq L)
