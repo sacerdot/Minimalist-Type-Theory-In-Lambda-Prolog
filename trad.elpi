@@ -73,7 +73,7 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
 %       H è la prova che i tradotti siano uguali nel loro setoide
 
 pippoequ  _ _ (propEq T A B) (id singleton star).
-
+ 
 symmu T (x\ fixMe "prova di symmetria").
 
 
