@@ -63,14 +63,14 @@ print_indent C S N :- indent_str C S N.
 
 
 /*
-pippo_trasp A B C :- announce (pippo_trasp A B C).
-macro_trad A P :- announce (macro_trad A P).
+tau_trasp A B C :- announce (tau_trasp A B C).
+macro_interp A P :- announce (macro_interp A P).
 equ A B :- announce (equ A B).
-pippo A B C :- announce (pippo A B C).
-pippoequ A B C D :- announce (pippoequ A B C D).
+tau A B C :- announce (tau A B C).
+tauequ A B C D :- announce (tauequ A B C D).
 
 
-trad A B      :- announce (trad A B).
+interp A B      :- announce (interp A B).
 tau A B C D   :- announce (tau A B C D).
 tau' A B C    :- announce (tau' A B C).
 

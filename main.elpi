@@ -6,7 +6,7 @@
 %-- dstep A B
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
-type hstep, dconv, hnf,  conv, trad A -> A -> prop. 
+type hstep, dconv, hnf,  conv, interp A -> A -> prop. 
  
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.
@@ -87,42 +87,42 @@ spy    (conv TY' TY).
 of X Y _ :-  locDecl X Y .
 
 
-pippoequ A A T H'
-    :- trad_isa A T Ai
+tauequ A A T H'
+    :- interp_isa A T Ai
     ,  reflu T H
     ,  H' = H Ai
     .
-pippoequ A B T Hi
+tauequ A B T Hi
     :- spy(locDecl H (propEq T' A B)), !
-    ,  spy(trad_isa H (propEq T A B) Hi)
+    ,  spy(interp_isa H (propEq T A B) Hi)
     .
 
-pippoequ A B T Hi
+tauequ A B T Hi
     :- (locDecl H (propEq T' B A))
-    ,  spy(trad_isa H (propEq T B A) Hi')
+    ,  spy(interp_isa H (propEq T B A) Hi')
     ,  spy (symmu T Q)
     ,  Hi = Q Hi'
     .
 
 
 
-pippo A A (x \ x) :- !.
+tau A A (x \ x) :- !.
 
-pippo_trasp A A (x\y\h\ h) :- !.
+tau_trasp A A (x\y\h\ h) :- !.
 
 
-%traduce X:_ext T in un Xi di tipi Ti
-trad_isa X T Xi 
+%interpuce X:_ext T in un Xi di tipi Ti
+interp_isa X T Xi 
         :- spy(of X T_inf ext)
-        ,  spy(trad X Xi')
-        ,  spy(pippo T_inf T F)
+        ,  spy(interp X Xi')
+        ,  spy(tau T_inf T F)
         ,  spy(Xi = F Xi')
         .
 
 locDecl (k_propId Te) (forall T t1\ forall T t1'\ 
         implies (E t1 t1') (forall T t2\ forall T t2'\ 
                 implies (E t2 t2') (implies (E t1 t2) (E t1' t2'))) )
-                :- trad Te T
+                :- interp Te T
                 ,  equ Te E
                 .
 
@@ -131,11 +131,11 @@ symmu T (x\ fixMe "prova di symmetria").
 
 
 
-% trad è molti-a-uno (e->i) nei tipi
+% interp è molti-a-uno (e->i) nei tipi
 % il tipo intensionale può variare per lo stesso elemento estensionale
 
 
-% supponiamo che conv X Y per poter usare pippoequ X Y H
-%       H è la prova che i tradotti siano uguali nel loro setoide
+% supponiamo che conv X Y per poter usare tauequ X Y H
+%       H è la prova che i interpotti siano uguali nel loro setoide
 
 

@@ -126,29 +126,29 @@ dconv (propEq A AA1 AA2) (propEq A' AA1' AA2') :- spy(conv A A'), spy(conv AA1 A
 dconv (eqId A AA) (eqId A' AA') :- conv A A', conv AA AA'.
 
 
-trad (propEq A Aa1 Aa2) R 
+interp (propEq A Aa1 Aa2) R 
     :- spy(equ A EquA)
-    ,  spy(trad_isa Aa1 A Aa1')
-    ,  spy(trad_isa Aa2 A Aa2')
+    ,  spy(interp_isa Aa1 A Aa1')
+    ,  spy(interp_isa Aa2 A Aa2')
     ,  spy(R = (EquA Aa1' Aa2'))
     .
 
-trad (eqId  A Aa)  T
+interp (eqId  A Aa)  T
     :- spy(reflu A ReflA)
-    ,  spy(trad Aa Aa')
+    ,  spy(interp Aa Aa')
     ,  T = (ReflA Aa') 
     .
 reflu (propEq _ _ _) (_\id singleton star).
 equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
-pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
-    :- spy(pippoequ T1 T1' T F1)
-    ,  spy(pippoequ T2 T2' T F2)
-    ,  spy(trad_isa T1 T T1i)
-    ,  spy(trad_isa T2 T T2i)
-    ,  spy(trad_isa T1' T T1i')
-    ,  spy(trad_isa T2' T T2i')
-    ,  spy(trad T Ti)
+tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
+    :- spy(tauequ T1 T1' T F1)
+    ,  spy(tauequ T2 T2' T F2)
+    ,  spy(interp_isa T1 T T1i)
+    ,  spy(interp_isa T2 T T2i)
+    ,  spy(interp_isa T1' T T1i')
+    ,  spy(interp_isa T2' T T2i')
+    ,  spy(interp T Ti)
     ,  F = x\ impl_app ( 
                 impl_app ( 
                  forall_app ( 
@@ -157,11 +157,11 @@ pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
                     forall_app ( 
                      forall_app (k_propId T) T1i) T1i') F1) T2i) T2i') F2) x
     .
-pippo_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
+tau_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 
 
 
-pippoequ  _ _ (propEq T A B) (id singleton star).
+tauequ  _ _ (propEq T A B) (id singleton star).
 
 type exist mttType -> (mttTerm -> mttType) -> mttType.
 type and mttType -> mttType -> mttType.
@@ -263,9 +263,9 @@ dconv (forall_lam B F) (forall_lam B' F')
 
 
 
-trad (forall B C) (forall B' C') :-
-        spy (trad B B'),
-        spy (pi x\ pi x' \ trad x x' => locDecl x B => locDecl x' B' => trad (C x )(C'  x')).
+interp (forall B C) (forall B' C') :-
+        spy (interp B B'),
+        spy (pi x\ pi x' \ interp x x' => locDecl x B => locDecl x' B' => interp (C x )(C'  x')).
 
 
 type propId mttType -> mttTerm -> mttTerm -> mttType.
@@ -354,13 +354,13 @@ dconv (impl_lam B F) (impl_lam B' F')
 
 
 
-trad (implies B C) (forall B' C') 
-    :- trad B B'
+interp (implies B C) (forall B' C') 
+    :- interp B B'
     ,  spy(pi x\ pi x'\ 
-        (  trad x x'
+        (  interp x x'
         ,  locDecl x B
         ,  locDecl x' B') 
-            =>  trad C (C' x')
+            =>  interp C (C' x')
     )
     .
 type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
@@ -504,21 +504,21 @@ dconv (lambda B F) (lambda B' F')
 
 
 
-trad (setPi B C) T 
-    :- spy(trad B Bi)
-    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+interp (setPi B C) T 
+    :- spy(interp B Bi)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => interp (C x) (Ci xi))
     ,  spy(equ B EquB)
-    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => equ (C x) (EquC xi))
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => equ (C x) (EquC xi))
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
         => locDecl x1i Bi
         => locDecl x2i Bi
-        => trad x1 x1i
-        => trad x2 x2i
+        => interp x1 x1i
+        => interp x2 x2i
         => (locDecl h (propEq B x1 x2)) 
         => (locDecl hi (EquB x1i x2i))
-        => trad h hi
-        => spy(pippo (C x1) (C x2) (PippoC x1i x2i hi)))
+        => interp h hi
+        => spy(tau (C x1) (C x2) (PippoC x1i x2i hi)))
     ,  T = colSigma (setPi Bi Ci) f\ (forall (Bi) x1\ (forall Bi x2\ (forall (EquB x1 x2) h\
     (
             EquC x2 
@@ -535,22 +535,22 @@ trad (setPi B C) T
 
 
 
-trad (app F X) R 
+interp (app F X) R 
     :- spy(of F (setPi B C) ext)
-    ,  spy(trad_isa X B Xi)
-    ,  spy(trad F Fi)
+    ,  spy(interp_isa X B Xi)
+    ,  spy(interp F Fi)
     ,  spy(of Fi T int)
     ,  spy(T = (colSigma PI _))
     ,  R = (app (elim_colSigma Fi (_\PI) (x\y\x) ) Xi)
     .
 
 
-trad (lambda B F) R                
+interp (lambda B F) R                
     :- spy(of (lambda B F) (setPi B C) ext)
-    ,  spy(trad (setPi B C) (colSigma (setPi Bi Ci) H ))
-    ,  macro_trad B ( x\_\_\xi\_\_\ trad (F x) (Fi xi))
+    ,  spy(interp (setPi B C) (colSigma (setPi Bi Ci) H ))
+    ,  macro_interp B ( x\_\_\xi\_\_\ interp (F x) (Fi xi))
     ,  equ B EquB
-    ,  macro_trad B (x1\x2\h\x1i\x2i\hi\pippoequ (F x1) (F x2) (C x2) (K_EQU x1i x2i hi))
+    ,  macro_interp B (x1\x2\h\x1i\x2i\hi\tauequ (F x1) (F x2) (C x2) (K_EQU x1i x2i hi))
     ,  R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
         (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
             K_EQU x1 x2 h)
@@ -558,12 +558,12 @@ trad (lambda B F) R
 
 
 equ (setPi B C) P
-    :- spy(trad B Bi)
-    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+    :- spy(interp B Bi)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => interp (C x) (Ci xi))
     ,  spy(pi x\ pi xi\locDecl x B 
         => locDecl xi Bi
-            => trad x xi
-                => (trad (C x) (Ci xi), equ (C x) (EquC xi)))
+            => interp x xi
+                => (interp (C x) (Ci xi), equ (C x) (EquC xi)))
     ,  P = (f\ g\ 
         forall Bi x\ 
             EquC x 
@@ -571,33 +571,33 @@ equ (setPi B C) P
             (app (elim_colSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
 
-pippoequ (app F X1) (app F X2) T H 
+tauequ (app F X1) (app F X2) T H 
     :- of F (setPi B T') ext
-    ,  spy(pippoequ X1 X2 B G)
-    ,  spy(trad F Fi)
+    ,  spy(tauequ X1 X2 B G)
+    ,  spy(interp F Fi)
     ,  spy(of Fi (colSigma TyF MorF) int)
     ,  PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x))
     ,  P2Fi = elim_colSigma Fi (c \ MorF (PI1 c)) (x\ y\ y)
-    ,  spy(trad_isa X1 B X1i)
-    ,  spy(trad_isa X2 B X2i)
-    ,  spy(pippo  (propEq (T' X2) (app F X1) (app F X2))
+    ,  spy(interp_isa X1 B X1i)
+    ,  spy(interp_isa X2 B X2i)
+    ,  spy(tau  (propEq (T' X2) (app F X1) (app F X2))
                (propEq (T) (app F X1) (app F X2)) PIPPO)
     ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
     . 
 
-pippo (setPi B C) (setPi B' C') P
-    :- spy(trad (setPi B C) (colSigma T1 T2))
+tau (setPi B C) (setPi B' C') P
+    :- spy(interp (setPi B C) (colSigma T1 T2))
     ,  spy(T1 = setPi Bi Ci)
-    ,  spy(trad (setPi B' C') (colSigma T1' T2'))
+    ,  spy(interp (setPi B' C') (colSigma T1' T2'))
     ,  spy(T1' = setPi Bi' Ci')
     ,  spy(equ B' EquB')
-    ,  spy(macro_trad B (_\x2\_\_\x2i\_\ equ (C x2) (EquC x2i)))
-    ,  spy(pippo B' B FB)
-    ,  spy(macro_pippo B B' 
-        (x\x'\_\xi\xi'\_\ pippo (C x) (C' x') (FC' xi xi')))
-    ,  spy(macro_trad B (x1\x2\_\x1i\x2i\_\ pippo (C x1) (C x2) (FCC x1i x2i)))
-    ,  spy(pippo_trasp B' B KB)
-    ,  spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi' hi))
+    ,  spy(macro_interp B (_\x2\_\_\x2i\_\ equ (C x2) (EquC x2i)))
+    ,  spy(tau B' B FB)
+    ,  spy(macro_tau B B' 
+        (x\x'\_\xi\xi'\_\ tau (C x) (C' x') (FC' xi xi')))
+    ,  spy(macro_interp B (x1\x2\_\x1i\x2i\_\ tau (C x1) (C x2) (FCC x1i x2i)))
+    ,  spy(tau_trasp B' B KB)
+    ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_trasp (C x) (C' x') (KC' xi xi' hi))
     ,  P = 
         (w\ elim_colSigma w (_\colSigma T1' T2')
             f\p\ pair T1' T2'
@@ -618,9 +618,9 @@ pippo (setPi B C) (setPi B' C') P
         ) 
     . 
 
-pippo_trasp (setPi B C) (setPi B' C') P 
-    :- spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi' hi))
-    ,  spy(pippo B' B FB)
+tau_trasp (setPi B C) (setPi B' C') P 
+    :- spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_trasp (C x) (C' x') (KC' xi xi' hi))
+    ,  spy(tau B' B FB)
     ,  P = f\g\d\ forall_lam B' y'\ 
             KC' (FB y') 
                 y'
@@ -632,34 +632,34 @@ pippo_trasp (setPi B C) (setPi B' C') P
     .
 
 
-macro_pippo B B' Q 
+macro_tau B B' Q 
     :- spy(equ B EquB)
-    ,  spy(trad B Bi)
-    ,  spy(trad B' Bi')
+    ,  spy(interp B Bi)
+    ,  spy(interp B' Bi')
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
         => locDecl x1i Bi
         => locDecl x2i Bi'
-        => trad x1 x1i
-        => trad x2 x2i
+        => interp x1 x1i
+        => interp x2 x2i
         => (locDecl h (propEq B x1 x2)) 
         => (locDecl hi (EquB x1i x2i))
-        => trad h hi
+        => interp h hi
         => spy(Q x1 x2 h x1i x2i hi)
         ) 
     . 
-macro_trad B Q 
+macro_interp B Q 
     :- spy(equ B EquB)
-    ,  spy(trad B Bi)
+    ,  spy(interp B Bi)
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
         => locDecl x1i Bi
         => locDecl x2i Bi
-        => trad x1 x1i
-        => trad x2 x2i
+        => interp x1 x1i
+        => interp x2 x2i
         => (locDecl h (propEq B x1 x2)) 
         => (locDecl hi (EquB x1i x2i))
-        => trad h hi
+        => interp h hi
         => spy(Q x1 x2 h x1i x2i hi)
         )
     .%%%
@@ -843,14 +843,14 @@ dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 
 %%% Interpretation
 
-trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
-trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, tau' A AA AAi.
-trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, tau' B BB BBi.
+interp (setSum A B) (setSum Ai Bi)  :- interp A Ai, interp B Bi.
+interp (inl A B AA) (inl Ai Bi AAi) :- interp A Ai, interp B Bi, tau' A AA AAi.
+interp (inr A B BB) (inr Ai Bi BBi) :- interp A Ai, interp B Bi, tau' B BB BBi.
 
-trad (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
+interp (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
     of W (setSum A B) ext,
     tau' (setSum A B) W Wi,
-    (pi x\ of x (setSum A B) int => trad (C x) (Ci x) ),
+    (pi x\ of x (setSum A B) int => interp (C x) (Ci x) ),
     (pi a\ of a A int => tau' (C (inl A B a)) (Cl a) (Cli a)),
     (pi b\ of b B int => tau' (C (inl A B b)) (Cr b) (Cri b)).
 
@@ -898,8 +898,8 @@ reflu singleton (x\ id singleton x).
 
 
 
-trad singleton singleton.
-trad star star.
+interp singleton singleton.
+interp star star.
 
 
 

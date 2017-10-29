@@ -194,33 +194,33 @@ isType
 "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
 "
 "1_[+[Begin 
-trad
+interp
  (forall (setPi (setPi singleton x0 \ singleton) x0 \ singleton) x0 \
    propEq singleton (app x0 (lambda singleton x1 \ x1)) star) X13
 "
 "2__[+[Begin 
-trad (setPi (setPi singleton x0 \ singleton) x0 \ singleton) X14
+interp (setPi (setPi singleton x0 \ singleton) x0 \ singleton) X14
 "
 "3___[+[Begin 
-trad (setPi singleton x0 \ singleton) X15
+interp (setPi singleton x0 \ singleton) X15
 "
 "4____[+[Begin 
-trad singleton X16
+interp singleton X16
 "
 "4----]-]Success  
-trad singleton singleton
+interp singleton singleton
 "
 "4____[+[Begin 
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
-   locDecl x1 singleton => trad x0 x1 => trad singleton (X17 x1)
+   locDecl x1 singleton => interp x0 x1 => interp singleton (X17 x1)
 "
 "4----]-]Success  
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
-   locDecl x1 singleton => trad x0 x1 => trad singleton singleton
+   locDecl x1 singleton => interp x0 x1 => interp singleton singleton
 "
 "4____[+[Begin 
 equ singleton X18
@@ -232,14 +232,14 @@ equ singleton x0 \ x1 \ propId singleton x0 x1
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
-   locDecl x1 singleton => trad x0 x1 => equ singleton (X19 x1)
+   locDecl x1 singleton => interp x0 x1 => equ singleton (X19 x1)
 "
 "4----]-]Success  
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
    locDecl x1 singleton =>
-    trad x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
+    interp x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
 "
 "4____[+[Begin 
 pi x0 \
@@ -252,17 +252,17 @@ pi x0 \
        locDecl x1 singleton =>
         locDecl x3 singleton =>
          locDecl x4 singleton =>
-          trad x0 x3 =>
-           trad x1 x4 =>
+          interp x0 x3 =>
+           interp x1 x4 =>
             locDecl x2 (propEq singleton x0 x1) =>
              locDecl x5 (propId singleton x3 x4) =>
-              trad x2 x5 => spy (pippo singleton singleton (X20 x3 x4 x5))
+              interp x2 x5 => spy (tau singleton singleton (X20 x3 x4 x5))
 "
 "5_____[+[Begin 
-pippo singleton singleton (X20 x3 x4 x5)
+tau singleton singleton (X20 x3 x4 x5)
 "
 "5-----]-]Success  
-pippo singleton singleton x6 \ x6
+tau singleton singleton x6 \ x6
 "
 "4----]-]Success  
 pi x0 \
@@ -275,14 +275,14 @@ pi x0 \
        locDecl x1 singleton =>
         locDecl x3 singleton =>
          locDecl x4 singleton =>
-          trad x0 x3 =>
-           trad x1 x4 =>
+          interp x0 x3 =>
+           interp x1 x4 =>
             locDecl x2 (propEq singleton x0 x1) =>
              locDecl x5 (propId singleton x3 x4) =>
-              trad x2 x5 => spy (pippo singleton singleton x6 \ x6)
+              interp x2 x5 => spy (tau singleton singleton x6 \ x6)
 "
 "3---]-]Success  
-trad (setPi singleton x0 \ singleton)
+interp (setPi singleton x0 \ singleton)
  (colSigma (setPi singleton x0 \ singleton) x0 \
    forall singleton x1 \
     forall singleton x2 \
@@ -299,7 +299,7 @@ pi x0 \
        forall singleton x4 \
         forall (propId singleton x3 x4) x5 \
          propId singleton (app x2 x3) (app x2 x4)) =>
-    trad x0 x1 => trad singleton (X21 x1)
+    interp x0 x1 => interp singleton (X21 x1)
 "
 "3---]-]Success  
 pi x0 \
@@ -311,42 +311,42 @@ pi x0 \
        forall singleton x4 \
         forall (propId singleton x3 x4) x5 \
          propId singleton (app x2 x3) (app x2 x4)) =>
-    trad x0 x1 => trad singleton singleton
+    interp x0 x1 => interp singleton singleton
 "
 "3___[+[Begin 
 equ (setPi singleton x0 \ singleton) X22
 "
 "4____[+[Begin 
-trad singleton X23
+interp singleton X23
 "
 "4----]-]Success  
-trad singleton singleton
+interp singleton singleton
 "
 "4____[+[Begin 
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
-   locDecl x1 singleton => trad x0 x1 => trad singleton (X24 x1)
+   locDecl x1 singleton => interp x0 x1 => interp singleton (X24 x1)
 "
 "4----]-]Success  
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
-   locDecl x1 singleton => trad x0 x1 => trad singleton singleton
+   locDecl x1 singleton => interp x0 x1 => interp singleton singleton
 "
 "4____[+[Begin 
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
    locDecl x1 singleton =>
-    trad x0 x1 => ((trad singleton singleton), (equ singleton (X25 x1)))
+    interp x0 x1 => ((interp singleton singleton), (equ singleton (X25 x1)))
 "
 "4----]-]Success  
 pi x0 \
  pi x1 \
   locDecl x0 singleton =>
    locDecl x1 singleton =>
-    trad x0 x1 => ((trad singleton singleton),
+    interp x0 x1 => ((interp singleton singleton),
      (equ singleton x2 \ x3 \ propId singleton x2 x3))
 "
 "3---]-]Success  
@@ -368,7 +368,7 @@ pi x0 \
        forall singleton x4 \
         forall (propId singleton x3 x4) x5 \
          propId singleton (app x2 x3) (app x2 x4)) =>
-    trad x0 x1 => equ singleton (X26 x1)
+    interp x0 x1 => equ singleton (X26 x1)
 "
 "3---]-]Success  
 pi x0 \
@@ -380,7 +380,7 @@ pi x0 \
        forall singleton x4 \
         forall (propId singleton x3 x4) x5 \
          propId singleton (app x2 x3) (app x2 x4)) =>
-    trad x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
+    interp x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
 "
 "3___[+[Begin 
 pi x0 \
@@ -403,8 +403,8 @@ pi x0 \
              forall singleton x8 \
               forall (propId singleton x7 x8) x9 \
                propId singleton (app x6 x7) (app x6 x8)) =>
-          trad x0 x3 =>
-           trad x1 x4 =>
+          interp x0 x3 =>
+           interp x1 x4 =>
             locDecl x2 (propEq (setPi singleton x6 \ singleton) x0 x1) =>
              locDecl x5
               (forall singleton x6 \
@@ -415,13 +415,13 @@ pi x0 \
                  (app
                    (elim_colSigma x4 (x7 \ setPi singleton x8 \ singleton)
                      x7 \ x8 \ x7) x6)) =>
-              trad x2 x5 => spy (pippo singleton singleton (X27 x3 x4 x5))
+              interp x2 x5 => spy (tau singleton singleton (X27 x3 x4 x5))
 "
 "4____[+[Begin 
-pippo singleton singleton (X27 x3 x4 x5)
+tau singleton singleton (X27 x3 x4 x5)
 "
 "4----]-]Success  
-pippo singleton singleton x6 \ x6
+tau singleton singleton x6 \ x6
 "
 "3---]-]Success  
 pi x0 \
@@ -444,8 +444,8 @@ pi x0 \
              forall singleton x8 \
               forall (propId singleton x7 x8) x9 \
                propId singleton (app x6 x7) (app x6 x8)) =>
-          trad x0 x3 =>
-           trad x1 x4 =>
+          interp x0 x3 =>
+           interp x1 x4 =>
             locDecl x2 (propEq (setPi singleton x6 \ singleton) x0 x1) =>
              locDecl x5
               (forall singleton x6 \
@@ -456,10 +456,10 @@ pi x0 \
                  (app
                    (elim_colSigma x4 (x7 \ setPi singleton x8 \ singleton)
                      x7 \ x8 \ x7) x6)) =>
-              trad x2 x5 => spy (pippo singleton singleton x6 \ x6)
+              interp x2 x5 => spy (tau singleton singleton x6 \ x6)
 "
 "2--]-]Success  
-trad (setPi (setPi singleton x0 \ singleton) x0 \ singleton)
+interp (setPi (setPi singleton x0 \ singleton) x0 \ singleton)
  (colSigma
    (setPi
      (colSigma (setPi singleton x0 \ singleton) x0 \
@@ -492,7 +492,7 @@ trad (setPi (setPi singleton x0 \ singleton) x0 \ singleton)
 "2__[+[Begin 
 pi x0 \
  pi x1 \
-  trad x0 x1 =>
+  interp x0 x1 =>
    locDecl x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) =>
     locDecl x1
      (colSigma
@@ -524,7 +524,7 @@ pi x0 \
                (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \
                  x7 \ x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4))
      =>
-     trad (propEq singleton (app x0 (lambda singleton x2 \ x2)) star)
+     interp (propEq singleton (app x0 (lambda singleton x2 \ x2)) star)
       (X28 x1)
 "
 "3___[+[Begin 
@@ -534,7 +534,7 @@ equ singleton X29^2
 equ singleton x2 \ x3 \ propId singleton x2 x3
 "
 "3___[+[Begin 
-trad_isa (app x0 (lambda singleton x2 \ x2)) singleton X30^2
+interp_isa (app x0 (lambda singleton x2 \ x2)) singleton X30^2
 "
 "4____[+[Begin 
 of (app x0 (lambda singleton x2 \ x2)) X31^2 ext
@@ -591,7 +591,7 @@ isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
 of (app x0 (lambda singleton x2 \ x2)) singleton ext
 "
 "4____[+[Begin 
-trad (app x0 (lambda singleton x2 \ x2)) X37^2
+interp (app x0 (lambda singleton x2 \ x2)) X37^2
 "
 "5_____[+[Begin 
 of x0 (setPi X38^2 X39^2) ext
@@ -600,7 +600,7 @@ of x0 (setPi X38^2 X39^2) ext
 of x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) ext
 "
 "5_____[+[Begin 
-trad_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) X40^2
+interp_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) X40^2
 "
 "6______[+[Begin 
 of (lambda singleton x2 \ x2) X41^2 ext
@@ -633,7 +633,7 @@ pi x2 \ locDecl x2 singleton => isa x2 singleton ext
 of (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
 "
 "6______[+[Begin 
-trad (lambda singleton x2 \ x2) X44^2
+interp (lambda singleton x2 \ x2) X44^2
 "
 "7_______[+[Begin 
 of (lambda singleton x2 \ x2) (setPi singleton X45^2) ext
@@ -666,25 +666,25 @@ pi x2 \ locDecl x2 singleton => isa x2 singleton ext
 of (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
 "
 "7_______[+[Begin 
-trad (setPi singleton x2 \ singleton) (colSigma (setPi X47^2 X48^2) X49^2)
+interp (setPi singleton x2 \ singleton) (colSigma (setPi X47^2 X48^2) X49^2)
 "
 "8________[+[Begin 
-trad singleton X50^2
+interp singleton X50^2
 "
 "8--------]-]Success  
-trad singleton singleton
+interp singleton singleton
 "
 "8________[+[Begin 
 pi x2 \
  pi x3 \
   locDecl x2 singleton =>
-   locDecl x3 singleton => trad x2 x3 => trad singleton (X51^2 x3)
+   locDecl x3 singleton => interp x2 x3 => interp singleton (X51^2 x3)
 "
 "8--------]-]Success  
 pi x2 \
  pi x3 \
   locDecl x2 singleton =>
-   locDecl x3 singleton => trad x2 x3 => trad singleton singleton
+   locDecl x3 singleton => interp x2 x3 => interp singleton singleton
 "
 "8________[+[Begin 
 equ singleton X52^2
@@ -696,14 +696,14 @@ equ singleton x2 \ x3 \ propId singleton x2 x3
 pi x2 \
  pi x3 \
   locDecl x2 singleton =>
-   locDecl x3 singleton => trad x2 x3 => equ singleton (X53^2 x3)
+   locDecl x3 singleton => interp x2 x3 => equ singleton (X53^2 x3)
 "
 "8--------]-]Success  
 pi x2 \
  pi x3 \
   locDecl x2 singleton =>
    locDecl x3 singleton =>
-    trad x2 x3 => (equ singleton x4 \ x5 \ propId singleton x4 x5)
+    interp x2 x3 => (equ singleton x4 \ x5 \ propId singleton x4 x5)
 "
 "8________[+[Begin 
 pi x2 \
@@ -716,17 +716,17 @@ pi x2 \
        locDecl x3 singleton =>
         locDecl x5 singleton =>
          locDecl x6 singleton =>
-          trad x2 x5 =>
-           trad x3 x6 =>
+          interp x2 x5 =>
+           interp x3 x6 =>
             locDecl x4 (propEq singleton x2 x3) =>
              locDecl x7 (propId singleton x5 x6) =>
-              trad x4 x7 => spy (pippo singleton singleton (X54^2 x5 x6 x7))
+              interp x4 x7 => spy (tau singleton singleton (X54^2 x5 x6 x7))
 "
 "9_________[+[Begin 
-pippo singleton singleton (X54^2 x5 x6 x7)
+tau singleton singleton (X54^2 x5 x6 x7)
 "
 "9---------]-]Success  
-pippo singleton singleton x8 \ x8
+tau singleton singleton x8 \ x8
 "
 "8--------]-]Success  
 pi x2 \
@@ -739,14 +739,14 @@ pi x2 \
        locDecl x3 singleton =>
         locDecl x5 singleton =>
          locDecl x6 singleton =>
-          trad x2 x5 =>
-           trad x3 x6 =>
+          interp x2 x5 =>
+           interp x3 x6 =>
             locDecl x4 (propEq singleton x2 x3) =>
              locDecl x7 (propId singleton x5 x6) =>
-              trad x4 x7 => spy (pippo singleton singleton x8 \ x8)
+              interp x4 x7 => spy (tau singleton singleton x8 \ x8)
 "
 "7-------]-]Success  
-trad (setPi singleton x2 \ singleton)
+interp (setPi singleton x2 \ singleton)
  (colSigma (setPi singleton x2 \ singleton) x2 \
    forall singleton x3 \
     forall singleton x4 \
@@ -760,10 +760,10 @@ equ singleton X55^2
 equ singleton x2 \ x3 \ propId singleton x2 x3
 "
 "7_______[+[Begin 
-trad singleton X56^2
+interp singleton X56^2
 "
 "7-------]-]Success  
-trad singleton singleton
+interp singleton singleton
 "
 "7_______[+[Begin 
 pi x2 \
@@ -776,17 +776,17 @@ pi x2 \
        locDecl x3 singleton =>
         locDecl x5 singleton =>
          locDecl x6 singleton =>
-          trad x2 x5 =>
-           trad x3 x6 =>
+          interp x2 x5 =>
+           interp x3 x6 =>
             locDecl x4 (propEq singleton x2 x3) =>
              locDecl x7 (propId singleton x5 x6) =>
-              trad x4 x7 => spy (trad x2 (X57^2 x5))
+              interp x4 x7 => spy (interp x2 (X57^2 x5))
 "
 "8________[+[Begin 
-trad x2 (X57^2 x5)
+interp x2 (X57^2 x5)
 "
 "8--------]-]Success  
-trad x2 x5
+interp x2 x5
 "
 "7-------]-]Success  
 pi x2 \
@@ -799,11 +799,11 @@ pi x2 \
        locDecl x3 singleton =>
         locDecl x5 singleton =>
          locDecl x6 singleton =>
-          trad x2 x5 =>
-           trad x3 x6 =>
+          interp x2 x5 =>
+           interp x3 x6 =>
             locDecl x4 (propEq singleton x2 x3) =>
              locDecl x7 (propId singleton x5 x6) =>
-              trad x4 x7 => spy (trad x2 x5)
+              interp x4 x7 => spy (interp x2 x5)
 "
 "7_______[+[Begin 
 equ singleton X58^2
@@ -812,10 +812,10 @@ equ singleton X58^2
 equ singleton x2 \ x3 \ propId singleton x2 x3
 "
 "7_______[+[Begin 
-trad singleton X59^2
+interp singleton X59^2
 "
 "7-------]-]Success  
-trad singleton singleton
+interp singleton singleton
 "
 "7_______[+[Begin 
 pi x2 \
@@ -828,14 +828,14 @@ pi x2 \
        locDecl x3 singleton =>
         locDecl x5 singleton =>
          locDecl x6 singleton =>
-          trad x2 x5 =>
-           trad x3 x6 =>
+          interp x2 x5 =>
+           interp x3 x6 =>
             locDecl x4 (propEq singleton x2 x3) =>
              locDecl x7 (propId singleton x5 x6) =>
-              trad x4 x7 => spy (pippoequ x2 x3 singleton (X60^2 x5 x6 x7))
+              interp x4 x7 => spy (tauequ x2 x3 singleton (X60^2 x5 x6 x7))
 "
 "8________[+[Begin 
-pippoequ x2 x3 singleton (X60^2 x5 x6 x7)
+tauequ x2 x3 singleton (X60^2 x5 x6 x7)
 "
 "9_________[+[Begin 
 locDecl X61^8 (propEq X62^8 x2 x3)
@@ -844,7 +844,7 @@ locDecl X61^8 (propEq X62^8 x2 x3)
 locDecl x4 (propEq singleton x2 x3)
 "
 "9_________[+[Begin 
-trad_isa x4 (propEq singleton x2 x3) (X60^2 x5 x6 x7)
+interp_isa x4 (propEq singleton x2 x3) (X60^2 x5 x6 x7)
 "
 "10__________[+[Begin 
 of x4 X63^8 ext
@@ -853,16 +853,16 @@ of x4 X63^8 ext
 of x4 (propEq singleton x2 x3) ext
 "
 "10__________[+[Begin 
-trad x4 X64^8
+interp x4 X64^8
 "
 "10----------]-]Success  
-trad x4 x7
+interp x4 x7
 "
 "10__________[+[Begin 
-pippo (propEq singleton x2 x3) (propEq singleton x2 x3) X65^8
+tau (propEq singleton x2 x3) (propEq singleton x2 x3) X65^8
 "
 "10----------]-]Success  
-pippo (propEq singleton x2 x3) (propEq singleton x2 x3) x8 \ x8
+tau (propEq singleton x2 x3) (propEq singleton x2 x3) x8 \ x8
 "
 "10__________[+[Begin 
 X60^2 x5 x6 x7 = x7
@@ -871,10 +871,10 @@ X60^2 x5 x6 x7 = x7
 x7 = x7
 "
 "9---------]-]Success  
-trad_isa x4 (propEq singleton x2 x3) x7
+interp_isa x4 (propEq singleton x2 x3) x7
 "
 "8--------]-]Success  
-pippoequ x2 x3 singleton x7
+tauequ x2 x3 singleton x7
 "
 "7-------]-]Success  
 pi x2 \
@@ -887,14 +887,14 @@ pi x2 \
        locDecl x3 singleton =>
         locDecl x5 singleton =>
          locDecl x6 singleton =>
-          trad x2 x5 =>
-           trad x3 x6 =>
+          interp x2 x5 =>
+           interp x3 x6 =>
             locDecl x4 (propEq singleton x2 x3) =>
              locDecl x7 (propId singleton x5 x6) =>
-              trad x4 x7 => spy (pippoequ x2 x3 singleton x7)
+              interp x4 x7 => spy (tauequ x2 x3 singleton x7)
 "
 "6------]-]Success  
-trad (lambda singleton x2 \ x2)
+interp (lambda singleton x2 \ x2)
  (pair (setPi singleton x2 \ singleton) (x2 \
    forall singleton x3 \
     forall singleton x4 \
@@ -904,11 +904,10 @@ trad (lambda singleton x2 \ x2)
      forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
 "
 "6______[+[Begin 
-pippo (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton) X66^2
+tau (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton) X66^2
 "
 "6------]-]Success  
-pippo (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton) x2 \
- x2
+tau (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton) x2 \ x2
 "
 "6______[+[Begin 
 X40^2 =
@@ -937,7 +936,7 @@ pair (setPi singleton x2 \ singleton) (x2 \
     forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)
 "
 "5-----]-]Success  
-trad_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton)
+interp_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton)
  (pair (setPi singleton x2 \ singleton) (x2 \
    forall singleton x3 \
     forall singleton x4 \
@@ -947,10 +946,10 @@ trad_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton)
      forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
 "
 "5_____[+[Begin 
-trad x0 X67^2
+interp x0 X67^2
 "
 "5-----]-]Success  
-trad x0 x1
+interp x0 x1
 "
 "5_____[+[Begin 
 of x1 X68^2 int
@@ -1055,7 +1054,7 @@ of x1
          propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) _
 "
 "4----]-]Success  
-trad (app x0 (lambda singleton x2 \ x2))
+interp (app x0 (lambda singleton x2 \ x2))
  (app
    (elim_colSigma x1 (x2 \
      setPi
@@ -1074,10 +1073,10 @@ trad (app x0 (lambda singleton x2 \ x2))
        forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
 "
 "4____[+[Begin 
-pippo singleton singleton X70^2
+tau singleton singleton X70^2
 "
 "4----]-]Success  
-pippo singleton singleton x2 \ x2
+tau singleton singleton x2 \ x2
 "
 "4____[+[Begin 
 X30^2 =
@@ -1134,7 +1133,7 @@ app
       forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
 "
 "3---]-]Success  
-trad_isa (app x0 (lambda singleton x2 \ x2)) singleton
+interp_isa (app x0 (lambda singleton x2 \ x2)) singleton
  (app
    (elim_colSigma x1 (x2 \
      setPi
@@ -1153,7 +1152,7 @@ trad_isa (app x0 (lambda singleton x2 \ x2)) singleton
        forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
 "
 "3___[+[Begin 
-trad_isa star singleton X71^2
+interp_isa star singleton X71^2
 "
 "4____[+[Begin 
 of star X72^2 ext
@@ -1162,16 +1161,16 @@ of star X72^2 ext
 of star singleton ext
 "
 "4____[+[Begin 
-trad star X73^2
+interp star X73^2
 "
 "4----]-]Success  
-trad star star
+interp star star
 "
 "4____[+[Begin 
-pippo singleton singleton X74^2
+tau singleton singleton X74^2
 "
 "4----]-]Success  
-pippo singleton singleton x2 \ x2
+tau singleton singleton x2 \ x2
 "
 "4____[+[Begin 
 X71^2 = star
@@ -1180,7 +1179,7 @@ X71^2 = star
 star = star
 "
 "3---]-]Success  
-trad_isa star singleton star
+interp_isa star singleton star
 "
 "3___[+[Begin 
 X28 x1 =
@@ -1244,7 +1243,7 @@ propId singleton
 "2--]-]Success  
 pi x0 \
  pi x1 \
-  trad x0 x1 =>
+  interp x0 x1 =>
    locDecl x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) =>
     locDecl x1
      (colSigma
@@ -1276,7 +1275,7 @@ pi x0 \
                (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \
                  x7 \ x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4))
      =>
-     trad (propEq singleton (app x0 (lambda singleton x2 \ x2)) star)
+     interp (propEq singleton (app x0 (lambda singleton x2 \ x2)) star)
       (propId singleton
         (app
           (elim_colSigma x1 (x2 \
@@ -1298,7 +1297,7 @@ pi x0 \
                forall_lam (propId singleton x2 x3) x4 \ x4))) star)
 "
 "1-]-]Success  
-trad
+interp
  (forall (setPi (setPi singleton x0 \ singleton) x0 \ singleton) x0 \
    propEq singleton (app x0 (lambda singleton x1 \ x1)) star)
  (forall
