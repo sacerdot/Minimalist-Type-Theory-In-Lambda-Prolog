@@ -156,17 +156,17 @@ spy    (conv TY' TY).
 of X Y _ :-  locDecl X Y .
 
 
-tau_eq_proof A A T H'
+tau_proof_eq A A T H'
     :- interp_isa A T Ai
     ,  reflu T H
     ,  H' = H Ai
     .
-tau_eq_proof A B T Hi
+tau_proof_eq A B T Hi
     :- spy(locDecl H (propEq T' A B)), !
     ,  spy(interp_isa H (propEq T A B) Hi)
     .
 
-tau_eq_proof A B T Hi
+tau_proof_eq A B T Hi
     :- (locDecl H (propEq T' B A))
     ,  spy(interp_isa H (propEq T B A) Hi')
     ,  spy (symmu T Q)
@@ -204,7 +204,7 @@ symmu T (x\ fixMe "prova di symmetria").
 % il tipo intensionale può variare per lo stesso elemento estensionale
 
 
-% supponiamo che conv X Y per poter usare tau_eq_proof X Y H
+% supponiamo che conv X Y per poter usare tau_proof_eq X Y H
 %       H è la prova che i interpotti siano uguali nel loro setoide
 
 

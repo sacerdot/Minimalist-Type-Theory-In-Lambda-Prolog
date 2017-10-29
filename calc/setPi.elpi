@@ -101,7 +101,7 @@ interp (lambda B F) R
     ,  spy(interp (setPi B C) (setSigma (setPi Bi Ci) H ))
     ,  macro_interp B ( x\_\_\xi\_\_\ interp (F x) (Fi xi))
     ,  setoid_eq B EquB
-    ,  macro_interp B (x1\x2\h\x1i\x2i\hi\tau_eq_proof (F x1) (F x2) (C x2) (K_EQU x1i x2i hi))
+    ,  macro_interp B (x1\x2\h\x1i\x2i\hi\tau_proof_eq (F x1) (F x2) (C x2) (K_EQU x1i x2i hi))
     ,  R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
         (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
             K_EQU x1 x2 h)
@@ -122,9 +122,9 @@ setoid_eq (setPi B C) P
             (app (elim_setSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
 
-tau_eq_proof (app F X1) (app F X2) T H 
+tau_proof_eq (app F X1) (app F X2) T H 
     :- of F (setPi B T') ext
-    ,  spy(tau_eq_proof X1 X2 B G)
+    ,  spy(tau_proof_eq X1 X2 B G)
     ,  spy(interp F Fi)
     ,  spy(of Fi (setSigma TyF MorF) int)
     ,  PI1 = (c\ elim_setSigma c (_\ TyF) (x \ y\ x))
@@ -136,7 +136,7 @@ tau_eq_proof (app F X1) (app F X2) T H
     ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
     . 
 
-% tau_eq_proof (lambda B F) (lambda B' F') T H :- TODO.
+% tau_proof_eq (lambda B F) (lambda B' F') T H :- TODO.
 
 tau (setPi B C) (setPi B' C') P
     :- spy(interp (setPi B C) (setSigma T1 T2))

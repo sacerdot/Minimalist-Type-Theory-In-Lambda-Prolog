@@ -45,8 +45,8 @@ reflu (propEq _ _ _) (_\id singleton star).
 setoid_eq (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
-    :- spy(tau_eq_proof T1 T1' T F1)
-    ,  spy(tau_eq_proof T2 T2' T F2)
+    :- spy(tau_proof_eq T1 T1' T F1)
+    ,  spy(tau_proof_eq T2 T2' T F2)
     ,  spy(interp_isa T1 T T1i)
     ,  spy(interp_isa T2 T T2i)
     ,  spy(interp_isa T1' T T1i')
@@ -64,7 +64,7 @@ tau_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 
 
 
-tau_eq_proof  _ _ (propEq T A B) (id singleton star).
+tau_proof_eq  _ _ (propEq T A B) (id singleton star).
 
 type exist mttType -> (mttTerm -> mttType) -> mttType.
 type and mttType -> mttType -> mttType.
