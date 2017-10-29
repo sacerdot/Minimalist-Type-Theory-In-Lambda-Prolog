@@ -636,21 +636,7 @@ macro_tau B B' Q
         => spy(Q x1 x2 h x1i x2i hi)
         ) 
     . 
-macro_interp B Q 
-    :- spy(equ B EquB)
-    ,  spy(interp B Bi)
-    ,  spy(pi x1 \ pi x2 \ pi h\
-        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
-        => locDecl x1i Bi
-        => locDecl x2i Bi
-        => interp x1 x1i
-        => interp x2 x2i
-        => (locDecl h (propEq B x1 x2)) 
-        => (locDecl hi (EquB x1i x2i))
-        => interp h hi
-        => spy(Q x1 x2 h x1i x2i hi)
-        )
-    .%%%
+macro_interp B Q :- macro_tau B B Q.
 
 %%-- calc_setSum.elpi
 

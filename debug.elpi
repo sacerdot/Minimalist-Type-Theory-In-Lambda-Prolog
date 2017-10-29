@@ -64,7 +64,7 @@ print_indent C S N :- indent_str C S N.
 
 /*
 tau_trasp A B C :- announce (tau_trasp A B C).
-macro_interp A P :- announce (macro_interp A P).
+macro_interp A B P :- announce (macro_interp A P).
 equ A B :- announce (equ A B).
 tau A B C :- announce (tau A B C).
 tauequ A B C D :- announce (tauequ A B C D).
@@ -81,9 +81,6 @@ of A B IE     :- announce (of A B IE).
 
 ofType A K IE :- announce (ofType A K IE).
 isa BB B IE   :- announce (isa BB B IE) .
-sigm A B D    :- announce (sigm A B D).
-%macro A B    :- announce (macro A B). 
-
 
 of A B IE :- announce (of A B IE). 
 locDef A B C :- announce(locDef A B C).
