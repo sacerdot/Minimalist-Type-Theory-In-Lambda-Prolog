@@ -1,9 +1,13 @@
-%%-- calc_setPi.elpi
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                              Dependent Products                               %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-type setPi mttType -> (mttTerm -> mttType) -> mttType.
-type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
-type app mttTerm -> mttTerm -> mttTerm.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                    CALCOLO                                    %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 ofType (setPi B C) KIND3 IE
@@ -132,6 +136,8 @@ tauequ (app F X1) (app F X2) T H
     ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
     . 
 
+% tauequ (lambda B F) (lambda B' F') T H :- TODO.
+
 tau (setPi B C) (setPi B' C') P
     :- spy(interp (setPi B C) (setSigma T1 T2))
     ,  spy(T1 = setPi Bi Ci)
@@ -179,21 +185,4 @@ tau_trasp (setPi B C) (setPi B' C') P
     .
 
 
-macro_tau B B' Q 
-    :- spy(equ B EquB)
-    ,  spy(interp B Bi)
-    ,  spy(interp B' Bi')
-    ,  spy(pi x1 \ pi x2 \ pi h\
-        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
-        => locDecl x1i Bi
-        => locDecl x2i Bi'
-        => interp x1 x1i
-        => interp x2 x2i
-        => (locDecl h (propEq B x1 x2)) 
-        => (locDecl hi (EquB x1i x2i))
-        => interp h hi
-        => spy(Q x1 x2 h x1i x2i hi)
-        ) 
-    . 
-macro_interp B Q :- macro_tau B B Q.
 

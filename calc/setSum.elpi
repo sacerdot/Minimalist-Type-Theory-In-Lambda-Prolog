@@ -1,0 +1,48 @@
+
+%%Disjoint Sum Type
+
+ofType (setSum A B) KIND IE :- ofType A KIND1 IE, ofType B KIND2 IE,
+    pts_fun KIND1 KIND2 KIND.
+
+of (inr A B Bb) (setSum A B) IE 
+    :- ofType B _ IE
+     , ofType A _ IE
+     , isa Bb B IE
+     .
+
+of (inl A B Aa) (setSum A B) IE  
+    :- ofType A _ IE
+     , ofType B _ IE
+     , isa Aa A IE
+     .
+
+of (elim_setSum C W Cl Cr) (C W) IE 
+    :- spy (of W (setSum A B) IE)
+     , spy (ofType (setSum A B) _ IE) 
+     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) KIND IE)
+     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inr A B x)) IE) ) 
+     , spy (pi y\ locDecl y B => isa (Cr y) (C (inl A B y)) IE) 
+     .
+
+hstep (elim_setSum C W Cl Cr) (Cl Wl) 
+    :- hnf W (inl A B Wl)
+    ,  isa W (setSum A B) IE
+    ,  (pi z\ locDecl z (setSum A B) => ofType (C z) KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE)
+    .
+hstep (elim_setSum C W Cl Cr) (Cr Wr) 
+    :- hnf W (inr A B Wr)
+    ,  isa W (setSum A B) IE
+    ,  (pi z\ locDecl z (setSum A B) => ofType (C z) KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE)
+    .
+
+dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
+    :- (conv W W')
+    ,  (of W (setSum A B) IE)
+    ,  (pi z \ locDecl z (setSum A B) => (conv (C z) (C' z) ) )
+    ,  (pi z \ locDecl z (setSum A B) => (conv (Cl z) (Cl' z) ) )
+    ,  (pi z \ locDecl z (setSum A B) => (conv (Cr z) (Cr' z) ) )
+    .

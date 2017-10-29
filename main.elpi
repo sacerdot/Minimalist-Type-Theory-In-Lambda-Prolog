@@ -1,3 +1,72 @@
+
+type setPi mttType -> (mttTerm -> mttType) -> mttType.
+type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type app mttTerm -> mttTerm -> mttTerm.
+
+type and mttType -> mttType -> mttType.
+type and mttType -> mttType -> mttType.
+type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
+
+
+
+%% STRONG INDEXED COL SUM
+
+type setSigma mttType -> (mttTerm -> mttType) -> mttType.
+type pair mttType ->  (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
+type elim_setSigma mttTerm -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
+
+%%%Exist
+/*
+missing type declarations
+*/
+
+%% FORALL
+
+type forall     mttType -> (mttTerm -> mttType) -> mttType.
+type forall_lam mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type forall_app mttTerm -> mttTerm -> mttTerm.
+
+%-- calc_id.elpi
+
+type propId mttType -> mttTerm -> mttTerm -> mttType.
+type id     mttType -> mttTerm -> mttTerm.
+type elim_id    mttTerm 
+            -> (mttTerm -> mttTerm -> mttType) 
+            -> (mttTerm -> mttTerm)
+            -> mttTerm.
+
+
+%%-- implies.elpi
+
+type implies    mttType -> mttType -> mttType.
+type impl_lam   mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type impl_app   mttTerm -> mttTerm -> mttTerm.
+
+%%-- letIn
+%this may soon change
+type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
+
+%%-- or
+
+type or mttType -> mttType -> mttType.
+type inl_or, inr_or mttType -> mttType -> mttTerm -> mttTerm.
+type elim_or mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+
+%%-- setSum.elpi
+
+type setSum mttType -> mttType -> mttType.
+type inl, inr mttType -> mttType -> mttTerm -> mttTerm.
+type elim_setSum mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+
+
+%%-- calc_singleton.elpi
+
+
+type  singleton mttType.
+type  star mttTerm.
+type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
+
+
 %-- non contextual, non reflexive, maybe transitive closure
 %-- hstep A B
 %---- non contextual, transitive, reflexive normal form
@@ -139,3 +208,21 @@ symmu T (x\ fixMe "prova di symmetria").
 %       H è la prova che i interpotti siano uguali nel loro setoide
 
 
+
+macro_tau B B' Q 
+    :- spy(equ B EquB)
+    ,  spy(interp B Bi)
+    ,  spy(interp B' Bi')
+    ,  spy(pi x1 \ pi x2 \ pi h\
+        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
+        => locDecl x1i Bi
+        => locDecl x2i Bi'
+        => interp x1 x1i
+        => interp x2 x2i
+        => (locDecl h (propEq B x1 x2)) 
+        => (locDecl hi (EquB x1i x2i))
+        => interp h hi
+        => spy(Q x1 x2 h x1i x2i hi)
+        ) 
+    . 
+macro_interp B Q :- macro_tau B B Q.

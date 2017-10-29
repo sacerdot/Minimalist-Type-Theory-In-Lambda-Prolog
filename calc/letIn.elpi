@@ -1,0 +1,11 @@
+% the precise implementation of this construct is still to be decided
+
+of (letIn T M N) T' ext :- 
+spy(    isaType T propc ext),
+spy(    isa M T ext), 
+spy(    pi x \ locDecl x T =>  of (N x) T' ext).
+
+
+ofType (letIn KIND1 T S) KIND2 ext :- 
+spy(    isaType T KIND1 ext), 
+spy(    pi x \ locDecl x KIND1 =>  ofType  (N x) KIND2 ext).

@@ -1,0 +1,46 @@
+
+%most of the predicates to implement the interpretation are missing, but it should be simple modify the code in setPi.elpi to work here
+
+ofType (forall B C) KIND3 IE 
+    :- spy(ofType B KIND IE)
+    ,  spy(pi x\ locDecl x B  => spy(ofType (C x) KIND' IE))
+    ,  spy(pts_for KIND KIND' KIND3)
+    .
+
+of (forall_lam B F) (forall B C) IE
+    :- (ofType B _ IE)
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
+    .
+
+of (forall_app Lam X) (C X) IE 
+    :- isa (Lam) (forall B C) IE
+    ,  isa X B IE
+    .
+
+
+hstep (forall_app LAM Bb) (F Bb) 
+    :- hnf LAM (forall_lam B F)
+    ,  ofType B _ IE
+    ,  isa Bb B IE
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE )
+    ,  (pi x\ locDecl x B => ofType (C x) KIND IE )
+    .
+
+dconv (forall B C) (forall B' C') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    .
+dconv (forall_app F X) (forall_app F' X') :- (conv F F'), (conv X X').
+dconv (forall_lam B F) (forall_lam B' F') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B =>
+                (conv (F x) (F' x))
+       )
+    .
+
+
+
+
+interp (forall B C) (forall B' C') :-
+        spy (interp B B'),
+        spy (pi x\ pi x' \ interp x x' => locDecl x B => locDecl x' B' => interp (C x )(C'  x')).
