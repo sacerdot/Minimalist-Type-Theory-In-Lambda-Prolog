@@ -43,7 +43,7 @@ test l A Q Qy
                 _\singleton
             ) f\
                 (propEq singleton 
-                    (app f (lambda singleton x\ (eqId singleton star))) 
+                    (app f (lambda singleton x\ (eq singleton star))) 
                     star) 
             ))
         ),
@@ -74,14 +74,14 @@ test i A B C
                 propEq
                     (propEq
                         (propEq singleton star star)
-                            (eqId singleton y)
-                            (eqId singleton x))
+                            (eq singleton y)
+                            (eq singleton x))
                     (app 
-                        (app f (eqId singleton y))
-                        (eqId singleton x))
+                        (app f (eq singleton y))
+                        (eq singleton x))
                     (app 
-                        (app f (eqId singleton x))
-                        (eqId singleton x))
+                        (app f (eq singleton x))
+                        (eq singleton x))
             )
         )))))))     
     ,
@@ -114,8 +114,8 @@ test g A Q Qy
         forall (setPi (propEq singleton (app g x) (app g star)) _\singleton) f\
         (implies (propEq singleton star x)
             (propEq singleton 
-                    (app f (eqId singleton (app g star))) 
-                    (app f (eqId singleton (app g star))) 
+                    (app f (eq singleton (app g star))) 
+                    (app f (eq singleton (app g star))) 
             )
         )
         ),
@@ -135,8 +135,8 @@ test f A Q Qy
         forall (setPi (propEq singleton x star) _\singleton) f\
         ( implies (propEq singleton star x)
             (propEq singleton 
-                    (app f (eqId singleton star)) 
-                    (app f (eqId singleton star)) 
+                    (app f (eq singleton star)) 
+                    (app f (eq singleton star)) 
             )
         )
         ),
@@ -157,13 +157,13 @@ testZ A B C
           (propEq 
             singleton star x) y\
           (setPi 
-            (propEq (propEq singleton star star) y (eqId singleton star)) _\
+            (propEq (propEq singleton star star) y (eq singleton star)) _\
             singleton)) f\   
         (propEq singleton 
         (app 
-            (app f (eqId singleton star))
-            (eqId (propEq singleton star star) 
-            (eqId singleton star)
+            (app f (eq singleton star))
+            (eq (propEq singleton star star) 
+            (eq singleton star)
             )) 
         star)
             )  ))
@@ -179,21 +179,21 @@ testE A B C
   :- Long = 
 (forall 
   (propEq singleton star star) x\
-  (implies (propEq (propEq singleton star star) x (eqId singleton star)) (implies (propEq (propEq singleton star star) (eqId singleton star) x) 
+  (implies (propEq (propEq singleton star star) x (eq singleton star)) (implies (propEq (propEq singleton star star) (eq singleton star) x) 
       (forall 
         (setPi 
           (propEq 
-            (propEq singleton star star) (eqId singleton star) x) y\
+            (propEq singleton star star) (eq singleton star) x) y\
           (setPi 
-            (propEq (propEq (propEq singleton star star) (eqId singleton star) (eqId singleton star)) y (eqId (propEq singleton star star) (eqId singleton star))) _\
+            (propEq (propEq (propEq singleton star star) (eq singleton star) (eq singleton star)) y (eq (propEq singleton star star) (eq singleton star))) _\
             (propEq singleton star star))) f\   
         (propEq (propEq singleton star star) 
         (app 
-            (app f (eqId (propEq singleton star star) (eqId singleton star)))
-            (eqId (propEq (propEq singleton star star) (eqId singleton star) (eqId singleton star)) 
-            (eqId (propEq singleton star star) (eqId singleton star))
+            (app f (eq (propEq singleton star star) (eq singleton star)))
+            (eq (propEq (propEq singleton star star) (eq singleton star) (eq singleton star)) 
+            (eq (propEq singleton star star) (eq singleton star))
             )) 
-        (eqId singleton star))
+        (eq singleton star))
             )  ))
     )
     , spy(ofType Long A ext)

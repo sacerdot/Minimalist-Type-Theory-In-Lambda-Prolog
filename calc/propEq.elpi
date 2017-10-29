@@ -3,7 +3,7 @@
 
 
 type propEq mttType -> mttTerm -> mttTerm -> mttType.
-type eqId   mttType -> mttTerm -> mttTerm.
+type eq   mttType -> mttTerm -> mttTerm.
 
 pts_eq K props :- pts_leq K set, !.
 pts_eq _ propc.
@@ -16,7 +16,7 @@ ofType (propEq A AA1 AA2) KIND ext
     .
 
 
-of (eqId C Cc) (propEq C Cc Cc) ext
+of (eq C Cc) (propEq C Cc Cc) ext
     :-  spy(of Cc C ext)
     .
 
@@ -26,27 +26,27 @@ of (eqId C Cc) (propEq C Cc Cc) ext
 
 dconv (propEq A AA1 AA2) (propEq A' AA1' AA2') :- spy(conv A A'), spy(conv AA1 AA1'), spy (conv AA2 AA2').
 
-dconv (eqId A AA) (eqId A' AA') :- conv A A', conv AA AA'.
+dconv (eq A AA) (eq A' AA') :- conv A A', conv AA AA'.
 
 
 interp (propEq A Aa1 Aa2) R 
-    :- spy(equ A EquA)
+    :- spy(setoid_eq A EquA)
     ,  spy(interp_isa Aa1 A Aa1')
     ,  spy(interp_isa Aa2 A Aa2')
     ,  spy(R = (EquA Aa1' Aa2'))
     .
 
-interp (eqId  A Aa)  T
+interp (eq  A Aa)  T
     :- spy(reflu A ReflA)
     ,  spy(interp Aa Aa')
     ,  T = (ReflA Aa') 
     .
 reflu (propEq _ _ _) (_\id singleton star).
-equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
+setoid_eq (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
-    :- spy(tauequ T1 T1' T F1)
-    ,  spy(tauequ T2 T2' T F2)
+    :- spy(tau_eq_proof T1 T1' T F1)
+    ,  spy(tau_eq_proof T2 T2' T F2)
     ,  spy(interp_isa T1 T T1i)
     ,  spy(interp_isa T2 T T2i)
     ,  spy(interp_isa T1' T T1i')
@@ -64,7 +64,7 @@ tau_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 
 
 
-tauequ  _ _ (propEq T A B) (id singleton star).
+tau_eq_proof  _ _ (propEq T A B) (id singleton star).
 
 type exist mttType -> (mttTerm -> mttType) -> mttType.
 type and mttType -> mttType -> mttType.

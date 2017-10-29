@@ -156,17 +156,17 @@ spy    (conv TY' TY).
 of X Y _ :-  locDecl X Y .
 
 
-tauequ A A T H'
+tau_eq_proof A A T H'
     :- interp_isa A T Ai
     ,  reflu T H
     ,  H' = H Ai
     .
-tauequ A B T Hi
+tau_eq_proof A B T Hi
     :- spy(locDecl H (propEq T' A B)), !
     ,  spy(interp_isa H (propEq T A B) Hi)
     .
 
-tauequ A B T Hi
+tau_eq_proof A B T Hi
     :- (locDecl H (propEq T' B A))
     ,  spy(interp_isa H (propEq T B A) Hi')
     ,  spy (symmu T Q)
@@ -192,7 +192,7 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
         implies (E t1 t1') (forall T t2\ forall T t2'\ 
                 implies (E t2 t2') (implies (E t1 t2) (E t1' t2'))) )
                 :- interp Te T
-                ,  equ Te E
+                ,  setoid_eq Te E
                 .
 
  
@@ -204,13 +204,13 @@ symmu T (x\ fixMe "prova di symmetria").
 % il tipo intensionale può variare per lo stesso elemento estensionale
 
 
-% supponiamo che conv X Y per poter usare tauequ X Y H
+% supponiamo che conv X Y per poter usare tau_eq_proof X Y H
 %       H è la prova che i interpotti siano uguali nel loro setoide
 
 
 
 macro_tau B B' Q 
-    :- spy(equ B EquB)
+    :- spy(setoid_eq B EquB)
     ,  spy(interp B Bi)
     ,  spy(interp B' Bi')
     ,  spy(pi x1 \ pi x2 \ pi h\
