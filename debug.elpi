@@ -71,8 +71,6 @@ tauequ A B C D :- announce (tauequ A B C D).
 
 
 interp A B      :- announce (interp A B).
-tau A B C D   :- announce (tau A B C D).
-tau' A B C    :- announce (tau' A B C).
 
 hnf A B       :- announce (hnf A B).
 hstep A B     :- announce (hstep A B).

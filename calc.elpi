@@ -382,20 +382,8 @@ spy(    pi x \ locDecl x KIND1 =>  isType  (N x) KIND2 ext).
 
 
 
-
-/*
-hstep (letIn (locDef X T M) N) N'
-    :-  locDef X T M
-    =>  conv N N'
-    .
-*/
 %hstep (letIn T M N) (N M).
 
-/*
-syntax direcyed
-conv extensionae
-xi rule
-*/
 
 
 
@@ -801,7 +789,6 @@ dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
 
 
 
-/*
 
 
 
@@ -840,34 +827,7 @@ dstep (elim_setSum C W Cl Cr) (elim_setSum C' W Cl Cr) :-
 dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
 dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
 
-
-%%% Interpretation
-
-interp (setSum A B) (setSum Ai Bi)  :- interp A Ai, interp B Bi.
-interp (inl A B AA) (inl Ai Bi AAi) :- interp A Ai, interp B Bi, tau' A AA AAi.
-interp (inr A B BB) (inr Ai Bi BBi) :- interp A Ai, interp B Bi, tau' B BB BBi.
-
-interp (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
-    of W (setSum A B) ext,
-    tau' (setSum A B) W Wi,
-    (pi x\ of x (setSum A B) int => interp (C x) (Ci x) ),
-    (pi a\ of a A int => tau' (C (inl A B a)) (Cl a) (Cli a)),
-    (pi b\ of b B int => tau' (C (inl A B b)) (Cr b) (Cri b)).
-
-sigm X Y :- of X (setSum A B) int,
-    (pi a\ of a A int, sigm (Cl a) (Cl' a)),
-    (pi b\ of b B int, sigm (Cr b) (Cr' b)),
-    Y = elim_setSum (setSum A B) X Cl' Cr'.
-
-
-%%equ --     non sono sicuro di che cosa dica il teorema 4.20 
-qwe12.
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-*/%%-- calc_singleton.elpi
+%%-- calc_singleton.elpi
 
 %ofType star singleton set IE.
 
