@@ -16,7 +16,7 @@ type col, set, propc, props mttKind.
 
 type locDecl            mttTerm -> mttType -> prop.
 type locDeclType        mttType -> mttKind -> prop.
-type isType             mttType -> mttKind -> mttLevel -> prop.
+type ofType             mttType -> mttKind -> mttLevel -> prop.
 type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
@@ -56,10 +56,10 @@ pts_for A props props :- pts_leq A set, !.
 pts_for _ _ propc. 
 
 
-%isType A KIND IE :- locDeclType A KIND .
+%ofType A KIND IE :- locDeclType A KIND .
 
 isaT Type Kind IE :-
-spy ( isType Type Kind' IE),
+spy ( ofType Type Kind' IE),
 spy  (pts_leq  Kind' Kind).
 
 of (fixMe2 M T ) T int 

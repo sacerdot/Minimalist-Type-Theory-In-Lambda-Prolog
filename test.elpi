@@ -26,11 +26,11 @@ test m A Q Qy
                     star) 
             ))
         ),
-    spy(isType Long A ext),
+    spy(ofType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-    ,spy(isType Q Qy int)
+    ,spy(ofType Q Qy int)
     .
 
 test l A Q Qy
@@ -47,11 +47,11 @@ test l A Q Qy
                     star) 
             ))
         ),
-    spy(isType Long A ext),
+    spy(ofType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(isType Q Qy int)
+  ,  spy(ofType Q Qy int)
     .
 
 test i A B C 
@@ -85,11 +85,11 @@ test i A B C
             )
         )))))))     
     ,
-    spy(isType Long A ext),
+    spy(ofType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long B),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(isType B C int)
+    spy(ofType B C int)
     .
 
 
@@ -100,11 +100,11 @@ test h A Q Qy
         forall (setPi (setPi singleton _\singleton) _\singleton) f\
         (propEq singleton (app f (lambda singleton x\ x)) star) 
         ),
-    spy(isType Long A ext),
+    spy(ofType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(isType Q Qy int)
+  ,  spy(ofType Q Qy int)
     .
 
 test g A Q Qy
@@ -119,11 +119,11 @@ test g A Q Qy
             )
         )
         ),
-    spy(isType Long A ext),
+    spy(ofType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(isType Q Qy int)
+  ,  spy(ofType Q Qy int)
     .
 
 
@@ -140,11 +140,11 @@ test f A Q Qy
             )
         )
         ),
-    spy(isType Long A ext),
+    spy(ofType Long A ext),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
-    spy(isType Q Qy int)
+    spy(ofType Q Qy int)
     .
 
 testZ A B C
@@ -168,9 +168,9 @@ testZ A B C
         star)
             )  ))
     )
-    , spy(isType Long A ext)
+    , spy(ofType Long A ext)
     , spy(interp Long B)
-    , spy(isType B C int)
+    , spy(ofType B C int)
     .
 
 
@@ -196,8 +196,8 @@ testE A B C
         (eqId singleton star))
             )  ))
     )
-    , spy(isType Long A ext)
+    , spy(ofType Long A ext)
     , spy(interp Long B)
-    , spy(isType B C int)
+    , spy(ofType B C int)
     .
 

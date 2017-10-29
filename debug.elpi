@@ -79,7 +79,7 @@ nf A B        :- announce (nf A B).
 conv A B      :- announce (conv A B).
 of A B IE     :- announce (of A B IE). 
 
-isType A K IE :- announce (isType A K IE).
+ofType A K IE :- announce (ofType A K IE).
 isa BB B IE   :- announce (isa BB B IE) .
 sigm A B D    :- announce (sigm A B D).
 %macro A B    :- announce (macro A B). 
