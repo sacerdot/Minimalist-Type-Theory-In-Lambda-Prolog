@@ -65,7 +65,3 @@ tau_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 
 
 tau_proof_eq  _ _ (propEq T A B) (id singleton star).
-
-type exist mttType -> (mttTerm -> mttType) -> mttType.
-type and mttType -> mttType -> mttType.
-type pair_exist mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.

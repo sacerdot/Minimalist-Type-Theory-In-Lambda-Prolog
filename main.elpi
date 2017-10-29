@@ -1,32 +1,32 @@
-
+%%-- dependents products: setPi
 type setPi mttType -> (mttTerm -> mttType) -> mttType.
 type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type app mttTerm -> mttTerm -> mttTerm.
 
-type and mttType -> mttType -> mttType.
+%%-- propositional conjunction: and
 type and mttType -> mttType -> mttType.
 type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
+type p1_and, p2_and mttTerm -> mttTerm.
 
 
-
-%% STRONG INDEXED COL SUM
+%%-- dependet sums: setSigma
 
 type setSigma mttType -> (mttTerm -> mttType) -> mttType.
 type pair mttType ->  (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 type elim_setSigma mttTerm -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
 
-%%%Exist
-/*
-missing type declarations
-*/
+%%-- existential quantifier: exist
+type exist mttType -> (mttTerm -> mttType) -> mttType.
+type pair_exist mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
+type elim_exist mttTerm -> mttType -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
 
-%% FORALL
+%%-- universal quantifier: forall
 
 type forall     mttType -> (mttTerm -> mttType) -> mttType.
 type forall_lam mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type forall_app mttTerm -> mttTerm -> mttTerm.
 
-%-- calc_id.elpi
+%%-- intensional propositional equality: propId
 
 type propId mttType -> mttTerm -> mttTerm -> mttType.
 type id     mttType -> mttTerm -> mttTerm.
@@ -36,43 +36,34 @@ type elim_id    mttTerm
             -> mttTerm.
 
 
-%%-- implies.elpi
+%%-- implication: implies
 
 type implies    mttType -> mttType -> mttType.
 type impl_lam   mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type impl_app   mttTerm -> mttTerm -> mttTerm.
 
-%%-- letIn
-%this may soon change
+%%-- local definitions: letIn
+%this may soon change as it is still to be decided how this should look like
 type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
 
-%%-- or
+%%-- propositional disjunction: or
 
 type or mttType -> mttType -> mttType.
 type inl_or, inr_or mttType -> mttType -> mttTerm -> mttTerm.
-type elim_or mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+type elim_or mttType -> mttTerm -> (mttTerm -> mttTerm) -> (mttTerm -> mttTerm) -> mttTerm.
 
-%%-- setSum.elpi
+%%-- disjoint sum: setSum
 
 type setSum mttType -> mttType -> mttType.
 type inl, inr mttType -> mttType -> mttTerm -> mttTerm.
-type elim_setSum mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+type elim_setSum (mttTerm -> mttType) -> mttTerm -> (mttTerm -> mttTerm) -> (mttTerm -> mttTerm) -> mttTerm.
 
 
-%%-- calc_singleton.elpi
-
+%%-- singleton set/unit type: singleton
 
 type  singleton mttType.
 type  star mttTerm.
 type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
-
-
-%-- non contextual, non reflexive, maybe transitive closure
-%-- hstep A B
-%---- non contextual, transitive, reflexive normal form
-%-- hnf A B
-%---- contextual, non reflexive, maybe transitive closure
-%-- dstep A B
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
 type hstep, dconv, hnf,  conv, interp A -> A -> prop. 

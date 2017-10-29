@@ -11,7 +11,7 @@ of (pair_and B C BB CC) (and B C) IE
     :- ofType B _ IE
     ,  (isa BB B IE)
     ,  (isa CC C IE)
-    ,  (pi x\ locDecl x B => ofType (C x) _ IE)
+    ,  (pi x\ locDecl x B => ofType C _ IE)
     .
 
 of (p1_and Pair) B IE 
@@ -25,7 +25,7 @@ hstep (p1_and Pair) (Bb) :- hnf Pair (pair_and B C Bb Cc).
 
 dconv (pair_and B C Bb Cc) (pair_and B' C' Bb' Cc')
     :- (conv B B')
-    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    ,  (conv C C')
     ,  (conv Bb Bb')
     ,  (conv Cc Cc')
     .

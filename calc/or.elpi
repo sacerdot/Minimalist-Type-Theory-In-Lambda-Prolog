@@ -28,16 +28,16 @@ hstep (elim_or C W Cl Cr) (Cl Wl)
     :- (hnf W (inl_or A B Wl))
     ,  (isa W (or A B) IE)
     ,  (pi z\ locDecl z (or A B) => ofType C KIND IE)
-    ,  (pi x\ locDecl x A IE => isa (Cl x) C IE) 
-    ,  (pi y\ locDecl y B IE => isa (Cr y) C IE)
+    ,  (pi x\ locDecl x A => isa (Cl x) C IE) 
+    ,  (pi y\ locDecl y B => isa (Cr y) C IE)
     .
 
 hstep (elim_or C W Cl Cr) (Cr Wr)
     :- (hnf W (inr_or A B Wr))
     ,  (isa W (or A B) IE)
     ,  (pi z\ locDecl z (or A B) => ofType C KIND IE)
-    ,  (pi x\ locDecl x A IE => isa (Cl x) C IE) 
-    ,  (pi y\ locDecl y B IE => isa (Cr y) C IE)
+    ,  (pi x\ locDecl x A => isa (Cl x) C IE) 
+    ,  (pi y\ locDecl y B => isa (Cr y) C IE)
     .
 
 dconv (elim_or C W Cl Cr) (elim_or C' W' Cl' Cr')
