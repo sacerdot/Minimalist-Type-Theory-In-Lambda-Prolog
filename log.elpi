@@ -1,0 +1,4824 @@
+"debug.elpi:   6: Warning: indent is undeclared"
+"debug.elpi:   6: Warning: indent is undeclared"
+"debug.elpi:  27: Warning: indent is undeclared"
+"debug.elpi:  45: Error: (count_indent' TT) has type (X0 -> prop) but is used with type prop"
+"debug.elpi:  47: Error: print_indent has type (string -> (string -> (string -> X1))) but is used with type prop"
+"main.elpi:  65: Warning: fixMe2 is undeclared"
+"main.elpi:  73: Warning: fixMe is undeclared"
+"main.elpi: 122: Warning: k_propId is undeclared"
+"main.elpi: 130: Warning: fixMe is undeclared"
+"calc.elpi:  14: Error: (C) has type mttType but is applied to x5"
+"calc.elpi:  14: Error: (locDecl x5 B) has type prop but is used with type (list prop)"
+"calc.elpi:  21: Warning: p1_and is undeclared"
+"calc.elpi:  24: Warning: p2_and is undeclared"
+"calc.elpi:  28: Warning: p1_and is undeclared"
+"calc.elpi:  30: Error: (C) has type mttType but is applied to x8"
+"calc.elpi:  30: Error: (locDecl x8 B) has type prop but is used with type (list prop)"
+"calc.elpi:  36: Warning: p1_and is undeclared"
+"calc.elpi: 144: Warning: k_propId is undeclared"
+"calc.elpi: 178: Error: C has type mttType but is used with type (mttTerm -> mttType)"
+"calc.elpi: 185: Warning: elim_exist is undeclared"
+"calc.elpi: 193: Warning: elim_exist is undeclared"
+"calc.elpi: 201: Error: (C) has type mttType but is applied to x8"
+"calc.elpi: 201: Error: (locDecl x8 B) has type prop but is used with type (list prop)"
+"calc.elpi: 207: Warning: elim_exist is undeclared"
+"calc.elpi: 374: Error: (letIn KIND1 T S) has type mttTerm but is used with type mttType"
+"calc.elpi: 414: Error: (Cl) has type mttTerm but is applied to x8"
+"calc.elpi: 414: Error: (locDecl x8 A) has type prop but is used with type (list prop)"
+"calc.elpi: 414: Error: (locDecl x8 (or A B)) has type prop but is used with type (list prop)"
+"calc.elpi: 422: Error: (Cl) has type mttTerm but is applied to Wl"
+"calc.elpi: 430: Error: (Cr) has type mttTerm but is applied to Wr"
+"calc.elpi: 438: Error: (Cl) has type mttTerm but is applied to x11"
+"calc.elpi: 438: Error: (locDecl x11 (or A B)) has type prop but is used with type (list prop)"
+"calc.elpi: 680: Error: (C) has type mttType but is applied to W"
+"calc.elpi: 688: Error: (Cl) has type mttTerm but is applied to Wl"
+"calc.elpi: 695: Error: (Cr) has type mttTerm but is applied to Wr"
+"calc.elpi: 703: Error: (C) has type mttType but is applied to x11"
+"calc.elpi: 703: Error: (locDecl x11 (setSum A B)) has type prop but is used with type (list prop)"
+"test.elpi:  12: Warning: m is undeclared"
+"test.elpi:  36: Warning: l is undeclared"
+"test.elpi:  57: Warning: i is undeclared"
+"test.elpi:  98: Warning: h is undeclared"
+"test.elpi: 110: Warning: g is undeclared"
+"test.elpi: 132: Warning: f is undeclared"
+"dummy:   1:query: Warning: h is undeclared"
+"1_[+[Begin 
+isType
+ (forall (setPi (setPi singleton x0 \ singleton) x0 \ singleton) x0 \
+   propEq singleton (app x0 (lambda singleton x1 \ x1)) star) X2 ext
+"
+"2__[+[Begin 
+isType (setPi (setPi singleton x0 \ singleton) x0 \ singleton) X3 ext
+"
+"3___[+[Begin 
+pts_fun set set X4
+"
+"4____[+[Begin 
+pts_leq set set
+"
+"4----]-]Success  
+pts_leq set set
+"
+"4____[+[Begin 
+pts_leq set set
+"
+"4----]-]Success  
+pts_leq set set
+"
+"3---]-]Success  
+pts_fun set set set
+"
+"3___[+[Begin 
+pts_fun set set X3
+"
+"4____[+[Begin 
+pts_leq set set
+"
+"4----]-]Success  
+pts_leq set set
+"
+"4____[+[Begin 
+pts_leq set set
+"
+"4----]-]Success  
+pts_leq set set
+"
+"3---]-]Success  
+pts_fun set set set
+"
+"2--]-]Success  
+isType (setPi (setPi singleton x0 \ singleton) x0 \ singleton) set ext
+"
+"2__[+[Begin 
+pi x0 \
+ locDecl x0 (setPi (setPi singleton x1 \ singleton) x1 \ singleton) =>
+  spy
+   (isType (propEq singleton (app x0 (lambda singleton x1 \ x1)) star) X5 ext)
+"
+"3___[+[Begin 
+isType (propEq singleton (app x0 (lambda singleton x1 \ x1)) star) X5 ext
+"
+"4____[+[Begin 
+of (app x0 (lambda singleton x1 \ x1)) X6^1 ext
+"
+"5_____[+[Begin 
+of x0 (setPi X7^1 X8^1) ext
+"
+"5-----]-]Success  
+of x0 (setPi (setPi singleton x1 \ singleton) x1 \ singleton) ext
+"
+"5_____[+[Begin 
+isa (lambda singleton x1 \ x1) (setPi singleton x1 \ singleton) ext
+"
+"6______[+[Begin 
+of (lambda singleton x1 \ x1) X9^1 ext
+"
+"7_______[+[Begin 
+isType singleton _ ext
+"
+"7-------]-]Success  
+isType singleton _ ext
+"
+"7_______[+[Begin 
+pi x1 \ locDecl x1 singleton => isa x1 (X10^1 x1) ext
+"
+"8________[+[Begin 
+of x1 X11^2 ext
+"
+"8--------]-]Success  
+of x1 singleton ext
+"
+"8________[+[Begin 
+conv singleton (X10^1 x1)
+"
+"8--------]-]Success  
+conv singleton singleton
+"
+"7-------]-]Success  
+pi x1 \ locDecl x1 singleton => isa x1 singleton ext
+"
+"6------]-]Success  
+of (lambda singleton x1 \ x1) (setPi singleton x1 \ singleton) ext
+"
+"6______[+[Begin 
+conv (setPi singleton x1 \ singleton) (setPi singleton x1 \ singleton)
+"
+"6------]-]Success  
+conv (setPi singleton x1 \ singleton) (setPi singleton x1 \ singleton)
+"
+"5-----]-]Success  
+isa (lambda singleton x1 \ x1) (setPi singleton x1 \ singleton) ext
+"
+"4----]-]Success  
+of (app x0 (lambda singleton x1 \ x1)) singleton ext
+"
+"4____[+[Begin 
+conv singleton singleton
+"
+"4----]-]Success  
+conv singleton singleton
+"
+"4____[+[Begin 
+of star X12^1 ext
+"
+"4----]-]Success  
+of star singleton ext
+"
+"4____[+[Begin 
+conv singleton singleton
+"
+"4----]-]Success  
+conv singleton singleton
+"
+"3---]-]Success  
+isType (propEq singleton (app x0 (lambda singleton x1 \ x1)) star) props ext
+"
+"2--]-]Success  
+pi x0 \
+ locDecl x0 (setPi (setPi singleton x1 \ singleton) x1 \ singleton) =>
+  spy
+   (isType (propEq singleton (app x0 (lambda singleton x1 \ x1)) star) props
+     ext)
+"
+"2__[+[Begin 
+pts_for set props X2
+"
+"2--]-]Success  
+pts_for set props props
+"
+"1-]-]Success  
+isType
+ (forall (setPi (setPi singleton x0 \ singleton) x0 \ singleton) x0 \
+   propEq singleton (app x0 (lambda singleton x1 \ x1)) star) props ext
+"
+"|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+"
+"1_[+[Begin 
+trad
+ (forall (setPi (setPi singleton x0 \ singleton) x0 \ singleton) x0 \
+   propEq singleton (app x0 (lambda singleton x1 \ x1)) star) X13
+"
+"2__[+[Begin 
+trad (setPi (setPi singleton x0 \ singleton) x0 \ singleton) X14
+"
+"3___[+[Begin 
+trad (setPi singleton x0 \ singleton) X15
+"
+"4____[+[Begin 
+trad singleton X16
+"
+"4----]-]Success  
+trad singleton singleton
+"
+"4____[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => trad x0 x1 => trad singleton (X17 x1)
+"
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => trad x0 x1 => trad singleton singleton
+"
+"4____[+[Begin 
+equ singleton X18
+"
+"4----]-]Success  
+equ singleton x0 \ x1 \ propId singleton x0 x1
+"
+"4____[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => trad x0 x1 => equ singleton (X19 x1)
+"
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
+"
+"4____[+[Begin 
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 singleton =>
+       locDecl x1 singleton =>
+        locDecl x3 singleton =>
+         locDecl x4 singleton =>
+          trad x0 x3 =>
+           trad x1 x4 =>
+            locDecl x2 (propEq singleton x0 x1) =>
+             locDecl x5 (propId singleton x3 x4) =>
+              trad x2 x5 => spy (pippo singleton singleton (X20 x3 x4 x5))
+"
+"5_____[+[Begin 
+pippo singleton singleton (X20 x3 x4 x5)
+"
+"5-----]-]Success  
+pippo singleton singleton x6 \ x6
+"
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 singleton =>
+       locDecl x1 singleton =>
+        locDecl x3 singleton =>
+         locDecl x4 singleton =>
+          trad x0 x3 =>
+           trad x1 x4 =>
+            locDecl x2 (propEq singleton x0 x1) =>
+             locDecl x5 (propId singleton x3 x4) =>
+              trad x2 x5 => spy (pippo singleton singleton x6 \ x6)
+"
+"3---]-]Success  
+trad (setPi singleton x0 \ singleton)
+ (colSigma (setPi singleton x0 \ singleton) x0 \
+   forall singleton x1 \
+    forall singleton x2 \
+     forall (propId singleton x1 x2) x3 \
+      propId singleton (app x0 x1) (app x0 x2))
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (setPi singleton x2 \ singleton) =>
+   locDecl x1
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) =>
+    trad x0 x1 => trad singleton (X21 x1)
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (setPi singleton x2 \ singleton) =>
+   locDecl x1
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) =>
+    trad x0 x1 => trad singleton singleton
+"
+"3___[+[Begin 
+equ (setPi singleton x0 \ singleton) X22
+"
+"4____[+[Begin 
+trad singleton X23
+"
+"4----]-]Success  
+trad singleton singleton
+"
+"4____[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => trad x0 x1 => trad singleton (X24 x1)
+"
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => trad x0 x1 => trad singleton singleton
+"
+"4____[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 => ((trad singleton singleton), (equ singleton (X25 x1)))
+"
+"4----]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    trad x0 x1 => ((trad singleton singleton),
+     (equ singleton x2 \ x3 \ propId singleton x2 x3))
+"
+"3---]-]Success  
+equ (setPi singleton x0 \ singleton) x0 \ x1 \
+ forall singleton x2 \
+  propId singleton
+   (app (elim_colSigma x0 (x3 \ setPi singleton x4 \ singleton) x3 \ x4 \ x3)
+     x2)
+   (app (elim_colSigma x1 (x3 \ setPi singleton x4 \ singleton) x3 \ x4 \ x3)
+     x2)
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (setPi singleton x2 \ singleton) =>
+   locDecl x1
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) =>
+    trad x0 x1 => equ singleton (X26 x1)
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (setPi singleton x2 \ singleton) =>
+   locDecl x1
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) =>
+    trad x0 x1 => (equ singleton x2 \ x3 \ propId singleton x2 x3)
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 (setPi singleton x6 \ singleton) =>
+       locDecl x1 (setPi singleton x6 \ singleton) =>
+        locDecl x3
+         (colSigma (setPi singleton x6 \ singleton) x6 \
+           forall singleton x7 \
+            forall singleton x8 \
+             forall (propId singleton x7 x8) x9 \
+              propId singleton (app x6 x7) (app x6 x8)) =>
+         locDecl x4
+          (colSigma (setPi singleton x6 \ singleton) x6 \
+            forall singleton x7 \
+             forall singleton x8 \
+              forall (propId singleton x7 x8) x9 \
+               propId singleton (app x6 x7) (app x6 x8)) =>
+          trad x0 x3 =>
+           trad x1 x4 =>
+            locDecl x2 (propEq (setPi singleton x6 \ singleton) x0 x1) =>
+             locDecl x5
+              (forall singleton x6 \
+                propId singleton
+                 (app
+                   (elim_colSigma x3 (x7 \ setPi singleton x8 \ singleton)
+                     x7 \ x8 \ x7) x6)
+                 (app
+                   (elim_colSigma x4 (x7 \ setPi singleton x8 \ singleton)
+                     x7 \ x8 \ x7) x6)) =>
+              trad x2 x5 => spy (pippo singleton singleton (X27 x3 x4 x5))
+"
+"4____[+[Begin 
+pippo singleton singleton (X27 x3 x4 x5)
+"
+"4----]-]Success  
+pippo singleton singleton x6 \ x6
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 (setPi singleton x6 \ singleton) =>
+       locDecl x1 (setPi singleton x6 \ singleton) =>
+        locDecl x3
+         (colSigma (setPi singleton x6 \ singleton) x6 \
+           forall singleton x7 \
+            forall singleton x8 \
+             forall (propId singleton x7 x8) x9 \
+              propId singleton (app x6 x7) (app x6 x8)) =>
+         locDecl x4
+          (colSigma (setPi singleton x6 \ singleton) x6 \
+            forall singleton x7 \
+             forall singleton x8 \
+              forall (propId singleton x7 x8) x9 \
+               propId singleton (app x6 x7) (app x6 x8)) =>
+          trad x0 x3 =>
+           trad x1 x4 =>
+            locDecl x2 (propEq (setPi singleton x6 \ singleton) x0 x1) =>
+             locDecl x5
+              (forall singleton x6 \
+                propId singleton
+                 (app
+                   (elim_colSigma x3 (x7 \ setPi singleton x8 \ singleton)
+                     x7 \ x8 \ x7) x6)
+                 (app
+                   (elim_colSigma x4 (x7 \ setPi singleton x8 \ singleton)
+                     x7 \ x8 \ x7) x6)) =>
+              trad x2 x5 => spy (pippo singleton singleton x6 \ x6)
+"
+"2--]-]Success  
+trad (setPi (setPi singleton x0 \ singleton) x0 \ singleton)
+ (colSigma
+   (setPi
+     (colSigma (setPi singleton x0 \ singleton) x0 \
+       forall singleton x1 \
+        forall singleton x2 \
+         forall (propId singleton x1 x2) x3 \
+          propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) x0 \
+   forall
+    (colSigma (setPi singleton x1 \ singleton) x1 \
+      forall singleton x2 \
+       forall singleton x3 \
+        forall (propId singleton x2 x3) x4 \
+         propId singleton (app x1 x2) (app x1 x3)) x1 \
+    forall
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \
+     forall
+      (forall singleton x3 \
+        propId singleton
+         (app
+           (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+             x4) x3)
+         (app
+           (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+             x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2))
+"
+"2__[+[Begin 
+pi x0 \
+ pi x1 \
+  trad x0 x1 =>
+   locDecl x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) =>
+    locDecl x1
+     (colSigma
+       (setPi
+         (colSigma (setPi singleton x2 \ singleton) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \
+              propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+       forall
+        (colSigma (setPi singleton x3 \ singleton) x3 \
+          forall singleton x4 \
+           forall singleton x5 \
+            forall (propId singleton x4 x5) x6 \
+             propId singleton (app x3 x4) (app x3 x5)) x3 \
+        forall
+         (colSigma (setPi singleton x4 \ singleton) x4 \
+           forall singleton x5 \
+            forall singleton x6 \
+             forall (propId singleton x5 x6) x7 \
+              propId singleton (app x4 x5) (app x4 x6)) x4 \
+         forall
+          (forall singleton x5 \
+            propId singleton
+             (app
+               (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \
+                 x7 \ x6) x5)
+             (app
+               (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \
+                 x7 \ x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4))
+     =>
+     trad (propEq singleton (app x0 (lambda singleton x2 \ x2)) star)
+      (X28 x1)
+"
+"3___[+[Begin 
+equ singleton X29^2
+"
+"3---]-]Success  
+equ singleton x2 \ x3 \ propId singleton x2 x3
+"
+"3___[+[Begin 
+trad_isa (app x0 (lambda singleton x2 \ x2)) singleton X30^2
+"
+"4____[+[Begin 
+of (app x0 (lambda singleton x2 \ x2)) X31^2 ext
+"
+"5_____[+[Begin 
+of x0 (setPi X32^2 X33^2) ext
+"
+"5-----]-]Success  
+of x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) ext
+"
+"5_____[+[Begin 
+isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
+"
+"6______[+[Begin 
+of (lambda singleton x2 \ x2) X34^2 ext
+"
+"7_______[+[Begin 
+isType singleton _ ext
+"
+"7-------]-]Success  
+isType singleton _ ext
+"
+"7_______[+[Begin 
+pi x2 \ locDecl x2 singleton => isa x2 (X35^2 x2) ext
+"
+"8________[+[Begin 
+of x2 X36^3 ext
+"
+"8--------]-]Success  
+of x2 singleton ext
+"
+"8________[+[Begin 
+conv singleton (X35^2 x2)
+"
+"8--------]-]Success  
+conv singleton singleton
+"
+"7-------]-]Success  
+pi x2 \ locDecl x2 singleton => isa x2 singleton ext
+"
+"6------]-]Success  
+of (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
+"
+"6______[+[Begin 
+conv (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton)
+"
+"6------]-]Success  
+conv (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton)
+"
+"5-----]-]Success  
+isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
+"
+"4----]-]Success  
+of (app x0 (lambda singleton x2 \ x2)) singleton ext
+"
+"4____[+[Begin 
+trad (app x0 (lambda singleton x2 \ x2)) X37^2
+"
+"5_____[+[Begin 
+of x0 (setPi X38^2 X39^2) ext
+"
+"5-----]-]Success  
+of x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) ext
+"
+"5_____[+[Begin 
+trad_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) X40^2
+"
+"6______[+[Begin 
+of (lambda singleton x2 \ x2) X41^2 ext
+"
+"7_______[+[Begin 
+isType singleton _ ext
+"
+"7-------]-]Success  
+isType singleton _ ext
+"
+"7_______[+[Begin 
+pi x2 \ locDecl x2 singleton => isa x2 (X42^2 x2) ext
+"
+"8________[+[Begin 
+of x2 X43^3 ext
+"
+"8--------]-]Success  
+of x2 singleton ext
+"
+"8________[+[Begin 
+conv singleton (X42^2 x2)
+"
+"8--------]-]Success  
+conv singleton singleton
+"
+"7-------]-]Success  
+pi x2 \ locDecl x2 singleton => isa x2 singleton ext
+"
+"6------]-]Success  
+of (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
+"
+"6______[+[Begin 
+trad (lambda singleton x2 \ x2) X44^2
+"
+"7_______[+[Begin 
+of (lambda singleton x2 \ x2) (setPi singleton X45^2) ext
+"
+"8________[+[Begin 
+isType singleton _ ext
+"
+"8--------]-]Success  
+isType singleton _ ext
+"
+"8________[+[Begin 
+pi x2 \ locDecl x2 singleton => isa x2 (X45^2 x2) ext
+"
+"9_________[+[Begin 
+of x2 X46^3 ext
+"
+"9---------]-]Success  
+of x2 singleton ext
+"
+"9_________[+[Begin 
+conv singleton (X45^2 x2)
+"
+"9---------]-]Success  
+conv singleton singleton
+"
+"8--------]-]Success  
+pi x2 \ locDecl x2 singleton => isa x2 singleton ext
+"
+"7-------]-]Success  
+of (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton) ext
+"
+"7_______[+[Begin 
+trad (setPi singleton x2 \ singleton) (colSigma (setPi X47^2 X48^2) X49^2)
+"
+"8________[+[Begin 
+trad singleton X50^2
+"
+"8--------]-]Success  
+trad singleton singleton
+"
+"8________[+[Begin 
+pi x2 \
+ pi x3 \
+  locDecl x2 singleton =>
+   locDecl x3 singleton => trad x2 x3 => trad singleton (X51^2 x3)
+"
+"8--------]-]Success  
+pi x2 \
+ pi x3 \
+  locDecl x2 singleton =>
+   locDecl x3 singleton => trad x2 x3 => trad singleton singleton
+"
+"8________[+[Begin 
+equ singleton X52^2
+"
+"8--------]-]Success  
+equ singleton x2 \ x3 \ propId singleton x2 x3
+"
+"8________[+[Begin 
+pi x2 \
+ pi x3 \
+  locDecl x2 singleton =>
+   locDecl x3 singleton => trad x2 x3 => equ singleton (X53^2 x3)
+"
+"8--------]-]Success  
+pi x2 \
+ pi x3 \
+  locDecl x2 singleton =>
+   locDecl x3 singleton =>
+    trad x2 x3 => (equ singleton x4 \ x5 \ propId singleton x4 x5)
+"
+"8________[+[Begin 
+pi x2 \
+ pi x3 \
+  pi x4 \
+   pi x5 \
+    pi x6 \
+     pi x7 \
+      locDecl x2 singleton =>
+       locDecl x3 singleton =>
+        locDecl x5 singleton =>
+         locDecl x6 singleton =>
+          trad x2 x5 =>
+           trad x3 x6 =>
+            locDecl x4 (propEq singleton x2 x3) =>
+             locDecl x7 (propId singleton x5 x6) =>
+              trad x4 x7 => spy (pippo singleton singleton (X54^2 x5 x6 x7))
+"
+"9_________[+[Begin 
+pippo singleton singleton (X54^2 x5 x6 x7)
+"
+"9---------]-]Success  
+pippo singleton singleton x8 \ x8
+"
+"8--------]-]Success  
+pi x2 \
+ pi x3 \
+  pi x4 \
+   pi x5 \
+    pi x6 \
+     pi x7 \
+      locDecl x2 singleton =>
+       locDecl x3 singleton =>
+        locDecl x5 singleton =>
+         locDecl x6 singleton =>
+          trad x2 x5 =>
+           trad x3 x6 =>
+            locDecl x4 (propEq singleton x2 x3) =>
+             locDecl x7 (propId singleton x5 x6) =>
+              trad x4 x7 => spy (pippo singleton singleton x8 \ x8)
+"
+"7-------]-]Success  
+trad (setPi singleton x2 \ singleton)
+ (colSigma (setPi singleton x2 \ singleton) x2 \
+   forall singleton x3 \
+    forall singleton x4 \
+     forall (propId singleton x3 x4) x5 \
+      propId singleton (app x2 x3) (app x2 x4))
+"
+"7_______[+[Begin 
+equ singleton X55^2
+"
+"7-------]-]Success  
+equ singleton x2 \ x3 \ propId singleton x2 x3
+"
+"7_______[+[Begin 
+trad singleton X56^2
+"
+"7-------]-]Success  
+trad singleton singleton
+"
+"7_______[+[Begin 
+pi x2 \
+ pi x3 \
+  pi x4 \
+   pi x5 \
+    pi x6 \
+     pi x7 \
+      locDecl x2 singleton =>
+       locDecl x3 singleton =>
+        locDecl x5 singleton =>
+         locDecl x6 singleton =>
+          trad x2 x5 =>
+           trad x3 x6 =>
+            locDecl x4 (propEq singleton x2 x3) =>
+             locDecl x7 (propId singleton x5 x6) =>
+              trad x4 x7 => spy (trad x2 (X57^2 x5))
+"
+"8________[+[Begin 
+trad x2 (X57^2 x5)
+"
+"8--------]-]Success  
+trad x2 x5
+"
+"7-------]-]Success  
+pi x2 \
+ pi x3 \
+  pi x4 \
+   pi x5 \
+    pi x6 \
+     pi x7 \
+      locDecl x2 singleton =>
+       locDecl x3 singleton =>
+        locDecl x5 singleton =>
+         locDecl x6 singleton =>
+          trad x2 x5 =>
+           trad x3 x6 =>
+            locDecl x4 (propEq singleton x2 x3) =>
+             locDecl x7 (propId singleton x5 x6) =>
+              trad x4 x7 => spy (trad x2 x5)
+"
+"7_______[+[Begin 
+equ singleton X58^2
+"
+"7-------]-]Success  
+equ singleton x2 \ x3 \ propId singleton x2 x3
+"
+"7_______[+[Begin 
+trad singleton X59^2
+"
+"7-------]-]Success  
+trad singleton singleton
+"
+"7_______[+[Begin 
+pi x2 \
+ pi x3 \
+  pi x4 \
+   pi x5 \
+    pi x6 \
+     pi x7 \
+      locDecl x2 singleton =>
+       locDecl x3 singleton =>
+        locDecl x5 singleton =>
+         locDecl x6 singleton =>
+          trad x2 x5 =>
+           trad x3 x6 =>
+            locDecl x4 (propEq singleton x2 x3) =>
+             locDecl x7 (propId singleton x5 x6) =>
+              trad x4 x7 => spy (pippoequ x2 x3 singleton (X60^2 x5 x6 x7))
+"
+"8________[+[Begin 
+pippoequ x2 x3 singleton (X60^2 x5 x6 x7)
+"
+"9_________[+[Begin 
+locDecl X61^8 (propEq X62^8 x2 x3)
+"
+"9---------]-]Success  
+locDecl x4 (propEq singleton x2 x3)
+"
+"9_________[+[Begin 
+trad_isa x4 (propEq singleton x2 x3) (X60^2 x5 x6 x7)
+"
+"10__________[+[Begin 
+of x4 X63^8 ext
+"
+"10----------]-]Success  
+of x4 (propEq singleton x2 x3) ext
+"
+"10__________[+[Begin 
+trad x4 X64^8
+"
+"10----------]-]Success  
+trad x4 x7
+"
+"10__________[+[Begin 
+pippo (propEq singleton x2 x3) (propEq singleton x2 x3) X65^8
+"
+"10----------]-]Success  
+pippo (propEq singleton x2 x3) (propEq singleton x2 x3) x8 \ x8
+"
+"10__________[+[Begin 
+X60^2 x5 x6 x7 = x7
+"
+"10----------]-]Success  
+x7 = x7
+"
+"9---------]-]Success  
+trad_isa x4 (propEq singleton x2 x3) x7
+"
+"8--------]-]Success  
+pippoequ x2 x3 singleton x7
+"
+"7-------]-]Success  
+pi x2 \
+ pi x3 \
+  pi x4 \
+   pi x5 \
+    pi x6 \
+     pi x7 \
+      locDecl x2 singleton =>
+       locDecl x3 singleton =>
+        locDecl x5 singleton =>
+         locDecl x6 singleton =>
+          trad x2 x5 =>
+           trad x3 x6 =>
+            locDecl x4 (propEq singleton x2 x3) =>
+             locDecl x7 (propId singleton x5 x6) =>
+              trad x4 x7 => spy (pippoequ x2 x3 singleton x7)
+"
+"6------]-]Success  
+trad (lambda singleton x2 \ x2)
+ (pair (setPi singleton x2 \ singleton) (x2 \
+   forall singleton x3 \
+    forall singleton x4 \
+     forall (propId singleton x3 x4) x5 \
+      propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+   (forall_lam singleton x2 \
+     forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
+"
+"6______[+[Begin 
+pippo (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton) X66^2
+"
+"6------]-]Success  
+pippo (setPi singleton x2 \ singleton) (setPi singleton x2 \ singleton) x2 \
+ x2
+"
+"6______[+[Begin 
+X40^2 =
+ pair (setPi singleton x2 \ singleton) (x2 \
+  forall singleton x3 \
+   forall singleton x4 \
+    forall (propId singleton x3 x4) x5 \
+     propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+  (forall_lam singleton x2 \
+    forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)
+"
+"6------]-]Success  
+pair (setPi singleton x2 \ singleton) (x2 \
+ forall singleton x3 \
+  forall singleton x4 \
+   forall (propId singleton x3 x4) x5 \
+    propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+ (forall_lam singleton x2 \
+   forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4) =
+ pair (setPi singleton x2 \ singleton) (x2 \
+  forall singleton x3 \
+   forall singleton x4 \
+    forall (propId singleton x3 x4) x5 \
+     propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+  (forall_lam singleton x2 \
+    forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)
+"
+"5-----]-]Success  
+trad_isa (lambda singleton x2 \ x2) (setPi singleton x2 \ singleton)
+ (pair (setPi singleton x2 \ singleton) (x2 \
+   forall singleton x3 \
+    forall singleton x4 \
+     forall (propId singleton x3 x4) x5 \
+      propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+   (forall_lam singleton x2 \
+     forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
+"
+"5_____[+[Begin 
+trad x0 X67^2
+"
+"5-----]-]Success  
+trad x0 x1
+"
+"5_____[+[Begin 
+of x1 X68^2 int
+"
+"5-----]-]Success  
+of x1
+ (colSigma
+   (setPi
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+   forall
+    (colSigma (setPi singleton x3 \ singleton) x3 \
+      forall singleton x4 \
+       forall singleton x5 \
+        forall (propId singleton x4 x5) x6 \
+         propId singleton (app x3 x4) (app x3 x5)) x3 \
+    forall
+     (colSigma (setPi singleton x4 \ singleton) x4 \
+       forall singleton x5 \
+        forall singleton x6 \
+         forall (propId singleton x5 x6) x7 \
+          propId singleton (app x4 x5) (app x4 x6)) x4 \
+     forall
+      (forall singleton x5 \
+        propId singleton
+         (app
+           (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+             x6) x5)
+         (app
+           (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+             x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4)) int
+"
+"5_____[+[Begin 
+(colSigma
+  (setPi
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+  forall
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \
+   forall
+    (colSigma (setPi singleton x4 \ singleton) x4 \
+      forall singleton x5 \
+       forall singleton x6 \
+        forall (propId singleton x5 x6) x7 \
+         propId singleton (app x4 x5) (app x4 x6)) x4 \
+    forall
+     (forall singleton x5 \
+       propId singleton
+        (app
+          (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+            x6) x5)
+        (app
+          (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+            x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4)) =
+ colSigma X69^2 _
+"
+"5-----]-]Success  
+(colSigma
+  (setPi
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+  forall
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \
+   forall
+    (colSigma (setPi singleton x4 \ singleton) x4 \
+      forall singleton x5 \
+       forall singleton x6 \
+        forall (propId singleton x5 x6) x7 \
+         propId singleton (app x4 x5) (app x4 x6)) x4 \
+    forall
+     (forall singleton x5 \
+       propId singleton
+        (app
+          (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+            x6) x5)
+        (app
+          (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+            x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4)) =
+ colSigma
+  (setPi
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) _
+"
+"4----]-]Success  
+trad (app x0 (lambda singleton x2 \ x2))
+ (app
+   (elim_colSigma x1 (x2 \
+     setPi
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \
+     x3 \ x2)
+   (pair (setPi singleton x2 \ singleton) (x2 \
+     forall singleton x3 \
+      forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+     (forall_lam singleton x2 \
+       forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
+"
+"4____[+[Begin 
+pippo singleton singleton X70^2
+"
+"4----]-]Success  
+pippo singleton singleton x2 \ x2
+"
+"4____[+[Begin 
+X30^2 =
+ app
+  (elim_colSigma x1 (x2 \
+    setPi
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \ x3 \
+    x2)
+  (pair (setPi singleton x2 \ singleton) (x2 \
+    forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+    (forall_lam singleton x2 \
+      forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
+"
+"4----]-]Success  
+app
+ (elim_colSigma x1 (x2 \
+   setPi
+    (colSigma (setPi singleton x3 \ singleton) x3 \
+      forall singleton x4 \
+       forall singleton x5 \
+        forall (propId singleton x4 x5) x6 \
+         propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \ x3 \
+   x2)
+ (pair (setPi singleton x2 \ singleton) (x2 \
+   forall singleton x3 \
+    forall singleton x4 \
+     forall (propId singleton x3 x4) x5 \
+      propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+   (forall_lam singleton x2 \
+     forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
+ =
+ app
+  (elim_colSigma x1 (x2 \
+    setPi
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \ x3 \
+    x2)
+  (pair (setPi singleton x2 \ singleton) (x2 \
+    forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+    (forall_lam singleton x2 \
+      forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4))
+"
+"3---]-]Success  
+trad_isa (app x0 (lambda singleton x2 \ x2)) singleton
+ (app
+   (elim_colSigma x1 (x2 \
+     setPi
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \
+     x3 \ x2)
+   (pair (setPi singleton x2 \ singleton) (x2 \
+     forall singleton x3 \
+      forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+     (forall_lam singleton x2 \
+       forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
+"
+"3___[+[Begin 
+trad_isa star singleton X71^2
+"
+"4____[+[Begin 
+of star X72^2 ext
+"
+"4----]-]Success  
+of star singleton ext
+"
+"4____[+[Begin 
+trad star X73^2
+"
+"4----]-]Success  
+trad star star
+"
+"4____[+[Begin 
+pippo singleton singleton X74^2
+"
+"4----]-]Success  
+pippo singleton singleton x2 \ x2
+"
+"4____[+[Begin 
+X71^2 = star
+"
+"4----]-]Success  
+star = star
+"
+"3---]-]Success  
+trad_isa star singleton star
+"
+"3___[+[Begin 
+X28 x1 =
+ propId singleton
+  (app
+    (elim_colSigma x1 (x2 \
+      setPi
+       (colSigma (setPi singleton x3 \ singleton) x3 \
+         forall singleton x4 \
+          forall singleton x5 \
+           forall (propId singleton x4 x5) x6 \
+            propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \
+      x3 \ x2)
+    (pair (setPi singleton x2 \ singleton) (x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+      (forall_lam singleton x2 \
+        forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
+  star
+"
+"3---]-]Success  
+propId singleton
+ (app
+   (elim_colSigma x1 (x2 \
+     setPi
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \
+     x3 \ x2)
+   (pair (setPi singleton x2 \ singleton) (x2 \
+     forall singleton x3 \
+      forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+     (forall_lam singleton x2 \
+       forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
+ star =
+ propId singleton
+  (app
+    (elim_colSigma x1 (x2 \
+      setPi
+       (colSigma (setPi singleton x3 \ singleton) x3 \
+         forall singleton x4 \
+          forall singleton x5 \
+           forall (propId singleton x4 x5) x6 \
+            propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) x2 \
+      x3 \ x2)
+    (pair (setPi singleton x2 \ singleton) (x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) (lambda singleton x2 \ x2)
+      (forall_lam singleton x2 \
+        forall_lam singleton x3 \ forall_lam (propId singleton x2 x3) x4 \ x4)))
+  star
+"
+"2--]-]Success  
+pi x0 \
+ pi x1 \
+  trad x0 x1 =>
+   locDecl x0 (setPi (setPi singleton x2 \ singleton) x2 \ singleton) =>
+    locDecl x1
+     (colSigma
+       (setPi
+         (colSigma (setPi singleton x2 \ singleton) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \
+              propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+       forall
+        (colSigma (setPi singleton x3 \ singleton) x3 \
+          forall singleton x4 \
+           forall singleton x5 \
+            forall (propId singleton x4 x5) x6 \
+             propId singleton (app x3 x4) (app x3 x5)) x3 \
+        forall
+         (colSigma (setPi singleton x4 \ singleton) x4 \
+           forall singleton x5 \
+            forall singleton x6 \
+             forall (propId singleton x5 x6) x7 \
+              propId singleton (app x4 x5) (app x4 x6)) x4 \
+         forall
+          (forall singleton x5 \
+            propId singleton
+             (app
+               (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \
+                 x7 \ x6) x5)
+             (app
+               (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \
+                 x7 \ x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4))
+     =>
+     trad (propEq singleton (app x0 (lambda singleton x2 \ x2)) star)
+      (propId singleton
+        (app
+          (elim_colSigma x1 (x2 \
+            setPi
+             (colSigma (setPi singleton x3 \ singleton) x3 \
+               forall singleton x4 \
+                forall singleton x5 \
+                 forall (propId singleton x4 x5) x6 \
+                  propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton)
+            x2 \ x3 \ x2)
+          (pair (setPi singleton x2 \ singleton) (x2 \
+            forall singleton x3 \
+             forall singleton x4 \
+              forall (propId singleton x3 x4) x5 \
+               propId singleton (app x2 x3) (app x2 x4))
+            (lambda singleton x2 \ x2)
+            (forall_lam singleton x2 \
+              forall_lam singleton x3 \
+               forall_lam (propId singleton x2 x3) x4 \ x4))) star)
+"
+"1-]-]Success  
+trad
+ (forall (setPi (setPi singleton x0 \ singleton) x0 \ singleton) x0 \
+   propEq singleton (app x0 (lambda singleton x1 \ x1)) star)
+ (forall
+   (colSigma
+     (setPi
+       (colSigma (setPi singleton x0 \ singleton) x0 \
+         forall singleton x1 \
+          forall singleton x2 \
+           forall (propId singleton x1 x2) x3 \
+            propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) x0 \
+     forall
+      (colSigma (setPi singleton x1 \ singleton) x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3)) x1 \
+      forall
+       (colSigma (setPi singleton x2 \ singleton) x2 \
+         forall singleton x3 \
+          forall singleton x4 \
+           forall (propId singleton x3 x4) x5 \
+            propId singleton (app x2 x3) (app x2 x4)) x2 \
+       forall
+        (forall singleton x3 \
+          propId singleton
+           (app
+             (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)
+           (app
+             (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2))
+   x0 \
+   propId singleton
+    (app
+      (elim_colSigma x0 (x1 \
+        setPi
+         (colSigma (setPi singleton x2 \ singleton) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \
+              propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+        x2 \ x1)
+      (pair (setPi singleton x1 \ singleton) (x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3))
+        (lambda singleton x1 \ x1)
+        (forall_lam singleton x1 \
+          forall_lam singleton x2 \
+           forall_lam (propId singleton x1 x2) x3 \ x3))) star)
+"
+"|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||
+"
+"1_[+[Begin 
+isType
+ (forall
+   (colSigma
+     (setPi
+       (colSigma (setPi singleton x0 \ singleton) x0 \
+         forall singleton x1 \
+          forall singleton x2 \
+           forall (propId singleton x1 x2) x3 \
+            propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) x0 \
+     forall
+      (colSigma (setPi singleton x1 \ singleton) x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3)) x1 \
+      forall
+       (colSigma (setPi singleton x2 \ singleton) x2 \
+         forall singleton x3 \
+          forall singleton x4 \
+           forall (propId singleton x3 x4) x5 \
+            propId singleton (app x2 x3) (app x2 x4)) x2 \
+       forall
+        (forall singleton x3 \
+          propId singleton
+           (app
+             (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)
+           (app
+             (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2))
+   x0 \
+   propId singleton
+    (app
+      (elim_colSigma x0 (x1 \
+        setPi
+         (colSigma (setPi singleton x2 \ singleton) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \
+              propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+        x2 \ x1)
+      (pair (setPi singleton x1 \ singleton) (x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3))
+        (lambda singleton x1 \ x1)
+        (forall_lam singleton x1 \
+          forall_lam singleton x2 \
+           forall_lam (propId singleton x1 x2) x3 \ x3))) star) X75 int
+"
+"2__[+[Begin 
+isType
+ (colSigma
+   (setPi
+     (colSigma (setPi singleton x0 \ singleton) x0 \
+       forall singleton x1 \
+        forall singleton x2 \
+         forall (propId singleton x1 x2) x3 \
+          propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) x0 \
+   forall
+    (colSigma (setPi singleton x1 \ singleton) x1 \
+      forall singleton x2 \
+       forall singleton x3 \
+        forall (propId singleton x2 x3) x4 \
+         propId singleton (app x1 x2) (app x1 x3)) x1 \
+    forall
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \
+     forall
+      (forall singleton x3 \
+        propId singleton
+         (app
+           (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+             x4) x3)
+         (app
+           (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+             x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) X76 int
+"
+"3___[+[Begin 
+isType
+ (setPi
+   (colSigma (setPi singleton x0 \ singleton) x0 \
+     forall singleton x1 \
+      forall singleton x2 \
+       forall (propId singleton x1 x2) x3 \
+        propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) X77 int
+"
+"4____[+[Begin 
+isType (setPi singleton x0 \ singleton) X78 int
+"
+"5_____[+[Begin 
+pts_fun set set X78
+"
+"6______[+[Begin 
+pts_leq set set
+"
+"6------]-]Success  
+pts_leq set set
+"
+"6______[+[Begin 
+pts_leq set set
+"
+"6------]-]Success  
+pts_leq set set
+"
+"5-----]-]Success  
+pts_fun set set set
+"
+"4----]-]Success  
+isType (setPi singleton x0 \ singleton) set int
+"
+"4____[+[Begin 
+pi x0 \
+ locDecl x0 (setPi singleton x1 \ singleton) =>
+  isType
+   (forall singleton x1 \
+     forall singleton x2 \
+      forall (propId singleton x1 x2) x3 \
+       propId singleton (app x0 x1) (app x0 x2)) X79 int
+"
+"5_____[+[Begin 
+isType singleton X80^1 int
+"
+"5-----]-]Success  
+isType singleton set int
+"
+"5_____[+[Begin 
+pi x1 \
+ locDecl x1 singleton =>
+  spy
+   (isType
+     (forall singleton x2 \
+       forall (propId singleton x1 x2) x3 \
+        propId singleton (app x0 x1) (app x0 x2)) X81^1 int)
+"
+"6______[+[Begin 
+isType
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app x0 x1) (app x0 x2)) X81^1 int
+"
+"7_______[+[Begin 
+isType singleton X82^2 int
+"
+"7-------]-]Success  
+isType singleton set int
+"
+"7_______[+[Begin 
+pi x2 \
+ locDecl x2 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x1 x2) x3 \
+       propId singleton (app x0 x1) (app x0 x2)) X83^2 int)
+"
+"8________[+[Begin 
+isType
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app x0 x1) (app x0 x2)) X83^2 int
+"
+"9_________[+[Begin 
+isType (propId singleton x1 x2) X84^3 int
+"
+"10__________[+[Begin 
+of x1 X85^3 int
+"
+"10----------]-]Success  
+of x1 singleton int
+"
+"10__________[+[Begin 
+conv singleton singleton
+"
+"10----------]-]Success  
+conv singleton singleton
+"
+"10__________[+[Begin 
+of x2 X86^3 int
+"
+"10----------]-]Success  
+of x2 singleton int
+"
+"10__________[+[Begin 
+conv singleton singleton
+"
+"10----------]-]Success  
+conv singleton singleton
+"
+"10__________[+[Begin 
+(pts_leq set set),
+(X84^3 = props)
+"
+"10----------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"9---------]-]Success  
+isType (propId singleton x1 x2) props int
+"
+"9_________[+[Begin 
+pi x3 \
+ locDecl x3 (propId singleton x1 x2) =>
+  spy (isType (propId singleton (app x0 x1) (app x0 x2)) X87^3 int)
+"
+"10__________[+[Begin 
+isType (propId singleton (app x0 x1) (app x0 x2)) X87^3 int
+"
+"11___________[+[Begin 
+of (app x0 x1) X88^4 int
+"
+"12____________[+[Begin 
+of x0 (setPi X89^4 X90^4) int
+"
+"12------------]-]Success  
+of x0 (setPi singleton x4 \ singleton) int
+"
+"12____________[+[Begin 
+isa x1 singleton int
+"
+"13_____________[+[Begin 
+of x1 X91^4 int
+"
+"13-------------]-]Success  
+of x1 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"12------------]-]Success  
+isa x1 singleton int
+"
+"11-----------]-]Success  
+of (app x0 x1) singleton int
+"
+"11___________[+[Begin 
+conv singleton singleton
+"
+"11-----------]-]Success  
+conv singleton singleton
+"
+"11___________[+[Begin 
+of (app x0 x2) X92^4 int
+"
+"12____________[+[Begin 
+of x0 (setPi X93^4 X94^4) int
+"
+"12------------]-]Success  
+of x0 (setPi singleton x4 \ singleton) int
+"
+"12____________[+[Begin 
+isa x2 singleton int
+"
+"13_____________[+[Begin 
+of x2 X95^4 int
+"
+"13-------------]-]Success  
+of x2 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"12------------]-]Success  
+isa x2 singleton int
+"
+"11-----------]-]Success  
+of (app x0 x2) singleton int
+"
+"11___________[+[Begin 
+conv singleton singleton
+"
+"11-----------]-]Success  
+conv singleton singleton
+"
+"11___________[+[Begin 
+(pts_leq set set),
+(X87^3 = props)
+"
+"11-----------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"10----------]-]Success  
+isType (propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"9---------]-]Success  
+pi x3 \
+ locDecl x3 (propId singleton x1 x2) =>
+  spy (isType (propId singleton (app x0 x1) (app x0 x2)) props int)
+"
+"9_________[+[Begin 
+pts_for props props X83^2
+"
+"9---------]-]Success  
+pts_for props props props
+"
+"8--------]-]Success  
+isType
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"7-------]-]Success  
+pi x2 \
+ locDecl x2 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x1 x2) x3 \
+       propId singleton (app x0 x1) (app x0 x2)) props int)
+"
+"7_______[+[Begin 
+pts_for set props X81^1
+"
+"7-------]-]Success  
+pts_for set props props
+"
+"6------]-]Success  
+isType
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"5-----]-]Success  
+pi x1 \
+ locDecl x1 singleton =>
+  spy
+   (isType
+     (forall singleton x2 \
+       forall (propId singleton x1 x2) x3 \
+        propId singleton (app x0 x1) (app x0 x2)) props int)
+"
+"5_____[+[Begin 
+pts_for set props X79
+"
+"5-----]-]Success  
+pts_for set props props
+"
+"4----]-]Success  
+pi x0 \
+ locDecl x0 (setPi singleton x1 \ singleton) =>
+  isType
+   (forall singleton x1 \
+     forall singleton x2 \
+      forall (propId singleton x1 x2) x3 \
+       propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"4____[+[Begin 
+pts_leq set set
+"
+"4----]-]Success  
+pts_leq set set
+"
+"4____[+[Begin 
+pts_leq props set
+"
+"4----]-]Success  
+pts_leq props set
+"
+"4____[+[Begin 
+pts_fun set set X77
+"
+"5_____[+[Begin 
+pts_leq set set
+"
+"5-----]-]Success  
+pts_leq set set
+"
+"5_____[+[Begin 
+pts_leq set set
+"
+"5-----]-]Success  
+pts_leq set set
+"
+"4----]-]Success  
+pts_fun set set set
+"
+"3---]-]Success  
+isType
+ (setPi
+   (colSigma (setPi singleton x0 \ singleton) x0 \
+     forall singleton x1 \
+      forall singleton x2 \
+       forall (propId singleton x1 x2) x3 \
+        propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) set int
+"
+"3___[+[Begin 
+pi x0 \
+ locDecl x0
+  (setPi
+    (colSigma (setPi singleton x1 \ singleton) x1 \
+      forall singleton x2 \
+       forall singleton x3 \
+        forall (propId singleton x2 x3) x4 \
+         propId singleton (app x1 x2) (app x1 x3)) x1 \ singleton) =>
+  isType
+   (forall
+     (colSigma (setPi singleton x1 \ singleton) x1 \
+       forall singleton x2 \
+        forall singleton x3 \
+         forall (propId singleton x2 x3) x4 \
+          propId singleton (app x1 x2) (app x1 x3)) x1 \
+     forall
+      (colSigma (setPi singleton x2 \ singleton) x2 \
+        forall singleton x3 \
+         forall singleton x4 \
+          forall (propId singleton x3 x4) x5 \
+           propId singleton (app x2 x3) (app x2 x4)) x2 \
+      forall
+       (forall singleton x3 \
+         propId singleton
+          (app
+            (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)
+          (app
+            (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) X96 int
+"
+"4____[+[Begin 
+isType
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) X97^1 int
+"
+"5_____[+[Begin 
+isType (setPi singleton x1 \ singleton) X98^1 int
+"
+"6______[+[Begin 
+pts_fun set set X98^1
+"
+"7_______[+[Begin 
+pts_leq set set
+"
+"7-------]-]Success  
+pts_leq set set
+"
+"7_______[+[Begin 
+pts_leq set set
+"
+"7-------]-]Success  
+pts_leq set set
+"
+"6------]-]Success  
+pts_fun set set set
+"
+"5-----]-]Success  
+isType (setPi singleton x1 \ singleton) set int
+"
+"5_____[+[Begin 
+pi x1 \
+ locDecl x1 (setPi singleton x2 \ singleton) =>
+  isType
+   (forall singleton x2 \
+     forall singleton x3 \
+      forall (propId singleton x2 x3) x4 \
+       propId singleton (app x1 x2) (app x1 x3)) X99^1 int
+"
+"6______[+[Begin 
+isType singleton X100^2 int
+"
+"6------]-]Success  
+isType singleton set int
+"
+"6______[+[Begin 
+pi x2 \
+ locDecl x2 singleton =>
+  spy
+   (isType
+     (forall singleton x3 \
+       forall (propId singleton x2 x3) x4 \
+        propId singleton (app x1 x2) (app x1 x3)) X101^2 int)
+"
+"7_______[+[Begin 
+isType
+ (forall singleton x3 \
+   forall (propId singleton x2 x3) x4 \
+    propId singleton (app x1 x2) (app x1 x3)) X101^2 int
+"
+"8________[+[Begin 
+isType singleton X102^3 int
+"
+"8--------]-]Success  
+isType singleton set int
+"
+"8________[+[Begin 
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x2 x3) x4 \
+       propId singleton (app x1 x2) (app x1 x3)) X103^3 int)
+"
+"9_________[+[Begin 
+isType
+ (forall (propId singleton x2 x3) x4 \
+   propId singleton (app x1 x2) (app x1 x3)) X103^3 int
+"
+"10__________[+[Begin 
+isType (propId singleton x2 x3) X104^4 int
+"
+"11___________[+[Begin 
+of x2 X105^4 int
+"
+"11-----------]-]Success  
+of x2 singleton int
+"
+"11___________[+[Begin 
+conv singleton singleton
+"
+"11-----------]-]Success  
+conv singleton singleton
+"
+"11___________[+[Begin 
+of x3 X106^4 int
+"
+"11-----------]-]Success  
+of x3 singleton int
+"
+"11___________[+[Begin 
+conv singleton singleton
+"
+"11-----------]-]Success  
+conv singleton singleton
+"
+"11___________[+[Begin 
+(pts_leq set set),
+(X104^4 = props)
+"
+"11-----------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"10----------]-]Success  
+isType (propId singleton x2 x3) props int
+"
+"10__________[+[Begin 
+pi x4 \
+ locDecl x4 (propId singleton x2 x3) =>
+  spy (isType (propId singleton (app x1 x2) (app x1 x3)) X107^4 int)
+"
+"11___________[+[Begin 
+isType (propId singleton (app x1 x2) (app x1 x3)) X107^4 int
+"
+"12____________[+[Begin 
+of (app x1 x2) X108^5 int
+"
+"13_____________[+[Begin 
+of x1 (setPi X109^5 X110^5) int
+"
+"13-------------]-]Success  
+of x1 (setPi singleton x5 \ singleton) int
+"
+"13_____________[+[Begin 
+isa x2 singleton int
+"
+"14______________[+[Begin 
+of x2 X111^5 int
+"
+"14--------------]-]Success  
+of x2 singleton int
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"13-------------]-]Success  
+isa x2 singleton int
+"
+"12------------]-]Success  
+of (app x1 x2) singleton int
+"
+"12____________[+[Begin 
+conv singleton singleton
+"
+"12------------]-]Success  
+conv singleton singleton
+"
+"12____________[+[Begin 
+of (app x1 x3) X112^5 int
+"
+"13_____________[+[Begin 
+of x1 (setPi X113^5 X114^5) int
+"
+"13-------------]-]Success  
+of x1 (setPi singleton x5 \ singleton) int
+"
+"13_____________[+[Begin 
+isa x3 singleton int
+"
+"14______________[+[Begin 
+of x3 X115^5 int
+"
+"14--------------]-]Success  
+of x3 singleton int
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"13-------------]-]Success  
+isa x3 singleton int
+"
+"12------------]-]Success  
+of (app x1 x3) singleton int
+"
+"12____________[+[Begin 
+conv singleton singleton
+"
+"12------------]-]Success  
+conv singleton singleton
+"
+"12____________[+[Begin 
+(pts_leq set set),
+(X107^4 = props)
+"
+"12------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"11-----------]-]Success  
+isType (propId singleton (app x1 x2) (app x1 x3)) props int
+"
+"10----------]-]Success  
+pi x4 \
+ locDecl x4 (propId singleton x2 x3) =>
+  spy (isType (propId singleton (app x1 x2) (app x1 x3)) props int)
+"
+"10__________[+[Begin 
+pts_for props props X103^3
+"
+"10----------]-]Success  
+pts_for props props props
+"
+"9---------]-]Success  
+isType
+ (forall (propId singleton x2 x3) x4 \
+   propId singleton (app x1 x2) (app x1 x3)) props int
+"
+"8--------]-]Success  
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x2 x3) x4 \
+       propId singleton (app x1 x2) (app x1 x3)) props int)
+"
+"8________[+[Begin 
+pts_for set props X101^2
+"
+"8--------]-]Success  
+pts_for set props props
+"
+"7-------]-]Success  
+isType
+ (forall singleton x3 \
+   forall (propId singleton x2 x3) x4 \
+    propId singleton (app x1 x2) (app x1 x3)) props int
+"
+"6------]-]Success  
+pi x2 \
+ locDecl x2 singleton =>
+  spy
+   (isType
+     (forall singleton x3 \
+       forall (propId singleton x2 x3) x4 \
+        propId singleton (app x1 x2) (app x1 x3)) props int)
+"
+"6______[+[Begin 
+pts_for set props X99^1
+"
+"6------]-]Success  
+pts_for set props props
+"
+"5-----]-]Success  
+pi x1 \
+ locDecl x1 (setPi singleton x2 \ singleton) =>
+  isType
+   (forall singleton x2 \
+     forall singleton x3 \
+      forall (propId singleton x2 x3) x4 \
+       propId singleton (app x1 x2) (app x1 x3)) props int
+"
+"5_____[+[Begin 
+pts_leq set set
+"
+"5-----]-]Success  
+pts_leq set set
+"
+"5_____[+[Begin 
+pts_leq props set
+"
+"5-----]-]Success  
+pts_leq props set
+"
+"4----]-]Success  
+isType
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) set int
+"
+"4____[+[Begin 
+pi x1 \
+ locDecl x1
+  (colSigma (setPi singleton x2 \ singleton) x2 \
+    forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) =>
+  spy
+   (isType
+     (forall
+       (colSigma (setPi singleton x2 \ singleton) x2 \
+         forall singleton x3 \
+          forall singleton x4 \
+           forall (propId singleton x3 x4) x5 \
+            propId singleton (app x2 x3) (app x2 x4)) x2 \
+       forall
+        (forall singleton x3 \
+          propId singleton
+           (app
+             (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)
+           (app
+             (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2))
+     X116^1 int)
+"
+"5_____[+[Begin 
+isType
+ (forall
+   (colSigma (setPi singleton x2 \ singleton) x2 \
+     forall singleton x3 \
+      forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) x2 \
+   forall
+    (forall singleton x3 \
+      propId singleton
+       (app
+         (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)
+       (app
+         (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) X116^1 int
+"
+"6______[+[Begin 
+isType
+ (colSigma (setPi singleton x2 \ singleton) x2 \
+   forall singleton x3 \
+    forall singleton x4 \
+     forall (propId singleton x3 x4) x5 \
+      propId singleton (app x2 x3) (app x2 x4)) X117^2 int
+"
+"7_______[+[Begin 
+isType (setPi singleton x2 \ singleton) X118^2 int
+"
+"8________[+[Begin 
+pts_fun set set X118^2
+"
+"9_________[+[Begin 
+pts_leq set set
+"
+"9---------]-]Success  
+pts_leq set set
+"
+"9_________[+[Begin 
+pts_leq set set
+"
+"9---------]-]Success  
+pts_leq set set
+"
+"8--------]-]Success  
+pts_fun set set set
+"
+"7-------]-]Success  
+isType (setPi singleton x2 \ singleton) set int
+"
+"7_______[+[Begin 
+pi x2 \
+ locDecl x2 (setPi singleton x3 \ singleton) =>
+  isType
+   (forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) X119^2 int
+"
+"8________[+[Begin 
+isType singleton X120^3 int
+"
+"8--------]-]Success  
+isType singleton set int
+"
+"8________[+[Begin 
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) X121^3 int)
+"
+"9_________[+[Begin 
+isType
+ (forall singleton x4 \
+   forall (propId singleton x3 x4) x5 \
+    propId singleton (app x2 x3) (app x2 x4)) X121^3 int
+"
+"10__________[+[Begin 
+isType singleton X122^4 int
+"
+"10----------]-]Success  
+isType singleton set int
+"
+"10__________[+[Begin 
+pi x4 \
+ locDecl x4 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) X123^4 int)
+"
+"11___________[+[Begin 
+isType
+ (forall (propId singleton x3 x4) x5 \
+   propId singleton (app x2 x3) (app x2 x4)) X123^4 int
+"
+"12____________[+[Begin 
+isType (propId singleton x3 x4) X124^5 int
+"
+"13_____________[+[Begin 
+of x3 X125^5 int
+"
+"13-------------]-]Success  
+of x3 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"13_____________[+[Begin 
+of x4 X126^5 int
+"
+"13-------------]-]Success  
+of x4 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"13_____________[+[Begin 
+(pts_leq set set),
+(X124^5 = props)
+"
+"13-------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"12------------]-]Success  
+isType (propId singleton x3 x4) props int
+"
+"12____________[+[Begin 
+pi x5 \
+ locDecl x5 (propId singleton x3 x4) =>
+  spy (isType (propId singleton (app x2 x3) (app x2 x4)) X127^5 int)
+"
+"13_____________[+[Begin 
+isType (propId singleton (app x2 x3) (app x2 x4)) X127^5 int
+"
+"14______________[+[Begin 
+of (app x2 x3) X128^6 int
+"
+"15_______________[+[Begin 
+of x2 (setPi X129^6 X130^6) int
+"
+"15---------------]-]Success  
+of x2 (setPi singleton x6 \ singleton) int
+"
+"15_______________[+[Begin 
+isa x3 singleton int
+"
+"16________________[+[Begin 
+of x3 X131^6 int
+"
+"16----------------]-]Success  
+of x3 singleton int
+"
+"16________________[+[Begin 
+conv singleton singleton
+"
+"16----------------]-]Success  
+conv singleton singleton
+"
+"15---------------]-]Success  
+isa x3 singleton int
+"
+"14--------------]-]Success  
+of (app x2 x3) singleton int
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"14______________[+[Begin 
+of (app x2 x4) X132^6 int
+"
+"15_______________[+[Begin 
+of x2 (setPi X133^6 X134^6) int
+"
+"15---------------]-]Success  
+of x2 (setPi singleton x6 \ singleton) int
+"
+"15_______________[+[Begin 
+isa x4 singleton int
+"
+"16________________[+[Begin 
+of x4 X135^6 int
+"
+"16----------------]-]Success  
+of x4 singleton int
+"
+"16________________[+[Begin 
+conv singleton singleton
+"
+"16----------------]-]Success  
+conv singleton singleton
+"
+"15---------------]-]Success  
+isa x4 singleton int
+"
+"14--------------]-]Success  
+of (app x2 x4) singleton int
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"14______________[+[Begin 
+(pts_leq set set),
+(X127^5 = props)
+"
+"14--------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"13-------------]-]Success  
+isType (propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"12------------]-]Success  
+pi x5 \
+ locDecl x5 (propId singleton x3 x4) =>
+  spy (isType (propId singleton (app x2 x3) (app x2 x4)) props int)
+"
+"12____________[+[Begin 
+pts_for props props X123^4
+"
+"12------------]-]Success  
+pts_for props props props
+"
+"11-----------]-]Success  
+isType
+ (forall (propId singleton x3 x4) x5 \
+   propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"10----------]-]Success  
+pi x4 \
+ locDecl x4 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) props int)
+"
+"10__________[+[Begin 
+pts_for set props X121^3
+"
+"10----------]-]Success  
+pts_for set props props
+"
+"9---------]-]Success  
+isType
+ (forall singleton x4 \
+   forall (propId singleton x3 x4) x5 \
+    propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"8--------]-]Success  
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) props int)
+"
+"8________[+[Begin 
+pts_for set props X119^2
+"
+"8--------]-]Success  
+pts_for set props props
+"
+"7-------]-]Success  
+pi x2 \
+ locDecl x2 (setPi singleton x3 \ singleton) =>
+  isType
+   (forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"7_______[+[Begin 
+pts_leq set set
+"
+"7-------]-]Success  
+pts_leq set set
+"
+"7_______[+[Begin 
+pts_leq props set
+"
+"7-------]-]Success  
+pts_leq props set
+"
+"6------]-]Success  
+isType
+ (colSigma (setPi singleton x2 \ singleton) x2 \
+   forall singleton x3 \
+    forall singleton x4 \
+     forall (propId singleton x3 x4) x5 \
+      propId singleton (app x2 x3) (app x2 x4)) set int
+"
+"6______[+[Begin 
+pi x2 \
+ locDecl x2
+  (colSigma (setPi singleton x3 \ singleton) x3 \
+    forall singleton x4 \
+     forall singleton x5 \
+      forall (propId singleton x4 x5) x6 \
+       propId singleton (app x3 x4) (app x3 x5)) =>
+  spy
+   (isType
+     (forall
+       (forall singleton x3 \
+         propId singleton
+          (app
+            (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)
+          (app
+            (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) X136^2
+     int)
+"
+"7_______[+[Begin 
+isType
+ (forall
+   (forall singleton x3 \
+     propId singleton
+      (app
+        (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+        x3)
+      (app
+        (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+        x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) X136^2 int
+"
+"8________[+[Begin 
+isType
+ (forall singleton x3 \
+   propId singleton
+    (app
+      (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+      x3)
+    (app
+      (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+      x3)) X137^3 int
+"
+"9_________[+[Begin 
+isType singleton X138^3 int
+"
+"9---------]-]Success  
+isType singleton set int
+"
+"9_________[+[Begin 
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (propId singleton
+       (app
+         (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)
+       (app
+         (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)) X139^3 int)
+"
+"10__________[+[Begin 
+isType
+ (propId singleton
+   (app (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+     x3)
+   (app (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+     x3)) X139^3 int
+"
+"11___________[+[Begin 
+of
+ (app (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+   x3) X140^4 int
+"
+"12____________[+[Begin 
+of (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+ (setPi X141^4 X142^4) int
+"
+"13_____________[+[Begin 
+of x1 (colSigma X143^4 X144^4) int
+"
+"13-------------]-]Success  
+of x1
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"13_____________[+[Begin 
+pi x4 \
+ locDecl x4
+  (colSigma (setPi singleton x5 \ singleton) x5 \
+    forall singleton x6 \
+     forall singleton x7 \
+      forall (propId singleton x6 x7) x8 \
+       propId singleton (app x5 x6) (app x5 x7)) =>
+  isType (setPi singleton x5 \ singleton) _ int
+"
+"14______________[+[Begin 
+pts_fun set set X145^5
+"
+"15_______________[+[Begin 
+pts_leq set set
+"
+"15---------------]-]Success  
+pts_leq set set
+"
+"15_______________[+[Begin 
+pts_leq set set
+"
+"15---------------]-]Success  
+pts_leq set set
+"
+"14--------------]-]Success  
+pts_fun set set set
+"
+"13-------------]-]Success  
+pi x4 \
+ locDecl x4
+  (colSigma (setPi singleton x5 \ singleton) x5 \
+    forall singleton x6 \
+     forall singleton x7 \
+      forall (propId singleton x6 x7) x8 \
+       propId singleton (app x5 x6) (app x5 x7)) =>
+  isType (setPi singleton x5 \ singleton) _ int
+"
+"13_____________[+[Begin 
+pi x4 \
+ pi x5 \
+  locDecl x4 (setPi singleton x6 \ singleton) =>
+   locDecl x5
+    (forall singleton x6 \
+      forall singleton x7 \
+       forall (propId singleton x6 x7) x8 \
+        propId singleton (app x4 x6) (app x4 x7)) =>
+    isa x4 (setPi singleton x6 \ singleton) int
+"
+"14______________[+[Begin 
+of x4 X146^6 int
+"
+"14--------------]-]Success  
+of x4 (setPi singleton x6 \ singleton) int
+"
+"14______________[+[Begin 
+conv (setPi singleton x6 \ singleton) (setPi singleton x6 \ singleton)
+"
+"14--------------]-]Success  
+conv (setPi singleton x6 \ singleton) (setPi singleton x6 \ singleton)
+"
+"13-------------]-]Success  
+pi x4 \
+ pi x5 \
+  locDecl x4 (setPi singleton x6 \ singleton) =>
+   locDecl x5
+    (forall singleton x6 \
+      forall singleton x7 \
+       forall (propId singleton x6 x7) x8 \
+        propId singleton (app x4 x6) (app x4 x7)) =>
+    isa x4 (setPi singleton x6 \ singleton) int
+"
+"12------------]-]Success  
+of (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+ (setPi singleton x4 \ singleton) int
+"
+"12____________[+[Begin 
+isa x3 singleton int
+"
+"13_____________[+[Begin 
+of x3 X147^4 int
+"
+"13-------------]-]Success  
+of x3 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"12------------]-]Success  
+isa x3 singleton int
+"
+"11-----------]-]Success  
+of
+ (app (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+   x3) singleton int
+"
+"11___________[+[Begin 
+conv singleton singleton
+"
+"11-----------]-]Success  
+conv singleton singleton
+"
+"11___________[+[Begin 
+of
+ (app (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+   x3) X148^4 int
+"
+"12____________[+[Begin 
+of (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+ (setPi X149^4 X150^4) int
+"
+"13_____________[+[Begin 
+of x2 (colSigma X151^4 X152^4) int
+"
+"13-------------]-]Success  
+of x2
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"13_____________[+[Begin 
+pi x4 \
+ locDecl x4
+  (colSigma (setPi singleton x5 \ singleton) x5 \
+    forall singleton x6 \
+     forall singleton x7 \
+      forall (propId singleton x6 x7) x8 \
+       propId singleton (app x5 x6) (app x5 x7)) =>
+  isType (setPi singleton x5 \ singleton) _ int
+"
+"14______________[+[Begin 
+pts_fun set set X153^5
+"
+"15_______________[+[Begin 
+pts_leq set set
+"
+"15---------------]-]Success  
+pts_leq set set
+"
+"15_______________[+[Begin 
+pts_leq set set
+"
+"15---------------]-]Success  
+pts_leq set set
+"
+"14--------------]-]Success  
+pts_fun set set set
+"
+"13-------------]-]Success  
+pi x4 \
+ locDecl x4
+  (colSigma (setPi singleton x5 \ singleton) x5 \
+    forall singleton x6 \
+     forall singleton x7 \
+      forall (propId singleton x6 x7) x8 \
+       propId singleton (app x5 x6) (app x5 x7)) =>
+  isType (setPi singleton x5 \ singleton) _ int
+"
+"13_____________[+[Begin 
+pi x4 \
+ pi x5 \
+  locDecl x4 (setPi singleton x6 \ singleton) =>
+   locDecl x5
+    (forall singleton x6 \
+      forall singleton x7 \
+       forall (propId singleton x6 x7) x8 \
+        propId singleton (app x4 x6) (app x4 x7)) =>
+    isa x4 (setPi singleton x6 \ singleton) int
+"
+"14______________[+[Begin 
+of x4 X154^6 int
+"
+"14--------------]-]Success  
+of x4 (setPi singleton x6 \ singleton) int
+"
+"14______________[+[Begin 
+conv (setPi singleton x6 \ singleton) (setPi singleton x6 \ singleton)
+"
+"14--------------]-]Success  
+conv (setPi singleton x6 \ singleton) (setPi singleton x6 \ singleton)
+"
+"13-------------]-]Success  
+pi x4 \
+ pi x5 \
+  locDecl x4 (setPi singleton x6 \ singleton) =>
+   locDecl x5
+    (forall singleton x6 \
+      forall singleton x7 \
+       forall (propId singleton x6 x7) x8 \
+        propId singleton (app x4 x6) (app x4 x7)) =>
+    isa x4 (setPi singleton x6 \ singleton) int
+"
+"12------------]-]Success  
+of (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+ (setPi singleton x4 \ singleton) int
+"
+"12____________[+[Begin 
+isa x3 singleton int
+"
+"13_____________[+[Begin 
+of x3 X155^4 int
+"
+"13-------------]-]Success  
+of x3 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"12------------]-]Success  
+isa x3 singleton int
+"
+"11-----------]-]Success  
+of
+ (app (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+   x3) singleton int
+"
+"11___________[+[Begin 
+conv singleton singleton
+"
+"11-----------]-]Success  
+conv singleton singleton
+"
+"11___________[+[Begin 
+(pts_leq set set),
+(X139^3 = props)
+"
+"11-----------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"10----------]-]Success  
+isType
+ (propId singleton
+   (app (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+     x3)
+   (app (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+     x3)) props int
+"
+"9---------]-]Success  
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (propId singleton
+       (app
+         (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)
+       (app
+         (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)) props int)
+"
+"9_________[+[Begin 
+pts_for set props X137^3
+"
+"9---------]-]Success  
+pts_for set props props
+"
+"8--------]-]Success  
+isType
+ (forall singleton x3 \
+   propId singleton
+    (app
+      (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+      x3)
+    (app
+      (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+      x3)) props int
+"
+"8________[+[Begin 
+pi x3 \
+ locDecl x3
+  (forall singleton x4 \
+    propId singleton
+     (app
+       (elim_colSigma x1 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \ x5)
+       x4)
+     (app
+       (elim_colSigma x2 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \ x5)
+       x4)) =>
+  spy (isType (propId singleton (app x0 x1) (app x0 x2)) X156^3 int)
+"
+"9_________[+[Begin 
+isType (propId singleton (app x0 x1) (app x0 x2)) X156^3 int
+"
+"10__________[+[Begin 
+of (app x0 x1) X157^4 int
+"
+"11___________[+[Begin 
+of x0 (setPi X158^4 X159^4) int
+"
+"11-----------]-]Success  
+of x0
+ (setPi
+   (colSigma (setPi singleton x4 \ singleton) x4 \
+     forall singleton x5 \
+      forall singleton x6 \
+       forall (propId singleton x5 x6) x7 \
+        propId singleton (app x4 x5) (app x4 x6)) x4 \ singleton) int
+"
+"11___________[+[Begin 
+isa x1
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"12____________[+[Begin 
+of x1 X160^4 int
+"
+"12------------]-]Success  
+of x1
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"12____________[+[Begin 
+conv
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+"
+"12------------]-]Success  
+conv
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+"
+"11-----------]-]Success  
+isa x1
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"10----------]-]Success  
+of (app x0 x1) singleton int
+"
+"10__________[+[Begin 
+conv singleton singleton
+"
+"10----------]-]Success  
+conv singleton singleton
+"
+"10__________[+[Begin 
+of (app x0 x2) X161^4 int
+"
+"11___________[+[Begin 
+of x0 (setPi X162^4 X163^4) int
+"
+"11-----------]-]Success  
+of x0
+ (setPi
+   (colSigma (setPi singleton x4 \ singleton) x4 \
+     forall singleton x5 \
+      forall singleton x6 \
+       forall (propId singleton x5 x6) x7 \
+        propId singleton (app x4 x5) (app x4 x6)) x4 \ singleton) int
+"
+"11___________[+[Begin 
+isa x2
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"12____________[+[Begin 
+of x2 X164^4 int
+"
+"12------------]-]Success  
+of x2
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"12____________[+[Begin 
+conv
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+"
+"12------------]-]Success  
+conv
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6))
+"
+"11-----------]-]Success  
+isa x2
+ (colSigma (setPi singleton x4 \ singleton) x4 \
+   forall singleton x5 \
+    forall singleton x6 \
+     forall (propId singleton x5 x6) x7 \
+      propId singleton (app x4 x5) (app x4 x6)) int
+"
+"10----------]-]Success  
+of (app x0 x2) singleton int
+"
+"10__________[+[Begin 
+conv singleton singleton
+"
+"10----------]-]Success  
+conv singleton singleton
+"
+"10__________[+[Begin 
+(pts_leq set set),
+(X156^3 = props)
+"
+"10----------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"9---------]-]Success  
+isType (propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"8--------]-]Success  
+pi x3 \
+ locDecl x3
+  (forall singleton x4 \
+    propId singleton
+     (app
+       (elim_colSigma x1 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \ x5)
+       x4)
+     (app
+       (elim_colSigma x2 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \ x5)
+       x4)) =>
+  spy (isType (propId singleton (app x0 x1) (app x0 x2)) props int)
+"
+"8________[+[Begin 
+pts_for props props X136^2
+"
+"8--------]-]Success  
+pts_for props props props
+"
+"7-------]-]Success  
+isType
+ (forall
+   (forall singleton x3 \
+     propId singleton
+      (app
+        (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+        x3)
+      (app
+        (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+        x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"6------]-]Success  
+pi x2 \
+ locDecl x2
+  (colSigma (setPi singleton x3 \ singleton) x3 \
+    forall singleton x4 \
+     forall singleton x5 \
+      forall (propId singleton x4 x5) x6 \
+       propId singleton (app x3 x4) (app x3 x5)) =>
+  spy
+   (isType
+     (forall
+       (forall singleton x3 \
+         propId singleton
+          (app
+            (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)
+          (app
+            (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) props
+     int)
+"
+"6______[+[Begin 
+pts_for set props X116^1
+"
+"6------]-]Success  
+pts_for set props props
+"
+"5-----]-]Success  
+isType
+ (forall
+   (colSigma (setPi singleton x2 \ singleton) x2 \
+     forall singleton x3 \
+      forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) x2 \
+   forall
+    (forall singleton x3 \
+      propId singleton
+       (app
+         (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)
+       (app
+         (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \ x4)
+         x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) props int
+"
+"4----]-]Success  
+pi x1 \
+ locDecl x1
+  (colSigma (setPi singleton x2 \ singleton) x2 \
+    forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) =>
+  spy
+   (isType
+     (forall
+       (colSigma (setPi singleton x2 \ singleton) x2 \
+         forall singleton x3 \
+          forall singleton x4 \
+           forall (propId singleton x3 x4) x5 \
+            propId singleton (app x2 x3) (app x2 x4)) x2 \
+       forall
+        (forall singleton x3 \
+          propId singleton
+           (app
+             (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)
+           (app
+             (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2))
+     props int)
+"
+"4____[+[Begin 
+pts_for set props X96
+"
+"4----]-]Success  
+pts_for set props props
+"
+"3---]-]Success  
+pi x0 \
+ locDecl x0
+  (setPi
+    (colSigma (setPi singleton x1 \ singleton) x1 \
+      forall singleton x2 \
+       forall singleton x3 \
+        forall (propId singleton x2 x3) x4 \
+         propId singleton (app x1 x2) (app x1 x3)) x1 \ singleton) =>
+  isType
+   (forall
+     (colSigma (setPi singleton x1 \ singleton) x1 \
+       forall singleton x2 \
+        forall singleton x3 \
+         forall (propId singleton x2 x3) x4 \
+          propId singleton (app x1 x2) (app x1 x3)) x1 \
+     forall
+      (colSigma (setPi singleton x2 \ singleton) x2 \
+        forall singleton x3 \
+         forall singleton x4 \
+          forall (propId singleton x3 x4) x5 \
+           propId singleton (app x2 x3) (app x2 x4)) x2 \
+      forall
+       (forall singleton x3 \
+         propId singleton
+          (app
+            (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)
+          (app
+            (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+              x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) props
+   int
+"
+"3___[+[Begin 
+pts_leq set set
+"
+"3---]-]Success  
+pts_leq set set
+"
+"3___[+[Begin 
+pts_leq props set
+"
+"3---]-]Success  
+pts_leq props set
+"
+"2--]-]Success  
+isType
+ (colSigma
+   (setPi
+     (colSigma (setPi singleton x0 \ singleton) x0 \
+       forall singleton x1 \
+        forall singleton x2 \
+         forall (propId singleton x1 x2) x3 \
+          propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) x0 \
+   forall
+    (colSigma (setPi singleton x1 \ singleton) x1 \
+      forall singleton x2 \
+       forall singleton x3 \
+        forall (propId singleton x2 x3) x4 \
+         propId singleton (app x1 x2) (app x1 x3)) x1 \
+    forall
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \
+     forall
+      (forall singleton x3 \
+        propId singleton
+         (app
+           (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+             x4) x3)
+         (app
+           (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \ x5 \
+             x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2)) set int
+"
+"2__[+[Begin 
+pi x0 \
+ locDecl x0
+  (colSigma
+    (setPi
+      (colSigma (setPi singleton x1 \ singleton) x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3)) x1 \ singleton) x1 \
+    forall
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \
+     forall
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \
+      forall
+       (forall singleton x4 \
+         propId singleton
+          (app
+            (elim_colSigma x2 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \
+              x5) x4)
+          (app
+            (elim_colSigma x3 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \
+              x5) x4)) x4 \ propId singleton (app x1 x2) (app x1 x3)) =>
+  spy
+   (isType
+     (propId singleton
+       (app
+         (elim_colSigma x0 (x1 \
+           setPi
+            (colSigma (setPi singleton x2 \ singleton) x2 \
+              forall singleton x3 \
+               forall singleton x4 \
+                forall (propId singleton x3 x4) x5 \
+                 propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton)
+           x1 \ x2 \ x1)
+         (pair (setPi singleton x1 \ singleton) (x1 \
+           forall singleton x2 \
+            forall singleton x3 \
+             forall (propId singleton x2 x3) x4 \
+              propId singleton (app x1 x2) (app x1 x3))
+           (lambda singleton x1 \ x1)
+           (forall_lam singleton x1 \
+             forall_lam singleton x2 \
+              forall_lam (propId singleton x1 x2) x3 \ x3))) star) X165 int)
+"
+"3___[+[Begin 
+isType
+ (propId singleton
+   (app
+     (elim_colSigma x0 (x1 \
+       setPi
+        (colSigma (setPi singleton x2 \ singleton) x2 \
+          forall singleton x3 \
+           forall singleton x4 \
+            forall (propId singleton x3 x4) x5 \
+             propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+       x2 \ x1)
+     (pair (setPi singleton x1 \ singleton) (x1 \
+       forall singleton x2 \
+        forall singleton x3 \
+         forall (propId singleton x2 x3) x4 \
+          propId singleton (app x1 x2) (app x1 x3))
+       (lambda singleton x1 \ x1)
+       (forall_lam singleton x1 \
+         forall_lam singleton x2 \
+          forall_lam (propId singleton x1 x2) x3 \ x3))) star) X165 int
+"
+"4____[+[Begin 
+of
+ (app
+   (elim_colSigma x0 (x1 \
+     setPi
+      (colSigma (setPi singleton x2 \ singleton) x2 \
+        forall singleton x3 \
+         forall singleton x4 \
+          forall (propId singleton x3 x4) x5 \
+           propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+     x2 \ x1)
+   (pair (setPi singleton x1 \ singleton) (x1 \
+     forall singleton x2 \
+      forall singleton x3 \
+       forall (propId singleton x2 x3) x4 \
+        propId singleton (app x1 x2) (app x1 x3)) (lambda singleton x1 \ x1)
+     (forall_lam singleton x1 \
+       forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3)))
+ X166^1 int
+"
+"5_____[+[Begin 
+of
+ (elim_colSigma x0 (x1 \
+   setPi
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \ x2 \
+   x1) (setPi X167^1 X168^1) int
+"
+"6______[+[Begin 
+of x0 (colSigma X169^1 X170^1) int
+"
+"6------]-]Success  
+of x0
+ (colSigma
+   (setPi
+     (colSigma (setPi singleton x1 \ singleton) x1 \
+       forall singleton x2 \
+        forall singleton x3 \
+         forall (propId singleton x2 x3) x4 \
+          propId singleton (app x1 x2) (app x1 x3)) x1 \ singleton) x1 \
+   forall
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) x2 \
+    forall
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \
+     forall
+      (forall singleton x4 \
+        propId singleton
+         (app
+           (elim_colSigma x2 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \
+             x5) x4)
+         (app
+           (elim_colSigma x3 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \
+             x5) x4)) x4 \ propId singleton (app x1 x2) (app x1 x3)) int
+"
+"6______[+[Begin 
+pi x1 \
+ locDecl x1
+  (colSigma
+    (setPi
+      (colSigma (setPi singleton x2 \ singleton) x2 \
+        forall singleton x3 \
+         forall singleton x4 \
+          forall (propId singleton x3 x4) x5 \
+           propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+    forall
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \
+     forall
+      (colSigma (setPi singleton x4 \ singleton) x4 \
+        forall singleton x5 \
+         forall singleton x6 \
+          forall (propId singleton x5 x6) x7 \
+           propId singleton (app x4 x5) (app x4 x6)) x4 \
+      forall
+       (forall singleton x5 \
+         propId singleton
+          (app
+            (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+              x6) x5)
+          (app
+            (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+              x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4)) =>
+  isType
+   (setPi
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) _ int
+"
+"7_______[+[Begin 
+isType (setPi singleton x2 \ singleton) X171^2 int
+"
+"8________[+[Begin 
+pts_fun set set X171^2
+"
+"9_________[+[Begin 
+pts_leq set set
+"
+"9---------]-]Success  
+pts_leq set set
+"
+"9_________[+[Begin 
+pts_leq set set
+"
+"9---------]-]Success  
+pts_leq set set
+"
+"8--------]-]Success  
+pts_fun set set set
+"
+"7-------]-]Success  
+isType (setPi singleton x2 \ singleton) set int
+"
+"7_______[+[Begin 
+pi x2 \
+ locDecl x2 (setPi singleton x3 \ singleton) =>
+  isType
+   (forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) X172^2 int
+"
+"8________[+[Begin 
+isType singleton X173^3 int
+"
+"8--------]-]Success  
+isType singleton set int
+"
+"8________[+[Begin 
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) X174^3 int)
+"
+"9_________[+[Begin 
+isType
+ (forall singleton x4 \
+   forall (propId singleton x3 x4) x5 \
+    propId singleton (app x2 x3) (app x2 x4)) X174^3 int
+"
+"10__________[+[Begin 
+isType singleton X175^4 int
+"
+"10----------]-]Success  
+isType singleton set int
+"
+"10__________[+[Begin 
+pi x4 \
+ locDecl x4 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) X176^4 int)
+"
+"11___________[+[Begin 
+isType
+ (forall (propId singleton x3 x4) x5 \
+   propId singleton (app x2 x3) (app x2 x4)) X176^4 int
+"
+"12____________[+[Begin 
+isType (propId singleton x3 x4) X177^5 int
+"
+"13_____________[+[Begin 
+of x3 X178^5 int
+"
+"13-------------]-]Success  
+of x3 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"13_____________[+[Begin 
+of x4 X179^5 int
+"
+"13-------------]-]Success  
+of x4 singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"13_____________[+[Begin 
+(pts_leq set set),
+(X177^5 = props)
+"
+"13-------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"12------------]-]Success  
+isType (propId singleton x3 x4) props int
+"
+"12____________[+[Begin 
+pi x5 \
+ locDecl x5 (propId singleton x3 x4) =>
+  spy (isType (propId singleton (app x2 x3) (app x2 x4)) X180^5 int)
+"
+"13_____________[+[Begin 
+isType (propId singleton (app x2 x3) (app x2 x4)) X180^5 int
+"
+"14______________[+[Begin 
+of (app x2 x3) X181^6 int
+"
+"15_______________[+[Begin 
+of x2 (setPi X182^6 X183^6) int
+"
+"15---------------]-]Success  
+of x2 (setPi singleton x6 \ singleton) int
+"
+"15_______________[+[Begin 
+isa x3 singleton int
+"
+"16________________[+[Begin 
+of x3 X184^6 int
+"
+"16----------------]-]Success  
+of x3 singleton int
+"
+"16________________[+[Begin 
+conv singleton singleton
+"
+"16----------------]-]Success  
+conv singleton singleton
+"
+"15---------------]-]Success  
+isa x3 singleton int
+"
+"14--------------]-]Success  
+of (app x2 x3) singleton int
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"14______________[+[Begin 
+of (app x2 x4) X185^6 int
+"
+"15_______________[+[Begin 
+of x2 (setPi X186^6 X187^6) int
+"
+"15---------------]-]Success  
+of x2 (setPi singleton x6 \ singleton) int
+"
+"15_______________[+[Begin 
+isa x4 singleton int
+"
+"16________________[+[Begin 
+of x4 X188^6 int
+"
+"16----------------]-]Success  
+of x4 singleton int
+"
+"16________________[+[Begin 
+conv singleton singleton
+"
+"16----------------]-]Success  
+conv singleton singleton
+"
+"15---------------]-]Success  
+isa x4 singleton int
+"
+"14--------------]-]Success  
+of (app x2 x4) singleton int
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"14______________[+[Begin 
+(pts_leq set set),
+(X180^5 = props)
+"
+"14--------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"13-------------]-]Success  
+isType (propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"12------------]-]Success  
+pi x5 \
+ locDecl x5 (propId singleton x3 x4) =>
+  spy (isType (propId singleton (app x2 x3) (app x2 x4)) props int)
+"
+"12____________[+[Begin 
+pts_for props props X176^4
+"
+"12------------]-]Success  
+pts_for props props props
+"
+"11-----------]-]Success  
+isType
+ (forall (propId singleton x3 x4) x5 \
+   propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"10----------]-]Success  
+pi x4 \
+ locDecl x4 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) props int)
+"
+"10__________[+[Begin 
+pts_for set props X174^3
+"
+"10----------]-]Success  
+pts_for set props props
+"
+"9---------]-]Success  
+isType
+ (forall singleton x4 \
+   forall (propId singleton x3 x4) x5 \
+    propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"8--------]-]Success  
+pi x3 \
+ locDecl x3 singleton =>
+  spy
+   (isType
+     (forall singleton x4 \
+       forall (propId singleton x3 x4) x5 \
+        propId singleton (app x2 x3) (app x2 x4)) props int)
+"
+"8________[+[Begin 
+pts_for set props X172^2
+"
+"8--------]-]Success  
+pts_for set props props
+"
+"7-------]-]Success  
+pi x2 \
+ locDecl x2 (setPi singleton x3 \ singleton) =>
+  isType
+   (forall singleton x3 \
+     forall singleton x4 \
+      forall (propId singleton x3 x4) x5 \
+       propId singleton (app x2 x3) (app x2 x4)) props int
+"
+"7_______[+[Begin 
+pts_leq set set
+"
+"7-------]-]Success  
+pts_leq set set
+"
+"7_______[+[Begin 
+pts_leq props set
+"
+"7-------]-]Success  
+pts_leq props set
+"
+"7_______[+[Begin 
+pts_fun set set X189^2
+"
+"8________[+[Begin 
+pts_leq set set
+"
+"8--------]-]Success  
+pts_leq set set
+"
+"8________[+[Begin 
+pts_leq set set
+"
+"8--------]-]Success  
+pts_leq set set
+"
+"7-------]-]Success  
+pts_fun set set set
+"
+"6------]-]Success  
+pi x1 \
+ locDecl x1
+  (colSigma
+    (setPi
+      (colSigma (setPi singleton x2 \ singleton) x2 \
+        forall singleton x3 \
+         forall singleton x4 \
+          forall (propId singleton x3 x4) x5 \
+           propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x2 \
+    forall
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \
+     forall
+      (colSigma (setPi singleton x4 \ singleton) x4 \
+        forall singleton x5 \
+         forall singleton x6 \
+          forall (propId singleton x5 x6) x7 \
+           propId singleton (app x4 x5) (app x4 x6)) x4 \
+      forall
+       (forall singleton x5 \
+         propId singleton
+          (app
+            (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+              x6) x5)
+          (app
+            (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \ x7 \
+              x6) x5)) x5 \ propId singleton (app x2 x3) (app x2 x4)) =>
+  isType
+   (setPi
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) _ int
+"
+"6______[+[Begin 
+pi x1 \
+ pi x2 \
+  locDecl x1
+   (setPi
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) =>
+   locDecl x2
+    (forall
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \
+      forall
+       (colSigma (setPi singleton x4 \ singleton) x4 \
+         forall singleton x5 \
+          forall singleton x6 \
+           forall (propId singleton x5 x6) x7 \
+            propId singleton (app x4 x5) (app x4 x6)) x4 \
+       forall
+        (forall singleton x5 \
+          propId singleton
+           (app
+             (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \
+               x7 \ x6) x5)
+           (app
+             (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \
+               x7 \ x6) x5)) x5 \ propId singleton (app x1 x3) (app x1 x4))
+    =>
+    isa x1
+     (setPi
+       (colSigma (setPi singleton x3 \ singleton) x3 \
+         forall singleton x4 \
+          forall singleton x5 \
+           forall (propId singleton x4 x5) x6 \
+            propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) int
+"
+"7_______[+[Begin 
+of x1 X190^3 int
+"
+"7-------]-]Success  
+of x1
+ (setPi
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) int
+"
+"7_______[+[Begin 
+conv
+ (setPi
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton)
+ (setPi
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton)
+"
+"7-------]-]Success  
+conv
+ (setPi
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton)
+ (setPi
+   (colSigma (setPi singleton x3 \ singleton) x3 \
+     forall singleton x4 \
+      forall singleton x5 \
+       forall (propId singleton x4 x5) x6 \
+        propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton)
+"
+"6------]-]Success  
+pi x1 \
+ pi x2 \
+  locDecl x1
+   (setPi
+     (colSigma (setPi singleton x3 \ singleton) x3 \
+       forall singleton x4 \
+        forall singleton x5 \
+         forall (propId singleton x4 x5) x6 \
+          propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) =>
+   locDecl x2
+    (forall
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \
+      forall
+       (colSigma (setPi singleton x4 \ singleton) x4 \
+         forall singleton x5 \
+          forall singleton x6 \
+           forall (propId singleton x5 x6) x7 \
+            propId singleton (app x4 x5) (app x4 x6)) x4 \
+       forall
+        (forall singleton x5 \
+          propId singleton
+           (app
+             (elim_colSigma x3 (x6 \ setPi singleton x7 \ singleton) x6 \
+               x7 \ x6) x5)
+           (app
+             (elim_colSigma x4 (x6 \ setPi singleton x7 \ singleton) x6 \
+               x7 \ x6) x5)) x5 \ propId singleton (app x1 x3) (app x1 x4))
+    =>
+    isa x1
+     (setPi
+       (colSigma (setPi singleton x3 \ singleton) x3 \
+         forall singleton x4 \
+          forall singleton x5 \
+           forall (propId singleton x4 x5) x6 \
+            propId singleton (app x3 x4) (app x3 x5)) x3 \ singleton) int
+"
+"5-----]-]Success  
+of
+ (elim_colSigma x0 (x1 \
+   setPi
+    (colSigma (setPi singleton x2 \ singleton) x2 \
+      forall singleton x3 \
+       forall singleton x4 \
+        forall (propId singleton x3 x4) x5 \
+         propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \ x2 \
+   x1)
+ (setPi
+   (colSigma (setPi singleton x1 \ singleton) x1 \
+     forall singleton x2 \
+      forall singleton x3 \
+       forall (propId singleton x2 x3) x4 \
+        propId singleton (app x1 x2) (app x1 x3)) x1 \ singleton) int
+"
+"5_____[+[Begin 
+isa
+ (pair (setPi singleton x1 \ singleton) (x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) (lambda singleton x1 \ x1)
+   (forall_lam singleton x1 \
+     forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3))
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) int
+"
+"6______[+[Begin 
+of
+ (pair (setPi singleton x1 \ singleton) (x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) (lambda singleton x1 \ x1)
+   (forall_lam singleton x1 \
+     forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3))
+ X191^1 int
+"
+"7_______[+[Begin 
+pts_fun set set X192^1
+"
+"8________[+[Begin 
+pts_leq set set
+"
+"8--------]-]Success  
+pts_leq set set
+"
+"8________[+[Begin 
+pts_leq set set
+"
+"8--------]-]Success  
+pts_leq set set
+"
+"7-------]-]Success  
+pts_fun set set set
+"
+"7_______[+[Begin 
+isType singleton X193^1 int
+"
+"7-------]-]Success  
+isType singleton set int
+"
+"7_______[+[Begin 
+pi x1 \
+ locDecl x1 singleton =>
+  spy
+   (isType
+     (forall singleton x2 \
+       forall (propId singleton x1 x2) x3 \
+        propId singleton (app (lambda singleton x4 \ x4) x1)
+         (app (lambda singleton x4 \ x4) x2)) X194^1 int)
+"
+"8________[+[Begin 
+isType
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2)) X194^1 int
+"
+"9_________[+[Begin 
+isType singleton X195^2 int
+"
+"9---------]-]Success  
+isType singleton set int
+"
+"9_________[+[Begin 
+pi x2 \
+ locDecl x2 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x1 x2) x3 \
+       propId singleton (app (lambda singleton x4 \ x4) x1)
+        (app (lambda singleton x4 \ x4) x2)) X196^2 int)
+"
+"10__________[+[Begin 
+isType
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2)) X196^2 int
+"
+"11___________[+[Begin 
+isType (propId singleton x1 x2) X197^3 int
+"
+"12____________[+[Begin 
+of x1 X198^3 int
+"
+"12------------]-]Success  
+of x1 singleton int
+"
+"12____________[+[Begin 
+conv singleton singleton
+"
+"12------------]-]Success  
+conv singleton singleton
+"
+"12____________[+[Begin 
+of x2 X199^3 int
+"
+"12------------]-]Success  
+of x2 singleton int
+"
+"12____________[+[Begin 
+conv singleton singleton
+"
+"12------------]-]Success  
+conv singleton singleton
+"
+"12____________[+[Begin 
+(pts_leq set set),
+(X197^3 = props)
+"
+"12------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"11-----------]-]Success  
+isType (propId singleton x1 x2) props int
+"
+"11___________[+[Begin 
+pi x3 \
+ locDecl x3 (propId singleton x1 x2) =>
+  spy
+   (isType
+     (propId singleton (app (lambda singleton x4 \ x4) x1)
+       (app (lambda singleton x4 \ x4) x2)) X200^3 int)
+"
+"12____________[+[Begin 
+isType
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2)) X200^3 int
+"
+"13_____________[+[Begin 
+of (app (lambda singleton x4 \ x4) x1) X201^4 int
+"
+"14______________[+[Begin 
+of (lambda singleton x4 \ x4) (setPi X202^4 X203^4) int
+"
+"15_______________[+[Begin 
+isType singleton _ int
+"
+"15---------------]-]Success  
+isType singleton _ int
+"
+"15_______________[+[Begin 
+pi x4 \ locDecl x4 singleton => isa x4 (X203^4 x4) int
+"
+"16________________[+[Begin 
+of x4 X204^5 int
+"
+"16----------------]-]Success  
+of x4 singleton int
+"
+"16________________[+[Begin 
+conv singleton (X203^4 x4)
+"
+"16----------------]-]Success  
+conv singleton singleton
+"
+"15---------------]-]Success  
+pi x4 \ locDecl x4 singleton => isa x4 singleton int
+"
+"14--------------]-]Success  
+of (lambda singleton x4 \ x4) (setPi singleton x4 \ singleton) int
+"
+"14______________[+[Begin 
+isa x1 singleton int
+"
+"15_______________[+[Begin 
+of x1 X205^4 int
+"
+"15---------------]-]Success  
+of x1 singleton int
+"
+"15_______________[+[Begin 
+conv singleton singleton
+"
+"15---------------]-]Success  
+conv singleton singleton
+"
+"14--------------]-]Success  
+isa x1 singleton int
+"
+"13-------------]-]Success  
+of (app (lambda singleton x4 \ x4) x1) singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"13_____________[+[Begin 
+of (app (lambda singleton x4 \ x4) x2) X206^4 int
+"
+"14______________[+[Begin 
+of (lambda singleton x4 \ x4) (setPi X207^4 X208^4) int
+"
+"15_______________[+[Begin 
+isType singleton _ int
+"
+"15---------------]-]Success  
+isType singleton _ int
+"
+"15_______________[+[Begin 
+pi x4 \ locDecl x4 singleton => isa x4 (X208^4 x4) int
+"
+"16________________[+[Begin 
+of x4 X209^5 int
+"
+"16----------------]-]Success  
+of x4 singleton int
+"
+"16________________[+[Begin 
+conv singleton (X208^4 x4)
+"
+"16----------------]-]Success  
+conv singleton singleton
+"
+"15---------------]-]Success  
+pi x4 \ locDecl x4 singleton => isa x4 singleton int
+"
+"14--------------]-]Success  
+of (lambda singleton x4 \ x4) (setPi singleton x4 \ singleton) int
+"
+"14______________[+[Begin 
+isa x2 singleton int
+"
+"15_______________[+[Begin 
+of x2 X210^4 int
+"
+"15---------------]-]Success  
+of x2 singleton int
+"
+"15_______________[+[Begin 
+conv singleton singleton
+"
+"15---------------]-]Success  
+conv singleton singleton
+"
+"14--------------]-]Success  
+isa x2 singleton int
+"
+"13-------------]-]Success  
+of (app (lambda singleton x4 \ x4) x2) singleton int
+"
+"13_____________[+[Begin 
+conv singleton singleton
+"
+"13-------------]-]Success  
+conv singleton singleton
+"
+"13_____________[+[Begin 
+(pts_leq set set),
+(X200^3 = props)
+"
+"13-------------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"12------------]-]Success  
+isType
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2)) props int
+"
+"11-----------]-]Success  
+pi x3 \
+ locDecl x3 (propId singleton x1 x2) =>
+  spy
+   (isType
+     (propId singleton (app (lambda singleton x4 \ x4) x1)
+       (app (lambda singleton x4 \ x4) x2)) props int)
+"
+"11___________[+[Begin 
+pts_for props props X196^2
+"
+"11-----------]-]Success  
+pts_for props props props
+"
+"10----------]-]Success  
+isType
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2)) props int
+"
+"9---------]-]Success  
+pi x2 \
+ locDecl x2 singleton =>
+  spy
+   (isType
+     (forall (propId singleton x1 x2) x3 \
+       propId singleton (app (lambda singleton x4 \ x4) x1)
+        (app (lambda singleton x4 \ x4) x2)) props int)
+"
+"9_________[+[Begin 
+pts_for set props X194^1
+"
+"9---------]-]Success  
+pts_for set props props
+"
+"8--------]-]Success  
+isType
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2)) props int
+"
+"7-------]-]Success  
+pi x1 \
+ locDecl x1 singleton =>
+  spy
+   (isType
+     (forall singleton x2 \
+       forall (propId singleton x1 x2) x3 \
+        propId singleton (app (lambda singleton x4 \ x4) x1)
+         (app (lambda singleton x4 \ x4) x2)) props int)
+"
+"7_______[+[Begin 
+pts_for set props X211^1
+"
+"7-------]-]Success  
+pts_for set props props
+"
+"7_______[+[Begin 
+of (lambda singleton x1 \ x1) X212^1 int
+"
+"8________[+[Begin 
+isType singleton _ int
+"
+"8--------]-]Success  
+isType singleton _ int
+"
+"8________[+[Begin 
+pi x1 \ locDecl x1 singleton => isa x1 (X213^1 x1) int
+"
+"9_________[+[Begin 
+of x1 X214^2 int
+"
+"9---------]-]Success  
+of x1 singleton int
+"
+"9_________[+[Begin 
+conv singleton (X213^1 x1)
+"
+"9---------]-]Success  
+conv singleton singleton
+"
+"8--------]-]Success  
+pi x1 \ locDecl x1 singleton => isa x1 singleton int
+"
+"7-------]-]Success  
+of (lambda singleton x1 \ x1) (setPi singleton x1 \ singleton) int
+"
+"7_______[+[Begin 
+conv (setPi singleton x1 \ singleton) (setPi singleton x1 \ singleton)
+"
+"7-------]-]Success  
+conv (setPi singleton x1 \ singleton) (setPi singleton x1 \ singleton)
+"
+"7_______[+[Begin 
+of
+ (forall_lam singleton x1 \
+   forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3)
+ X215^1 int
+"
+"8________[+[Begin 
+of (forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3)
+ X216^2 int
+"
+"9_________[+[Begin 
+of (forall_lam (propId singleton x1 x2) x3 \ x3) X217^3 int
+"
+"10__________[+[Begin 
+of x1 X218^3 int
+"
+"10----------]-]Success  
+of x1 singleton int
+"
+"10__________[+[Begin 
+conv singleton singleton
+"
+"10----------]-]Success  
+conv singleton singleton
+"
+"10__________[+[Begin 
+of x2 X219^3 int
+"
+"10----------]-]Success  
+of x2 singleton int
+"
+"10__________[+[Begin 
+conv singleton singleton
+"
+"10----------]-]Success  
+conv singleton singleton
+"
+"10__________[+[Begin 
+(pts_leq set set),
+(X220^3 = props)
+"
+"10----------]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"10__________[+[Begin 
+of x3 X221^4 int
+"
+"10----------]-]Success  
+of x3 (propId singleton x1 x2) int
+"
+"10__________[+[Begin 
+conv (propId singleton x1 x2) (X222^3 x3)
+"
+"10----------]-]Success  
+conv (propId singleton x1 x2) (propId singleton x1 x2)
+"
+"9---------]-]Success  
+of (forall_lam (propId singleton x1 x2) x3 \ x3)
+ (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) int
+"
+"9_________[+[Begin 
+conv (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (X223^2 x2)
+"
+"9---------]-]Success  
+conv (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+"
+"8--------]-]Success  
+of (forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3)
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) int
+"
+"8________[+[Begin 
+conv
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) (X224^1 x1)
+"
+"8--------]-]Success  
+conv
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+"
+"7-------]-]Success  
+of
+ (forall_lam singleton x1 \
+   forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3)
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) int
+"
+"7_______[+[Begin 
+conv
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2))
+"
+"8________[+[Begin 
+hnf
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) X225^1
+"
+"8--------]-]Success  
+hnf
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+"
+"8________[+[Begin 
+hnf
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2)) X226^1
+"
+"8--------]-]Success  
+hnf
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2))
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2))
+"
+"8________[+[Begin 
+dconv
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2))
+"
+"9_________[+[Begin 
+hnf
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) X227^2
+"
+"9---------]-]Success  
+hnf
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+"
+"9_________[+[Begin 
+hnf
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2)) X228^2
+"
+"9---------]-]Success  
+hnf
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2))
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2))
+"
+"9_________[+[Begin 
+dconv
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2))
+"
+"10__________[+[Begin 
+hnf (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2) X229^3
+"
+"10----------]-]Success  
+hnf (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+"
+"10__________[+[Begin 
+hnf
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2)) X230^3
+"
+"10----------]-]Success  
+hnf
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2))
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2))
+"
+"10__________[+[Begin 
+dconv (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2))
+"
+"11___________[+[Begin 
+hnf (propId singleton x1 x2) X231^4
+"
+"11-----------]-]Success  
+hnf (propId singleton x1 x2) (propId singleton x1 x2)
+"
+"11___________[+[Begin 
+hnf
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2)) X232^4
+"
+"11-----------]-]Success  
+hnf
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2))
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2))
+"
+"11___________[+[Begin 
+dconv (propId singleton x1 x2)
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2))
+"
+"12____________[+[Begin 
+conv singleton singleton
+"
+"12------------]-]Success  
+conv singleton singleton
+"
+"12____________[+[Begin 
+conv x1 (app (lambda singleton x4 \ x4) x1)
+"
+"13_____________[+[Begin 
+hnf x1 X233^4
+"
+"13-------------]-]Success  
+hnf x1 x1
+"
+"13_____________[+[Begin 
+hnf (app (lambda singleton x4 \ x4) x1) X234^4
+"
+"14______________[+[Begin 
+isType singleton _ X235^4
+"
+"14--------------]-]Success  
+isType singleton _ X235^4
+"
+"14______________[+[Begin 
+pi x4 \ locDecl x4 singleton => isa x4 (X236^4 x4) X235^4
+"
+"15_______________[+[Begin 
+of x4 X237^5 X235^4
+"
+"15---------------]-]Success  
+of x4 singleton X235^4
+"
+"15_______________[+[Begin 
+conv singleton (X236^4 x4)
+"
+"15---------------]-]Success  
+conv singleton singleton
+"
+"14--------------]-]Success  
+pi x4 \ locDecl x4 singleton => isa x4 singleton X235^4
+"
+"14______________[+[Begin 
+of x1 X238^4 X235^4
+"
+"14--------------]-]Success  
+of x1 singleton X235^4
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"14______________[+[Begin 
+of x4 X239^5 X235^4
+"
+"14--------------]-]Success  
+of x4 singleton X235^4
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"13-------------]-]Success  
+hnf (app (lambda singleton x4 \ x4) x1) x1
+"
+"13_____________[+[Begin 
+dconv x1 x1
+"
+"13-------------]-]Success  
+dconv x1 x1
+"
+"12------------]-]Success  
+conv x1 (app (lambda singleton x4 \ x4) x1)
+"
+"12____________[+[Begin 
+conv x2 (app (lambda singleton x4 \ x4) x2)
+"
+"13_____________[+[Begin 
+hnf x2 X240^4
+"
+"13-------------]-]Success  
+hnf x2 x2
+"
+"13_____________[+[Begin 
+hnf (app (lambda singleton x4 \ x4) x2) X241^4
+"
+"14______________[+[Begin 
+isType singleton _ X242^4
+"
+"14--------------]-]Success  
+isType singleton _ X242^4
+"
+"14______________[+[Begin 
+pi x4 \ locDecl x4 singleton => isa x4 (X243^4 x4) X242^4
+"
+"15_______________[+[Begin 
+of x4 X244^5 X242^4
+"
+"15---------------]-]Success  
+of x4 singleton X242^4
+"
+"15_______________[+[Begin 
+conv singleton (X243^4 x4)
+"
+"15---------------]-]Success  
+conv singleton singleton
+"
+"14--------------]-]Success  
+pi x4 \ locDecl x4 singleton => isa x4 singleton X242^4
+"
+"14______________[+[Begin 
+of x2 X245^4 X242^4
+"
+"14--------------]-]Success  
+of x2 singleton X242^4
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"14______________[+[Begin 
+of x4 X246^5 X242^4
+"
+"14--------------]-]Success  
+of x4 singleton X242^4
+"
+"14______________[+[Begin 
+conv singleton singleton
+"
+"14--------------]-]Success  
+conv singleton singleton
+"
+"13-------------]-]Success  
+hnf (app (lambda singleton x4 \ x4) x2) x2
+"
+"13_____________[+[Begin 
+dconv x2 x2
+"
+"13-------------]-]Success  
+dconv x2 x2
+"
+"12------------]-]Success  
+conv x2 (app (lambda singleton x4 \ x4) x2)
+"
+"11-----------]-]Success  
+dconv (propId singleton x1 x2)
+ (propId singleton (app (lambda singleton x4 \ x4) x1)
+   (app (lambda singleton x4 \ x4) x2))
+"
+"10----------]-]Success  
+dconv (forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall (propId singleton x1 x2) x3 \
+   propId singleton (app (lambda singleton x4 \ x4) x1)
+    (app (lambda singleton x4 \ x4) x2))
+"
+"9---------]-]Success  
+dconv
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x2 \
+   forall (propId singleton x1 x2) x3 \
+    propId singleton (app (lambda singleton x4 \ x4) x1)
+     (app (lambda singleton x4 \ x4) x2))
+"
+"8--------]-]Success  
+dconv
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2))
+"
+"7-------]-]Success  
+conv
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \ propId singleton x1 x2)
+ (forall singleton x1 \
+   forall singleton x2 \
+    forall (propId singleton x1 x2) x3 \
+     propId singleton (app (lambda singleton x4 \ x4) x1)
+      (app (lambda singleton x4 \ x4) x2))
+"
+"6------]-]Success  
+of
+ (pair (setPi singleton x1 \ singleton) (x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) (lambda singleton x1 \ x1)
+   (forall_lam singleton x1 \
+     forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3))
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) int
+"
+"6______[+[Begin 
+conv
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3))
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3))
+"
+"6------]-]Success  
+conv
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3))
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3))
+"
+"5-----]-]Success  
+isa
+ (pair (setPi singleton x1 \ singleton) (x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) (lambda singleton x1 \ x1)
+   (forall_lam singleton x1 \
+     forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3))
+ (colSigma (setPi singleton x1 \ singleton) x1 \
+   forall singleton x2 \
+    forall singleton x3 \
+     forall (propId singleton x2 x3) x4 \
+      propId singleton (app x1 x2) (app x1 x3)) int
+"
+"4----]-]Success  
+of
+ (app
+   (elim_colSigma x0 (x1 \
+     setPi
+      (colSigma (setPi singleton x2 \ singleton) x2 \
+        forall singleton x3 \
+         forall singleton x4 \
+          forall (propId singleton x3 x4) x5 \
+           propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+     x2 \ x1)
+   (pair (setPi singleton x1 \ singleton) (x1 \
+     forall singleton x2 \
+      forall singleton x3 \
+       forall (propId singleton x2 x3) x4 \
+        propId singleton (app x1 x2) (app x1 x3)) (lambda singleton x1 \ x1)
+     (forall_lam singleton x1 \
+       forall_lam singleton x2 \ forall_lam (propId singleton x1 x2) x3 \ x3)))
+ singleton int
+"
+"4____[+[Begin 
+conv singleton singleton
+"
+"4----]-]Success  
+conv singleton singleton
+"
+"4____[+[Begin 
+of star X247^1 int
+"
+"4----]-]Success  
+of star singleton int
+"
+"4____[+[Begin 
+conv singleton singleton
+"
+"4----]-]Success  
+conv singleton singleton
+"
+"4____[+[Begin 
+(pts_leq set set),
+(X165 = props)
+"
+"4----]-]Success  
+(pts_leq set set),
+(props = props)
+"
+"3---]-]Success  
+isType
+ (propId singleton
+   (app
+     (elim_colSigma x0 (x1 \
+       setPi
+        (colSigma (setPi singleton x2 \ singleton) x2 \
+          forall singleton x3 \
+           forall singleton x4 \
+            forall (propId singleton x3 x4) x5 \
+             propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+       x2 \ x1)
+     (pair (setPi singleton x1 \ singleton) (x1 \
+       forall singleton x2 \
+        forall singleton x3 \
+         forall (propId singleton x2 x3) x4 \
+          propId singleton (app x1 x2) (app x1 x3))
+       (lambda singleton x1 \ x1)
+       (forall_lam singleton x1 \
+         forall_lam singleton x2 \
+          forall_lam (propId singleton x1 x2) x3 \ x3))) star) props int
+"
+"2--]-]Success  
+pi x0 \
+ locDecl x0
+  (colSigma
+    (setPi
+      (colSigma (setPi singleton x1 \ singleton) x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3)) x1 \ singleton) x1 \
+    forall
+     (colSigma (setPi singleton x2 \ singleton) x2 \
+       forall singleton x3 \
+        forall singleton x4 \
+         forall (propId singleton x3 x4) x5 \
+          propId singleton (app x2 x3) (app x2 x4)) x2 \
+     forall
+      (colSigma (setPi singleton x3 \ singleton) x3 \
+        forall singleton x4 \
+         forall singleton x5 \
+          forall (propId singleton x4 x5) x6 \
+           propId singleton (app x3 x4) (app x3 x5)) x3 \
+      forall
+       (forall singleton x4 \
+         propId singleton
+          (app
+            (elim_colSigma x2 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \
+              x5) x4)
+          (app
+            (elim_colSigma x3 (x5 \ setPi singleton x6 \ singleton) x5 \ x6 \
+              x5) x4)) x4 \ propId singleton (app x1 x2) (app x1 x3)) =>
+  spy
+   (isType
+     (propId singleton
+       (app
+         (elim_colSigma x0 (x1 \
+           setPi
+            (colSigma (setPi singleton x2 \ singleton) x2 \
+              forall singleton x3 \
+               forall singleton x4 \
+                forall (propId singleton x3 x4) x5 \
+                 propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton)
+           x1 \ x2 \ x1)
+         (pair (setPi singleton x1 \ singleton) (x1 \
+           forall singleton x2 \
+            forall singleton x3 \
+             forall (propId singleton x2 x3) x4 \
+              propId singleton (app x1 x2) (app x1 x3))
+           (lambda singleton x1 \ x1)
+           (forall_lam singleton x1 \
+             forall_lam singleton x2 \
+              forall_lam (propId singleton x1 x2) x3 \ x3))) star) props int)
+"
+"2__[+[Begin 
+pts_for set props X75
+"
+"2--]-]Success  
+pts_for set props props
+"
+"1-]-]Success  
+isType
+ (forall
+   (colSigma
+     (setPi
+       (colSigma (setPi singleton x0 \ singleton) x0 \
+         forall singleton x1 \
+          forall singleton x2 \
+           forall (propId singleton x1 x2) x3 \
+            propId singleton (app x0 x1) (app x0 x2)) x0 \ singleton) x0 \
+     forall
+      (colSigma (setPi singleton x1 \ singleton) x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3)) x1 \
+      forall
+       (colSigma (setPi singleton x2 \ singleton) x2 \
+         forall singleton x3 \
+          forall singleton x4 \
+           forall (propId singleton x3 x4) x5 \
+            propId singleton (app x2 x3) (app x2 x4)) x2 \
+       forall
+        (forall singleton x3 \
+          propId singleton
+           (app
+             (elim_colSigma x1 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)
+           (app
+             (elim_colSigma x2 (x4 \ setPi singleton x5 \ singleton) x4 \
+               x5 \ x4) x3)) x3 \ propId singleton (app x0 x1) (app x0 x2))
+   x0 \
+   propId singleton
+    (app
+      (elim_colSigma x0 (x1 \
+        setPi
+         (colSigma (setPi singleton x2 \ singleton) x2 \
+           forall singleton x3 \
+            forall singleton x4 \
+             forall (propId singleton x3 x4) x5 \
+              propId singleton (app x2 x3) (app x2 x4)) x2 \ singleton) x1 \
+        x2 \ x1)
+      (pair (setPi singleton x1 \ singleton) (x1 \
+        forall singleton x2 \
+         forall singleton x3 \
+          forall (propId singleton x2 x3) x4 \
+           propId singleton (app x1 x2) (app x1 x3))
+        (lambda singleton x1 \ x1)
+        (forall_lam singleton x1 \
+          forall_lam singleton x2 \
+           forall_lam (propId singleton x1 x2) x3 \ x3))) star) props int
+"

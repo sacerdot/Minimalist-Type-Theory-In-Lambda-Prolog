@@ -1,0 +1,907 @@
+
+type and mttType -> mttType -> mttType.
+type and mttType -> mttType -> mttType.
+type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
+
+%%%and
+
+isType (and B C) KIND IE
+    :- isType B KIND1 IE
+    ,  (isType C KIND2 IE)
+    ,  (pts_prop KIND1 KIND2 KIND)
+    .
+    
+of (pair_and B C BB CC) (and B C) IE 
+    :- isType B _ IE
+    ,  (isa BB B IE)
+    ,  (isa CC C IE)
+    ,  (pi x\ locDecl x B => isType (C x) _ IE)
+    .
+
+of (p1_and Pair) B IE 
+    :- of Pair (and B C) IE
+    .
+of (p2_and Pair) C IE 
+    :- of Pair (and B C) IE
+    .
+
+hstep (p1_and Pair) (Bb) :- hnf Pair (pair_and B C Bb Cc).
+
+dconv (pair_and B C Bb Cc) (pair_and B' C' Bb' Cc')
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    ,  (conv Bb Bb')
+    ,  (conv Cc Cc')
+    .
+dconv (p1_and Pair) (p1_and Pair') 
+    :- (of Pair (and B C) IE)
+    ,  (conv Pair Pair')
+    .
+
+dconv (and B C) (and B' C') 
+    :- (conv B B')
+    ,  (conv C C')
+    .%%-- calc/colSigma.elpi
+
+%% STRONG INDEXED COL SUM
+
+type colSigma mttType -> (mttTerm -> mttType) -> mttType.
+type pair mttType ->  (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
+type elim_colSigma mttTerm -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
+
+
+isType (colSigma B C) KIND IE 
+    :- spy(isType B KIND1 IE)
+    ,  spy(pi b\ locDecl b B => isType (C b) KIND2 IE)
+    ,  (pts_fun KIND1 KIND2 KIND)
+    .
+
+of (pair B C BB CC) (colSigma B C) IE 
+    :- isType B _ IE
+    ,  isType (C BB) _ IE
+    ,  isa BB B IE
+    ,  isa CC (C BB) IE
+    .
+
+of (elim_colSigma Pair M MM) (M Pair) IE 
+    :- spy (of Pair (colSigma B C) IE)
+    ,  spy (pi z \ locDecl z (colSigma B C) => isType (M z) _ IE)
+    ,  spy (pi x \ pi y \
+            locDecl x B => locDecl y (C x) =>  
+                isa (MM x y) (M (pair B C x y)) IE )
+    .
+
+hstep (elim_colSigma Pair M Mm) (Mm Bb Cc) 
+    :- spy(hnf Pair (pair B C Bb Cc))
+    ,  spy(isa Bb B _)
+    ,  spy(isa Cc (C Bb) _)
+    ,  spy(pi z\ locDecl z (colSigma B C) => isType (M z) _ IE)
+    ,  spy(pi x \ pi y \
+        locDecl x B  => locDecl y (C x) =>  
+            isa (Mm x y) (M (pair B C x y))  IE)
+    .
+
+
+dconv (colSigma B C) (colSigma B' C') :- (conv B B'), (pi x\ locDecl x B => conv (C x) (C' x)).
+dconv (pair B C BB CC) (pair B' C' BB' CC') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    ,  (conv BB BB)
+    ,  (conv CC CC')
+    .
+
+dconv (elim_colSigma Pair M MM) (elim_colSigma Pair' M' MM') 
+    :- (conv Pair Pair')
+    ,  (of Pair (colSigma B C))
+    ,  (pi z\ locDecl z (colSigma B C) => conv (M z) (M' z))
+    ,  (pi x\ pi y\  locDecl x B => locDecl y (C x) => conv (MM x y) (MM' x y))
+    .
+%% calc_Eq.elpi
+
+
+type propEq mttType -> mttTerm -> mttTerm -> mttType.
+type eqId   mttType -> mttTerm -> mttTerm.
+
+pts_eq K props :- pts_leq K set, !.
+pts_eq _ propc.
+
+isType (propEq A AA1 AA2) KIND ext 
+    :- isType A KIND' ext
+    ,  pts_eq KIND' KIND
+    ,  isa AA1 A ext
+    ,  isa AA2 A ext
+    .
+
+
+of (eqId C Cc) (propEq C Cc Cc) ext
+    :-  spy(of Cc C ext)
+    .
+
+
+
+%dstep A B :- of _ ()
+
+dconv (propEq A AA1 AA2) (propEq A' AA1' AA2') :- spy(conv A A'), spy(conv AA1 AA1'), spy (conv AA2 AA2').
+
+dconv (eqId A AA) (eqId A' AA') :- conv A A', conv AA AA'.
+
+
+trad (propEq A Aa1 Aa2) R 
+    :- spy(equ A EquA)
+    ,  spy(trad_isa Aa1 A Aa1')
+    ,  spy(trad_isa Aa2 A Aa2')
+    ,  spy(R = (EquA Aa1' Aa2'))
+    .
+
+trad (eqId  A Aa)  T
+    :- spy(reflu A ReflA)
+    ,  spy(trad Aa Aa')
+    ,  T = (ReflA Aa') 
+    .
+reflu (propEq _ _ _) (_\id singleton star).
+equ (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
+
+pippo (propEq T_ T1 T2) (propEq T T1' T2') (F)
+    :- spy(pippoequ T1 T1' T F1)
+    ,  spy(pippoequ T2 T2' T F2)
+    ,  spy(trad_isa T1 T T1i)
+    ,  spy(trad_isa T2 T T2i)
+    ,  spy(trad_isa T1' T T1i')
+    ,  spy(trad_isa T2' T T2i')
+    ,  spy(trad T Ti)
+    ,  F = x\ impl_app ( 
+                impl_app ( 
+                 forall_app ( 
+                  forall_app ( 
+                   impl_app ( 
+                    forall_app ( 
+                     forall_app (k_propId T) T1i) T1i') F1) T2i) T2i') F2) x
+    .
+pippo_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
+
+
+
+pippoequ  _ _ (propEq T A B) (id singleton star).
+
+type exist mttType -> (mttTerm -> mttType) -> mttType.
+type and mttType -> mttType -> mttType.
+type pair_exist mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
+
+%%%Exist
+
+isType (exist B C) KIND IE
+    :- isType B KIND1 IE
+    ,  (pi x\ locDecl x B  => isType (C x) KIND2 IE)
+    ,  pts_for KIND1 KIND2 KIND
+    .
+    
+of (pair_exist B C BB CC) (exist B C) IE 
+    :- isType B _ IE
+    ,  (isa BB B IE)
+    ,  (isa CC (C BB) IE)
+    ,  (pi x\ locDecl x B => isType (C x) _ IE)
+    .
+
+of (elim_exist Pair M MM) M IE 
+    :- of Pair (exist B C) IE
+    ,  isType M KIND IE
+    ,  pts_leq KIND propc
+    ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
+                of (MM x y) M IE)
+    .
+
+hstep (elim_exist W M MM) (MM Bb Cc) 
+    :- hnf W (pair_exist B C Bb Cc)
+    ,  isa Bb B IE
+    ,  isa Cc (C Bb) IE
+    ,  (pi x \ pi y \ locDecl x B => of y (C x) =>  
+            of (MM x y) M IE)
+    .
+
+dconv (pair_exist B C Bb Cc) (pair_exist B' C' Bb' Cc')
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    ,  (conv Bb Bb')
+    ,  (conv Cc Cc')
+    .
+dconv (elim_exist Pair M Mm) (elim_exist Pair' M' Mm') 
+    :- (conv Pair Pair')
+    ,  (of Pair (exist B C) IE)
+    ,  (pi x\ pi y\ locDecl x B => locDecl y (C x)
+        => conv (Mm x y) (Mm' x y))
+    ,  (conv M M')
+    .
+
+dconv (exist B C) (exist B' C') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x A => conv (C x) (C' x))
+    .
+
+%%-- calc_setPi.elpi
+
+type forall     mttType -> (mttTerm -> mttType) -> mttType.
+type forall_lam mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type forall_app mttTerm -> mttTerm -> mttTerm.
+
+isType (forall B C) KIND3 IE 
+    :- spy(isType B KIND IE)
+    ,  spy(pi x\ locDecl x B  => spy(isType (C x) KIND' IE))
+    ,  spy(pts_for KIND KIND' KIND3)
+    .
+
+of (forall_lam B F) (forall B C) IE
+    :- (isType B _ IE)
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
+    .
+
+of (forall_app Lam X) (C X) IE 
+    :- isa (Lam) (forall B C) IE
+    ,  isa X B IE
+    .
+
+
+hstep (forall_app LAM Bb) (F Bb) 
+    :- hnf LAM (forall_lam B F)
+    ,  isType B _ IE
+    ,  isa Bb B IE
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE )
+    ,  (pi x\ locDecl x B => isType (C x) KIND IE )
+    .
+
+dconv (forall B C) (forall B' C') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    .
+dconv (forall_app F X) (forall_app F' X') :- (conv F F'), (conv X X').
+dconv (forall_lam B F) (forall_lam B' F') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B =>
+                (conv (F x) (F' x))
+       )
+    .
+
+
+
+
+trad (forall B C) (forall B' C') :-
+        spy (trad B B'),
+        spy (pi x\ pi x' \ trad x x' => locDecl x B => locDecl x' B' => trad (C x )(C'  x')).
+
+
+type propId mttType -> mttTerm -> mttTerm -> mttType.
+type id     mttType -> mttTerm -> mttTerm.
+type elim_id    mttTerm 
+            -> (mttTerm -> mttTerm -> mttType) 
+            -> (mttTerm -> mttTerm)
+            -> mttTerm.
+
+%-- calc_id.elpi
+
+isType (propId A AA1 AA2) KIND IE 
+    :- isa AA1 A int
+    ,  isa AA2 A int
+    ,  isType A KIND1 int
+    ,  (spy(pts_leq KIND1 set , KIND = props), ! 
+       ;  KIND = propc)
+    .
+
+of (id A AA) (propId A AA AA) int 
+    :- isType A _ int
+    ,  isa AA A int
+    .
+
+of (elim_id P C CC) (C AA1 AA2) int
+    :- (of P (propId A AA1 AA2) int)
+    , (pi x\ pi y\ locDecl x A => locDecl y A => isaT (C x y) propc int)
+    , (pi x\ locDecl x A => of (CC x) (C x x) int)
+    .
+
+hstep (elim_id (id A AA) C CC) (CC AA)
+    :- (isa AA A int)
+    ,  (pi x\ pi y\ locDecl x A => locDecl y A => isaT (C x y) propc int)
+    ,  (pi x\ locDecl x A => of (CC x) (C x x) int)
+    .
+
+dconv (id A AA) (id A' AA') :- (conv A A'),(conv AA AA').
+
+dconv (propId A AA1 AA2) (propId A' AA1' AA2') :- spy (conv A A'), spy (conv AA1 AA1'), spy(conv AA2 AA2').
+
+%%-- implies.elpi
+
+type implies    mttType -> mttType -> mttType.
+type impl_lam   mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type impl_app   mttTerm -> mttTerm -> mttTerm.
+
+
+isType (implies B C) KIND IE
+    :- isType B KIND IE
+    ,  (pi x\ locDecl x B => isType C KIND IE)
+    .
+
+of (impl_lam B F) (implies B C) IE
+    :- (isaT B propc IE)
+    ,  (isaT C propc IE)
+    ,  (pi x\ locDecl x B => isa (F x) C IE)
+    .
+
+of (impl_app Lam X) C IE
+    :- spy(isa Lam (implies B C) IE)
+    ,  spy(isa X B IE)
+    .
+
+hstep (impl_app LAM Bb) (F Bb)
+    :- hnf LAM (impl_lam B F)
+    ,  isType B KIND IE
+    ,  (pts_leq KIND propc)
+    ,  isa Bb B IE
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE )
+    ,  (pi x\ locDecl x B => isType (C x) KIND' IE )
+    ,  pts_leq KIND' propc
+    .
+
+        
+dconv (implies B C) (implies B' C') :- (conv B B'), (conv C C').
+dconv (impl_app F X) (impl_app F' X') :- (conv F F'), (conv X X').
+dconv (impl_lam B F) (impl_lam B' F') 
+    :- (conv B B')
+    ,  pi x\ locDecl x B =>
+                (conv (F x) (F' x)).
+
+
+
+
+
+
+
+
+trad (implies B C) (forall B' C') 
+    :- trad B B'
+    ,  spy(pi x\ pi x'\ 
+        (  trad x x'
+        ,  locDecl x B
+        ,  locDecl x' B') 
+            =>  trad C (C' x')
+    )
+    .
+type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
+
+of (letIn T M N) T' ext :- 
+spy(    isaT T propc ext),
+spy(    isa M T ext), 
+spy(    pi x \ locDecl x T =>  of (N x) T' ext).
+
+
+isType (letIn KIND1 T S) KIND2 ext :- 
+spy(    isaT T KIND1 ext), 
+spy(    pi x \ locDecl x KIND1 =>  isType  (N x) KIND2 ext).
+
+
+
+%hstep (letIn T M N) (N M) :-
+%    of (letIn T M N) _ ext.
+
+
+
+
+/*
+hstep (letIn (locDef X T M) N) N'
+    :-  locDef X T M
+    =>  conv N N'
+    .
+*/
+%hstep (letIn T M N) (N M).
+
+/*
+syntax direcyed
+conv extensionae
+xi rule
+*/
+
+
+
+type or mttType -> mttType -> mttType.
+type inl_or, inr_or mttType -> mttType -> mttTerm -> mttTerm.
+type elim_or mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+
+isType (or A B) KIND IE 
+    :- isType A KIND1 IE
+    ,  isType B KIND2 IE
+    ,  (pts_prop KIND1 KIND2 KIND).
+
+of (inr_or A B Bb) (or A B) IE 
+    :- isType B _ IE
+     , isType A _ IE
+     , (isa Bb B IE)
+     .
+
+of (inl_or A B Aa) (or A B) IE  
+    :- isType A _ IE
+     , isType B _ IE
+     , (isa Aa A IE)
+     .
+
+of (elim_or C W Cl Cr) C IE 
+    :- spy (of W (or A B) IE)
+     , spy (isType (or A B) _ IE) 
+     , spy (pi z\ locDecl z (or A B) => isType C KIND IE)
+     , spy (pi x\ locDecl x A => spy(isa (Cl x) C IE) ) 
+     , spy (pi y\ locDecl y B => isa (Cr y) C IE) 
+     .
+
+hstep (elim_or C W Cl Cr) (Cl Wl) 
+    :- (hnf W (inl_or A B Wl))
+    ,  (isa W (or A B) IE)
+    ,  (pi z\ locDecl z (or A B) => isType C KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) C IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) C IE)
+    .
+
+hstep (elim_or C W Cl Cr) (Cr Wr)
+    :- (hnf W (inr_or A B Wr))
+    ,  (isa W (or A B) IE)
+    ,  (pi z\ locDecl z (or A B) => isType C KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) C IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) C IE)
+    .
+
+dconv (elim_or C W Cl Cr) (elim_or C' W' Cl' Cr')
+    :- (conv W W')
+    ,  (of W (or A B) IE)
+    ,  (pi z \ locDecl z (or A B) => (conv C C') )
+    ,  (pi z \ locDecl z (or A B) => (conv (Cl z) (Cl' z) ) )
+    ,  (pi z \ locDecl z (or A B) => (conv (Cr z) (Cr' z) ) )
+    .
+%%-- calc_setPi.elpi
+
+type setPi mttType -> (mttTerm -> mttType) -> mttType.
+type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type app mttTerm -> mttTerm -> mttTerm.
+
+
+
+isType (setPi B C) KIND3 IE
+    :- (isType B KIND1 IE)
+    ,  (pi x\ locDecl x B
+        => (isType (C x) KIND2 IE))
+    ,  spy(pts_fun KIND1 KIND2 KIND3)
+    .
+
+of (lambda B F) (setPi B C) IE
+    :- spy (isType B _ IE)
+    ,  spy (pi x\ locDecl x B => isa (F x) (C x) IE)
+    .
+
+of (app Lam X) (CX) IE
+    :- spy(of Lam (setPi B C) IE)
+    ,  spy(isa X B IE)
+    ,  CX = C X
+    .
+
+
+hstep (app LAM Bb) (F Bb)
+    :- of LAM (setPi B C) IE
+    ,  (isType B _ IE)
+    ,  (isa Bb B IE)
+    ,  hnf LAM (lambda B' F)
+    ,  conv B B'
+    ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
+    ,  (pi x\ locDecl x B => isType (C x) _ IE)
+    .
+
+dconv (setPi B C) (setPi B' C') 
+    :- (conv B B')
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
+    .
+dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
+dconv (lambda B F) (lambda B' F') 
+    :- (conv B B')
+    ,  pi x\  locDecl x B => (conv (F x) (F' x))
+    .
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   TRADUZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+trad (setPi B C) T 
+    :- spy(trad B Bi)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+    ,  spy(equ B EquB)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => equ (C x) (EquC xi))
+    ,  spy(pi x1 \ pi x2 \ pi h\
+        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
+        => locDecl x1i Bi
+        => locDecl x2i Bi
+        => trad x1 x1i
+        => trad x2 x2i
+        => (locDecl h (propEq B x1 x2)) 
+        => (locDecl hi (EquB x1i x2i))
+        => trad h hi
+        => spy(pippo (C x1) (C x2) (PippoC x1i x2i hi)))
+    ,  T = colSigma (setPi Bi Ci) f\ (forall (Bi) x1\ (forall Bi x2\ (forall (EquB x1 x2) h\
+    (
+            EquC x2 
+            (
+                PippoC x1 x2 h (app f x1)
+            ) 
+            (app f x2)
+    )
+    )
+    
+    ) )
+    .
+
+
+
+
+trad (app F X) R 
+    :- spy(of F (setPi B C) ext)
+    ,  spy(trad_isa X B Xi)
+    ,  spy(trad F Fi)
+    ,  spy(of Fi T int)
+    ,  spy(T = (colSigma PI _))
+    ,  R = (app (elim_colSigma Fi (_\PI) (x\y\x) ) Xi)
+    .
+
+
+trad (lambda B F) R                
+    :- spy(of (lambda B F) (setPi B C) ext)
+    ,  spy(trad (setPi B C) (colSigma (setPi Bi Ci) H ))
+    ,  macro_trad B ( x\_\_\xi\_\_\ trad (F x) (Fi xi))
+    ,  equ B EquB
+    ,  macro_trad B (x1\x2\h\x1i\x2i\hi\pippoequ (F x1) (F x2) (C x2) (K_EQU x1i x2i hi))
+    ,  R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
+        (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
+            K_EQU x1 x2 h)
+    .
+
+
+equ (setPi B C) P
+    :- spy(trad B Bi)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => trad x xi => trad (C x) (Ci xi))
+    ,  spy(pi x\ pi xi\locDecl x B 
+        => locDecl xi Bi
+            => trad x xi
+                => (trad (C x) (Ci xi), equ (C x) (EquC xi)))
+    ,  P = (f\ g\ 
+        forall Bi x\ 
+            EquC x 
+            (app (elim_colSigma f (_\setPi Bi Ci) (x\y\x) ) x) 
+            (app (elim_colSigma g (_\setPi Bi Ci) (x\y\x) ) x))
+    .
+
+pippoequ (app F X1) (app F X2) T H 
+    :- of F (setPi B T') ext
+    ,  spy(pippoequ X1 X2 B G)
+    ,  spy(trad F Fi)
+    ,  spy(of Fi (colSigma TyF MorF) int)
+    ,  PI1 = (c\ elim_colSigma c (_\ TyF) (x \ y\ x))
+    ,  P2Fi = elim_colSigma Fi (c \ MorF (PI1 c)) (x\ y\ y)
+    ,  spy(trad_isa X1 B X1i)
+    ,  spy(trad_isa X2 B X2i)
+    ,  spy(pippo  (propEq (T' X2) (app F X1) (app F X2))
+               (propEq (T) (app F X1) (app F X2)) PIPPO)
+    ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
+    . 
+
+pippo (setPi B C) (setPi B' C') P
+    :- spy(trad (setPi B C) (colSigma T1 T2))
+    ,  spy(T1 = setPi Bi Ci)
+    ,  spy(trad (setPi B' C') (colSigma T1' T2'))
+    ,  spy(T1' = setPi Bi' Ci')
+    ,  spy(equ B' EquB')
+    ,  spy(macro_trad B (_\x2\_\_\x2i\_\ equ (C x2) (EquC x2i)))
+    ,  spy(pippo B' B FB)
+    ,  spy(macro_pippo B B' 
+        (x\x'\_\xi\xi'\_\ pippo (C x) (C' x') (FC' xi xi')))
+    ,  spy(macro_trad B (x1\x2\_\x1i\x2i\_\ pippo (C x1) (C x2) (FCC x1i x2i)))
+    ,  spy(pippo_trasp B' B KB)
+    ,  spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi' hi))
+    ,  P = 
+        (w\ elim_colSigma w (_\colSigma T1' T2')
+            f\p\ pair T1' T2'
+                (lambda Bi' x\ FC' (FB x) x (app f (FB x)))
+                (forall_lam Bi' y1'\ forall_lam Bi' y2'\ forall_lam (EquB' y1' y2') d'\
+                    KC' (FB y2') 
+                        y2' 
+                        d' 
+                        (FCC (FB y1') (FB y2') (app f (FB y1')))
+                        (app f (FB y2'))
+                        (forall_app
+                          (forall_app
+                            (forall_app p (FB y1'))
+                            (FB y2'))
+                          (KB y1' y2' d')
+                         )
+                )
+        ) 
+    . 
+
+pippo_trasp (setPi B C) (setPi B' C') P 
+    :- spy(macro_pippo B B' x\x'\_\xi\xi'\hi\ pippo_trasp (C x) (C' x') (KC' xi xi' hi))
+    ,  spy(pippo B' B FB)
+    ,  P = f\g\d\ forall_lam B' y'\ 
+            KC' (FB y') 
+                y'
+                d
+                (app f (FB y'))
+                (app g (FB y'))
+                (forall_app d (FB y'))
+                
+    .
+
+
+macro_pippo B B' Q 
+    :- spy(equ B EquB)
+    ,  spy(trad B Bi)
+    ,  spy(trad B' Bi')
+    ,  spy(pi x1 \ pi x2 \ pi h\
+        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
+        => locDecl x1i Bi
+        => locDecl x2i Bi'
+        => trad x1 x1i
+        => trad x2 x2i
+        => (locDecl h (propEq B x1 x2)) 
+        => (locDecl hi (EquB x1i x2i))
+        => trad h hi
+        => spy(Q x1 x2 h x1i x2i hi)
+        ) 
+    . 
+macro_trad B Q 
+    :- spy(equ B EquB)
+    ,  spy(trad B Bi)
+    ,  spy(pi x1 \ pi x2 \ pi h\
+        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
+        => locDecl x1i Bi
+        => locDecl x2i Bi
+        => trad x1 x1i
+        => trad x2 x2i
+        => (locDecl h (propEq B x1 x2)) 
+        => (locDecl hi (EquB x1i x2i))
+        => trad h hi
+        => spy(Q x1 x2 h x1i x2i hi)
+        )
+    .%%%
+
+%%-- calc_setSum.elpi
+
+type setSum mttType -> mttType -> mttType.
+type inl, inr mttType -> mttType -> mttTerm -> mttTerm.
+type elim_setSum mttType -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+%%Disjoint Sum Type
+
+isType (setSum A B) KIND IE :- isType A KIND1 IE, isType B KIND2 IE,
+    pts_fun KIND1 KIND2 KIND.
+
+of (inr A B Bb) (setSum A B) IE 
+    :- isType B _ IE
+     , isType A _ IE
+     , isa Bb B IE
+     .
+
+of (inl A B Aa) (setSum A B) IE  
+    :- isType A _ IE
+     , isType B _ IE
+     , isa Aa A IE
+     .
+
+of (elim_setSum C W Cl Cr) (C W) IE 
+    :- spy (of W (setSum A B) IE)
+     , spy (isType (setSum A B) _ IE) 
+     , spy (pi z\ locDecl z (setSum A B) => isType (C z) KIND IE)
+     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inr A B x)) IE) ) 
+     , spy (pi y\ locDecl y B => isa (Cr y) (C (inl A B y)) IE) 
+     .
+
+hstep (elim_setSum C W Cl Cr) (Cl Wl) 
+    :- hnf W (inl A B Wl)
+    ,  isa W (setSum A B) IE
+    ,  (pi z\ locDecl z (setSum A B) => isType (C z) KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE)
+    .
+hstep (elim_setSum C W Cl Cr) (Cr Wr) 
+    :- hnf W (inr A B Wr)
+    ,  isa W (setSum A B) IE
+    ,  (pi z\ locDecl z (setSum A B) => isType (C z) KIND IE)
+    ,  (pi x\ locDecl x A IE => isa (Cl x) (C (inr A B x)) IE) 
+    ,  (pi y\ locDecl y B IE => isa (Cr y) (C (inl A B y)) IE)
+    .
+
+dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
+    :- (conv W W')
+    ,  (of W (setSum A B) IE)
+    ,  (pi z \ locDecl z (setSum A B) => (conv (C z) (C' z) ) )
+    ,  (pi z \ locDecl z (setSum A B) => (conv (Cl z) (Cl' z) ) )
+    ,  (pi z \ locDecl z (setSum A B) => (conv (Cr z) (Cr' z) ) )
+    .
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+%%-- calc_setSum.elpi
+
+%%Disjoint Sum Type
+
+isType (setSum A B) set :- isType A set, isType B set.
+
+of (inr A B BB) (setSum A B) int :- isType B set, isType A set, isa BB B int.
+
+of (inl A B AA) (setSum A B) int :- isType A set, isType B set, isa AA A int.
+
+of (elim_setSum C W Cl Cr) (CW) int :- 
+    of W (setSum A B) int,
+    (pi z\ of z (setSum A B) int => isType (C z) set),
+    (pi x\ of x A int => of (Cl x) (C (inr A B x)) int) ,
+    (pi y\ of y B int => of (Cr y) (C (inl A B y)) int) ,
+    CW = C W.
+
+hstep (elim_setSum C W Cl Cr) (Cl Wl) :- hnf W (inl A B Wl).
+hstep (elim_setSum C W Cl Cr) (Cr Wr) :- hnf W (inr A B Wr).
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C W' Cl Cr) :- dstep W W'.
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl' Cr) :- 
+    pi w\ of w (setSum A B) int => dstep (Cl w) (Cl' w).
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C W Cl Cr') :- 
+    pi w\ of w (setSum A B) int => dstep (Cr w) (Cr' w).  
+
+dstep (elim_setSum C W Cl Cr) (elim_setSum C' W Cl Cr) :- 
+    pi w\ of w (setSum A B) int => dstep (C w) (C' w).  
+
+
+dstep (inl A B AA) (inl A B AA') :- dstep AA AA'.
+dstep (inr A B BB) (inr A B BB') :- dstep BB BB'.
+
+
+%%% Interpretation
+
+trad (setSum A B) (setSum Ai Bi)  :- trad A Ai, trad B Bi.
+trad (inl A B AA) (inl Ai Bi AAi) :- trad A Ai, trad B Bi, tau' A AA AAi.
+trad (inr A B BB) (inr Ai Bi BBi) :- trad A Ai, trad B Bi, tau' B BB BBi.
+
+trad (elim_setSum C W Cl Cr) (elim_setSum Ci Wi Cli Cri) :- 
+    of W (setSum A B) ext,
+    tau' (setSum A B) W Wi,
+    (pi x\ of x (setSum A B) int => trad (C x) (Ci x) ),
+    (pi a\ of a A int => tau' (C (inl A B a)) (Cl a) (Cli a)),
+    (pi b\ of b B int => tau' (C (inl A B b)) (Cr b) (Cri b)).
+
+sigm X Y :- of X (setSum A B) int,
+    (pi a\ of a A int, sigm (Cl a) (Cl' a)),
+    (pi b\ of b B int, sigm (Cr b) (Cr' b)),
+    Y = elim_setSum (setSum A B) X Cl' Cr'.
+
+
+%%equ --     non sono sicuro di che cosa dica il teorema 4.20 
+qwe12.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+*/%%-- calc_singleton.elpi
+
+%ofType star singleton set IE.
+
+type  singleton mttType.
+type  star mttTerm.
+type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
+
+isType singleton set IE.
+
+of star singleton IE.
+
+of (elim_singleton Star C Cc) (C Star) IE :-
+    of Star singleton IE,
+    of Cc (C star) IE,
+    (pi z\ locDecl z singleton => isType (C z) col IE).
+
+hstep (elim_singleton star C Cc) Cc :-
+    of Cc (C star) IE,
+    (pi z\ locDecl z singleton => isType (C z) col IE ).
+
+dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC CC',
+    (pi z\ locDecl z singleton => conv (C z) (C' z)).
+
+
+
+equ singleton (x\ y\ propId singleton x y).
+reflu singleton (x\ id singleton x).
+
+
+
+trad singleton singleton.
+trad star star.
+
+
+
+
+
