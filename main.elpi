@@ -58,7 +58,7 @@ pts_for _ _ propc.
 
 %ofType A KIND IE :- locDeclType A KIND .
 
-isaT Type Kind IE :-
+isaType Type Kind IE :-
 spy ( ofType Type Kind' IE),
 spy  (pts_leq  Kind' Kind).
 
