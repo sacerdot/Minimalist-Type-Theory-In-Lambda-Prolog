@@ -37,11 +37,11 @@ interp (propEq A Aa1 Aa2) R
     .
 
 interp (eq  A Aa)  T
-    :- spy(reflu A ReflA)
+    :- spy(setoid_refl A ReflA)
     ,  spy(interp Aa Aa')
     ,  T = (ReflA Aa') 
     .
-reflu (propEq _ _ _) (_\id singleton star).
+setoid_refl (propEq _ _ _) (_\id singleton star).
 setoid_eq (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)

@@ -118,9 +118,10 @@ pts_for _ _ propc.
 
 %ofType A KIND IE :- locDeclType A KIND .
 
-isaType Type Kind IE :-
-spy ( ofType Type Kind' IE),
-spy  (pts_leq  Kind' Kind).
+isaType Type Kind IE 
+    :- spy(ofType Type Kind' IE)
+    ,  spy(pts_leq  Kind' Kind)
+    .
 
 of (fixMe2 M T ) T int 
     :- !
@@ -139,9 +140,10 @@ isa (fixMe M) T int
     .
  
 
-isa Term TY IE :-
-spy    (of Term TY' IE),
-spy    (conv TY' TY).
+isa Term TY IE 
+    :- spy(of Term TY' IE)
+    ,  spy(conv TY' TY)
+    .
  
 
 of X Y _ :-  locDecl X Y .
@@ -149,7 +151,7 @@ of X Y _ :-  locDecl X Y .
 
 tau_proof_eq A A T H'
     :- interp_isa A T Ai
-    ,  reflu T H
+    ,  setoid_refl T H
     ,  H' = H Ai
     .
 tau_proof_eq A B T Hi
@@ -160,7 +162,7 @@ tau_proof_eq A B T Hi
 tau_proof_eq A B T Hi
     :- (locDecl H (propEq T' B A))
     ,  spy(interp_isa H (propEq T B A) Hi')
-    ,  spy (symmu T Q)
+    ,  spy (setoid_symm T Q)
     ,  Hi = Q Hi'
     .
 
@@ -187,7 +189,7 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
                 .
 
  
-symmu T (x\ fixMe "prova di symmetria").
+setoid_symm T (x\ fixMe "prova di symmetria").
 
 
 
