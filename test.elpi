@@ -1,12 +1,19 @@
 accumulate debug.
 
- 
-accumulate interp.
- 
 accumulate main.
 
-accumulate calc.
-
+accumulate calc/setPi.
+accumulate calc/setSigma.
+accumulate calc/and.
+accumulate calc/propEq.
+accumulate calc/forall.
+accumulate calc/exist.
+accumulate calc/propId.
+accumulate calc/implies.
+accumulate calc/letIn.
+accumulate calc/or.
+accumulate calc/setSum.
+accumulate calc/singleton.
 
 
 test m A Q Qy
