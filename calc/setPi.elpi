@@ -46,7 +46,7 @@ dconv (setPi B C) (setPi B' C')
 dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
 dconv (lambda B F) (lambda B' F') 
     :- (conv B B')
-    ,  pi x\  locDecl x B => (conv (F x) (F' x))
+    %,  pi x\  locDecl x B => (conv (F x) (F' x))
     .
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
