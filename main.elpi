@@ -8,9 +8,7 @@ type and mttType -> mttType -> mttType.
 type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
 type p1_and, p2_and mttTerm -> mttTerm.
 
-
 %%-- dependet sums: setSigma
-
 type setSigma mttType -> (mttTerm -> mttType) -> mttType.
 type pair mttType ->  (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 type elim_setSigma mttTerm -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
@@ -21,7 +19,6 @@ type pair_exist mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm
 type elim_exist mttTerm -> mttType -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
 
 %%-- universal quantifier: forall
-
 type forall     mttType -> (mttTerm -> mttType) -> mttType.
 type forall_lam mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type forall_app mttTerm -> mttTerm -> mttTerm.
@@ -70,21 +67,25 @@ type hstep, dconv, hnf,  conv, interp A -> A -> prop.
  
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.
-type ext, int               mttLevel.
-type col, set, propc, props mttKind.
-
-
+type ext, int               mttLevel.				%% intensional and extensional predicates
+type col, set, propc, props mttKind.				%% types can be collections, sets, propositions
+     	       	      	    					%% or small propositions   
+%% adds a typed term to the context
 type locDecl            mttTerm -> mttType -> prop.
+%% adds a type of a certain kind to the context
 type locDeclType        mttType -> mttKind -> prop.
+
+%% given a type, returns its specific kind
 type ofType             mttType -> mttKind -> mttLevel -> prop.
+
+%% "of" computes the type of a term
+%% "isa" checks if a term has type T, that is, if it is of some type T' such that T converts to T' (via conv)
 type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 
+%% !!!UNUSED
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
 
-type forall mttType -> (mttTerm -> mttType) -> mttType.
-
- 
-
+%% conversion to (weak) head-normal form WHNF
 hnf A B :- hstep A C, !, hnf C B.
 hnf A A.
 
@@ -92,12 +93,15 @@ hnf A A.
 %nf A B :- spy (dstep A C), !, spy(nf C B). %con le regole di eq dstep è diventata riflessiva, 
 %nf A A.                         % ho aggiunto il not in eq.elpi per evitare che ciò accada
 
+%% Expresses (extensional) equality between two types. Checks if they have the same WHNF, in which case
+%% it calls itself recursively (via dconv) on all the subterms of the WHNF
 conv A A :- ! .
 conv A B :- (locDecl _ (propEq _ A B) ).
 conv A B :- spy(hnf A A'), spy( hnf B B'), spy( dconv A' B').
 
 dconv A A :- !.
- 
+
+%% rules summarizing all different embeddings between the four kinds of types
 pts_leq A A.
 pts_leq props set.
 pts_leq props col.
@@ -105,16 +109,17 @@ pts_leq props propc.
 pts_leq set col.
 pts_leq propc col.
 
-
+%% determines kind of a proposition type
 pts_prop props props props :- !.
 pts_prop _ _ propc.
 
+%% determines kind of a function type
 pts_fun A B set :- spy(pts_leq A set), spy(pts_leq B set), !.
 pts_fun _ _ col.
 
+%% determines kind of a universal quantifier
 pts_for A props props :- pts_leq A set, !.
 pts_for _ _ propc. 
-
 
 %ofType A KIND IE :- locDeclType A KIND .
 
@@ -122,23 +127,6 @@ isaType Type Kind IE
     :- spy(ofType Type Kind' IE)
     ,  spy(pts_leq  Kind' Kind)
     .
-
-of (fixMe2 M T ) T int 
-    :- !
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    ,  print M
-    ,  term_to_string T S, print S
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    .
-
-isa (fixMe M) T int 
-    :- !
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    ,  print M
-    ,  term_to_string T S, print S
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    .
- 
 
 isa Term TY IE 
     :- spy(of Term TY' IE)
@@ -148,18 +136,41 @@ isa Term TY IE
 
 of X Y _ :-  locDecl X Y .
 
+%% !!!DEBUG mock typing of term M, returns chosen type T
+of (fixMe2 M T ) T int 
+    :- !
+    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    ,  print M
+    ,  term_to_string T S, print S
+    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    .
 
+%%% !!!DEBUG mock type-checking of term M as a term of type T
+isa (fixMe M) T int 
+    :- !
+    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    ,  print M
+    ,  term_to_string T S, print S
+    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    .
+
+%% Functions used in interpretation of extensionally equivalent (conv) types. These cover general/
+%% degenerate cases, while the specific rules (for specific types) appear in their respective modules
+
+%% returns method to generate a proof for the equality of a term to itself
 tau_proof_eq A A T H'
     :- interp_isa A T Ai
-    ,  setoid_refl T H
-    ,  H' = H Ai
+    ,  setoid_refl T H		% H is a proof of reflexivity for the translation of type T
+    ,  H' = H Ai                % then applying H to the translation of A proves it equal to itself
     .
 
+%%  returns method to generate proof for the intensional equality, given a proof of the propositional one
 tau_proof_eq A B T Hi
-    :- spy(locDecl H (propEq T' A B)), !
-    ,  spy(interp_isa H (propEq T A B) Hi)
+    :- spy(locDecl H (propEq T' A B)), !         %% given a proof of the propositional equality between A and B
+    ,  spy(interp_isa H (propEq T A B) Hi)       %% the intensional one is its translation
     .
-
+    
+%% case with A and B inverted (using symetry in the translation of propEq over the translated of type T)
 tau_proof_eq A B T Hi
     :- (locDecl H (propEq T' B A))
     ,  spy(interp_isa H (propEq T B A) Hi')
@@ -167,8 +178,7 @@ tau_proof_eq A B T Hi
     ,  Hi = Q Hi'
     .
 
-
-
+%% constructing a function that, given int_terms of an int_type, returns int_terms of the same int_type (Identity!)
 tau A A (x \ x) :- !.
 
 tau_trasp A A (x\y\h\ h) :- !.
@@ -191,10 +201,6 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
 
  
 setoid_symm T (x\ fixMe "prova di symmetria").
-
-
-
-
 
 macro_tau B B' Q 
     :- spy(setoid_eq B EquB)
