@@ -15,6 +15,13 @@ accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
 
+quicktest 
+    :- (sigma A\ sigma B\ sigma C\ test l A B C)
+    ,  (sigma A\ sigma B\ sigma C\ test f A B C)
+    ,  (sigma A\ sigma B\ sigma C\ test g A B C)
+    ,  (sigma A\ sigma B\ sigma C\ test h A B C)
+    ,  (sigma A\ sigma B\ sigma C\ test i A B C)
+    . 
 
 test m A Q Qy
  :- Long = ( forall singleton x\
