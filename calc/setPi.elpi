@@ -46,9 +46,14 @@ dconv (setPi B C) (setPi B' C')
 dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
 dconv (lambda B F) (lambda B' F') 
     :- (conv B B')
-    %,  pi x\  locDecl x B => (conv (F x) (F' x))
+    
+    ,  ( pi x\ (conv (F x) (F' x))
+       ; F = F'
+       )
     .
-
+    %This was the previous conversion rule for lambda abstractions
+    %,  pi x\  locDecl x B => (conv (F x) (F' x)) 
+    
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                   TRADUZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

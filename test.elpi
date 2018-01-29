@@ -207,5 +207,3 @@ testE A B C
     , spy(interp Long B)
     , spy(ofType B C int)
     .
-
-
