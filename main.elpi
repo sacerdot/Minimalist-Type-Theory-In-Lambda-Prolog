@@ -202,7 +202,7 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
 setoid_refl T (x\ fixMe "prova di riflessivita'" (EquT x x) )
     :- spy(setoid_eq T EquT)
     .
-setoid_symm T (x\ y\ fixMe "prova di symmetria" (EquT x y) )
+setoid_symm T (x\ y\ h\ fixMe "prova di symmetria" (EquT y x) )
     :- spy(setoid_eq T EquT)
     .
 

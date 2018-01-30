@@ -27,11 +27,26 @@ tau_proof_eq star star singleton H
 
 setoid_eq singleton (x\ y\ propId singleton x y).
 setoid_refl singleton (x\ id singleton x).
+setoid_symm singleton P
+    :- P = (x\ y\ h\ elim_id h (a\ b\ propId singleton b a) (a\ id singleton a) )
+    ,  spy( pi x\ pi y\ pi h\ locDecl x singleton 
+        => locDecl y singleton 
+            => locDecl h (propId singleton x y) 
+                => of (P x y h) _ int
+        )
+    . % this structure should check that the handwritten proof term P is well typed
+    % it should in localizing errors.
 
 
 
 interp singleton singleton.
 interp star star.
+interp (elim_singleton T C CC) (elim_singleton Ti Ci CCi) 
+    :- spy(interp T Ti)
+    ,  spy(interp CC CCi)
+    ,  spy(pi x\ locDecl x singleton => spy(interp (C x) (Ci x)))
+    .
+
 
 
 
