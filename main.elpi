@@ -166,7 +166,7 @@ tau_proof_eq A A T H'
 
 %%  returns method to generate proof for the intensional equality, given a proof of the propositional one
 tau_proof_eq A B T Hi
-    :- spy(locDecl H (propEq T' A B)), !         %% given a proof of the propositional equality between A and B
+    :- spy(locDecl H (propEq _ A B)), !         %% given a proof of the propositional equality between A and B
     ,  spy(interp_isa H (propEq T A B) Hi)       %% the intensional one is its translation
     .
     

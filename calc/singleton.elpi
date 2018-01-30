@@ -23,6 +23,8 @@ tau_proof_eq star star singleton H
     :- setoid_refl singleton K
     ,  H = K star
     .
+tau_proof_eq (elim_singleton S C CC) (elim_singleton S' C' CC') (C S) H
+    :- ????????????????????????.......................
 
 
 setoid_eq singleton (x\ y\ propId singleton x y).
