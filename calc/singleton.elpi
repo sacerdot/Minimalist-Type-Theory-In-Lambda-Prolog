@@ -19,6 +19,10 @@ hstep (elim_singleton star C Cc) Cc
 dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC CC',
     (pi z\ locDecl z singleton => conv (C z) (C' z)).
 
+tau_proof_eq star star singleton H 
+    :- setoid_refl singleton K
+    ,  H = K star
+    .
 
 
 setoid_eq singleton (x\ y\ propId singleton x y).

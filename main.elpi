@@ -159,9 +159,9 @@ isa (fixMe M T) T int
 
 %% returns method to generate a proof for the equality of a term to itself
 tau_proof_eq A A T H'
-    :- interp_isa A T Ai
-    ,  setoid_refl T H		% H is a proof of reflexivity for the translation of type T
-    ,  H' = H Ai                % then applying H to the translation of A proves it equal to itself
+    :- spy(interp_isa A T Ai)
+    ,  spy(setoid_refl T H)		% H is a proof of reflexivity for the translation of type T
+    ,  spy(H' = H Ai)                % then applying H to the translation of A proves it equal to itself
     .
 
 %%  returns method to generate proof for the intensional equality, given a proof of the propositional one
@@ -172,10 +172,10 @@ tau_proof_eq A B T Hi
     
 %% case with A and B inverted (using symetry in the translation of propEq over the translated of type T)
 tau_proof_eq A B T Hi
-    :- (locDecl H (propEq T' B A))
+    :- spy(locDecl H (propEq T' B A))
     ,  spy(interp_isa H (propEq T B A) Hi')
     ,  spy (setoid_symm T Q)
-    ,  Hi = Q Hi'
+    ,  spy(Hi = Q Hi')
     .
 
 %% constructing a function that, given int_terms of an int_type, returns int_terms of the same int_type (Identity!)
@@ -219,7 +219,7 @@ macro_tau B B' Q
         => locDecl xi' Bi'
         => interp x xi
         => interp x' xi'
-        => (locDecl h (propEq B x' x')) 
+        => (locDecl h (propEq B x x')) 
         => (locDecl hi (EquB xi (FB xi')))
         => interp h hi
         => spy(Q x x' h xi xi' hi)
