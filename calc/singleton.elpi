@@ -23,8 +23,17 @@ tau_proof_eq star star singleton H
     :- setoid_refl singleton K
     ,  H = K star
     .
-tau_proof_eq (elim_singleton S C CC) (elim_singleton S' C' CC') (C S) H
-    :- ????????????????????????.......................
+%
+%Sono abbastanza sicuro che il proseguire con il metodo naive richiederebbe circa n^2 casi
+%    :- spy(macro_tau singleton singleton
+%        (x\x'\h\xi\xi'\hi\ tau (C' S') (C S) (FC xi xi' hi))
+%        )
+%    ,  spy(interp S Si)
+%    ,  spy(interp S' Si')
+%    ,  spy(tau_proof_eq S S' singleton HS)
+%    ,  spy(FC Si' Si HS (elim_singleton S' C CC') )
+%    ,  tau_proof_eq CC CC' C HCC
+%    ,  setoid
 
 
 setoid_eq singleton (x\ y\ propId singleton x y).
