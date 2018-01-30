@@ -47,12 +47,12 @@ dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
 dconv (lambda B F) (lambda B' F') 
     :- (conv B B')
     
-    ,  ( pi x\ (conv (F x) (F' x))
-       ; F = F'
-       )
-    .
     %This was the previous conversion rule for lambda abstractions
-    %,  pi x\  locDecl x B => (conv (F x) (F' x)) 
+    ,  pi x\  locDecl x B => (conv (F x) (F' x)) 
+    %,  ( pi x\ (conv (F x) (F' x))
+    %   ; F = F'
+    %   )
+    .
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                   TRADUZIONE                                   %%
@@ -149,22 +149,28 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(interp (setPi B' C') (setSigma T1' T2'))
     ,  spy(T1' = setPi Bi' Ci')
     ,  spy(setoid_eq B' EquB')
-    ,  spy(macro_interp B (_\x2\_\_\x2i\_\ setoid_eq (C x2) (EquC x2i)))
+    %,  spy(macro_interp B (_\x2\_\_\x2i\hi\ setoid_eq (C x2) (EquC x2i)))
     ,  spy(tau B' B FB)
     ,  spy(macro_tau B B' 
-        (x\x'\_\xi\xi'\_\ tau (C x) (C' x') (FC' xi xi')))
-    ,  spy(macro_interp B (x1\x2\_\x1i\x2i\_\ tau (C x1) (C x2) (FCC x1i x2i)))
+        (x\x'\h\xi\xi'\hi\ tau (C x) (C' x') (FC' xi xi' hi)))
+    ,  spy(macro_interp B (x1\x2\_\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)))
     ,  spy(tau_trasp B' B KB)
     ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_trasp (C x) (C' x') (KC' xi xi' hi))
+    ,  spy(setoid_refl B Hi)
+    ,  spy(pi y1'\ pi y2'\ pi d'\ 
+        locDecl y1' Bi' =>
+            locDecl y2' Bi' =>
+                locDecl d' (EquB y1' y2') =>
+                    tau_trasp Bi' Bi (FH y1' y2' d'))
     ,  P = 
         (w\ elim_setSigma w (_\setSigma T1' T2')
             f\p\ pair T1' T2'
-                (lambda Bi' x\ FC' (FB x) x (app f (FB x)))
+                (lambda Bi' x\ FC' (FB x) x (Hi x) (app f (FB x)))
                 (forall_lam Bi' y1'\ forall_lam Bi' y2'\ forall_lam (EquB' y1' y2') d'\
                     KC' (FB y2') 
                         y2' 
                         d' 
-                        (FCC (FB y1') (FB y2') (app f (FB y1')))
+                        (FCC (FB y1') (FB y2') (FH y1' y2' d') (app f (FB y1')))
                         (app f (FB y2'))
                         (forall_app
                           (forall_app

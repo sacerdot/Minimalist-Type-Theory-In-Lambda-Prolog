@@ -137,7 +137,7 @@ isa Term TY IE
 of X Y _ :-  locDecl X Y .
 
 %% !!!DEBUG mock typing of term M, returns chosen type T
-of (fixMe2 M T ) T int 
+of (fixMe M T ) T int 
     :- !
     ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     ,  print M
@@ -146,7 +146,7 @@ of (fixMe2 M T ) T int
     .
 
 %%% !!!DEBUG mock type-checking of term M as a term of type T
-isa (fixMe M) T int 
+isa (fixMe M T) T int 
     :- !
     ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     ,  print M
@@ -199,23 +199,30 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
                 ,  setoid_eq Te E
                 .
 
- 
-setoid_symm T (x\ fixMe "prova di symmetria").
+setoid_refl T (x\ fixMe "prova di riflessivita'" (EquT x x) )
+    :- spy(setoid_eq T EquT)
+    .
+setoid_symm T (x\ y\ fixMe "prova di symmetria" (EquT x y) )
+    :- spy(setoid_eq T EquT)
+    .
 
+%TODO: this macro requires the predicate "tau" to be explicitly written as an argument, 
 macro_tau B B' Q 
     :- spy(setoid_eq B EquB)
     ,  spy(interp B Bi)
     ,  spy(interp B' Bi')
-    ,  spy(pi x1 \ pi x2 \ pi h\
-        pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B'
-        => locDecl x1i Bi
-        => locDecl x2i Bi'
-        => interp x1 x1i
-        => interp x2 x2i
-        => (locDecl h (propEq B x1 x2)) 
-        => (locDecl hi (EquB x1i x2i))
+    ,  spy(tau B' B FB) % This is needed to transport xi' in the domain of EquB
+    ,  spy(pi x\ pi xi\ pi x'\ pi xi'\ pi h\ pi hi\ 
+        locDecl x B 
+        => locDecl x' B'
+        => locDecl xi Bi
+        => locDecl xi' Bi'
+        => interp x xi
+        => interp x' xi'
+        => (locDecl h (propEq B x' x')) 
+        => (locDecl hi (EquB xi (FB xi')))
         => interp h hi
-        => spy(Q x1 x2 h x1i x2i hi)
+        => spy(Q x x' h xi xi' hi)
         ) 
     . 
-macro_interp B Q :- macro_tau B B Q.
+macro_interp B Q :- spy(macro_tau B B Q).

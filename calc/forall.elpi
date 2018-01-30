@@ -43,4 +43,8 @@ dconv (forall_lam B F) (forall_lam B' F')
 
 interp (forall B C) (forall B' C') :-
         spy (interp B B'),
-        spy (pi x\ pi x' \ interp x x' => locDecl x B => locDecl x' B' => interp (C x )(C'  x')).
+        spy (pi x\ pi x'\ interp x x' 
+            => locDecl x B 
+                => locDecl x' B' 
+                    => spy(interp (C x )(C'  x')))
+    .

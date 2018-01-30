@@ -52,14 +52,16 @@ tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
     ,  spy(interp_isa T1' T T1i')
     ,  spy(interp_isa T2' T T2i')
     ,  spy(interp T Ti)
-    ,  F = x\ impl_app ( 
+    ,  spy(F = x\ impl_app ( 
                 impl_app ( 
                  forall_app ( 
                   forall_app ( 
                    impl_app ( 
                     forall_app ( 
                      forall_app (k_propId T) T1i) T1i') F1) T2i) T2i') F2) x
+        )
     .
+
 tau_trasp (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 
 
