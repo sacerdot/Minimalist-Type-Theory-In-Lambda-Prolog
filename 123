@@ -13,346 +13,109 @@
 "propEq.elpi:  47: Warning: k_propId is undeclared"
 "letIn.elpi:   9: Error: (letIn KIND1 T S) has type mttTerm but is used with type mttType"
 "test.elpi:  18: Warning: l is undeclared"
-"test.elpi:  26: Warning: m is undeclared"
-"test.elpi:  50: Warning: l is undeclared"
-"test.elpi:  71: Warning: i is undeclared"
-"test.elpi: 112: Warning: h is undeclared"
-"test.elpi: 124: Warning: g is undeclared"
-"test.elpi: 146: Warning: f is undeclared"
+"test.elpi:  27: Warning: m is undeclared"
+"test.elpi:  51: Warning: l is undeclared"
+"test.elpi:  72: Warning: i is undeclared"
+"test.elpi: 113: Warning: h is undeclared"
+"test.elpi: 125: Warning: g is undeclared"
+"test.elpi: 147: Warning: f is undeclared"
 "1_[+[Begin 
-pi x0 \
- pi x1 \
-  pi x2 \
-   pi x3 \
-    pi x4 \
-     locDecl x0 singleton =>
-      locDecl x1 singleton =>
-       locDecl x2 singleton =>
-        locDecl x3 (propId singleton x0 x1) =>
-         locDecl x4 (propId singleton x1 x2) =>
-          spy
-           (of
-             (impl_app
-               (elim_id x3 (x5 \ x6 \
-                 implies (propId singleton x6 x2) (propId singleton x5 x2))
-                 x5 \ impl_lam (propId singleton x5 x2) x6 \ x6) x4)
-             (propId singleton x0 x2) int)
+setoid_refl (setPi singleton x0 \ singleton) X5
 "
 "2__[+[Begin 
-of
- (impl_app
-   (elim_id x3 (x5 \ x6 \
-     implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-     impl_lam (propId singleton x5 x2) x6 \ x6) x4) (propId singleton x0 x2)
- int
+interp (setPi singleton x0 \ singleton) X6
 "
 "3___[+[Begin 
-isa
- (elim_id x3 (x5 \ x6 \
-   implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-   impl_lam (propId singleton x5 x2) x6 \ x6)
- (implies X5^5 (propId singleton x0 x2)) int
-"
-"4____[+[Begin 
-of
- (elim_id x3 (x5 \ x6 \
-   implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-   impl_lam (propId singleton x5 x2) x6 \ x6) X6^5 int
-"
-"5_____[+[Begin 
-of x3 (propId X7^5 X8^5 X9^5) int
-"
-"5-----]-]Success  
-of x3 (propId singleton x0 x1) int
-"
-"5_____[+[Begin 
-pi x5 \
- pi x6 \
-  locDecl x5 singleton =>
-   locDecl x6 singleton =>
-    isaType (implies (propId singleton x6 x2) (propId singleton x5 x2)) propc
-     int
-"
-"6______[+[Begin 
-ofType (implies (propId singleton x6 x2) (propId singleton x5 x2)) X10^7 int
-"
-"7_______[+[Begin 
-of x6 X11^7 int
-"
-"7-------]-]Success  
-of x6 singleton int
-"
-"7_______[+[Begin 
-conv singleton singleton
-"
-"7-------]-]Success  
-conv singleton singleton
-"
-"7_______[+[Begin 
-of x2 X12^7 int
-"
-"7-------]-]Success  
-of x2 singleton int
-"
-"7_______[+[Begin 
-conv singleton singleton
-"
-"7-------]-]Success  
-conv singleton singleton
-"
-"7_______[+[Begin 
-(pts_leq set set),
-(X10^7 = props)
-"
-"7-------]-]Success  
-(pts_leq set set),
-(props = props)
-"
-"7_______[+[Begin 
-of x5 X13^8 int
-"
-"7-------]-]Success  
-of x5 singleton int
-"
-"7_______[+[Begin 
-conv singleton singleton
-"
-"7-------]-]Success  
-conv singleton singleton
-"
-"7_______[+[Begin 
-of x2 X14^8 int
-"
-"7-------]-]Success  
-of x2 singleton int
-"
-"7_______[+[Begin 
-conv singleton singleton
-"
-"7-------]-]Success  
-conv singleton singleton
-"
-"7_______[+[Begin 
-(pts_leq set set),
-(props = props)
-"
-"7-------]-]Success  
-(pts_leq set set),
-(props = props)
-"
-"6------]-]Success  
-ofType (implies (propId singleton x6 x2) (propId singleton x5 x2)) props int
-"
-"6______[+[Begin 
-pts_leq props propc
-"
-"6------]-]Success  
-pts_leq props propc
-"
-"5-----]-]Success  
-pi x5 \
- pi x6 \
-  locDecl x5 singleton =>
-   locDecl x6 singleton =>
-    isaType (implies (propId singleton x6 x2) (propId singleton x5 x2)) propc
-     int
-"
-"5_____[+[Begin 
-pi x5 \
- locDecl x5 singleton =>
-  of (impl_lam (propId singleton x5 x2) x6 \ x6)
-   (implies (propId singleton x5 x2) (propId singleton x5 x2)) int
-"
-"6______[+[Begin 
-isaType (propId singleton x5 x2) propc int
-"
-"7_______[+[Begin 
-ofType (propId singleton x5 x2) X15^6 int
-"
-"8________[+[Begin 
-of x5 X16^6 int
-"
-"8--------]-]Success  
-of x5 singleton int
-"
-"8________[+[Begin 
-conv singleton singleton
-"
-"8--------]-]Success  
-conv singleton singleton
-"
-"8________[+[Begin 
-of x2 X17^6 int
-"
-"8--------]-]Success  
-of x2 singleton int
-"
-"8________[+[Begin 
-conv singleton singleton
-"
-"8--------]-]Success  
-conv singleton singleton
-"
-"8________[+[Begin 
-(pts_leq set set),
-(X15^6 = props)
-"
-"8--------]-]Success  
-(pts_leq set set),
-(props = props)
-"
-"7-------]-]Success  
-ofType (propId singleton x5 x2) props int
-"
-"7_______[+[Begin 
-pts_leq props propc
-"
-"7-------]-]Success  
-pts_leq props propc
-"
-"6------]-]Success  
-isaType (propId singleton x5 x2) propc int
-"
-"6______[+[Begin 
-isaType (propId singleton x5 x2) propc int
-"
-"7_______[+[Begin 
-ofType (propId singleton x5 x2) X18^6 int
-"
-"8________[+[Begin 
-of x5 X19^6 int
-"
-"8--------]-]Success  
-of x5 singleton int
-"
-"8________[+[Begin 
-conv singleton singleton
-"
-"8--------]-]Success  
-conv singleton singleton
-"
-"8________[+[Begin 
-of x2 X20^6 int
-"
-"8--------]-]Success  
-of x2 singleton int
-"
-"8________[+[Begin 
-conv singleton singleton
-"
-"8--------]-]Success  
-conv singleton singleton
-"
-"8________[+[Begin 
-(pts_leq set set),
-(X18^6 = props)
-"
-"8--------]-]Success  
-(pts_leq set set),
-(props = props)
-"
-"7-------]-]Success  
-ofType (propId singleton x5 x2) props int
-"
-"7_______[+[Begin 
-pts_leq props propc
-"
-"7-------]-]Success  
-pts_leq props propc
-"
-"6------]-]Success  
-isaType (propId singleton x5 x2) propc int
-"
-"6______[+[Begin 
-pi x6 \
- locDecl x6 (propId singleton x5 x2) => isa x6 (propId singleton x5 x2) int
-"
-"7_______[+[Begin 
-of x6 X21^7 int
-"
-"7-------]-]Success  
-of x6 (propId singleton x5 x2) int
-"
-"7_______[+[Begin 
-conv (propId singleton x5 x2) (propId singleton x5 x2)
-"
-"7-------]-]Success  
-conv (propId singleton x5 x2) (propId singleton x5 x2)
-"
-"6------]-]Success  
-pi x6 \
- locDecl x6 (propId singleton x5 x2) => isa x6 (propId singleton x5 x2) int
-"
-"5-----]-]Success  
-pi x5 \
- locDecl x5 singleton =>
-  of (impl_lam (propId singleton x5 x2) x6 \ x6)
-   (implies (propId singleton x5 x2) (propId singleton x5 x2)) int
-"
-"4----]-]Success  
-of
- (elim_id x3 (x5 \ x6 \
-   implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-   impl_lam (propId singleton x5 x2) x6 \ x6)
- (implies (propId singleton x1 x2) (propId singleton x0 x2)) int
-"
-"4____[+[Begin 
-conv (implies (propId singleton x1 x2) (propId singleton x0 x2))
- (implies X5^5 (propId singleton x0 x2))
-"
-"4----]-]Success  
-conv (implies (propId singleton x1 x2) (propId singleton x0 x2))
- (implies (propId singleton x1 x2) (propId singleton x0 x2))
+interp singleton X7
 "
 "3---]-]Success  
-isa
- (elim_id x3 (x5 \ x6 \
-   implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-   impl_lam (propId singleton x5 x2) x6 \ x6)
- (implies (propId singleton x1 x2) (propId singleton x0 x2)) int
+interp singleton singleton
 "
 "3___[+[Begin 
-isa x4 (propId singleton x1 x2) int
-"
-"4____[+[Begin 
-of x4 X22^5 int
-"
-"4----]-]Success  
-of x4 (propId singleton x1 x2) int
-"
-"4____[+[Begin 
-conv (propId singleton x1 x2) (propId singleton x1 x2)
-"
-"4----]-]Success  
-conv (propId singleton x1 x2) (propId singleton x1 x2)
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => interp x0 x1 => interp singleton (X8 x1)
 "
 "3---]-]Success  
-isa x4 (propId singleton x1 x2) int
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => interp x0 x1 => interp singleton singleton
 "
-"2--]-]Success  
-of
- (impl_app
-   (elim_id x3 (x5 \ x6 \
-     implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-     impl_lam (propId singleton x5 x2) x6 \ x6) x4) (propId singleton x0 x2)
- int
+"3___[+[Begin 
+setoid_eq singleton X9
 "
-"1-]-]Success  
+"3---]-]Success  
+setoid_eq singleton x0 \ x1 \ propId singleton x0 x1
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton => interp x0 x1 => setoid_eq singleton (X10 x1)
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 singleton =>
+   locDecl x1 singleton =>
+    interp x0 x1 => (setoid_eq singleton x2 \ x3 \ propId singleton x2 x3)
+"
+"3___[+[Begin 
 pi x0 \
  pi x1 \
   pi x2 \
    pi x3 \
     pi x4 \
-     locDecl x0 singleton =>
-      locDecl x1 singleton =>
-       locDecl x2 singleton =>
-        locDecl x3 (propId singleton x0 x1) =>
-         locDecl x4 (propId singleton x1 x2) =>
-          spy
-           (of
-             (impl_app
-               (elim_id x3 (x5 \ x6 \
-                 implies (propId singleton x6 x2) (propId singleton x5 x2))
-                 x5 \ impl_lam (propId singleton x5 x2) x6 \ x6) x4)
-             (propId singleton x0 x2) int)
+     pi x5 \
+      locDecl x0 singleton =>
+       locDecl x1 singleton =>
+        locDecl x3 singleton =>
+         locDecl x4 singleton =>
+          interp x0 x3 =>
+           interp x1 x4 =>
+            locDecl x2 (propEq singleton x0 x1) =>
+             locDecl x5 (propId singleton x3 x4) =>
+              interp x2 x5 => spy (tau singleton singleton (X11 x3 x4 x5))
+"
+"4____[+[Begin 
+tau singleton singleton (X11 x3 x4 x5)
+"
+"4----]-]Success  
+tau singleton singleton x6 \ x6
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     pi x5 \
+      locDecl x0 singleton =>
+       locDecl x1 singleton =>
+        locDecl x3 singleton =>
+         locDecl x4 singleton =>
+          interp x0 x3 =>
+           interp x1 x4 =>
+            locDecl x2 (propEq singleton x0 x1) =>
+             locDecl x5 (propId singleton x3 x4) =>
+              interp x2 x5 => spy (tau singleton singleton x6 \ x6)
+"
+"2--]-]Success  
+interp (setPi singleton x0 \ singleton)
+ (setSigma (setPi singleton x0 \ singleton) x0 \
+   forall singleton x1 \
+    forall singleton x2 \
+     forall (propId singleton x1 x2) x3 \
+      propId singleton (app x0 x1) (app x0 x2))
+"
+"2__[+[Begin 
+fail
+"
+"2..].]Fail  
+fail
+"
+"1.].]Fail  
+setoid_refl (setPi singleton x0 \ singleton) X5
 "

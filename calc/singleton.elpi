@@ -60,7 +60,11 @@ setoid_tran singleton P
         locDecl a singleton => locDecl b singleton => locDecl c singleton =>
             locDecl h (propId singleton a b) =>
                 locDecl k (propId singleton b c) =>
-                    spy(of (P a b c h k) (propId singleton a c) int)
+                    spy(of (P a b c h k) 
+                        %(QWEQWE a b c h k) % "_" cannot be applied 
+                        (propId singleton a c) 
+                        int
+                    )
     ).
 
 

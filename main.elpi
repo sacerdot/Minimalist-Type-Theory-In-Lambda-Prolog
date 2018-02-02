@@ -121,7 +121,7 @@ pts_fun _ _ col.
 pts_for A props props :- pts_leq A set, !.
 pts_for _ _ propc. 
 
-%ofType A KIND IE :- locDeclType A KIND .
+ofType A KIND IE :- locDeclType A KIND .
 
 isaType Type Kind IE 
     :- spy(ofType Type Kind' IE)

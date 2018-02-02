@@ -21,6 +21,7 @@ quicktest
     ,  spy(sigma A\ sigma B\ sigma C\ test g A B C)
     ,  spy(sigma A\ sigma B\ sigma C\ test h A B C)
     ,  spy(sigma A\ sigma B\ sigma C\ test i A B C)
+    ,  spy(sigma P\ setoid_tran singleton P)
     . 
 
 test m A Q Qy
