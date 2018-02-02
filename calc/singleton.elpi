@@ -48,19 +48,19 @@ setoid_symm singleton P
     . 
     % it should help in localizing errors.
 setoid_tran singleton P 
-    :- P = (x\y\z\h\k\ 
+    :- P = (a\b\c\h\k\ 
             impl_app 
             (elim_id h 
-                (x\ y\ implies (propId singleton y z) (propId singleton x z)) 
-                (u\ impl_lam (propId singleton u z) (y\y) )
+                (x\ y\ implies (propId singleton y c) (propId singleton x c)) 
+                (u\ impl_lam (propId singleton u c) (y\y) )
             )
             k
     )
-    ,  spy(pi x\ pi y\ pi z\ pi h\ pi k\ 
-        locDecl x singleton => locDecl y singleton => locDecl z singleton =>
-            locDecl h (propId singleton x y) =>
-                locDecl k (propId singleton y z) =>
-                    spy(of (P x y z h k) BBB int)
+    ,  spy(pi a\ pi b\ pi c\ pi h\ pi k\ 
+        locDecl a singleton => locDecl b singleton => locDecl c singleton =>
+            locDecl h (propId singleton a b) =>
+                locDecl k (propId singleton b c) =>
+                    spy(of (P a b c h k) (propId singleton a c) int)
     ).
 
 

@@ -35,29 +35,32 @@ pi x0 \
              (impl_app
                (elim_id x3 (x5 \ x6 \
                  implies (propId singleton x6 x2) (propId singleton x5 x2))
-                 x5 \ impl_lam (propId singleton x5 x2) x6 \ x6) x4) X5 int)
+                 x5 \ impl_lam (propId singleton x5 x2) x6 \ x6) x4)
+             (propId singleton x0 x2) int)
 "
 "2__[+[Begin 
 of
  (impl_app
    (elim_id x3 (x5 \ x6 \
      implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-     impl_lam (propId singleton x5 x2) x6 \ x6) x4) X5 int
+     impl_lam (propId singleton x5 x2) x6 \ x6) x4) (propId singleton x0 x2)
+ int
 "
 "3___[+[Begin 
 isa
  (elim_id x3 (x5 \ x6 \
    implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-   impl_lam (propId singleton x5 x2) x6 \ x6) (implies X6^5 X5) int
+   impl_lam (propId singleton x5 x2) x6 \ x6)
+ (implies X5^5 (propId singleton x0 x2)) int
 "
 "4____[+[Begin 
 of
  (elim_id x3 (x5 \ x6 \
    implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
-   impl_lam (propId singleton x5 x2) x6 \ x6) X7^5 int
+   impl_lam (propId singleton x5 x2) x6 \ x6) X6^5 int
 "
 "5_____[+[Begin 
-of x3 (propId X8^5 X9^5 X10^5) int
+of x3 (propId X7^5 X8^5 X9^5) int
 "
 "5-----]-]Success  
 of x3 (propId singleton x0 x1) int
@@ -71,10 +74,10 @@ pi x5 \
      int
 "
 "6______[+[Begin 
-ofType (implies (propId singleton x6 x2) (propId singleton x5 x2)) X11^7 int
+ofType (implies (propId singleton x6 x2) (propId singleton x5 x2)) X10^7 int
 "
 "7_______[+[Begin 
-of x6 X12^7 int
+of x6 X11^7 int
 "
 "7-------]-]Success  
 of x6 singleton int
@@ -86,7 +89,7 @@ conv singleton singleton
 conv singleton singleton
 "
 "7_______[+[Begin 
-of x2 X13^7 int
+of x2 X12^7 int
 "
 "7-------]-]Success  
 of x2 singleton int
@@ -99,14 +102,14 @@ conv singleton singleton
 "
 "7_______[+[Begin 
 (pts_leq set set),
-(X11^7 = props)
+(X10^7 = props)
 "
 "7-------]-]Success  
 (pts_leq set set),
 (props = props)
 "
 "7_______[+[Begin 
-of x5 X14^8 int
+of x5 X13^8 int
 "
 "7-------]-]Success  
 of x5 singleton int
@@ -118,7 +121,7 @@ conv singleton singleton
 conv singleton singleton
 "
 "7_______[+[Begin 
-of x2 X15^8 int
+of x2 X14^8 int
 "
 "7-------]-]Success  
 of x2 singleton int
@@ -164,10 +167,10 @@ pi x5 \
 isaType (propId singleton x5 x2) propc int
 "
 "7_______[+[Begin 
-ofType (propId singleton x5 x2) X16^6 int
+ofType (propId singleton x5 x2) X15^6 int
 "
 "8________[+[Begin 
-of x5 X17^6 int
+of x5 X16^6 int
 "
 "8--------]-]Success  
 of x5 singleton int
@@ -179,7 +182,7 @@ conv singleton singleton
 conv singleton singleton
 "
 "8________[+[Begin 
-of x2 X18^6 int
+of x2 X17^6 int
 "
 "8--------]-]Success  
 of x2 singleton int
@@ -192,7 +195,7 @@ conv singleton singleton
 "
 "8________[+[Begin 
 (pts_leq set set),
-(X16^6 = props)
+(X15^6 = props)
 "
 "8--------]-]Success  
 (pts_leq set set),
@@ -214,10 +217,10 @@ isaType (propId singleton x5 x2) propc int
 isaType (propId singleton x5 x2) propc int
 "
 "7_______[+[Begin 
-ofType (propId singleton x5 x2) X19^6 int
+ofType (propId singleton x5 x2) X18^6 int
 "
 "8________[+[Begin 
-of x5 X20^6 int
+of x5 X19^6 int
 "
 "8--------]-]Success  
 of x5 singleton int
@@ -229,7 +232,7 @@ conv singleton singleton
 conv singleton singleton
 "
 "8________[+[Begin 
-of x2 X21^6 int
+of x2 X20^6 int
 "
 "8--------]-]Success  
 of x2 singleton int
@@ -242,7 +245,7 @@ conv singleton singleton
 "
 "8________[+[Begin 
 (pts_leq set set),
-(X19^6 = props)
+(X18^6 = props)
 "
 "8--------]-]Success  
 (pts_leq set set),
@@ -265,7 +268,7 @@ pi x6 \
  locDecl x6 (propId singleton x5 x2) => isa x6 (propId singleton x5 x2) int
 "
 "7_______[+[Begin 
-of x6 X22^7 int
+of x6 X21^7 int
 "
 "7-------]-]Success  
 of x6 (propId singleton x5 x2) int
@@ -295,61 +298,61 @@ of
 "
 "4____[+[Begin 
 conv (implies (propId singleton x1 x2) (propId singleton x0 x2))
- (implies X6^5 X5)
+ (implies X5^5 (propId singleton x0 x2))
 "
-"5_____[+[Begin 
-hnf (implies (propId singleton x1 x2) (propId singleton x0 x2)) X23^5
-"
-"6______[+[Begin 
-hstep (implies (propId singleton x1 x2) (propId singleton x0 x2)) X24^5
-"
-"6......].]Fail  
-hstep (implies (propId singleton x1 x2) (propId singleton x0 x2)) X24^5
-"
-"5-----]-]Success  
-hnf (implies (propId singleton x1 x2) (propId singleton x0 x2))
+"4----]-]Success  
+conv (implies (propId singleton x1 x2) (propId singleton x0 x2))
  (implies (propId singleton x1 x2) (propId singleton x0 x2))
 "
-"5_____[+[Begin 
-hnf (implies X6^5 X5) X25^5
+"3---]-]Success  
+isa
+ (elim_id x3 (x5 \ x6 \
+   implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
+   impl_lam (propId singleton x5 x2) x6 \ x6)
+ (implies (propId singleton x1 x2) (propId singleton x0 x2)) int
 "
-"6______[+[Begin 
-hstep (implies X6^5 X5) X26^5
+"3___[+[Begin 
+isa x4 (propId singleton x1 x2) int
 "
-"6......].]Fail  
-hstep (implies X6^5 X5) X26^5
+"4____[+[Begin 
+of x4 X22^5 int
 "
-"5-----]-]Success  
-hnf (implies X6^5 X5) (implies X6^5 X5)
+"4----]-]Success  
+of x4 (propId singleton x1 x2) int
 "
-"5_____[+[Begin 
-dconv (implies (propId singleton x1 x2) (propId singleton x0 x2))
- (implies X6^5 X5)
-"
-"6______[+[Begin 
-conv (propId singleton x1 x2) X6^5
-"
-"6------]-]Success  
+"4____[+[Begin 
 conv (propId singleton x1 x2) (propId singleton x1 x2)
 "
-"6______[+[Begin 
-conv (propId singleton x0 x2) X5
+"4----]-]Success  
+conv (propId singleton x1 x2) (propId singleton x1 x2)
 "
-"7_______[+[Begin 
-hnf (propId singleton x0 x2) X27^5
+"3---]-]Success  
+isa x4 (propId singleton x1 x2) int
 "
-"8________[+[Begin 
-hstep (propId singleton x0 x2) X28^5
+"2--]-]Success  
+of
+ (impl_app
+   (elim_id x3 (x5 \ x6 \
+     implies (propId singleton x6 x2) (propId singleton x5 x2)) x5 \
+     impl_lam (propId singleton x5 x2) x6 \ x6) x4) (propId singleton x0 x2)
+ int
 "
-"8........].]Fail  
-hstep (propId singleton x0 x2) X28^5
-"
-"7-------]-]Success  
-hnf (propId singleton x0 x2) (propId singleton x0 x2)
-"
-"7_______[+[Begin 
-hnf X5 X29^5
-"
-"8________[+[Begin 
-hstep X5 X30^5
+"1-]-]Success  
+pi x0 \
+ pi x1 \
+  pi x2 \
+   pi x3 \
+    pi x4 \
+     locDecl x0 singleton =>
+      locDecl x1 singleton =>
+       locDecl x2 singleton =>
+        locDecl x3 (propId singleton x0 x1) =>
+         locDecl x4 (propId singleton x1 x2) =>
+          spy
+           (of
+             (impl_app
+               (elim_id x3 (x5 \ x6 \
+                 implies (propId singleton x6 x2) (propId singleton x5 x2))
+                 x5 \ impl_lam (propId singleton x5 x2) x6 \ x6) x4)
+             (propId singleton x0 x2) int)
 "
