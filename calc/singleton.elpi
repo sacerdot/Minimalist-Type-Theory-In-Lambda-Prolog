@@ -44,10 +44,24 @@ setoid_symm singleton P
         => locDecl y singleton 
             => locDecl h (propId singleton x y) 
                 => of (P x y h) _ int
-        )
-    . % this structure should check that the handwritten proof term P is well typed
-    % it should in localizing errors.
-
+        ) % this structure should check that the handwritten proof term P is well typed
+    . 
+    % it should help in localizing errors.
+setoid_tran singleton P 
+    :- P = (x\y\z\h\k\ 
+            impl_app 
+            (elim_id h 
+                (x\ y\ implies (propId singleton y z) (propId singleton x z)) 
+                (u\ impl_lam (propId singleton u z) (y\y) )
+            )
+            k
+    )
+    ,  spy(pi x\ pi y\ pi z\ pi h\ pi k\ 
+        locDecl x singleton => locDecl y singleton => locDecl z singleton =>
+            locDecl h (propId singleton x y) =>
+                locDecl k (propId singleton y z) =>
+                    spy(of (P x y z h k) BBB int)
+    ).
 
 
 interp singleton singleton.

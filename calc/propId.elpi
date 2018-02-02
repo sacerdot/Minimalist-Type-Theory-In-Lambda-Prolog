@@ -9,20 +9,20 @@ ofType (propId A AA1 AA2) KIND IE
     .
 
 of (id A AA) (propId A AA AA) int 
-    :- ofType A _ int
-    ,  isa AA A int
+    :- spy(ofType A _ int)
+    ,  spy(isa AA A int)
     .
 
 of (elim_id P C CC) (C AA1 AA2) int
-    :- (of P (propId A AA1 AA2) int)
-    , (pi x\ pi y\ locDecl x A => locDecl y A => isaType (C x y) propc int)
-    , (pi x\ locDecl x A => of (CC x) (C x x) int)
+    :- spy(of P (propId A AA1 AA2) int)
+    ,  spy(pi x\ pi y\ locDecl x A => locDecl y A => isaType (C x y) propc int)
+    ,  spy(pi x\ locDecl x A => of (CC x) (C x x) int)
     .
 
 hstep (elim_id (id A AA) C CC) (CC AA)
-    :- (isa AA A int)
-    ,  (pi x\ pi y\ locDecl x A => locDecl y A => isaType (C x y) propc int)
-    ,  (pi x\ locDecl x A => of (CC x) (C x x) int)
+    :- spy(isa AA A int)
+    ,  spy(pi x\ pi y\ locDecl x A => locDecl y A => isaType (C x y) propc int)
+    ,  spy(pi x\ locDecl x A => of (CC x) (C x x) int)
     .
 
 dconv (id A AA) (id A' AA') :- (conv A A'),(conv AA AA').

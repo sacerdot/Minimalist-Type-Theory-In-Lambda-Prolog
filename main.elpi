@@ -86,7 +86,7 @@ type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
 
 %% conversion to (weak) head-normal form WHNF
-hnf A B :- hstep A C, !, hnf C B.
+hnf A B :- spy(hstep A C), !, spy(hnf C B).
 hnf A A.
 
 %dstep A B :- spy(hstep A B).
@@ -199,12 +199,12 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
                 ,  setoid_eq Te E
                 .
 
-setoid_refl T (x\ fixMe "prova di riflessivita'" (EquT x x) )
-    :- spy(setoid_eq T EquT)
-    .
-setoid_symm T (x\ y\ h\ fixMe "prova di symmetria" (EquT y x) )
-    :- spy(setoid_eq T EquT)
-    .
+%setoid_refl T (x\ fixMe "prova di riflessivita'" (EquT x x) )
+%    :- spy(setoid_eq T EquT)
+%    .
+%setoid_symm T (x\ y\ h\ fixMe "prova di symmetria" (EquT y x) )
+%    :- spy(setoid_eq T EquT)
+%    .
 
 %TODO: this macro requires the predicate "tau" to be explicitly written as an argument, 
 macro_tau B B' Q 
