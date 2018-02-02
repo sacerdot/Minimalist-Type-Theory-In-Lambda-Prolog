@@ -20,46 +20,121 @@
 "test.elpi: 125: Warning: g is undeclared"
 "test.elpi: 147: Warning: f is undeclared"
 "1_[+[Begin 
-setoid_refl (setPi singleton x0 \ singleton) X5
+setoid_refl (setPi (propEq singleton star star) x0 \ singleton) X5
 "
 "2__[+[Begin 
-interp (setPi singleton x0 \ singleton) X6
+interp (setPi (propEq singleton star star) x0 \ singleton) X6
 "
 "3___[+[Begin 
-interp singleton X7
+interp (propEq singleton star star) X7
 "
-"3---]-]Success  
-interp singleton singleton
+"4____[+[Begin 
+setoid_eq singleton X8
 "
-"3___[+[Begin 
-pi x0 \
- pi x1 \
-  locDecl x0 singleton =>
-   locDecl x1 singleton => interp x0 x1 => interp singleton (X8 x1)
-"
-"3---]-]Success  
-pi x0 \
- pi x1 \
-  locDecl x0 singleton =>
-   locDecl x1 singleton => interp x0 x1 => interp singleton singleton
-"
-"3___[+[Begin 
-setoid_eq singleton X9
-"
-"3---]-]Success  
+"4----]-]Success  
 setoid_eq singleton x0 \ x1 \ propId singleton x0 x1
 "
+"4____[+[Begin 
+interp_isa star singleton X9
+"
+"5_____[+[Begin 
+of star X10 ext
+"
+"5-----]-]Success  
+of star singleton ext
+"
+"5_____[+[Begin 
+interp star X11
+"
+"5-----]-]Success  
+interp star star
+"
+"5_____[+[Begin 
+tau singleton singleton X12
+"
+"5-----]-]Success  
+tau singleton singleton x0 \ x0
+"
+"5_____[+[Begin 
+X9 = star
+"
+"5-----]-]Success  
+star = star
+"
+"4----]-]Success  
+interp_isa star singleton star
+"
+"4____[+[Begin 
+interp_isa star singleton X13
+"
+"5_____[+[Begin 
+of star X14 ext
+"
+"5-----]-]Success  
+of star singleton ext
+"
+"5_____[+[Begin 
+interp star X15
+"
+"5-----]-]Success  
+interp star star
+"
+"5_____[+[Begin 
+tau singleton singleton X16
+"
+"5-----]-]Success  
+tau singleton singleton x0 \ x0
+"
+"5_____[+[Begin 
+X13 = star
+"
+"5-----]-]Success  
+star = star
+"
+"4----]-]Success  
+interp_isa star singleton star
+"
+"4____[+[Begin 
+X7 = propId singleton star star
+"
+"4----]-]Success  
+propId singleton star star = propId singleton star star
+"
+"3---]-]Success  
+interp (propEq singleton star star) (propId singleton star star)
+"
 "3___[+[Begin 
 pi x0 \
  pi x1 \
-  locDecl x0 singleton =>
-   locDecl x1 singleton => interp x0 x1 => setoid_eq singleton (X10 x1)
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => interp singleton (X17 x1)
 "
 "3---]-]Success  
 pi x0 \
  pi x1 \
-  locDecl x0 singleton =>
-   locDecl x1 singleton =>
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => interp singleton singleton
+"
+"3___[+[Begin 
+setoid_eq (propEq singleton star star) X18
+"
+"3---]-]Success  
+setoid_eq (propEq singleton star star) x0 \ x1 \ propId singleton star star
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => setoid_eq singleton (X19 x1)
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
     interp x0 x1 => (setoid_eq singleton x2 \ x3 \ propId singleton x2 x3)
 "
 "3___[+[Begin 
@@ -69,18 +144,18 @@ pi x0 \
    pi x3 \
     pi x4 \
      pi x5 \
-      locDecl x0 singleton =>
-       locDecl x1 singleton =>
-        locDecl x3 singleton =>
-         locDecl x4 singleton =>
+      locDecl x0 (propEq singleton star star) =>
+       locDecl x1 (propEq singleton star star) =>
+        locDecl x3 (propId singleton star star) =>
+         locDecl x4 (propId singleton star star) =>
           interp x0 x3 =>
            interp x1 x4 =>
-            locDecl x2 (propEq singleton x0 x1) =>
-             locDecl x5 (propId singleton x3 x4) =>
-              interp x2 x5 => spy (tau singleton singleton (X11 x3 x4 x5))
+            locDecl x2 (propEq (propEq singleton star star) x0 x1) =>
+             locDecl x5 (propId singleton star star) =>
+              interp x2 x5 => spy (tau singleton singleton (X20 x3 x4 x5))
 "
 "4____[+[Begin 
-tau singleton singleton (X11 x3 x4 x5)
+tau singleton singleton (X20 x3 x4 x5)
 "
 "4----]-]Success  
 tau singleton singleton x6 \ x6
@@ -92,30 +167,302 @@ pi x0 \
    pi x3 \
     pi x4 \
      pi x5 \
-      locDecl x0 singleton =>
-       locDecl x1 singleton =>
-        locDecl x3 singleton =>
-         locDecl x4 singleton =>
+      locDecl x0 (propEq singleton star star) =>
+       locDecl x1 (propEq singleton star star) =>
+        locDecl x3 (propId singleton star star) =>
+         locDecl x4 (propId singleton star star) =>
           interp x0 x3 =>
            interp x1 x4 =>
-            locDecl x2 (propEq singleton x0 x1) =>
-             locDecl x5 (propId singleton x3 x4) =>
+            locDecl x2 (propEq (propEq singleton star star) x0 x1) =>
+             locDecl x5 (propId singleton star star) =>
               interp x2 x5 => spy (tau singleton singleton x6 \ x6)
 "
 "2--]-]Success  
-interp (setPi singleton x0 \ singleton)
- (setSigma (setPi singleton x0 \ singleton) x0 \
-   forall singleton x1 \
-    forall singleton x2 \
-     forall (propId singleton x1 x2) x3 \
+interp (setPi (propEq singleton star star) x0 \ singleton)
+ (setSigma (setPi (propId singleton star star) x0 \ singleton) x0 \
+   forall (propId singleton star star) x1 \
+    forall (propId singleton star star) x2 \
+     forall (propId singleton star star) x3 \
       propId singleton (app x0 x1) (app x0 x2))
 "
 "2__[+[Begin 
-fail
+setoid_eq singleton X21
+"
+"2--]-]Success  
+setoid_eq singleton x0 \ x1 \ propId singleton x0 x1
+"
+"2__[+[Begin 
+interp_isa star singleton X22
+"
+"3___[+[Begin 
+of star X23 ext
+"
+"3---]-]Success  
+of star singleton ext
+"
+"3___[+[Begin 
+interp star X24
+"
+"3---]-]Success  
+interp star star
+"
+"3___[+[Begin 
+tau singleton singleton X25
+"
+"3---]-]Success  
+tau singleton singleton x0 \ x0
+"
+"3___[+[Begin 
+X22 = star
+"
+"3---]-]Success  
+star = star
+"
+"2--]-]Success  
+interp_isa star singleton star
+"
+"2__[+[Begin 
+interp_isa star singleton X26
+"
+"3___[+[Begin 
+of star X27 ext
+"
+"3---]-]Success  
+of star singleton ext
+"
+"3___[+[Begin 
+interp star X28
+"
+"3---]-]Success  
+interp star star
+"
+"3___[+[Begin 
+tau singleton singleton X29
+"
+"3---]-]Success  
+tau singleton singleton x0 \ x0
+"
+"3___[+[Begin 
+X26 = star
+"
+"3---]-]Success  
+star = star
+"
+"2--]-]Success  
+interp_isa star singleton star
+"
+"2__[+[Begin 
+X30 = propId singleton star star
+"
+"2--]-]Success  
+propId singleton star star = propId singleton star star
+"
+"2__[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => setoid_refl singleton (X31 x1)
+"
+"2--]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => (setoid_refl singleton x2 \ id singleton x2)
+"
+"2__[+[Begin 
+X5 = (x0 \
+ forall_lam (propEq singleton star star) x1 \
+  id singleton
+   (app
+     (elim_setSigma x0 (x2 \
+       setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+"
+"2--]-]Success  
+(x0 \
+ forall_lam (propEq singleton star star) x1 \
+  id singleton
+   (app
+     (elim_setSigma x0 (x2 \
+       setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+ = (x0 \
+ forall_lam (propEq singleton star star) x1 \
+  id singleton
+   (app
+     (elim_setSigma x0 (x2 \
+       setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+"
+"2__[+[Begin 
+setoid_eq (setPi (propEq singleton star star) x0 \ singleton) X32
+"
+"3___[+[Begin 
+interp (propEq singleton star star) X33
+"
+"4____[+[Begin 
+setoid_eq singleton X34
+"
+"4----]-]Success  
+setoid_eq singleton x0 \ x1 \ propId singleton x0 x1
+"
+"4____[+[Begin 
+interp_isa star singleton X35
+"
+"5_____[+[Begin 
+of star X36 ext
+"
+"5-----]-]Success  
+of star singleton ext
+"
+"5_____[+[Begin 
+interp star X37
+"
+"5-----]-]Success  
+interp star star
+"
+"5_____[+[Begin 
+tau singleton singleton X38
+"
+"5-----]-]Success  
+tau singleton singleton x0 \ x0
+"
+"5_____[+[Begin 
+X35 = star
+"
+"5-----]-]Success  
+star = star
+"
+"4----]-]Success  
+interp_isa star singleton star
+"
+"4____[+[Begin 
+interp_isa star singleton X39
+"
+"5_____[+[Begin 
+of star X40 ext
+"
+"5-----]-]Success  
+of star singleton ext
+"
+"5_____[+[Begin 
+interp star X41
+"
+"5-----]-]Success  
+interp star star
+"
+"5_____[+[Begin 
+tau singleton singleton X42
+"
+"5-----]-]Success  
+tau singleton singleton x0 \ x0
+"
+"5_____[+[Begin 
+X39 = star
+"
+"5-----]-]Success  
+star = star
+"
+"4----]-]Success  
+interp_isa star singleton star
+"
+"4____[+[Begin 
+X33 = propId singleton star star
+"
+"4----]-]Success  
+propId singleton star star = propId singleton star star
+"
+"3---]-]Success  
+interp (propEq singleton star star) (propId singleton star star)
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => interp singleton (X43 x1)
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => interp singleton singleton
+"
+"3___[+[Begin 
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => ((interp singleton singleton),
+     (setoid_eq singleton (X44 x1)))
+"
+"3---]-]Success  
+pi x0 \
+ pi x1 \
+  locDecl x0 (propEq singleton star star) =>
+   locDecl x1 (propId singleton star star) =>
+    interp x0 x1 => ((interp singleton singleton),
+     (setoid_eq singleton x2 \ x3 \ propId singleton x2 x3))
+"
+"2--]-]Success  
+setoid_eq (setPi (propEq singleton star star) x0 \ singleton) x0 \ x1 \
+ forall (propId singleton star star) x2 \
+  propId singleton
+   (app
+     (elim_setSigma x0 (x3 \
+       setPi (propId singleton star star) x4 \ singleton) x3 \ x4 \ x3) x2)
+   (app
+     (elim_setSigma x1 (x3 \
+       setPi (propId singleton star star) x4 \ singleton) x3 \ x4 \ x3) x2)
+"
+"2__[+[Begin 
+pi x0 \
+ locDecl x0
+  (setSigma (setPi (propId singleton star star) x1 \ singleton) x1 \
+    forall (propId singleton star star) x2 \
+     forall (propId singleton star star) x3 \
+      forall (propId singleton star star) x4 \
+       propId singleton (app x1 x2) (app x1 x3)) =>
+  of
+   (forall_lam (propEq singleton star star) x1 \
+     id singleton
+      (app
+        (elim_setSigma x0 (x2 \
+          setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+   (forall (propId singleton star star) x1 \
+     propId singleton
+      (app
+        (elim_setSigma x0 (x2 \
+          setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1)
+      (app
+        (elim_setSigma x0 (x2 \
+          setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+   int
 "
 "2..].]Fail  
-fail
+pi x0 \
+ locDecl x0
+  (setSigma (setPi (propId singleton star star) x1 \ singleton) x1 \
+    forall (propId singleton star star) x2 \
+     forall (propId singleton star star) x3 \
+      forall (propId singleton star star) x4 \
+       propId singleton (app x1 x2) (app x1 x3)) =>
+  of
+   (forall_lam (propEq singleton star star) x1 \
+     id singleton
+      (app
+        (elim_setSigma x0 (x2 \
+          setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+   (forall (propId singleton star star) x1 \
+     propId singleton
+      (app
+        (elim_setSigma x0 (x2 \
+          setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1)
+      (app
+        (elim_setSigma x0 (x2 \
+          setPi (propId singleton star star) x3 \ singleton) x2 \ x3 \ x2) x1))
+   int
 "
 "1.].]Fail  
-setoid_refl (setPi singleton x0 \ singleton) X5
+setoid_refl (setPi (propEq singleton star star) x0 \ singleton) X5
 "
