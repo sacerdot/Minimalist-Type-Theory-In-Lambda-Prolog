@@ -227,7 +227,24 @@ setoid_symm (setPi B C) H
     ,  spy(
         pi f\ pi g\ locDecl f SetPiBCi => locDecl g SetPiBCi => pi h\ locDecl h (EquBC f g) =>
             spy(
-                of (H f g h) (EquBC g h) int
+                of (H f g h) (EquBC g f) int
             )
+    )
+    .
+setoid_tran (setPi B C) H 
+    :- spy(interp (setPi B C) SetPiBCi)
+    ,  spy(setoid_eq (setPi B C) EquBC)
+    ,  interp B Bi
+    ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
+    ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => 
+        setoid_tran (C y) (HC yi))
+    ,  spy(
+        H = f\g\h\p\q\ forall_lam Bi yi\ 
+            HC yi 
+            (app (elim_setSigma f (z\setPi Bi Ci) a\b\a) yi)
+            (app (elim_setSigma g (z\setPi Bi Ci) a\b\a) yi)
+            (app (elim_setSigma h (z\setPi Bi Ci) a\b\a) yi)
+            (forall_app p yi)
+            (forall_app q yi)
     )
     .

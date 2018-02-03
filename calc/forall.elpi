@@ -12,11 +12,11 @@ of (forall_lam B F) (forall B C) IE
     ,  spy(pi x\ locDecl x B => isa (F x) (C x) IE)
     .
 
-of (forall_app Lam X) (C X) IE 
+of (forall_app Lam X) (CX) IE 
     :- spy(of Lam (forall B C) IE)
     ,  spy(isa X B IE)
+    ,  spy(CX = C X)
     .
-
 
 hstep (forall_app LAM Bb) (F Bb) 
     :- hnf LAM (forall_lam B F)

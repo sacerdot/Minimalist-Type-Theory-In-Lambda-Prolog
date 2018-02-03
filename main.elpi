@@ -86,7 +86,7 @@ type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
 
 %% conversion to (weak) head-normal form WHNF
-hnf A B :- spy(hstep A C), !, spy(hnf C B).
+hnf A B :- (hstep A C), !, spy(hnf C B).
 hnf A A.
 
 %dstep A B :- spy(hstep A B).
@@ -139,19 +139,19 @@ of X Y _ :-  locDecl X Y .
 %% !!!DEBUG mock typing of term M, returns chosen type T
 of (fixMe M T ) T int 
     :- !
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     ,  print M
     ,  term_to_string T S, print S
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     .
 
 %%% !!!DEBUG mock type-checking of term M as a term of type T
 isa (fixMe M T) T int 
     :- !
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     ,  print M
     ,  term_to_string T S, print S
-    ,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     .
 
 %% Functions used in interpretation of extensionally equivalent (conv) types. These cover general/

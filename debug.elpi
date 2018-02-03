@@ -2,7 +2,8 @@
 announce G :- bracket " " ">>" G "\n", fail.
 
 
-%The only entry point fot spy, is add a new indent and call the helper spy'
+
+%The only entry point for spy, is add a new indent and call the helper spy'
 spy G :- count_indent' T, indent [0 | T] => spy' G.
 
 spy' G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "-" "]-]Success  \n" G "\n") , !. 
@@ -13,6 +14,7 @@ bracket IC Pre G Post :- print_indent IC I N, term_to_string G S,
     Q is (N ^ I ^ Pre ^ S ^ Post), print Q.
 
 
+makeline :- print "||||||||||||||||||||||||||||||||||||||||||".
 
 
 %Compute the lenght of a list

@@ -16,16 +16,23 @@ accumulate calc/setSum.
 accumulate calc/singleton.
 
 quicktest 
-    :- spy(sigma A\ sigma B\ sigma C\ test l A B C)
-    ,  spy(sigma A\ sigma B\ sigma C\ test f A B C)
-    ,  spy(sigma A\ sigma B\ sigma C\ test g A B C)
-    ,  spy(sigma A\ sigma B\ sigma C\ test h A B C)
-    ,  spy(sigma A\ sigma B\ sigma C\ test i A B C)
-    ,  spy(sigma P\ setoid_tran singleton P)
-    ,  spy(setoid_refl (setPi (propEq singleton star star) x\singleton) _)
-    ,  spy(setoid_refl (setPi (setPi singleton _\singleton) x\singleton) _)
+    :- makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test m A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test l A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test f A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test g A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test h A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test i A B C), makeline
+    ,  spy(setoid_tran (setPi (propEq singleton star star) x\singleton )  _), makeline
+    ,  spy(setoid_tran (setPi (propEq singleton star star) x\propEq singleton star star )  _),  makeline
+    ,  spy(sigma P\ setoid_tran singleton P), makeline
+    ,  spy(setoid_refl (setPi (propEq singleton star star) x\singleton) _), makeline
+    ,  spy(setoid_refl (setPi (setPi singleton _\singleton) x\singleton) _), makeline
+    ,  spy(setoid_symm (setPi singleton x\singleton)  _), makeline
+    ,  spy(setoid_symm (setPi (setPi singleton x\singleton) x\singleton)  _), makeline
+    ,  spy(setoid_symm (setPi (setPi (setPi singleton x\singleton) x\(setPi singleton x\singleton)) x\(setPi singleton x\singleton))  _), makeline
     . 
-
+ 
 test m A Q Qy
  :- Long = ( forall singleton x\
       implies (propEq singleton x star) 
@@ -44,10 +51,10 @@ test m A Q Qy
             ))
         ),
     spy(ofType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-    ,spy(ofType Q Qy int)
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(ofType Q Qy int)
     .
 
 test l A Q Qy
@@ -65,10 +72,10 @@ test l A Q Qy
             ))
         ),
     spy(ofType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(ofType Q Qy int)
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(ofType Q Qy int)
     .
 
 test i A B C 
@@ -103,10 +110,10 @@ test i A B C
         )))))))     
     ,
     spy(ofType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long B),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-    ,spy(ofType B C int)
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(ofType B C int)
     .
 
 
@@ -118,10 +125,10 @@ test h A Q Qy
         (propEq singleton (app f (lambda singleton x\ x)) star) 
         ),
     spy(ofType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(ofType Q Qy int)
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(ofType Q Qy int)
     .
 
 test g A Q Qy
@@ -137,10 +144,10 @@ test g A Q Qy
         )
         ),
     spy(ofType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n"
-  ,  spy(ofType Q Qy int)
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(ofType Q Qy int)
     .
 
 
@@ -158,9 +165,9 @@ test f A Q Qy
         )
         ),
     spy(ofType Long A ext),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(interp Long Q),
-    print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy(ofType Q Qy int)
     .
 

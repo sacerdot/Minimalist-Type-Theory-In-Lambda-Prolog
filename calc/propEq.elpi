@@ -42,6 +42,8 @@ interp (eq  A Aa)  T
     ,  T = (ReflA Aa') 
     .
 setoid_refl (propEq _ _ _) (_\id singleton star).
+setoid_symm (propEq _ _ _) (_\_\_\ id singleton star).
+setoid_tran (propEq _ _ _) (_\_\_\_\_\ id singleton star).
 setoid_eq (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
 
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
