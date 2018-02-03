@@ -197,7 +197,7 @@ tau_trasp (setPi B C) (setPi B' C') P
  
 
 setoid_refl (setPi B C) H 
-    :- spy(interp (setPi B C) SetBCi)
+    :- spy(interp (setPi B C) SetPiBCi)
     ,  interp B Bi
     ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
     ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => setoid_refl (C y) (HC yi))
@@ -206,7 +206,28 @@ setoid_refl (setPi B C) H
     )
     ,  spy(setoid_eq (setPi B C) EquBC)
     ,  (pi z\ TypeH z = EquBC z z)
-    ,  spy( pi z\ locDecl z SetBCi =>
+    ,  spy( pi z\ locDecl z SetPiBCi =>
         spy(of (H z) (TypeH z) int)
+    )
+    .
+
+setoid_symm (setPi B C) H 
+    :- spy(interp (setPi B C) SetPiBCi)
+    ,  spy(setoid_eq (setPi B C) EquBC)
+    ,  interp B Bi
+    ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
+    ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => setoid_symm (C y) (HC yi))
+    ,  spy(
+        H = f\g\h\ forall_lam Bi 
+         yi\ HC yi 
+          (app (elim_setSigma f (z\setPi Bi Ci) a\b\a) yi) 
+          (app (elim_setSigma g (z\setPi Bi Ci) a\b\a) yi) 
+          (forall_app h yi)
+    )
+    ,  spy(
+        pi f\ pi g\ locDecl f SetPiBCi => locDecl g SetPiBCi => pi h\ locDecl h (EquBC f g) =>
+            spy(
+                of (H f g h) (EquBC g h) int
+            )
     )
     .

@@ -13,8 +13,8 @@ of (forall_lam B F) (forall B C) IE
     .
 
 of (forall_app Lam X) (C X) IE 
-    :- isa (Lam) (forall B C) IE
-    ,  isa X B IE
+    :- spy(of Lam (forall B C) IE)
+    ,  spy(isa X B IE)
     .
 
 

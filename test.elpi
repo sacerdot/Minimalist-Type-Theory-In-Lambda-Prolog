@@ -22,6 +22,8 @@ quicktest
     ,  spy(sigma A\ sigma B\ sigma C\ test h A B C)
     ,  spy(sigma A\ sigma B\ sigma C\ test i A B C)
     ,  spy(sigma P\ setoid_tran singleton P)
+    ,  spy(setoid_refl (setPi (propEq singleton star star) x\singleton) _)
+    ,  spy(setoid_refl (setPi (setPi singleton _\singleton) x\singleton) _)
     . 
 
 test m A Q Qy
