@@ -8,8 +8,8 @@ ofType (forall B C) KIND3 IE
     .
 
 of (forall_lam B F) (forall B C) IE
-    :- (ofType B _ IE)
-    ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
+    :- spy(ofType B _ IE)
+    ,  spy(pi x\ locDecl x B => isa (F x) (C x) IE)
     .
 
 of (forall_app Lam X) (C X) IE 
