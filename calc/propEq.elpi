@@ -31,9 +31,9 @@ dconv (eq A AA) (eq A' AA') :- conv A A', conv AA AA'.
 
 interp (propEq A Aa1 Aa2) R 
     :- spy(setoid_eq A EquA)
-    ,  spy(interp_isa Aa1 A Aa1')
-    ,  spy(interp_isa Aa2 A Aa2')
-    ,  spy(R = (EquA Aa1' Aa2'))
+    ,  spy(interp_isa Aa1 A Aa1i')
+    ,  spy(interp_isa Aa2 A Aa2i')
+    ,  spy(R = (EquA Aa1i' Aa2i'))
     .
 
 interp (eq  A Aa)  T
@@ -44,7 +44,7 @@ interp (eq  A Aa)  T
 setoid_refl (propEq _ _ _) (_\id singleton star).
 setoid_symm (propEq _ _ _) (_\_\_\ id singleton star).
 setoid_tran (propEq _ _ _) (_\_\_\_\_\ id singleton star).
-setoid_eq (propEq A Aa1 Aa2) (_\ _\ (propId singleton star star)).
+setoid_eq   (propEq _ _ _) (_\_\ (propId singleton star star)).
 
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
     :- spy(tau_proof_eq T1 T1' T F1)
