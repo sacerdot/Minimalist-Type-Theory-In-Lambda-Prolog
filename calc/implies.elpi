@@ -43,12 +43,7 @@ dconv (impl_lam B F) (impl_lam B' F')
 
 
 
-interp (implies B C) (forall B' C') 
-    :- interp B B'
-    ,  spy(pi x\ pi x'\ 
-        (  interp x x'
-        ,  locDecl x B
-        ,  locDecl x' B') 
-            =>  interp C (C' x')
-    )
+interp (implies B C) (forall Bi Ci) 
+    :- interp B Bi
+    ,  spy(pi x\ pi xi\ interp x xi => locDecl x B => locDecl xi Bi => interp C (Ci xi))
     .

@@ -162,7 +162,7 @@ tau (setPi B C) (setPi B' C') P
             locDecl y2' Bi' =>
                 locDecl d' (EquB y1' y2') =>
                     tau_trasp B' B (FH y1' y2' d'))
-    ,  P = 
+    ,  spy(P = 
         (w\ elim_setSigma w (_\setSigma T1' T2')
             f\p\ pair T1' T2'
                 (lambda Bi' x\ FC' (FB x) x (Hi x) (app f (FB x)))
@@ -179,7 +179,7 @@ tau (setPi B C) (setPi B' C') P
                           (KB y1' y2' d')
                          )
                 )
-        ) 
+        ) )
     . 
 
 tau_trasp (setPi B C) (setPi B' C') P 

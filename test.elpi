@@ -17,27 +17,26 @@ accumulate calc/singleton.
 
 quicktest 
     :- makeline
-    %,  spy(sigma A\ sigma B\ sigma C\ test m A B C), makeline
-    %,  spy(sigma A\ sigma B\ sigma C\ test l A B C), makeline
-    %,  spy(sigma A\ sigma B\ sigma C\ test f A B C), makeline
-    %,  spy(sigma A\ sigma B\ sigma C\ test g A B C), makeline
-    %,  spy(sigma A\ sigma B\ sigma C\ test h A B C), makeline
-    %,  spy(sigma A\ sigma B\ sigma C\ test i A B C), makeline
-    %,  spy(setoid_tran (setPi (propEq singleton star star) x\singleton )  _), makeline
-    %,  spy(setoid_tran (setPi singleton x\singleton )  _), makeline
-    %,  spy(setoid_tran (setPi (setPi singleton x\singleton ) x\(setPi singleton x\singleton ) )  _), makeline
-    %,  spy(setoid_tran (setPi (propEq singleton star star) x\propEq singleton star star )  _),  makeline
-    %,  spy(sigma P\ setoid_tran singleton P), makeline
-    %,  spy(setoid_refl (setPi (propEq singleton star star) x\singleton) _), makeline
-    %,  spy(setoid_refl (setPi (setPi singleton _\singleton) x\singleton) _), makeline
-    %,  spy(setoid_symm (setPi singleton x\singleton)  _), makeline
-    %,  spy(setoid_symm (setPi (setPi singleton x\singleton) x\singleton)  _), makeline
-    %,  spy(setoid_symm (setPi (setPi (setPi singleton x\singleton) x\(setPi singleton x\singleton)) x\(setPi singleton x\singleton))  _), makeline
-    %,  spy(setoid_tran (setPi (setPi singleton x\(propEq singleton x star) ) x\(setPi (setPi singleton x\singleton ) x\(setPi singleton x\singleton ) ) )  _), makeline
-    %,  spy(setoid_tran (setPi singleton x\(setPi singleton y\(propEq singleton x y) ) )  _), makeline
-    %,  spy(setoid_tran (setPi (propEq singleton star star) x\(setPi (propEq singleton star star) x\singleton ) )  _), makeline
-    %,  spy(setoid_refl (setPi (setPi (propEq singleton star star) x\singleton) x\(setPi (propEq singleton star star) x\singleton)) _), makeline
-    %,  spy(setoid_tn (setPi singleton x\singleton )  _), makeline
+    %,  spy(sigma A\ sigma B\ sigma C\ test m A B C), makeline %This one takes a lot of time
+    ,  spy(sigma A\ sigma B\ sigma C\ test l A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test f A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test g A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test h A B C), makeline
+    ,  spy(sigma A\ sigma B\ sigma C\ test i A B C), makeline
+    ,  spy(setoid_tran (setPi (propEq singleton star star) x\singleton )  _), makeline
+    ,  spy(setoid_tran (setPi singleton x\singleton )  _), makeline
+    ,  spy(setoid_tran (setPi (setPi singleton x\singleton ) x\(setPi singleton x\singleton ) )  _), makeline
+    ,  spy(setoid_tran (setPi (propEq singleton star star) x\propEq singleton star star )  _),  makeline
+    ,  spy(sigma P\ setoid_tran singleton P), makeline
+    ,  spy(setoid_refl (setPi (propEq singleton star star) x\singleton) _), makeline
+    ,  spy(setoid_refl (setPi (setPi singleton _\singleton) x\singleton) _), makeline
+    ,  spy(setoid_symm (setPi singleton x\singleton)  _), makeline
+    ,  spy(setoid_symm (setPi (setPi singleton x\singleton) x\singleton)  _), makeline
+    ,  spy(setoid_symm (setPi (setPi (setPi singleton x\singleton) x\(setPi singleton x\singleton)) x\(setPi singleton x\singleton))  _), makeline
+    ,  spy(setoid_tran (setPi (setPi singleton x\(propEq singleton x star) ) x\(setPi (setPi singleton x\singleton ) x\(setPi singleton x\singleton ) ) )  _), makeline
+    ,  spy(setoid_tran (setPi singleton x\(setPi singleton y\(propEq singleton x y) ) )  _), makeline
+    ,  spy(setoid_tran (setPi (propEq singleton star star) x\(setPi (propEq singleton star star) x\singleton ) )  _), makeline
+    ,  spy(setoid_refl (setPi (setPi (propEq singleton star star) x\singleton) x\(setPi (propEq singleton star star) x\singleton)) _), makeline
     .
 
 macro_test I O 
@@ -47,10 +46,23 @@ macro_test I O
     .
 
 test n O
-    :- T = (setPi singleton a\ (setPi singleton b\ 
-        (setPi (propEq singleton a b) h\ (setPi (propEq singleton b a) k\ 
-        (propEq (propEq singleton a a) h k)))))
-    , macro_test T _
+    :- T = ( setPi singleton x\
+      setPi (propEq singleton x star) _\
+      (setPi (propEq singleton star x) _\
+      (setPi 
+            (setPi 
+                (setPi 
+                    (setPi singleton y\ propEq singleton star x) _\ 
+                    singleton) 
+                _\singleton
+            ) f\
+                (propEq singleton 
+                    (app f (lambda (setPi singleton y\ propEq singleton star star)
+                         x\ star)) 
+                    star) 
+            ))
+        )
+    , macro_test T O
     .
 
 
