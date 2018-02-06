@@ -15,6 +15,8 @@ accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
 
+main :- notquicktest.
+
 quicktest 
     :- makeline
     ,  spy(setoid_tran (setPi (propEq singleton star star) x\singleton )  _), makeline
