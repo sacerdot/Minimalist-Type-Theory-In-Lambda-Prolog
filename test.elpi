@@ -15,7 +15,7 @@ accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
 
-main :- notquicktest.
+main :- nodebug => notquicktest.
 
 quicktest 
     :- makeline
@@ -47,29 +47,16 @@ notquicktest
     .
 
 macro_test I O 
-    :- spy(ofType I _ ext)
+    :- spy(nodebug => ofType I Te ext)
     ,  spy(interp I O)
-    ,  spy(ofType O _ int)
+    ,  spy(ofType O Ti int)
     .
-
 test n O
-    :- T = ( setPi singleton x\
-      setPi (propEq singleton x star) _\
-      (setPi (propEq singleton star x) _\
-      (setPi 
-            (setPi 
-                (setPi 
-                    (setPi singleton y\ propEq singleton star x) _\ 
-                    singleton) 
-                _\singleton
-            ) f\
-                (propEq singleton 
-                    (app f (lambda (setPi singleton y\ propEq singleton star star)
-                         x\ star)) 
-                    star) 
-            ))
-        )
-    , macro_test T O
+    :- (T = 
+        setPi (setPi (setPi singleton _\singleton) _\singleton) f\
+        (propEq singleton (app f (lambda singleton x\ x)) star) 
+        )    
+    , (macro_test T O)
     .
 
 

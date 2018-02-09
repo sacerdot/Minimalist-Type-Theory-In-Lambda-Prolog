@@ -61,10 +61,10 @@ dconv (lambda B F) (lambda B' F')
 
 
 interp (setPi B C) T 
-    :- spy(interp B Bi)
-    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => interp (C x) (Ci xi))
-    ,  spy(setoid_eq B EquB)
-    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => setoid_eq (C x) (EquC xi))
+    :- nodebug => (macro_interp B x\xi\_\_\ interp (C x) (Ci xi))
+    ,  nodebug => (macro_interp B x\xi\_\_\ setoid_eq (C x) (EquC xi))
+    ,  nodebug => spy(interp B Bi)
+    ,  nodebug => spy(setoid_eq B EquB)
     ,  spy(pi x1 \ pi x2 \ pi h\
         pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B
         => locDecl x1i Bi
@@ -74,7 +74,7 @@ interp (setPi B C) T
         => (locDecl h (propEq B x1 x2)) 
         => (locDecl hi (EquB x1i x2i))
         => interp h hi
-        => spy(tau (C x1) (C x2) (PippoC x1i x2i hi)))
+        => (tau (C x1) (C x2) (PippoC x1i x2i hi)))
     ,  T = setSigma (setPi Bi Ci) f\ (forall (Bi) x1\ (forall Bi x2\ (forall (EquB x1 x2) h\
     (
             EquC x2 
@@ -104,9 +104,9 @@ interp (app F X) R
 interp (lambda B F) R                
     :- spy(of (lambda B F) (setPi B C) ext)
     ,  spy(interp (setPi B C) (setSigma (setPi Bi Ci) H ))
-    ,  spy(macro_interp B ( x\_\_\xi\_\_\ interp (F x) (Fi xi)))
+    ,  spy(macro_tau B B ( x\_\_\xi\_\_\ interp (F x) (Fi xi)))
     ,  spy(setoid_eq B EquB)
-    ,  spy(macro_interp B (x1\x2\h\x1i\x2i\hi\tau_proof_eq (F x1) (F x2) (C x2) (K_EQU x1i x2i hi)))
+    ,  spy(macro_tau B B (x1\x2\h\x1i\x2i\hi\tau_proof_eq (F x1) (F x2) (C x2) (K_EQU x1i x2i hi)))
     ,  spy(R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
         (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
             K_EQU x1 x2 h))
@@ -149,11 +149,11 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(interp (setPi B' C') (setSigma T1' T2'))
     ,  spy(T1' = setPi Bi' Ci')
     ,  spy(setoid_eq B' EquB')
-    %,  spy(macro_interp B (_\x2\_\_\x2i\hi\ setoid_eq (C x2) (EquC x2i)))
+    %,  spy(macro_tau B B (_\x2\_\_\x2i\hi\ setoid_eq (C x2) (EquC x2i)))
     ,  spy(tau B' B FB)
     ,  spy(macro_tau B B' 
         (x\x'\h\xi\xi'\hi\ tau (C x) (C' x') (FC' xi xi' hi)))
-    ,  spy(macro_interp B (x1\x2\_\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)))
+    ,  spy(macro_tau B B (x1\x2\_\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)))
     ,  spy(tau_trasp B' B KB)
     ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_trasp (C x) (C' x') (KC' xi xi' hi))
     ,  spy(setoid_refl B Hi)

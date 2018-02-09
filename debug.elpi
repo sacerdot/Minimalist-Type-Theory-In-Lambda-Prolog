@@ -1,11 +1,17 @@
 
 announce G :- bracket " " ">>" G "\n", fail.
 
-
+% a possible use is to check that intermediate terms and tipes are wellformed.
+check P :- checks, !, P.
+check _.
 
 %The only entry point for spy, is add a new indent and call the helper spy'
 spy G :- count_indent' T, indent [0 | T] => spy' G.
 
+%by assuming the constant "nodebug" we can shut off the debugging locally
+spy' G :- nodebug, !, G.
+%by assuming a "indent_top N" predicate we can limit the depth of the debugging
+spy' G :- indent_top N, indent_depth M, N < M, !, G.
 spy' G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "-" "]-]Success  \n" G "\n") , !. 
 spy' G :-  bracket "." "].]Fail  \n" G "\n",  fail.
 
@@ -21,6 +27,8 @@ makeline :- print "||||||||||||||||||||||||||||||||||||||||||".
 list_len [] 0 :- !.
 list_len [_ | L] N :- list_len L M, N is M + 1.
 
+%indentation level
+indent_depth N :- count_indent' T, list_len T N.
 
 member X [Y | L] 
     :- (X = Y ; member X L) 

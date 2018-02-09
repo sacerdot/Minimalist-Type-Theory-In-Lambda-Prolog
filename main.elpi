@@ -235,4 +235,7 @@ macro_tau B B' Q
         => spy(Q x x' h xi xi' hi)
         ) 
     . 
-macro_interp B Q :- spy(macro_tau B B Q).
+macro_interp B Q 
+    :- spy(interp B Bi)
+    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => (Q x xi B Bi)) 
+    .
