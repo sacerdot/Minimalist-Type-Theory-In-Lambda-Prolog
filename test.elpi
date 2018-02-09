@@ -15,6 +15,7 @@ accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
 
+
 main :- nodebug => notquicktest.
 
 quicktest 
