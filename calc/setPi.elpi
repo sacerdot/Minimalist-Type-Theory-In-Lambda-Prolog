@@ -65,7 +65,7 @@ interp (setPi B C) T
     ,  nodebug => (macro_interp B x\xi\_\_\ setoid_eq (C x) (EquC xi))
     ,  nodebug => spy(interp B Bi)
     ,  nodebug => spy(setoid_eq B EquB)
-    ,  macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (PippoC x1i x2i hi))
+    ,  (macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (PippoC x1i x2i hi)))
     ,  T = setSigma (setPi Bi Ci) 
         f\ forall Bi 
          x1i\ forall Bi 
@@ -89,10 +89,10 @@ interp (app F X) R
 
 
 interp (lambda B F) R                
-    :- spy(of (lambda B F) (setPi B C) ext)
-    ,  spy(interp (setPi B C) (setSigma (setPi Bi Ci) H ))
-    ,  spy(macro_tau B B ( x\_\_\xi\_\_\ interp (F x) (Fi xi)))
-    ,  spy(setoid_eq B EquB)
+    :- nodebug => spy(of (lambda B F) (setPi B C) ext)
+    ,  nodebug => spy(interp (setPi B C) (setSigma (setPi Bi Ci) H ))
+    ,  nodebug => spy(macro_tau B B ( x\_\_\xi\_\_\ interp (F x) (Fi xi)))
+    ,  nodebug => spy(setoid_eq B EquB)
     ,  spy(macro_tau B B (x1\x2\h\x1i\x2i\hi\tau_proof_eq (F x1) (F x2) (C x2) (K_EQU x1i x2i hi)))
     ,  spy(R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
         (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
@@ -113,37 +113,39 @@ setoid_eq (setPi B C) P
             (app (elim_setSigma f (_\setPi Bi Ci) (x\y\x) ) x) 
             (app (elim_setSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
-/*
-tau_proof_eq (app F X1) (app F X2) T H 
-    :- of F (setPi B T') ext
-    ,  spy(tau_proof_eq X1 X2 B G)
-    ,  spy(interp F Fi)
-    ,  spy(of Fi (setSigma TyF MorF) int)
-    ,  PI1 = (c\ elim_setSigma c (_\ TyF) (x \ y\ x))
-    ,  P2Fi = elim_setSigma Fi (c \ MorF (PI1 c)) (x\ y\ y)
-    ,  spy(interp_isa X1 B X1i)
-    ,  spy(interp_isa X2 B X2i)
-    ,  spy(tau (propEq (T' X2) (app F X1) (app F X2))
-               (propEq (T) (app F X1) (app F X2)) PIPPO)
-    ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
-    . 
-*/
 
-tau_proof_eq (app F1 X1) (app F2 X2) T H_app
-    :- of F1 (setPi B _) ext
-    ,  check ( sigma B2\ of F2 (setPi B2 _) ext, conv B B2)
-    ,  check ( sigma T1\ sigma T2\ of F1 (setPi _ T1) ext, of F2 (setPi _ T2) ext, conv T1 T, conv T2 T)
-    ,  tau_proof_eq X1 X2 B H_args  % ATTENZIONE ----------- dentro questo H_args sia X1 che X2 dovranno essere convertiti verso Bi dentro H_args
-    ,  tau_proof_eq F1 F2 (setPi B T) H_fun
-    ,  interp X1 X1i, of X1i B1i int 
-    ,  interp X2 X2i, of X2i B2i int
+% T is a concrete type, while C is not!
+tau_proof_eq (app F1 X1) (app F2 X2) T H_app 
+    :- spy(of F1 (setPi B1 C1) ext)
+    ,  spy(of F2 (setPi B2 C2) ext)
+    ,  spy(of X1 A1 ext)
+    ,  spy(of X2 A2 ext)
+    ,  check (conv (C1 X1) T, conv (C2 X2) T, conv A1 B1, conv A2 B2, conv (setPi B2 C2) (setPi B1 C1))
+    ,  B = B1 , C = C1
+    ,  B' = B2, C' = C2
+    ,  X = X1, F = F1
+    ,  X' = X2, F' = F2
+    ,  spy(tau_proof_eq F F' (setPi B C) H_fun)
+    ,  setoid_tran T P_tran
+
+    % ora possiamo dimostrate Fi Xi =(via p2(Fi))= Fi Xi' =(via F = F')= Fi' Xi'
+    % sarà molto lungo da scrivere a mano
+    %,  setoid_tran ?? 
+    %    ? (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) ?
+    %    ? (forall_app H_fun Xi') ?
+
+    % 
+
+    ,  spy(interp X1 X1i, of X1i B1i int 
+        ,  interp X2 X2i, of X2i B2i int
+        ,  interp F1 F1i, of F1i (setPi _ C1i) int 
+        ,  interp F2 F2i, of F2i (setPi _ C2i) int
+        ,  interp B Bi, macro_interp B  x\xi\_\_\ interp (C x) (Ci xi))
     ,  tau B1i Bi TauB1i_Bi
     ,  tau B2i Bi TauB2i_Bi 
-    ,  interp F1 F1i, of F1i (setPi _ T1i) int 
-    ,  interp F2 F2i, of F2i (setPi _ T2i) int
-    ,  interp B Bi, interp T Ti
-    ,  tau T1i Ti TauT1i_Ti
-    ,  tau T2i Ti TauT2i_Ti
+    ,  (macro_interp B x\xi\_\_\  
+           tau (C1i x) (Ci x) (TauC1i_Ci xi)
+        ,  tau (C2i x) (Ci x) (TauC2i_Ci xi))
     ,  H_args = forall_app (forall_app (forall_app H_fun (TauB1i_Bi X1i)) (TauB2i_Bi X2i)) H_args 
     . 
 
