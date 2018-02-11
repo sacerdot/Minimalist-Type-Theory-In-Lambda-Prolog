@@ -113,7 +113,7 @@ setoid_eq (setPi B C) P
             (app (elim_setSigma f (_\setPi Bi Ci) (x\y\x) ) x) 
             (app (elim_setSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
-
+/*
 tau_proof_eq (app F X1) (app F X2) T H 
     :- of F (setPi B T') ext
     ,  spy(tau_proof_eq X1 X2 B G)
@@ -127,6 +127,26 @@ tau_proof_eq (app F X1) (app F X2) T H
                (propEq (T) (app F X1) (app F X2)) PIPPO)
     ,  H = PIPPO (forall_app (forall_app (forall_app P2Fi X1i) X2i) G)
     . 
+*/
+
+tau_proof_eq (app F1 X1) (app F2 X2) T H_app
+    :- of F1 (setPi B _) ext
+    ,  check ( sigma B2\ of F2 (setPi B2 _) ext, conv B B2)
+    ,  check ( sigma T1\ sigma T2\ of F1 (setPi _ T1) ext, of F2 (setPi _ T2) ext, conv T1 T, conv T2 T)
+    ,  tau_proof_eq X1 X2 B H_args  % ATTENZIONE ----------- dentro questo H_args sia X1 che X2 dovranno essere convertiti verso Bi dentro H_args
+    ,  tau_proof_eq F1 F2 (setPi B T) H_fun
+    ,  interp X1 X1i, of X1i B1i int 
+    ,  interp X2 X2i, of X2i B2i int
+    ,  tau B1i Bi TauB1i_Bi
+    ,  tau B2i Bi TauB2i_Bi 
+    ,  interp F1 F1i, of F1i (setPi _ T1i) int 
+    ,  interp F2 F2i, of F2i (setPi _ T2i) int
+    ,  interp B Bi, interp T Ti
+    ,  tau T1i Ti TauT1i_Ti
+    ,  tau T2i Ti TauT2i_Ti
+    ,  H_args = forall_app (forall_app (forall_app H_fun (TauB1i_Bi X1i)) (TauB2i_Bi X2i)) H_args 
+    . 
+
 
 % tau_proof_eq (lambda B F) (lambda B' F') T H :- TODO.
 

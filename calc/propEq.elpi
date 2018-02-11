@@ -47,7 +47,8 @@ setoid_tran (propEq _ _ _) (_\_\_\_\_\ id singleton star).
 setoid_eq   (propEq _ _ _) (_\_\ (propId singleton star star)).
 
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
-    :- spy(tau_proof_eq T1 T1' T F1)
+    :- spy(conv T_ T)
+    ,  spy(tau_proof_eq T1 T1' T F1)
     ,  spy(tau_proof_eq T2 T2' T F2)
     ,  spy(interp_isa T1 T T1i)
     ,  spy(interp_isa T2 T T2i)
