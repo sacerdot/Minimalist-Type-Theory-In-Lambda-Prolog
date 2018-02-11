@@ -65,7 +65,7 @@ interp (setPi B C) T
     ,  nodebug => (macro_interp B x\xi\_\_\ setoid_eq (C x) (EquC xi))
     ,  nodebug => spy(interp B Bi)
     ,  nodebug => spy(setoid_eq B EquB)
-    ,  macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1)(C x2)(PippoC x1i x2i hi))
+    ,  macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (PippoC x1i x2i hi))
     ,  T = setSigma (setPi Bi Ci) 
         f\ forall Bi 
          x1i\ forall Bi 
