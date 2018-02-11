@@ -65,24 +65,15 @@ interp (setPi B C) T
     ,  nodebug => (macro_interp B x\xi\_\_\ setoid_eq (C x) (EquC xi))
     ,  nodebug => spy(interp B Bi)
     ,  nodebug => spy(setoid_eq B EquB)
-
-    %,  macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1)(C x2)(PippoC x1i x2i hi))
-   ,  spy(pi x1 \ pi x2 \ pi h\ pi x1i\ pi x2i\ pi hi\ locDecl x1 B => locDecl x2 B=> locDecl x1i Bi        => locDecl x2i Bi        => interp x1 x1i        => interp x2 x2i        => (locDecl h (propEq B x1 x2))         => (locDecl hi (EquB x1i x2i))        => interp h hi        => (tau (C x1) (C x2) (PippoC x1i x2i hi)))    
+    ,  macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1)(C x2)(PippoC x1i x2i hi))
     ,  T = setSigma (setPi Bi Ci) 
         f\ forall Bi 
          x1i\ forall Bi 
           x2i\ forall (EquB x1i x2i) 
            h\ EquC x2 (PippoC x1i x2i h (app f x1i)) (app f x2i)
     .
-    %,  macro_Pi B (x1\x2\h\x1i\x2i\hi\ tau (C x1)(C x2)(PippoC x1i x2i hi))
 
-macro_Pi T Q :- interp T Ti, setoid_eq T EquT, (
-    pi x1\ pi x2\ pi h\ pi x1i\ pi x2i\ pi hi\
-        locDecl x1 T => locDecl x2 T => locDecl x1i Ti => locDecl x2i Ti =>
-        interp x1 x1i => interp x2 x2i => 
-        locDecl h (propEq T x1 x2) => locDecl hi (EquT x1i x2i) =>
-        Q x1 x2 h x1i x2i hi
-).
+
 
 
 
