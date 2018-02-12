@@ -126,35 +126,24 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     ,  X = X1, F = F1
     ,  X' = X2, F' = F2
     ,  spy(tau_proof_eq F F' (setPi B C) H_fun)
+    ,  spy(tau_proof_eq X X' B H_args)
     ,  setoid_tran T P_tran
     ,  interp F Fi, interp_isa F' (setPi B C) Fi', interp B Bi
     ,  interp_isa X B Xi, interp_isa X' B Xi'
     ,  P1Fi = elim_setSigma Fi (_\Bi) (a\b\a)
+    ,  P2Fi = elim_setSigma Fi (x\Ci x) (a\b\b)
+    ,  P1Fi' = elim_setSigma Fi' (_\Bi) (a\b\a)
+    ,  H_app = P_tran 
+        (app P1Fi Xi)       %Ok 
+        (app P1Fi Xi')      %Ok
+        (app P1Fi' Xi')     %Ok
+        (forall_app (forall_app (forall_app P2Fi Xi) Xi') H_args)   %Ok
+        (forall_app H_fun Xi')  %Ok
+
     % P_tran (app Fi Xi) (app Fi Xi') (app Fi' Xi') (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) (forall_app H_fun Xi')
     %       \in Fi Xi =_Ti Fi' Xi'
-
-
-    ,  spy(interp X Xi, of Xi Bi int 
-        ,  interp X' Xi', of Xi' Bi' int
-        ,  interp F Fi, of Fi (setPi _ Ci) int 
-        ,  interp F' Fi', of Fi' (setPi _ Ci') int
-        ,  interp B Bi, macro_interp B  x\xi\_\_\ interp (C x) (Ci xi))
-
-
     % ora possiamo dimostrate Fi Xi =(via p2(Fi))= Fi Xi' =(via F = F')= Fi' Xi'
     % sarà molto lungo da scrivere a mano
-    %,  setoid_tran ?? 
-    %    ? (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) ?
-    %    ? (forall_app H_fun Xi') ?
-
-
-    
-    ,  tau B1i Bi TauB1i_Bi
-    ,  tau B2i Bi TauB2i_Bi 
-    ,  (macro_interp B x\xi\_\_\  
-           tau (C1i x) (Ci x) (TauC1i_Ci xi)
-        ,  tau (C2i x) (Ci x) (TauC2i_Ci xi))
-    ,  H_args = forall_app (forall_app (forall_app H_fun (TauB1i_Bi X1i)) (TauB2i_Bi X2i)) H_args 
     . 
 
 
