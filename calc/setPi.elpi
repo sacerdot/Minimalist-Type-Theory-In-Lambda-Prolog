@@ -121,12 +121,25 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     ,  spy(of X1 A1 ext)
     ,  spy(of X2 A2 ext)
     ,  check (conv (C1 X1) T, conv (C2 X2) T, conv A1 B1, conv A2 B2, conv (setPi B2 C2) (setPi B1 C1))
-    ,  B = B1 , C = C1
+    ,  B = B1 , C = C1, A = A1, A' = A2
     ,  B' = B2, C' = C2
     ,  X = X1, F = F1
     ,  X' = X2, F' = F2
     ,  spy(tau_proof_eq F F' (setPi B C) H_fun)
     ,  setoid_tran T P_tran
+    ,  interp F Fi, interp_isa F' (setPi B C) Fi', interp B Bi
+    ,  interp_isa X B Xi, interp_isa X' B Xi'
+    ,  P1Fi = elim_setSigma Fi (_\Bi) (a\b\a)
+    % P_tran (app Fi Xi) (app Fi Xi') (app Fi' Xi') (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) (forall_app H_fun Xi')
+    %       \in Fi Xi =_Ti Fi' Xi'
+
+
+    ,  spy(interp X Xi, of Xi Bi int 
+        ,  interp X' Xi', of Xi' Bi' int
+        ,  interp F Fi, of Fi (setPi _ Ci) int 
+        ,  interp F' Fi', of Fi' (setPi _ Ci') int
+        ,  interp B Bi, macro_interp B  x\xi\_\_\ interp (C x) (Ci xi))
+
 
     % ora possiamo dimostrate Fi Xi =(via p2(Fi))= Fi Xi' =(via F = F')= Fi' Xi'
     % sarà molto lungo da scrivere a mano
@@ -134,13 +147,8 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     %    ? (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) ?
     %    ? (forall_app H_fun Xi') ?
 
-    % 
 
-    ,  spy(interp X1 X1i, of X1i B1i int 
-        ,  interp X2 X2i, of X2i B2i int
-        ,  interp F1 F1i, of F1i (setPi _ C1i) int 
-        ,  interp F2 F2i, of F2i (setPi _ C2i) int
-        ,  interp B Bi, macro_interp B  x\xi\_\_\ interp (C x) (Ci xi))
+    
     ,  tau B1i Bi TauB1i_Bi
     ,  tau B2i Bi TauB2i_Bi 
     ,  (macro_interp B x\xi\_\_\  
