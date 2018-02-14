@@ -92,10 +92,11 @@ interp (lambda B F) R
             K_EQU x1 x2 h))
     .
 
-
+%% The result P is an equality relation over the translation of (setPi B C). P takes two functions
+%% and verifies that for each element in the (translated) domain, the corrisponding values in the
+%% (translated) codomain are equal.
 setoid_eq (setPi B C) P
     :- spy(interp B Bi)
-    ,  spy(pi x\ pi xi\ locDecl x B => locDecl xi Bi => interp x xi => interp (C x) (Ci xi))
     ,  spy(pi x\ pi xi\locDecl x B 
         => locDecl xi Bi
             => interp x xi
@@ -151,7 +152,7 @@ proof_eq (app F1 X1) (app F2 X2) T H_app
     %       \in Fi Xi =_Ti Fi' Xi'
     % ora possiamo dimostrate Fi Xi =(via p2(Fi))= Fi Xi' =(via F = F')= Fi' Xi'
     % sarà molto lungo da scrivere a mano
-    . 
+    .
 
 tau (setPi B C) (setPi B' C') P
     :- spy(interp (setPi B C) (setSigma T1 T2))
@@ -198,9 +199,9 @@ tau (setPi B C) (setPi B' C') P
 tau_eq (setPi B C) (setPi B' C') P 
     :- spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(tau B' B FB)
-    ,  P = f\g\d\ forall_lam B' y'\ 
+    ,  P = f\g\d\ forall_lam B' y'\ %% check
             KC' (FB y') 
-                y'
+                y'                  %% type mismatch: this should be intensional but it is not!
                 d
                 (app f (FB y'))
                 (app g (FB y'))

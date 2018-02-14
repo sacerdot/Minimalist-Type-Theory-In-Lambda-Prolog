@@ -1,10 +1,8 @@
-
 %%-- singleton set/unit type: singleton
 
 type  singleton mttType.
 type  star mttTerm.
 type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
-
 
 
 ofType singleton set IE.
@@ -72,7 +70,6 @@ setoid_tran singleton P
             )
     ).
 
-
 interp singleton singleton.
 interp star star.
 interp (elim_singleton T C CC) (elim_singleton Ti Ci CCi) 
@@ -80,8 +77,3 @@ interp (elim_singleton T C CC) (elim_singleton Ti Ci CCi)
     ,  spy(interp CC CCi)
     ,  spy(pi x\ locDecl x singleton => spy(interp (C x) (Ci x)))
     .
-
-
-
-
-

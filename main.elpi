@@ -162,6 +162,7 @@ interp_isa X T Xi
         ,  spy(Xi = F Xi')
         .
 
+%% implementare usando simmetria e transitività
 locDecl (k_propId Te) (forall T t1\ forall T t1'\ 
         implies (E t1 t1') (forall T t2\ forall T t2'\ 
                 implies (E t2 t2') (implies (E t1 t2) (E t1' t2'))) )
