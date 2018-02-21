@@ -96,7 +96,8 @@ hnf A A.
 %% Expresses (extensional) equality between two types. Checks if they have the same WHNF, in which case
 %% it calls itself recursively (via dconv) on all the subterms of the WHNF
 conv A A :- ! .
-conv A B :- (locDecl _ (propEq _ A B) ).
+conv A B :- (locDecl _ (propEq _ A B) ), !.
+conv A B :- (locDecl _ (propEq _ B A) ), !.
 conv A B :- spy(hnf A A'), spy( hnf B B'), spy( dconv A' B').
 
 dconv A A :- !.
