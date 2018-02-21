@@ -1,0 +1,24 @@
+translation  | setPi | singleton | _ : Prop | propEq | implies | forall |
+-------------------------------------------------------------------
+tau          |  *    |  -        |  #       |  *     |         |        |
+tau_trasp    |  *    |  -        |          |  *     | ..      | ..     |
+tau_proof_eq |  app  |  star     |          |  *     | ..      | ..     |
+interp       |  *    |  *        |  #       |  *     | implies | forall |
+setoid_eq    |  *    |  *        |  *       |  -     | -       | -      |
+setoid_refl  |  *    |  *        |  *       |  -     | -       | -      |
+setoid_symm  |  *    |  *        |  *       |  -     | -       | -      |
+setoid_tran  |  *    |  *        |  *       |  -     | -       | -      |
+
+Legend:
+* = fully implemented
+- = generic case applies
+# = non applicable
+.. = generic case applies, but non implemented
+
+
+tau:       cast fra tipi (=oggetti) estensionalmente uguali
+tau_trasp: cast fra uguaglianze (=morfismi) su tipi estensionalmente uguali
+tau_proof_eq: dimostratore automatico di uguaglianze fra termini
+              estensionalmente uguali
+
+NOTA: interp lavora sia su tipi (calcolando il setoid_carrier), sia su termini
