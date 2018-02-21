@@ -178,7 +178,9 @@ tau_proof_eq A B T Hi
     ,  !
     ,  nodebug => spy(interp_isa H (propEq T B A) Hi')
     ,  nodebug => spy (setoid_symm T Q)
-    ,  nodebug => spy(Hi = Q Hi')
+    ,  nodebug => spy (interp_isa A T Ai)
+    ,  nodebug => spy (interp_isa B T Bi)
+    ,  nodebug => spy(Hi = Q Bi Ai Hi')
     .
 
 %% constructing a function that, given int_terms of an int_type, returns int_terms of the same int_type (Identity!)
