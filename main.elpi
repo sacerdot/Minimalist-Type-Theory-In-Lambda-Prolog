@@ -201,13 +201,13 @@ locDecl (k_propId Te) (forall T t1\ forall T t1'\
 
 
 setoid_refl Prop (_\id singleton star) 
-    :- spy(ofType Prop K) ext, pts_leq K propc.
+    :- spy(ofType Prop K ext), pts_leq K propc.
 setoid_symm Prop (_\_\_\ id singleton star) 
-    :- spy(ofType Prop K) ext, pts_leq K propc.
+    :- spy(ofType Prop K ext), pts_leq K propc.
 setoid_tran Prop (_\_\_\_\_\ id singleton star) 
-    :- spy(ofType Prop K) ext, pts_leq K propc.
+    :- spy(ofType Prop K ext), pts_leq K propc.
 setoid_eq   Prop (_\_\ (propId singleton star star)) 
-    :- spy(ofType Prop K) ext, pts_leq K propc.
+    :- spy(ofType Prop K ext), pts_leq K propc.
 
 %setoid_refl T (x\ fixMe "prova di riflessivita'" (EquT x x) )
 %    :- spy(setoid_eq T EquT)
