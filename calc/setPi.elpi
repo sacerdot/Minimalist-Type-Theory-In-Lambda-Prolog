@@ -113,14 +113,19 @@ setoid_eq (setPi B C) P
             (app (elim_setSigma f (_\setPi Bi Ci) (x\y\x) ) x) 
             (app (elim_setSigma g (_\setPi Bi Ci) (x\y\x) ) x))
     .
-
-% T is a concrete type, while C is not!
+% Nota:
+%   T is a concrete type, while C is not!
+%   é la probabile causa di eventuali errori di arietà
 tau_proof_eq (app F1 X1) (app F2 X2) T H_app 
-    :- spy(of F1 (setPi B1 C1) ext)
-    ,  spy(of F2 (setPi B2 C2) ext)
-    ,  spy(of X1 A1 ext)
-    ,  spy(of X2 A2 ext)
-    ,  check (conv (C1 X1) T, conv (C2 X2) T, conv A1 B1, conv A2 B2, conv (setPi B2 C2) (setPi B1 C1))
+    :- of F1 (setPi B1 C1) ext
+    ,  of F2 (setPi B2 C2) ext
+    ,  of X1 A1 ext
+    ,  of X2 A2 ext
+%    ,  check (conv (C1 X1) T)
+%    ,  check (conv (C2 X2) T)
+%    ,  check (conv A1 B1)
+%    ,  check (conv A2 B2)
+%    ,  check (conv (setPi B2 C2) (setPi B1 C1))
     ,  B = B1 , C = C1, A = A1, A' = A2
     ,  B' = B2, C' = C2
     ,  X = X1, F = F1
@@ -128,8 +133,11 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     ,  spy(tau_proof_eq F F' (setPi B C) H_fun)
     ,  spy(tau_proof_eq X X' B H_args)
     ,  setoid_tran T P_tran
-    ,  interp F Fi, interp_isa F' (setPi B C) Fi', interp B Bi
-    ,  interp_isa X B Xi, interp_isa X' B Xi'
+    ,  interp F Fi
+    ,  interp_isa F' (setPi B C) Fi'
+    ,  interp B Bi
+    ,  interp_isa X B Xi
+    ,  interp_isa X' B Xi'
     ,  P1Fi = elim_setSigma Fi (_\Bi) (a\b\a)
     ,  P2Fi = elim_setSigma Fi (x\Ci x) (a\b\b)
     ,  P1Fi' = elim_setSigma Fi' (_\Bi) (a\b\a)
