@@ -39,7 +39,6 @@ test n O
 test m A Q Qy
  :- Long = ( forall singleton x\
       implies (propEq singleton x star) 
-      (implies (propEq singleton star x)
       (forall 
             (setPi 
                 (setPi 
@@ -51,7 +50,7 @@ test m A Q Qy
                     (app f (lambda (setPi singleton y\ propEq singleton star star)
                          x\ star)) 
                     star) 
-            ))
+            )
         ),
     spy(ofType Long A ext),
     %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
@@ -63,7 +62,6 @@ test m A Q Qy
 test l A Q Qy
  :- Long = ( forall singleton x\
       implies (propEq singleton x star) 
-      (implies (propEq singleton star x)
       ( forall 
             (setPi 
                 (setPi singleton y\ propEq singleton star x) 
@@ -72,7 +70,7 @@ test l A Q Qy
                 (propEq singleton 
                     (app f (lambda singleton x\ (eq singleton star))) 
                     star) 
-            ))
+            )
         ),
     spy(ofType Long A ext),
     %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
@@ -85,11 +83,8 @@ test i A B C
  :- Long = ( forall singleton x\ forall singleton y\ 
     (implies 
         (propEq singleton x y) (implies 
-        (propEq singleton y x) (implies 
         (propEq singleton x star) (implies 
-        (propEq singleton y star) (implies 
-        (propEq singleton star x) (implies 
-        (propEq singleton star y) (
+        (propEq singleton y star) (
             forall 
                 (setPi (propEq singleton x star) d\ 
                     setPi (propEq singleton x x) h\
@@ -110,7 +105,7 @@ test i A B C
                         (app f (eq singleton x))
                         (eq singleton x))
             )
-        )))))))     
+        ))))
     ,
     spy(ofType Long A ext),
     %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
