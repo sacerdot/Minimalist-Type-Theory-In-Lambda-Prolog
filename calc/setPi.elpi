@@ -130,23 +130,29 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     ,  B' = B2, C' = C2
     ,  X = X1, F = F1
     ,  X' = X2, F' = F2
-    ,  spy(tau_proof_eq F F' (setPi B C) H_fun)
-    ,  spy(tau_proof_eq X X' B H_args)
-    ,  setoid_tran T P_tran
+    %  We need to use (setPi A C) in place of (setPi B C)
+    %  because later we need (C X) to be interpreted as the inferred
+    %  type of (app P1Fi Xi)
+    ,  spy(tau_proof_eq F F' (setPi A C) H_fun)
+    ,  spy(tau_proof_eq X X' A H_args)
+    ,  setoid_tran (C X) P_tran
     ,  interp F Fi
-    ,  interp_isa F' (setPi B C) Fi'
-    ,  interp B Bi
-    ,  interp_isa X B Xi
-    ,  interp_isa X' B Xi'
-    ,  P1Fi = elim_setSigma Fi (_\Bi) (a\b\a)
-    ,  P2Fi = elim_setSigma Fi (x\Ci x) (a\b\b)
-    ,  P1Fi' = elim_setSigma Fi' (_\Bi) (a\b\a)
-    ,  H_app = P_tran 
+    ,  interp_isa F' (setPi A C) Fi'
+    ,  interp (setPi A C) (setSigma ACi PACi)
+    ,  ACi = setPi Ai Ci
+    ,  interp_isa X A Xi
+    ,  interp_isa X' A Xi'
+    ,  P1Fi = elim_setSigma Fi (_\ACi) (a\b\a)
+    ,  P2Fi = elim_setSigma Fi (x\PACi (elim_setSigma x (_\ACi) (a\b\a))) (a\b\b)
+    ,  P1Fi' = elim_setSigma Fi' (_\ACi) (a\b\a)
+    ,  H_app_in_CX = P_tran 
         (app P1Fi Xi)       %Ok 
         (app P1Fi Xi')      %Ok
         (app P1Fi' Xi')     %Ok
         (forall_app (forall_app (forall_app P2Fi Xi) Xi') H_args)   %Ok
         (forall_app H_fun Xi')  %Ok
+    ,  spy(tau_trasp (C X) T T_eq)
+    ,  spy(H_app = T_eq (app P1Fi Xi) (app P1Fi' Xi') H_app_in_CX)
 
     % P_tran (app Fi Xi) (app Fi Xi') (app Fi' Xi') (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) (forall_app H_fun Xi')
     %       \in Fi Xi =_Ti Fi' Xi'
