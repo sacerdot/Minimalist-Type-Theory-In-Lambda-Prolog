@@ -41,11 +41,6 @@ interp (eq  A Aa)  T
     ,  spy(interp Aa Aa')
     ,  T = (ReflA Aa') 
     .
-setoid_refl (propEq _ _ _) (_\id singleton star).
-setoid_symm (propEq _ _ _) (_\_\_\ id singleton star).
-setoid_tran (propEq _ _ _) (_\_\_\_\_\ id singleton star).
-setoid_eq   (propEq _ _ _) (_\_\ (propId singleton star star)).
-
 tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
     :- nodebug => spy(conv T_ T)
     ,  spy(tau_proof_eq T1 T1' T F1)
