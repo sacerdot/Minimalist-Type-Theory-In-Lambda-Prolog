@@ -233,7 +233,11 @@ testZ A B C
     , spy(interp Long B)
     , spy(ofType B C int)
     .
+%%% SETSIGMA TESTS %%%
 
+test w A
+ :- Long = (pair singleton singleton star star),
+    of Long A ext.
 
 
 testE A B C
