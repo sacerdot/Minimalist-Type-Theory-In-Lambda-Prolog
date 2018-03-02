@@ -235,10 +235,44 @@ testZ A B C
     .
 %%% SETSIGMA TESTS %%%
 
-test w A
- :- Long = (pair singleton singleton star star),
-    of Long A ext.
+%% Using interp pair, setoid_eq. No type mismatches, simple interpretation and typing of sigma-terms.
+test s1 A Q Ai
+ :- Long = (forall singleton x\
+    	   (propEq (setSigma singleton x\singleton)
+	   	   (pair singleton (x\singleton) star star)
+		   (pair singleton (x\singleton) star star))),
+    spy (ofType Long A ext),
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy (interp Long Q),
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy (ofType Q Ai int)
+   .
+%% same as s1, slightly more elaborate.
+test s2 A Ai
+     :- Long = (forall singleton x\
+     	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
+		     (propEq singleton
+		     	     star
+			     (app (lambda (setSigma singleton x\singleton) _\star)
+			     	  (pair singleton (x\singleton) star star)))))),
+	ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+    .
 
+%% using tau
+test s3 A Q
+     :- Long = (forall singleton x\
+     	          (implies (propEq singleton x star) (implies (propEq singleton star x)
+		     (propEq singleton
+		     	     star
+			     (app (lambda (setSigma (propEq singleton x star) x\singleton)
+			     	 	 x\star)
+			     	 (pair (propEq singleton star star) (x\singleton)
+				       (eq singleton star) star)))))),
+        ofType Long A ext,
+	interp Long Q
+     .
 
 testE A B C
   :- Long = 

@@ -43,7 +43,7 @@ dconv (setSigma B C) (setSigma B' C') :- (conv B B'), (pi x\ locDecl x B => conv
 dconv (pair B C BB CC) (pair B' C' BB' CC') 
     :- (conv B B')
     ,  (pi x\ locDecl x B => conv (C x) (C' x))
-    ,  (conv BB BB)
+    ,  (conv BB BB')                             %% conv BB BB modificato in conv BB BB'
     ,  (conv CC CC')
     .
 
@@ -66,7 +66,7 @@ interp (setSigma B C) T :-
 
 interp (pair B C BB CC) T :-
        interp B Bi,
-       of BB B',                                         %% B' is the extensional type of BB
+       of BB B' ext,                                      %% B' is the extensional type of BB
        	     						 %% convertible to the type B
        macro_interp B' (x\xi\_\_\ interp (C x) (Ci xi)),  		 	      	  	   
        interp_isa BB B' BBi,   
@@ -79,21 +79,32 @@ setoid_eq (setSigma B C) P :-
        interp B Bi,
        setoid_eq B EquB,
        macro_interp B (x\xi\_\_\ (interp (C x) (Ci xi) ,
-       		      		 setoid_eq (C x) (Ci xi) (EquC xi))),      %% Equality over Ci xi
+       		      		 setoid_eq (C x) (EquC xi))),		   %% Equality over Ci xi
        macro_tau B B (x\x'\h\xi\xi'\hi\ tau (C x) (C x') (FCC xi xi' hi)), %% Cast from type (C x) to (C x') with
        		     			       	     	      	     	   %% x,x':B
-       P = (s\z\     		      
-              p1 s S1,
-	      p1 z Z1,
-	      p2 s S2,
-	      p2 z Z2,
-	      exist (EquB S1 Z1) d\		%% there exists an equality d between S1 and Z1 such that
-	      	    	  ((EquC Z1)		%% Z2:(C Z1) and the cast to type (C Z1) of S2:(C S1) 
-		    	  ( (FCC S1 Z1 d) S2)   %% are equal over type (C Z1)        
-		    	  Z2))
+       P = (s\z\
+	 %% using the projection macros this way seems to create problems for ofType function
+              %p1 s S1,  	      %% S1 = elim_setSigma s (_\B) (x\y\ x)
+	      %p1 z Z1,  	      %% Z1 = elim_setSigma z (_\B) (x\y\ x)
+	      %p2 s S2,  	      %% S2 = elim_setSigma s (_\ (C (elim_setSigma s (_\B) (x\y\ x)))) (x\y\ y)
+	      %p2 z Z2,		      %% Z2 = elim_setSigma z (_\ (C (elim_setSigma z (_\B) (x\y\ x)))) (x\y\ y)
+	      %exist (EquB S1 Z1) d\		%% there exists an equality d between S1 and Z1 such that
+	      %	    	   EquC Z1		%% Z2:(C Z1) and the cast to type (C Z1) of S2:(C S1) 
+	      %	    	   ( (FCC S1 Z1 d) S2)   %% are equal over type (C Z1)
+	      %		   Z2)
+	 %% this is the verbose (but working) solution		   
+	 exist (EquB (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) ) d\
+	     	    (
+	     		(EquC (elim_setSigma z (_\B) (x\y\ x)))
+	     		( (FCC (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) d)
+	     		       elim_setSigma s (_\ (C (elim_setSigma s (_\B) (x\y\ x)))) (x\y\ y))
+	     		(elim_setSigma z (_\ (C (elim_setSigma z (_\B) (x\y\ x)))) (x\y\ y))
+	             ))
 	.
 
 tau (setSigma B C) (setSigma B' C') P :-
+    print "||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    print "||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     interp (setSigma B' C') (setSigma Bi' Ci'),
     tau B B' FB,
     macro_tau B B' (x\x'\h\xi\xi'\hi\tau (C x) (C' x') (FC xi xi' hi)),
@@ -104,11 +115,11 @@ tau (setSigma B C) (setSigma B' C') P :-
     	      	   		      		     	  	     	    %% a questa funzione passerò come parametri
 									    %% w1 e (FB w1) che sono necessariamente ext
 									    %% uguali. Ho bisogno di parametri aggiuntivi?
-    P = w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
+    P = (w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
       	   		   (w1\ w2\ pair Bi' Ci'
 			   	    	 (FB w1)
 					 ( (FC w1 (FB w1) (IntEqu w1 (FB w1)))
-					       w2))
+					       w2)))
     .
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -116,14 +127,14 @@ tau (setSigma B C) (setSigma B' C') P :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 type p1, p2  A->A.	%% mttTerm->mttTerm? Needed for both ext and int pairs...
-
+     	     		%% Currently unused
 p1 Pair R :-
    of Pair (setSigma B C) IE,
-   R = (elim_setSigma (_\B) (x\y\ x) Pair)
+   R = (elim_setSigma Pair (_\B) (x\y\ x) )
    .
 
 p2 Pair R :-
    of Pair (setSigma B C) IE,
    p1 Pair R1,
-   R = (elim_setSigma (_\ (C R1)) (x\y\ y) Pair)
+   R = (elim_setSigma Pair (_\ (C R1)) (x\y\ y) )
    .
