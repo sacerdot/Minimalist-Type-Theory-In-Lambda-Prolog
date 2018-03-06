@@ -242,11 +242,10 @@ test s1 A Q Ai
 	   	   (pair singleton (x\singleton) star star)
 		   (pair singleton (x\singleton) star star))),
     spy (ofType Long A ext),
-    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy (interp Long Q),
-    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
     spy (ofType Q Ai int)
    .
+   
 %% same as s1, slightly more elaborate.
 test s2 A Ai
      :- Long = (forall singleton x\
@@ -260,8 +259,8 @@ test s2 A Ai
 	ofType Q Ai int
     .
 
-%% using tau
-test s3 A Q
+%% Using tau. The version with setoid_refl terminates successfully. Type mismatch in the type B of (setSigma B C).
+test s3 A Q Ai
      :- Long = (forall singleton x\
      	          (implies (propEq singleton x star) (implies (propEq singleton star x)
 		     (propEq singleton
@@ -271,9 +270,54 @@ test s3 A Q
 			     	 (pair (propEq singleton star star) (x\singleton)
 				       (eq singleton star) star)))))),
         ofType Long A ext,
-	interp Long Q
+	interp Long Q,
+	ofType Q Ai int
      .
 
+%% Using tau. Here the type mismatch is in the dependent type C of (setSigma B C)
+test s4 A Q Ai
+     :- Long = (forall singleton x\
+     	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
+		     (propEq singleton
+		     	     star
+			     (app (lambda (setSigma singleton z\(propEq singleton x star)) %% changing this z to x makes
+			     	  	  	    	      			    	   %% the test for A fail (binding x)
+			     	  	  z\star)
+			           (pair singleton (x\propEq singleton star star)
+				   	 star (eq singleton star))))))),
+	ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+     .
+
+%% possible mistake in handling dependent types
+test s5 A Q Ai
+     :- Long = (forall singleton x\
+     	   (implies (propEq singleton x star) (implies (propEq singleton star x)
+	      (propEq singleton
+	      	      star
+		      (app (lambda (setSigma (propEq singleton x star) p\
+		      	      propEq (propEq singleton star star)
+			   	     p
+				     (eq singleton star))
+			    z\ star)
+		      (pair (propEq singleton star star)
+		      	    (p\ propEq (propEq singleton star star)
+			   	       p
+				       (eq singleton x))
+		            (eq singleton star)
+			    (eq (propEq singleton star star) (eq singleton star)))))))),  %%this is not really dependent 
+			    %%(lambda (propEq singleton star star)
+			    %%	    z\ (eq (propEq singleton star star) z)))))))),
+			    
+	ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+     .
+	
+
+
+			     
 testE A B C
   :- Long = 
 (forall 
