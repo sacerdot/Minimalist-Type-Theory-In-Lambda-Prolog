@@ -38,12 +38,26 @@ dconv (impl_lam B F) (impl_lam B' F')
 
 
 
-
-
-
-
-
 interp (implies B C) (forall Bi Ci) 
     :- interp B Bi
     ,  spy(pi x\ pi xi\ interp x xi => locDecl x B => locDecl xi Bi => interp C (Ci xi))
     .
+
+interp (impl_lam B F) (forall_lam Bi Fi) 
+    :- spy(of (impl_lam B F) (implies B C) ext)
+    ,  spy(interp (implies B C) (forall Bi _\Ci))
+    ,  spy(pi x\ pi xi\ [locDecl x B, locDecl xi Bi, interp x xi] => interp (F x) (Fi xi))
+    .
+
+interp (impl_app F X ) (forall_app Fi Xi) 
+    :- spy(interp X Xi)
+    ,  spy(interp F Fi)
+    .
+
+tau (implies B C) (implies B' C') P
+    :- spy(tau B' B FB)
+    ,  spy(macro_tau B B' 
+        x\x'\h\xi\xi'\hi\ tau C C' FC') 
+    ,  spy(P = w\ impl_lam Bi' x\ FC' (app w (FB x)))
+    . 
+
