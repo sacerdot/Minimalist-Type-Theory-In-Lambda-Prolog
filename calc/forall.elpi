@@ -59,3 +59,15 @@ interp (forall_lam B F) (forall_lam Bi Fi)
     ,  spy(pi x\ pi xi\ [locDecl x B, locDecl xi Bi, interp x xi] => interp (F x) (Fi xi))
     .
 
+
+
+tau (forall B C) (forall B' C') P
+    :- spy(interp (forall B C) (forall Bi Ci))
+    ,  spy(interp (forall B' C') (forall Bi' Ci'))
+    ,  spy(tau B' B FB)
+    ,  spy(macro_tau B B'
+        (x\x'\_\xi\xi'\hi\ tau (C x) (C' x') (FC' xi xi' hi)))
+    ,  spy(setoid_refl B Hi)
+    ,  spy(P = f\lambda Bi' x\ FC' (FB x) x (Hi (FB x)) (app f (FB x)))
+    .
+
