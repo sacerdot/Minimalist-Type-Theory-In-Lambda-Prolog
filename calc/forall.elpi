@@ -48,3 +48,14 @@ interp (forall B C) (forall B' C') :-
                 => locDecl x' B' 
                     => spy(interp (C x )(C'  x')))
     .
+
+interp (forall_app F X) (forall_app Fi Xi)
+    :- interp F Fi
+    ,  interp X Xi
+    .
+
+interp (forall_lam B F) (forall_lam Bi Fi)
+    :- spy(interp B Bi)
+    ,  spy(pi x\ pi xi\ [locDecl x B, locDecl xi Bi, interp x xi] => interp (F x) (Fi xi))
+    .
+
