@@ -159,21 +159,21 @@ isa (fixMe M T) T int
 %% degenerate cases, while the specific rules (for specific types) appear in their respective modules
 
 %% returns method to generate a proof for the equality of a term to itself
-tau_proof_eq A A T H'
+proof_eq A A T H'
     :- nodebug => spy(interp_isa A T Ai)
     ,  nodebug => spy(setoid_refl T H)		% H is a proof of reflexivity for the translation of type T
     ,  nodebug => spy(H' = H Ai)                % then applying H to the translation of A proves it equal to itself
     .
 
 %%  returns method to generate proof for the intensional equality, given a proof of the propositional one
-tau_proof_eq A B T Hi
+proof_eq A B T Hi
     :- spy(locDecl H (propEq T_ A B))       %% given a proof of the propositional equality between A and B
     , !
     ,  spy(interp_isa H (propEq T A B) Hi)       %% the intensional one is its translation
     .
     
 %% case with A and B inverted (using symetry in the translation of propEq over the translated of type T)
-tau_proof_eq A B T Hi
+proof_eq A B T Hi
     :- nodebug => spy(locDecl H (propEq T' B A))
     ,  !
     ,  nodebug => spy(interp_isa H (propEq T B A) Hi')
@@ -186,7 +186,7 @@ tau_proof_eq A B T Hi
 %% constructing a function that, given int_terms of an int_type, returns int_terms of the same int_type (Identity!)
 tau A A (x \ x) :- !.
 
-tau_trasp A A (x\y\h\ h) :- !.
+tau_eq A A (x\y\h\ h) :- !.
 
 
 %interpret X:_ext T in un Xi di tipo Ti

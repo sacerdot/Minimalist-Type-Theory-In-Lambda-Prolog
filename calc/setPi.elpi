@@ -93,7 +93,7 @@ interp (lambda B F) R
     ,  nodebug => spy(interp (setPi B C) (setSigma (setPi Bi Ci) H ))
     ,  nodebug => spy(macro_tau B B ( x\_\_\xi\_\_\ interp (F x) (Fi xi)))
     ,  nodebug => spy(setoid_eq B EquB)
-    ,  spy(macro_tau B B (x1\x2\h\x1i\x2i\hi\tau_proof_eq (F x1) (F x2) (C x2) (K_EQU x1i x2i hi)))
+    ,  spy(macro_tau B B (x1\x2\h\x1i\x2i\hi\proof_eq (F x1) (F x2) (C x2) (K_EQU x1i x2i hi)))
     ,  spy(R = pair (setPi Bi Ci) (H) (lambda Bi Fi)
         (forall_lam Bi x1\ forall_lam Bi x2\ forall_lam (EquB x1 x2) h\
             K_EQU x1 x2 h))
@@ -116,7 +116,7 @@ setoid_eq (setPi B C) P
 % Nota:
 %   T is a concrete type, while C is not!
 %   é la probabile causa di eventuali errori di arietà
-tau_proof_eq (app F1 X1) (app F2 X2) T H_app 
+proof_eq (app F1 X1) (app F2 X2) T H_app 
     :- of F1 (setPi B1 C1) ext
     ,  of F2 (setPi B2 C2) ext
     ,  of X1 A1 ext
@@ -133,8 +133,8 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     %  We need to use (setPi A C) in place of (setPi B C)
     %  because later we need (C X) to be interpreted as the inferred
     %  type of (app P1Fi Xi)
-    ,  spy(tau_proof_eq F F' (setPi A C) H_fun)
-    ,  spy(tau_proof_eq X X' A H_args)
+    ,  spy(proof_eq F F' (setPi A C) H_fun)
+    ,  spy(proof_eq X X' A H_args)
     ,  setoid_tran (C X) P_tran
     ,  interp F Fi
     ,  interp_isa F' (setPi A C) Fi'
@@ -151,7 +151,7 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
         (app P1Fi' Xi')     %Ok
         (forall_app (forall_app (forall_app P2Fi Xi) Xi') H_args)   %Ok
         (forall_app H_fun Xi')  %Ok
-    ,  spy(tau_trasp (C X) T T_eq)
+    ,  spy(tau_eq (C X) T T_eq)
     ,  spy(H_app = T_eq (app P1Fi Xi) (app P1Fi' Xi') H_app_in_CX)
 
     % P_tran (app Fi Xi) (app Fi Xi') (app Fi' Xi') (forall_app (forall_app (forall_app (p2 Fi) Xi) Xi') H_args) (forall_app H_fun Xi')
@@ -161,7 +161,7 @@ tau_proof_eq (app F1 X1) (app F2 X2) T H_app
     . 
 
 
-% tau_proof_eq (lambda B F) (lambda B' F') T H :- TODO.
+% proof_eq (lambda B F) (lambda B' F') T H :- TODO.
 
 tau (setPi B C) (setPi B' C') P
     :- spy(interp (setPi B C) (setSigma T1 T2))
@@ -174,14 +174,14 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(macro_tau B B' 
         (x\x'\h\xi\xi'\hi\ tau (C x) (C' x') (FC' xi xi' hi)))
     ,  spy(macro_tau B B (x1\x2\_\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)))
-    ,  spy(tau_trasp B' B KB)
-    ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_trasp (C x) (C' x') (KC' xi xi' hi))
+    ,  spy(tau_eq B' B KB)
+    ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(setoid_refl B Hi)
     ,  spy(pi y1'\ pi y2'\ pi d'\ 
         locDecl y1' Bi' =>
             locDecl y2' Bi' =>
                 locDecl d' (EquB y1' y2') =>
-                    tau_trasp B' B (FH y1' y2' d'))
+                    tau_eq B' B (FH y1' y2' d'))
     ,  spy(P = 
         (w\ elim_setSigma w (_\setSigma T1' T2')
             f\p\ pair T1' T2'
@@ -202,8 +202,8 @@ tau (setPi B C) (setPi B' C') P
         ) )
     . 
 
-tau_trasp (setPi B C) (setPi B' C') P 
-    :- spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_trasp (C x) (C' x') (KC' xi xi' hi))
+tau_eq (setPi B C) (setPi B' C') P 
+    :- spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(tau B' B FB)
     ,  P = f\g\d\ forall_lam B' y'\ 
             KC' (FB y') 

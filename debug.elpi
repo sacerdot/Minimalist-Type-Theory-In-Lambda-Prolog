@@ -73,11 +73,11 @@ print_indent C S N :- indent_str C S N.
 
 
 /*
-tau_trasp A B C :- announce (tau_trasp A B C).
+tau_eq A B C :- announce (tau_eq A B C).
 macro_interp A B P :- announce (macro_interp A P).
 setoid_eq A B :- announce (setoid_eq A B).
 tau A B C :- announce (tau A B C).
-tau_proof_eq A B C D :- announce (tau_proof_eq A B C D).
+proof_eq A B C D :- announce (proof_eq A B C D).
 
 
 interp A B      :- announce (interp A B).

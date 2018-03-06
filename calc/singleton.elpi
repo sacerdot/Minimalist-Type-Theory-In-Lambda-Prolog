@@ -19,7 +19,7 @@ hstep (elim_singleton star C Cc) Cc
 dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC CC',
     (pi z\ locDecl z singleton => conv (C z) (C' z)).
 
-tau_proof_eq star star singleton H 
+proof_eq star star singleton H 
     :- setoid_refl singleton K
     ,  H = K star
     .
@@ -30,9 +30,9 @@ tau_proof_eq star star singleton H
 %        )
 %    ,  spy(interp S Si)
 %    ,  spy(interp S' Si')
-%    ,  spy(tau_proof_eq S S' singleton HS)
+%    ,  spy(proof_eq S S' singleton HS)
 %    ,  spy(FC Si' Si HS (elim_singleton S' C CC') )
-%    ,  tau_proof_eq CC CC' C HCC
+%    ,  proof_eq CC CC' C HCC
 %    ,  setoid
 
 
