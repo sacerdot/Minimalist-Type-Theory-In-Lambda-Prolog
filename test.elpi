@@ -20,6 +20,8 @@ type test A.
 
 main :- nodebug => notquicktest.
 
+sigmaTest :- %nodebug => setSigma_test.
+	      nodebug => test s5 A Q Ai.
 macro_test I O 
     :- nodebug => spy(ofType I Te ext)
     ,  spy(interp I O)
@@ -233,90 +235,6 @@ testZ A B C
     , spy(interp Long B)
     , spy(ofType B C int)
     .
-%%% SETSIGMA TESTS %%%
-
-%% Using interp pair, setoid_eq. No type mismatches, simple interpretation and typing of sigma-terms.
-test s1 A Q Ai
- :- Long = (forall singleton x\
-    	   (propEq (setSigma singleton x\singleton)
-	   	   (pair singleton (x\singleton) star star)
-		   (pair singleton (x\singleton) star star))),
-    spy (ofType Long A ext),
-    spy (interp Long Q),
-    spy (ofType Q Ai int)
-   .
-   
-%% same as s1, slightly more elaborate.
-test s2 A Ai
-     :- Long = (forall singleton x\
-     	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
-		     (propEq singleton
-		     	     star
-			     (app (lambda (setSigma singleton x\singleton) _\star)
-			     	  (pair singleton (x\singleton) star star)))))),
-	ofType Long A ext,
-	interp Long Q,
-	ofType Q Ai int
-    .
-
-%% Using tau. The version with setoid_refl terminates successfully. Type mismatch in the type B of (setSigma B C).
-test s3 A Q Ai
-     :- Long = (forall singleton x\
-     	          (implies (propEq singleton x star) (implies (propEq singleton star x)
-		     (propEq singleton
-		     	     star
-			     (app (lambda (setSigma (propEq singleton x star) x\singleton)
-			     	 	 x\star)
-			     	 (pair (propEq singleton star star) (x\singleton)
-				       (eq singleton star) star)))))),
-        ofType Long A ext,
-	interp Long Q,
-	ofType Q Ai int
-     .
-
-%% Using tau. Here the type mismatch is in the dependent type C of (setSigma B C)
-test s4 A Q Ai
-     :- Long = (forall singleton x\
-     	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
-		     (propEq singleton
-		     	     star
-			     (app (lambda (setSigma singleton z\(propEq singleton x star)) %% changing this z to x makes
-			     	  	  	    	      			    	   %% the test for A fail (binding x)
-			     	  	  z\star)
-			           (pair singleton (x\propEq singleton star star)
-				   	 star (eq singleton star))))))),
-	ofType Long A ext,
-	interp Long Q,
-	ofType Q Ai int
-     .
-
-%% possible mistake in handling dependent types
-test s5 A Q Ai
-     :- Long = (forall singleton x\
-     	   (implies (propEq singleton x star) (implies (propEq singleton star x)
-	      (propEq singleton
-	      	      star
-		      (app (lambda (setSigma (propEq singleton x star) p\
-		      	      propEq (propEq singleton star star)
-			   	     p
-				     (eq singleton star))
-			    z\ star)
-		      (pair (propEq singleton star star)
-		      	    (p\ propEq (propEq singleton star star)
-			   	       p
-				       (eq singleton x))
-		            (eq singleton star)
-			    (eq (propEq singleton star star) (eq singleton star)))))))),  %%this is not really dependent 
-			    %%(lambda (propEq singleton star star)
-			    %%	    z\ (eq (propEq singleton star star) z)))))))),
-			    
-	ofType Long A ext,
-	interp Long Q,
-	ofType Q Ai int
-     .
-	
-
-
 			     
 testE A B C
   :- Long = 
@@ -343,3 +261,122 @@ testE A B C
     , spy(interp Long B)
     , spy(ofType B C int)
     .
+
+%%% SETSIGMA TESTS %%%
+
+%% Using interp pair, setoid_eq. No type mismatches, simple interpretation and typing of sigma-terms.
+test s1 A Q Ai
+ :- Long = (forall singleton x\
+    	   (propEq (setSigma singleton x\singleton)
+	   	   (pair singleton (x\singleton) star star)
+		   (pair singleton (x\singleton) star star))),
+    spy (ofType Long A ext),
+    spy (interp Long Q),
+    spy (ofType Q Ai int)
+   .
+   
+%% same as s1, slightly more elaborate.
+test s2 A Q Ai
+     :- Long = (forall singleton x\
+     	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
+		     (propEq singleton
+		     	     star
+			     (app (lambda (setSigma singleton x\singleton) _\star)
+			     	  (pair singleton (x\singleton) star star)))))),
+	ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+    .
+
+%% Using tau and setoid_eq. The version with setoid_refl terminates successfully. Type mismatch in the type B of (setSigma B C).
+test s3 A Q Ai
+     :- Long = (forall singleton x\
+     	          (implies (propEq singleton x star) (implies (propEq singleton star x)
+		     (propEq singleton
+		     	     star
+			     (app (lambda (setSigma (propEq singleton x star) x\singleton)
+			     	 	 x\star)
+			     	 (pair (propEq singleton star star) (x\singleton)
+				       (eq singleton star) star)))))),
+        ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+     .
+
+%% Using tau. Here the type mismatch is in the type C of (setSigma B C), which is not really dependent in this case.
+test s4 A Q Ai
+     :- Long = (forall singleton x\
+     	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
+		     (propEq singleton
+		     	     star
+			     (app (lambda (setSigma singleton z\(propEq singleton x star)) %% changing this z to x makes
+			     	  	  	    	      			    	   %% the test for A fail (binding x)
+			     	  	  z\star)
+			           (pair singleton (x\propEq singleton star star)
+				   	 star (eq singleton star))))))),
+	ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+     .
+
+%% Using tau and setoid_eq. Possible mistake in handling dependent types
+test s5 A Q Ai
+     :- Long = (forall singleton x\
+     	   (implies (propEq singleton x star) (implies (propEq singleton star x)
+	      (propEq singleton
+	      	      star
+		      (app (lambda (setSigma (propEq singleton x star) p\
+		      	      propEq (propEq singleton star star)
+			   	     p
+				     (eq singleton star))
+			    z\ star)
+		      (pair (propEq singleton star star)
+		      	    (p\ propEq (propEq singleton star star)
+			   	       p
+				       (eq singleton x))
+		            (eq singleton star)						 % using x here makes the test fail at Ai
+			    (eq (propEq singleton star star) (eq singleton star)))))))), % using x here makes the test fail at A
+			    			       	     	 	   		
+	ofType Long A ext,
+	interp Long Q,
+	ofType Q Ai int
+     .
+
+testE A B C
+  :- Long = 
+(forall 
+  (propEq singleton star star) x\
+  (implies (propEq (propEq singleton star star) x (eq singleton star)) (implies (propEq (propEq singleton star star) (eq singleton star) x) 
+      (forall 
+        (setPi 
+          (propEq 
+            (propEq singleton star star) (eq singleton star) x) y\
+          (setPi 
+            (propEq (propEq (propEq singleton star star) (eq singleton star) (eq singleton star)) y (eq (propEq singleton star star) (eq singleton star))) _\
+            (propEq singleton star star))) f\   
+        (propEq (propEq singleton star star) 
+        (app 
+            (app f (eq (propEq singleton star star) (eq singleton star)))
+            (eq (propEq (propEq singleton star star) (eq singleton star) (eq singleton star)) 
+            (eq (propEq singleton star star) (eq singleton star))
+            )) 
+        (eq singleton star))
+            )  ))
+    )
+    , spy(ofType Long A ext)
+    , spy(interp Long B)
+    , spy(ofType B C int)
+    .
+
+setSigma_test :-
+	      print "||||||||||START S1|||||||||||\n",
+	      test s1 A1 Q1 Ai1,
+	      print "||||||||||START S2||||||||||\n",
+	      test s2 A2 Q2 Ai2,
+	      print "||||||||||START S3||||||||||\n",
+	      test s3 A3 Q3 Ai3,
+	      print "||||||||||START S4||||||||||\n",
+	      test s4 A4 Q4 Ai4,
+	      print "||||||||||START S5||||||||||\n",
+	      test s5 A5 Q5 Ai5
+     .

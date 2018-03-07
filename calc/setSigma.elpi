@@ -72,21 +72,22 @@ interp (pair B C BB CC) T :-
        interp_isa BB B' BBi,   
        interp_isa CC (C BB) CCi,			 
        T = (pair Bi Ci BBi CCi)                          %% Ci parametric on xi, which is the
-       	   	       	   				 %% interpretation of x:B', like BBi
+       	   	       	   				 %% interpretation of an x:B', just like BBi
        .
 
 setoid_eq (setSigma B C) P :-
+       print "SETSIGMA SETOID_EQ\n",
        interp B Bi,
        setoid_eq B EquB,
        macro_interp B (x\xi\_\_\ (interp (C x) (Ci xi) ,
        		      		 setoid_eq (C x) (EquC xi))),		   %% Equality over Ci xi
        macro_tau B B (x\x'\h\xi\xi'\hi\ tau (C x) (C x') (FCC xi xi' hi)), %% Cast from type (C x) to (C x') with
        		     			       	     	      	     	   %% x,x':B
+       %% using the projection macros inside the term P gives rise to problems for "ofType"
+       %% this is the verbose (but working) solution. There exists an equality d between p1s and p1z such that
+       %% p2z : (C p1z) and the cast to type (C p1z) of s2:(C p1s) are equal over type (C p1z)
        P = (s\z\
-	 %% using the projection macros this way seems to create problems for "ofType"
-	 %% this is the verbose (but working) solution: there exists an equality d between p1s and p1z such that
-	 %% p2z : (C p1z) and the cast to type (C p1z) of s2:(C p1s) are equal over type (C p1z)
-	 exist (EquB (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) ) d\
+		exist (EquB (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) ) d\
 	     	    (
 	     		(EquC (elim_setSigma z (_\B) (x\y\ x)))
 	     		( (FCC (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) d)
@@ -96,27 +97,27 @@ setoid_eq (setSigma B C) P :-
 	.
 
 tau (setSigma B C) (setSigma B' C') P :-
-    print "||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    print "SETSIGMA TAU FUNCTION\n",
     interp (setSigma B' C') (setSigma Bi' Ci'),
     tau B B' FB,
     macro_tau B B' (x\x'\h\xi\xi'\hi\tau (C x) (C' x') (FC xi xi' hi)),
     	      	   			       %% given xi: Bi and xi':Bi' and hi intensional proof of their equality
 					       %% return function from terms in (C x)int to terms in (C' x')int
 					       
-    %macro_tau B B' (x\x'\h\xi\xi'\hi\ tau_proof_eq x x' B (IntEqu xi xi')), %% parametri aggiuntivi?
-    %P = (w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
-    %  	   		   (w1\ w2\ pair Bi' Ci'
-    %			   	    	 (FB w1)
-    %					 ( (FC w1 (FB w1) (IntEqu w1 (FB w1)))
-    %					       w2)))
+    %% macro_tau B B' (x\x'\h\xi\xi'\hi\ tau_proof_eq x x' B (IntEqu xi xi')),
+    %% P = (w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
+    %%  	   		   (w1\ w2\ pair Bi' Ci'
+    %%			   	    	 (FB w1)
+    %%					 ( (FC w1 (FB w1) (IntEqu w1 (FB w1)))
+    %%					       w2)))
     
     setoid_refl B Hi,
     P = w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
       	   		   (w1\ w2\ pair Bi' Ci'
 			   	    	 (FB w1)
-					 ( (FC w1 (FB w1) (Hi w1)) w2))     %% Uso di setoid_refl simile a quello in setPi tau
+					 ( (FC w1 (FB w1) (Hi w1)) w2))     %% Uso di setoid_refl simile a quello in setPi.tau
 					       	      	      	   	    %% per ottenere una prova di uguaglianza intensionale.
-									    %% non capisco perchè il test funzioni.
+									    %% Non chiaro; passa i test s3, s4.
     .
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
