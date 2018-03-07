@@ -104,7 +104,7 @@ tau (setSigma B C) (setSigma B' C') P :-
     	      	   			       %% given xi: Bi and xi':Bi' and hi intensional proof of their equality
 					       %% return function from terms in (C x)int to terms in (C' x')int
 					       
-    %% macro_tau B B' (x\x'\h\xi\xi'\hi\ tau_proof_eq x x' B (IntEqu xi xi')),
+    %% macro_tau B B' (x\x'\h\xi\xi'\hi\ proof_eq x x' B (IntEqu xi xi')),
     %% P = (w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
     %%  	   		   (w1\ w2\ pair Bi' Ci'
     %%			   	    	 (FB w1)
