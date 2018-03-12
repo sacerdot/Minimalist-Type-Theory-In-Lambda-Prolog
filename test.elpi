@@ -20,8 +20,8 @@ type test A.
 
 main :- nodebug => notquicktest.
 
-sigmaTest :- %nodebug => setSigma_test.
-	      nodebug => test s5 A Q Ai.
+sigmaTest :- nodebug => setSigma_test.
+
 macro_test I O 
     :- nodebug => spy(ofType I Te ext)
     ,  spy(interp I O)
@@ -309,8 +309,8 @@ test s4 A Q Ai
      	       	  (implies (propEq singleton x star) (implies (propEq singleton star x)
 		     (propEq singleton
 		     	     star
-			     (app (lambda (setSigma singleton z\(propEq singleton x star)) %% changing this z to x makes
-			     	  	  	    	      			    	   %% the test for A fail (binding x)
+			     (app (lambda (setSigma singleton z\(propEq singleton x star))
+			     	  	  	    	      			    	   
 			     	  	  z\star)
 			           (pair singleton (x\propEq singleton star star)
 				   	 star (eq singleton star))))))),
@@ -319,7 +319,7 @@ test s4 A Q Ai
 	ofType Q Ai int
      .
 
-%% Using tau and setoid_eq. Possible mistake in handling dependent types
+%% Using tau and setoid_eq. NOTE: this is almost useless, because of the way equalities of equalities are interpreted
 test s5 A Q Ai
      :- Long = (forall singleton x\
      	   (implies (propEq singleton x star) (implies (propEq singleton star x)
@@ -334,39 +334,36 @@ test s5 A Q Ai
 		      	    (p\ propEq (propEq singleton star star)
 			   	       p
 				       (eq singleton x))
-		            (eq singleton star)						 % using x here makes the test fail at Ai
-			    (eq (propEq singleton star star) (eq singleton star)))))))), % using x here makes the test fail at A
+		            (eq singleton star)						 
+			    (eq (propEq singleton star star) (eq singleton star)))))))), 
 			    			       	     	 	   		
 	ofType Long A ext,
 	interp Long Q,
 	ofType Q Ai int
      .
 
-testE A B C
-  :- Long = 
-(forall 
-  (propEq singleton star star) x\
-  (implies (propEq (propEq singleton star star) x (eq singleton star)) (implies (propEq (propEq singleton star star) (eq singleton star) x) 
-      (forall 
-        (setPi 
-          (propEq 
-            (propEq singleton star star) (eq singleton star) x) y\
-          (setPi 
-            (propEq (propEq (propEq singleton star star) (eq singleton star) (eq singleton star)) y (eq (propEq singleton star star) (eq singleton star))) _\
-            (propEq singleton star star))) f\   
-        (propEq (propEq singleton star star) 
-        (app 
-            (app f (eq (propEq singleton star star) (eq singleton star)))
-            (eq (propEq (propEq singleton star star) (eq singleton star) (eq singleton star)) 
-            (eq (propEq singleton star star) (eq singleton star))
-            )) 
-        (eq singleton star))
-            )  ))
-    )
-    , spy(ofType Long A ext)
-    , spy(interp Long B)
-    , spy(ofType B C int)
-    .
+test s6 A Q Ai
+     :- Long = (forall singleton x\
+     	   (implies (propEq singleton x star) (implies (propEq singleton star x)
+	      (propEq singleton
+	      	      star
+		      (app (lambda (setSigma (setPi (propEq singleton x star) _ \ singleton) p\
+		      	      propEq (setPi (propEq singleton star star) _ \ singleton)
+			   	     p
+				     p)
+			    z\ star)
+		      (pair (setPi (propEq singleton star star) _ \ singleton)
+		      	    (p\ propEq (setPi (propEq singleton star star) _ \singleton) p p)
+		            (lambda (propEq singleton star star) _ \ star)
+			    (eq (setPi (propEq singleton star star) _ \singleton) (lambda (propEq singleton star star) _ \ star)))))))),
+			    			       	     	 	   		
+	nodebug => (ofType Long A ext),
+	print "CSC2",
+	nodebug => (interp Long Q),
+	print "CSC3",
+	print ["test s6:", A, Q], 
+	nodebug => (ofType Q Ai int)
+     .
 
 setSigma_test :-
 	      print "||||||||||START S1|||||||||||\n",
@@ -378,5 +375,8 @@ setSigma_test :-
 	      print "||||||||||START S4||||||||||\n",
 	      test s4 A4 Q4 Ai4,
 	      print "||||||||||START S5||||||||||\n",
-	      test s5 A5 Q5 Ai5
+	      test s5 A5 Q5 Ai5,
+	      print "||||||||||START S6||||||||||\n",
+	      test s6 A6 Q6 Ai6,
+	      print ["test s6:", A6, Q6, Ai6 ]
      .

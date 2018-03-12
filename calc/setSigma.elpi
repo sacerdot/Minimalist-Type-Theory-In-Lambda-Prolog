@@ -20,21 +20,21 @@ of (pair B C BB CC) (setSigma B C) IE
     .
 
 of (elim_setSigma Pair M MM) (M Pair) IE 
-    :- spy (of Pair (setSigma B C) IE)
-    ,  spy (pi z \ locDecl z (setSigma B C) => ofType (M z) _ IE)
-    ,  spy (pi x \ pi y \
+    :- of Pair (setSigma B C) IE
+    ,  pi z \ locDecl z (setSigma B C) => ofType (M z) _ IE
+    ,  pi x \ pi y \
             locDecl x B => locDecl y (C x) =>  
-                isa (MM x y) (M (pair B C x y)) IE )
+                isa (MM x y) (M (pair B C x y)) IE 
     .
 
 hstep (elim_setSigma Pair M Mm) (Mm Bb Cc) 
-    :- spy(hnf Pair (pair B C Bb Cc))
-    ,  spy(isa Bb B _)
-    ,  spy(isa Cc (C Bb) _)
-    ,  spy(pi z\ locDecl z (setSigma B C) => ofType (M z) _ IE)
-    ,  spy(pi x \ pi y \
+    :- hnf Pair (pair B C Bb Cc)
+    ,  isa Bb B _
+    ,  isa Cc (C Bb) _
+    ,  pi z\ locDecl z (setSigma B C) => ofType (M z) _ IE
+    ,  pi x \ pi y \
         locDecl x B  => locDecl y (C x) =>  
-            isa (Mm x y) (M (pair B C x y))  IE)
+            isa (Mm x y) (M (pair B C x y))  IE
     .
 
 
@@ -81,43 +81,34 @@ setoid_eq (setSigma B C) P :-
        setoid_eq B EquB,
        macro_interp B (x\xi\_\_\ (interp (C x) (Ci xi) ,
        		      		 setoid_eq (C x) (EquC xi))),		   %% Equality over Ci xi
-       macro_tau B B (x\x'\h\xi\xi'\hi\ tau (C x) (C x') (FCC xi xi' hi)), %% Cast from type (C x) to (C x') with
-       		     			       	     	      	     	   %% x,x':B
-       %% using the projection macros inside the term P gives rise to problems for "ofType"
-       %% this is the verbose (but working) solution. There exists an equality d between p1s and p1z such that
-       %% p2z : (C p1z) and the cast to type (C p1z) of s2:(C p1s) are equal over type (C p1z)
+       macro_tau_cov_cov B B (x\x'\h\xi\xi'\hi\ tau (C x) (C x') (FCC xi xi' hi)), %% Cast from type (C x)i to (C x')i with
+       		     			       	     	      	     	     	   %% x,x':B
+       %% There exists an equality d between p1s and p1z such that
+       %% p2z : (C p1z) and the cast to type (C p1z) of p2s:(C p1s) are equal over type (C p1z)
        P = (s\z\
-		exist (EquB (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) ) d\
+       		exist (EquB (elim_setSigma s (_\Bi) (x\y\ x)) (elim_setSigma z (_\Bi) (x\y\ x)) ) d\
 	     	    (
-	     		(EquC (elim_setSigma z (_\B) (x\y\ x)))
-	     		( (FCC (elim_setSigma s (_\B) (x\y\ x)) (elim_setSigma z (_\B) (x\y\ x)) d)
-	     		        elim_setSigma s (_\ (C (elim_setSigma s (_\B) (x\y\ x)))) (x\y\ y))
-	     		(elim_setSigma z (_\ (C (elim_setSigma z (_\B) (x\y\ x)))) (x\y\ y))
+	     		(EquC (elim_setSigma z (_\Bi) (x\y\ x)))
+	     		( (FCC (elim_setSigma s (_\Bi) (x\y\ x)) (elim_setSigma z (_\Bi) (x\y\ x)) d)
+	     		       ( elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y)) )
+	     		(elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y) )
 	             ))
+	%%( pi w1 \ print ["ANF: ", B, Bi, C, P, (setSigma B C), EquC, EquB])   %% debug
 	.
-
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
-    interp (setSigma B' C') (setSigma Bi' Ci'),
-    tau B B' FB,
-    macro_tau B B' (x\x'\h\xi\xi'\hi\tau (C x) (C' x') (FC xi xi' hi)),
+    spy (interp (setSigma B' C') (setSigma Bi' Ci')),
+    spy (tau B B' FB),
+    spy (macro_tau_cov_cov B B' (x\x'\h\xi\xi'\hi\tau (C x) (C' x') (FC xi xi' hi))),
     	      	   			       %% given xi: Bi and xi':Bi' and hi intensional proof of their equality
 					       %% return function from terms in (C x)int to terms in (C' x')int
 					       
-    %% macro_tau B B' (x\x'\h\xi\xi'\hi\ proof_eq x x' B (IntEqu xi xi')),
-    %% P = (w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
-    %%  	   		   (w1\ w2\ pair Bi' Ci'
-    %%			   	    	 (FB w1)
-    %%					 ( (FC w1 (FB w1) (IntEqu w1 (FB w1)))
-    %%					       w2)))
-    
-    setoid_refl B Hi,
+    setoid_refl B' Hi,
+    %%(interp B' Bi', pi w1 \ print ["CSC: ", B', Bi', Hi, w1, (FB w1), (Hi w1)]),   %% debug
     P = w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
       	   		   (w1\ w2\ pair Bi' Ci'
 			   	    	 (FB w1)
-					 ( (FC w1 (FB w1) (Hi w1)) w2))     %% Uso di setoid_refl simile a quello in setPi.tau
-					       	      	      	   	    %% per ottenere una prova di uguaglianza intensionale.
-									    %% Non chiaro; passa i test s3, s4.
+					 ( (FC w1 (FB w1) (Hi w1)) w2))    %% Uso di setoid_refl simile a quello in setPi.tau
     .
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

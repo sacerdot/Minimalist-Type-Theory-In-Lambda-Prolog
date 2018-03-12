@@ -207,6 +207,25 @@ macro_tau B B' Q
         ) 
     . 
 
+%% macro_tau function for type constructors covariant in the argument B
+macro_tau_cov_cov B B' Q 
+    :- spy(setoid_eq B' EquB')
+    ,  spy(interp B Bi)
+    ,  spy(interp B' Bi')
+    ,  spy(tau B B' FB)
+    ,  spy(pi x\ pi xi\ pi x'\ pi xi'\ pi h\ pi hi\ 
+        locDecl x B 
+        => locDecl x' B'
+        => locDecl xi Bi
+        => locDecl xi' Bi'
+        => interp x xi
+        => interp x' xi'
+        => (locDecl h (propEq B x x')) 
+        => (locDecl hi (EquB' (FB xi) xi'))
+        => interp h hi
+        => spy(Q x x' h xi xi' hi)
+        ) 
+    . 
 macro_Pi T Q :- interp T Ti, setoid_eq T EquT, spy(
     pi x1\ pi x2\ pi h\ pi x1i\ pi x2i\ pi hi\
         locDecl x1 T => locDecl x2 T => locDecl x1i Ti => locDecl x2i Ti =>
