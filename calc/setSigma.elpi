@@ -24,7 +24,7 @@ of (elim_setSigma Pair M MM) (M Pair) IE
     ,  pi z \ locDecl z (setSigma B C) => ofType (M z) _ IE
     ,  pi x \ pi y \
             locDecl x B => locDecl y (C x) =>  
-                isa (MM x y) (M (pair B C x y)) IE 
+                isa (MM x y) (M (pair B C x y)) IE
     .
 
 hstep (elim_setSigma Pair M Mm) (Mm Bb Cc) 
@@ -59,9 +59,9 @@ dconv (elim_setSigma Pair M MM) (elim_setSigma Pair' M' MM')
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 interp (setSigma B C) T :-
-       interp B Bi,
-       macro_interp B (x\xi\_\_\ interp (C x) (Ci xi)),
-       T = (setSigma Bi Ci)
+       spy ( interp B Bi ),
+       spy ( macro_interp B (x\xi\_\_\ interp (C x) (Ci xi)) ),
+       spy (T = (setSigma Bi Ci) )
        .
 
 interp (pair B C BB CC) T :-
@@ -73,6 +73,26 @@ interp (pair B C BB CC) T :-
        interp_isa CC (C BB) CCi,			 
        T = (pair Bi Ci BBi CCi)                          %% Ci parametric on xi, which is the
        	   	       	   				 %% interpretation of an x:B', just like BBi
+       .
+
+interp (elim_setSigma Pair M MM) T :-
+       print "ELIM_SETSIGMA INTERPRETATION",
+       spy (of Pair (setSigma B C) ext),
+       spy (interp B Bi),
+       spy (interp C Ci),
+       spy (interp_isa MM (setPi (setSigma B C) D) MMi),
+       spy (interp_isa Pair (setSigma B C) PairI),				%% needs isa? Possible problem with types of function
+       	      	   					%% MM being different intensionally
+       spy (pi x \ pi y \ pi xi \ pi yi \
+            locDecl x B => locDecl y (C x) => locDecl xi Bi =>
+	    (interp x xi) => locDecl yi (Ci xi) => (interp y yi) =>  
+                (interp (M (pair B C x y)) (Mi xi yi))),
+       spy (T = (elim_setSigma PairI                           %% PairI: (setSigma Bi' Ci')
+			  (p\ (Mi p))   		  %% function from setSigma Bi' Ci' to the range of MM
+			  (w1\w2\ app (elim_setSigma (app (elim_setSigma MMi (_\setPi Bi Type) (x\y\x)) w1) %% T is a setSigma setPi proof
+			  	      		     (_\ (setPi (Ci w1) (_\ (Mi  w1 w2))))	 %% not really needed 
+						     (x\y\x))
+				       w2)))
        .
 
 setoid_eq (setSigma B C) P :-
@@ -95,6 +115,7 @@ setoid_eq (setSigma B C) P :-
 	             ))
 	%%( pi w1 \ print ["ANF: ", B, Bi, C, P, (setSigma B C), EquC, EquB])   %% debug
 	.
+	
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
     spy (interp (setSigma B' C') (setSigma Bi' Ci')),
@@ -110,7 +131,148 @@ tau (setSigma B C) (setSigma B' C') P :-
 			   	    	 (FB w1)
 					 ( (FC w1 (FB w1) (Hi w1)) w2))    %% Uso di setoid_refl simile a quello in setPi.tau
     .
-    
+
+
+tau_eq (setSigma B C) (setSigma B' C') P :-
+       print "SETSIGMA TAU_EQ FUNCTION\n",
+       interp (setSigma B C) (setSigma Bi Ci),
+       tau B B' TB,
+       tau_eq B B' TeqB,
+       setoid_eq B EquB,
+       setoid_eq B' EquB',
+       setoid_refl B' Hi,
+       macro_tau_cov_cov B B' (x\x'\h\xi\xi'\hi\ ((tau (C x) (C' x') (TC xi xi' hi)),
+       			      		    	  (tau_eq (C x) (C' x') (TeqC xi xi' hi)),
+       			 		    	  (setoid_eq (C x) (EquC xi)),
+       			 		    	  (setoid_eq (C' x') (EquC' xi')))),
+						  
+       macro_tau_cov_cov B B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)), %% Cast from type (C x1)i to (C x2)i with
+       		     			       	     	      	     	     	       %% both x1 and x2 terms of type B
+      
+       P = s\z\d\
+		pair_exist (EquB'(TB (elim_setSigma s (_\Bi) (x\y\ x))) (TB (elim_setSigma z (_\Bi) (x\y\ x)))) %% type of equality on Bi'
+			   (_\ (EquC' (TB (elim_setSigma z (_\Bi) (x\y\ x)))) 		     	    	    %%type of equality on (C' x')i
+			       	 ((TC (elim_setSigma z (_\Bi) (x\y\ x)) (FB (elim_setSigma z (_\Bi) (x\y\ x)))
+				      (Hi (elim_setSigma z (_\Bi) (x\y\ x))))
+				   ((FCC (elim_setSigma s (_\Bi) (x\y\ x))
+				       	 (elim_setSigma z (_\Bi) (x\y\ x))
+				       	 (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				       		     	       (elim_setSigma z (_\Bi) (x\y\ x)))
+						     (x\y\ x)))
+				     ( elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y))))
+			    	 ((TC (elim_setSigma z (_\Bi) (x\y\ x)) (FB (elim_setSigma z (_\Bi) (x\y\ x)))
+				      (Hi (elim_setSigma z (_\Bi) (x\y\ x))))
+				   ( elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y)))      
+			       )
+			   (TeqB (elim_setSigma s (_\Bi) (x\y\ x))	%% w1: Equality over Bi'...
+				 (elim_setSigma z (_\Bi) (x\y\ x))
+				 (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				 	       	       	 (elim_setSigma z (_\Bi) (x\y\ x)))
+				               (x\y\ x)))
+			   ((TeqC (elim_setSigma s (_\Bi) (x\y\ x))	%% w2: Equality over (C' TB(p1z))i...
+			   	  (TB (elim_setSigma z (_\Bi) (x\y\ x)))
+				  (TeqB (elim_setSigma s (_\Bi) (x\y\ x))  
+				  	(elim_setSigma z (_\Bi) (x\y\ x))
+				 	(elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				       		     	        (elim_setSigma z (_\Bi) (x\y\ x)))
+						     (x\y\ x))))
+			      ((FCC (elim_setSigma s (_\Bi) (x\y\ x)) (elim_setSigma z (_\Bi) (x\y\ x))
+			    	  (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				  	      	    	  (elim_setSigma z (_\Bi) (x\y\ x)))
+						(x\y\ x)))
+			         ( elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y)))       
+			      ( elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y)) 	       
+			      ( elim_exist d ((EquC (elim_setSigma z (_\Bi) (x\y\ x)))
+			      		       	  ((FCC (elim_setSigma s (_\Bi) (x\y\ x)) (elim_setSigma z (_\Bi) (x\y\ x))
+			    	  		      	    (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				  	      	      	    		      	    (elim_setSigma z (_\Bi) (x\y\ x)))
+						      	    	          (x\y\ x)))
+							(elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y)))       
+			    			(elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y)))
+			    (x\y\ y)))       
+       .
+
+setoid_refl (setSigma B C) H :-
+     print "SETSIGMA SETOID_REFL FUNCTION\n",
+     interp (setSigma B C) (setSigma Bi Ci),
+     setoid_eq B EquB,
+     setoid_refl B HB,
+     macro_interp B (x\xi\_\_\ ( (setoid_eq (C x) (EquC xi)),
+     		    	       	 (setoid_refl (C x) (HC xi)) )),
+     H = z\ pair_exist (EquB (elim_setSigma z (_\Bi) (x\y\ x)) (elim_setSigma z (_\Bi) (x\y\ x)) )
+       	    	       (_\ ((EquC (elim_setSigma z (_\Bi) (x\y\ x)))
+		       	   	  	(elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y))
+		       	   	  	(elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y))))
+			(HB (elim_setSigma z (_\Bi) (x\y\ x)))
+			((HC (elim_setSigma z (_\Bi) (x\y\ x))) (elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y)))
+
+    	%% checks?
+     .
+
+setoid_symm (setSigma B C) H :-
+      print "SETSIGMA SETOID_SYMM FUNCTION",
+      interp (setSigma B C) (setSigma Bi Ci),
+      setoid_eq B EquB,
+      setoid_symm B SB,
+      macro_interp B (x\xi\_\_\ ( (setoid_eq (C x) (EquC xi)),
+      		     		  (setoid_symm (C x) (SC xi)) )),
+      macro_tau_cov_cov B B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)),
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Possible workaround for determining the type of the resulting equality? %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      macro_tau_cov_cov B B (x1\x2\h\x1i\x2i\hi\ ( (tau (C x1) (C x2) (FCC x1i x2i hi)),
+						   (setoid_symm (C x1) (SC x1i)),
+						   (setoid_eq (C x1) (EquC x1i)),
+						   (interp (C x1) (Ci x1i)),
+						   (pi y1i\ pi y2i\ pi d\
+						      locDecl y1i (Ci x1i) =>
+						      locDecl y2i (Ci x2i) =>
+						      locDecl d ((EquC x2i) ((FCC x1i x2i hi) y1i) y2i) => 
+						      (of ((SC x2i) ((FCC x1i x2i hi) y1i)  %% (SC x2i) because d used EquC x2i
+						   	   	    y2i	      	      	    %% the result of this recursive call could
+								    d)			    %% is not necessarily an equality in (C x2)?
+							  (T x1i y1i y2i d) IE)))),
+								      %% This would be used as the dependent
+								      %% type of the pair_exist, leaving the type of the
+								      %% equality to be determined by the recursive call
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+      H = s\z\d\
+      	  pair_exist (EquB (elim_setSigma z (_\Bi) (x\y\ x)) (elim_setSigma s (_\Bi) (x\y\ x))) %% Type of equality over Bi between p1z
+      	  	 	    	  		   	  	    		     	    	%% and p2s.
+      	  	     ( _\((EquC (elim_setSigma z (_\Bi) (x\y\ x)))                          %% C: Type of equality over (C p1z)i between 
+		       	     ( (elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) %% p2z and the cast to (C p1z)i of p2s
+			       		      	(x\y\ y)))
+		       	     ((FCC (elim_setSigma s (_\Bi) (x\y\ x))			   	      
+			     	   (elim_setSigma z (_\Bi) (x\y\ x))				      
+				   (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				  	       	 (elim_setSigma z (_\Bi) (x\y\ x)))
+				       		 (x\y\ x)))
+			     	 (elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y)))
+			     ) )
+		     (SB (elim_setSigma s (_\Bi) (x\y\ x))			%% First element, obtained by induction on B 
+		     	 (elim_setSigma z (_\Bi) (x\y\ x))
+		     	 (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				  	     (elim_setSigma z (_\Bi) (x\y\ x)))
+				       (x\y\ x)))
+		     ((SC (elim_setSigma z (_\Bi) (x\y\ x)))			%% Second element, obtained by induction on (C p1z)
+		     	  ((FCC (elim_setSigma s (_\Bi) (x\y\ x))		%% because of this, H will produce an equality over 
+			  	(elim_setSigma z (_\Bi) (x\y\ x))		%% (C p1z)i between z and s, possibly causing problems?
+			  	(elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				  	      	    (elim_setSigma z (_\Bi) (x\y\ x)))
+				              (x\y\ x)))
+			      (elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y)))
+			  ((elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y)))
+			  (( elim_exist d ((EquC (elim_setSigma z (_\Bi) (x\y\ x)))
+			      		       	  ((FCC (elim_setSigma s (_\Bi) (x\y\ x)) (elim_setSigma z (_\Bi) (x\y\ x))
+			    	  		      	    (elim_exist d (EquB (elim_setSigma s (_\Bi) (x\y\ x))
+				  	      	      	    		      	    (elim_setSigma z (_\Bi) (x\y\ x)))
+						      	    	          (x\y\ x)))
+							(elim_setSigma s (_\ (Ci (elim_setSigma s (_\Bi) (x\y\ x)))) (x\y\ y)))       
+			    			(elim_setSigma z (_\ (Ci (elim_setSigma z (_\Bi) (x\y\ x)))) (x\y\ y)))
+			    (x\y\ y))))
+	%% checks?
+      .
+
+
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                UTILITY                                         %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

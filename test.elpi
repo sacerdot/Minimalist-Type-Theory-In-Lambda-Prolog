@@ -365,6 +365,38 @@ test s6 A Q Ai
 	nodebug => (ofType Q Ai int)
      .
 
+%% uses setoid_refl, prop_eq functions (prop_eq not yet implemented)
+test s7 A Q :-
+     Long = (forall singleton x\
+     	(implies (propEq singleton x star) (implies (propEq singleton star x)
+     	   (propEq singleton
+	   	   star
+		   (app (lambda (propEq (setSigma singleton x\singleton)
+		   			(pair singleton (_\singleton) x star)
+					(pair singleton (_\singleton) star x))
+				z\ star)
+			(eq (setSigma singleton x\singleton) (pair singleton (_\singleton) star star))))))),
+     ofType Long A ext,
+     interp Long Q
+    .
+
+test s8 A Q:-
+     Long = (forall singleton x\
+     	       (implies (propEq singleton x star) (implies (propEq singleton star x)
+	       	  (propEq singleton
+		  	  star
+			  (app (lambda (setSigma singleton _\singleton) z\star)
+			       (elim_setSigma (pair singleton (_\ (setSigma singleton _\singleton))
+			       		     	    star (pair singleton (_\singleton) star star))
+					     (p\ (setSigma singleton _\singleton))
+					     (x\ y\ y))))))),
+	     ofType Long A ext,
+	     print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||",
+	     interp Long Q
+
+    .
+     	  
+    
 setSigma_test :-
 	      print "||||||||||START S1|||||||||||\n",
 	      test s1 A1 Q1 Ai1,
