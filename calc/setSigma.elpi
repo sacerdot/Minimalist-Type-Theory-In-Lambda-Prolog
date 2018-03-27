@@ -108,11 +108,33 @@ setoid_eq (setSigma B C) P :-
        	  	       	      	     	       p2 w (P2 w)),
        %% There exists an equality d between p1s and p1z such that
        %% p2z : (C p1z) and the cast to type (C p1z) of p2s:(C p1s) are equal over type (C p1z)
+       EquB' = (lam Bi x \ lam Bi y \ EquB x y),
+       (pi z \ EquC' z = (lam (Ci (P1 z) x \ lam (Ci (P1 z)) y \ EquC (P1 z) x y))),
+       (pi s \ pi z \ pi d \ FCC' s z d = lam (Ci (P1 s)) w \ FCC (P1 s) (P1 z) d w),
        P = (s\z\
-       		exist (EquB (P1 s) (P1 z)) d\
-		      (EquC (P1 z)) ((FCC (P1 s) (P1 z) d) (P2 s))
-	     		      	    (P2 z))
+             app (app (app (app (app (setSigma_setoid_eq Bi Ci) s) z) EquB') (EquC' z)))
+              (FCC' s z d)
+%%             exist (EquB (P1 s) (P1 z)) d\
+%% 		      (EquC (P1 z)) ((FCC (P1 s) (P1 z) d) (P2 s))
+%%	     		      	    (P2 z))
 	.
+
+setSigmaLib L :-
+ L =
+ [ locDef (setSigma_setoid_eq Bi Ci)
+     (setPi (setSigma Bi Ci) s \
+       setPi (setSigma Bi Ci) z \
+        setPi (setPi Bi _ \ setPi Bi _ \ props) equb \
+         setPi (setPi (Ci (P1 z)) _ \ setPi (Ci (P1 z)) _ \ props) equc \
+          setPi (setPi (Ci (P1 s)) _ \ Ci (P1 z)) fcc \ props)
+     (lambda (setSigma Bi Ci) s \
+       lambda (setSigma Bi Ci) z \
+        lambda (setPi Bi _ \ setPi Bi _ \ props) equb \
+         lambda (setPi (Ci (P1 z)) _ \ setPi (Ci (P1 z)) _ \ props) equc \
+          lambda (setPi (Ci (P1 s)) _ \ Ci (P1 z)) fcc \
+           exist (app (app equb (P1 s)) (P1 z)) d\
+	    (app (app eqc (app fcc (P2 s)) (P2 z))))
+ ] :- pi w \ (pi1 w (P1 w), p2 w (P2 w)).
 	
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
