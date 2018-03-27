@@ -65,8 +65,6 @@ interp (setSigma B C) T :-
        spy (T = (setSigma Bi Ci) )
        .
 
-interp (setSigma B C) T :- locDef (interp (setSigma B C)) T _ .
-
 interp (pair B C BB CC) T :-
        interp B Bi,
        of BB B' ext,                                     %% B' is the extensional type of BB
