@@ -284,7 +284,9 @@ test s2 A Q Ai
 			     (app (lambda (setSigma singleton x\singleton) _\star)
 			     	  (pair singleton (x\singleton) star star)))))),
 	ofType Long A ext,
+	print "END OF TYPING",
 	interp Long Q,
+	print "END OF TRANSLATION",
 	ofType Q Ai int
     .
 
@@ -396,7 +398,6 @@ test s8 A Q:-
 
     .
      	  
-    
 setSigma_test :-
 	      print "||||||||||START S1|||||||||||\n",
 	      test s1 A1 Q1 Ai1,
@@ -412,3 +413,14 @@ setSigma_test :-
 	      test s6 A6 Q6 Ai6,
 	      print ["test s6:", A6, Q6, Ai6 ]
      .
+
+%% library rules and tests
+
+in_library [] K :- K.
+in_library [(locDef N TY TE)|TL] K :-
+	   spy(isaType TY _ int),
+       	   spy(isa TE TY int),
+           spy(locDef N TY TE =>  in_library TL K).
+
+
+testLib :- in_library [] (test s2 A Q Ai).

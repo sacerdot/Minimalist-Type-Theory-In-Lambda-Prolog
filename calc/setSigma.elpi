@@ -13,10 +13,10 @@ ofType (setSigma B C) KIND IE
     .
 
 of (pair B C BB CC) (setSigma B C) IE 
-    :- ofType B _ IE
-    ,  ofType (C BB) _ IE
-    ,  isa BB B IE
-    ,  isa CC (C BB) IE
+    :- spy(ofType B _ IE)
+    ,  spy(ofType (C BB) _ IE)
+    ,  spy(isa BB B IE)
+    ,  spy(isa CC (C BB) IE)
     .
 
 of (elim_setSigma Pair M MM) (M Pair) IE 
@@ -58,11 +58,14 @@ dconv (elim_setSigma Pair M MM) (elim_setSigma Pair' M' MM')
 %%                                   TRADUZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+
 interp (setSigma B C) T :-
        spy ( interp B Bi ),
        spy ( macro_interp B (x\xi\_\_\ interp (C x) (Ci xi)) ),
        spy (T = (setSigma Bi Ci) )
        .
+
+interp (setSigma B C) T :- locDef (interp (setSigma B C)) T _ .
 
 interp (pair B C BB CC) T :-
        interp B Bi,
@@ -115,7 +118,7 @@ setoid_eq (setSigma B C) P :-
 	
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
-    spy (interp (setSigma B' C') (setSigma Bi' Ci')),
+    interp (setSigma B' C') (setSigma Bi' Ci'),
     spy (tau B B' FB),
     spy (macro_tau_cov_cov B B' (x\x'\h\xi\xi'\hi\tau (C x) (C' x') (FC xi xi' hi))),
     	      	   			       %% given xi: Bi and xi':Bi' and hi intensional proof of their equality
