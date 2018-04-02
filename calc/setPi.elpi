@@ -4,16 +4,9 @@
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                    CALCOLO                                    %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-%%-- dependents products: setPi
 type setPi mttType -> (mttTerm -> mttType) -> mttType.
 type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type app mttTerm -> mttTerm -> mttTerm.
-
 
 ofType (setPi B C) KIND3 IE
     :- (ofType B KIND1 IE)
@@ -33,7 +26,6 @@ of (app Lam X) (CX) IE
     ,  CX = C X
     .
 
-
 hstep (app LAM Bb) (F Bb)
     :- of LAM (setPi B C) IE
     ,  (ofType B _ IE)
@@ -49,18 +41,14 @@ dconv (setPi B C) (setPi B' C')
     ,  (pi x\ locDecl x B => conv (C x) (C' x))
     .
 dconv (app F X) (app F' X') :- (conv F F'), (conv X X').
+
 dconv (lambda B F) (lambda B' F') 
     :- (conv B B')
-    
-    %This was the previous conversion rule for lambda abstractions
     ,  pi x\  locDecl x B => (conv (F x) (F' x)) 
-    %,  ( pi x\ (conv (F x) (F' x))
-    %   ; F = F'
-    %   )
     .
     
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                   TRADUZIONE                                   %%
+%%                                 Interpretation                                 %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -226,9 +214,7 @@ setoid_refl (setPi B C) H
     ,  interp B Bi
     ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
     ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => setoid_refl (C y) (HC yi))
-    ,  spy(
-        H = z\ forall_lam Bi y\ (HC y (app (elim_setSigma z (z\setPi Bi Ci) a\b\a) y) )
-    )
+    ,  spy( H = z\ forall_lam Bi y\ (HC y (app (elim_setSigma z (z\setPi Bi Ci) a\b\a) y) ))
     ,  spy(setoid_eq (setPi B C) EquBC)
     ,  (pi z\ TypeH z = EquBC z z)
     ,  spy( pi z\ locDecl z SetPiBCi =>
@@ -242,29 +228,25 @@ setoid_symm (setPi B C) H
     ,  interp B Bi
     ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
     ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => setoid_symm (C y) (HC yi))
-    ,  spy(
-        H = f\g\h\ forall_lam Bi 
-         yi\ HC yi 
+    ,  spy( H = f\g\h\ forall_lam Bi 
+          yi\ HC yi 
           (app (elim_setSigma f (z\setPi Bi Ci) a\b\a) yi) 
           (app (elim_setSigma g (z\setPi Bi Ci) a\b\a) yi) 
           (forall_app h yi)
     )
-    ,  spy(
-        pi f\ pi g\ locDecl f SetPiBCi => locDecl g SetPiBCi => pi h\ locDecl h (EquBC f g) =>
-            spy(
-                of (H f g h) (EquBC g f) int
+    ,  spy( pi f\ pi g\ pi h\ locDecl f SetPiBCi => locDecl g SetPiBCi => locDecl h (EquBC f g) =>
+            spy( of (H f g h) (EquBC g f) int
             )
     )
     .
+
 setoid_tran (setPi B C) H 
     :- spy(interp (setPi B C) SetPiBCi)
     ,  spy(setoid_eq (setPi B C) EquBC)
     ,  interp B Bi
     ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
-    ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => 
-        setoid_tran (C y) (HC yi))
-    ,  spy(
-        H = f\g\h\p\q\ forall_lam Bi yi\ 
+    ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => setoid_tran (C y) (HC yi))
+    ,  spy( H = f\g\h\p\q\ forall_lam Bi yi\ 
             HC yi 
             (app (elim_setSigma f (z\setPi Bi Ci) a\b\a) yi)
             (app (elim_setSigma g (z\setPi Bi Ci) a\b\a) yi)
@@ -273,6 +255,4 @@ setoid_tran (setPi B C) H
             (forall_app q yi)
     )
     .
-
-% proof_eq (lambda B F) (lambda B' F') T H :- TODO.
 
