@@ -34,7 +34,7 @@ list_len [] 0 :- !.
 list_len [_ | L] N :- list_len L M, N is M + 1.
 
 %indentation level
-indent_depth N :- count_indent' T, list_len T N.
+indent_depth N :- count_indent T, list_len T N.
 
 member X [Y | L] 
     :- (X = Y ; member X L) 
@@ -58,17 +58,17 @@ countPred Pred Old Old.
 
 to_zero [] [].
 to_zero [X | L] [0|L'] :- to_zero L L'.
-count_indent' TT :- count_indent'  [] T, to_zero T TT.
+count_indent TT :- count_indent'  [] T, to_zero T TT.
 
-print_indent :- count_indent' T,  print_dash T.
-
+/*print_indent :- count_indent' T,  print_dash T.
+*/
 print_dash [].
 print_dash [X|L] :- print "-", print_dash L.
 str_dash C [] "".
 %str_dash C [_ | E] "" :- E = [], !.
 str_dash C [_ | L] S :- str_dash C L SS, S is (C ^ SS), !.
 
-indent_str C S N :- count_indent' T, str_dash C T S, list_len T N', term_to_string N' N.
+indent_str C S N :- count_indent T, str_dash C T S, list_len T N', term_to_string N' N.
 print_indent C S N :- indent_str C S N.
 
 

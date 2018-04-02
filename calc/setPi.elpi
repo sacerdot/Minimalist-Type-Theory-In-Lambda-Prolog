@@ -75,7 +75,7 @@ interp (setPi B C) T
         f\ forall Bi 
          x1i\ forall Bi 
           x2i\ forall (EquB x1i x2i) 
-           h\ EquC x2 (PippoC x1i x2i h (app f x1i)) (app f x2i)
+           h\ EquC x2i (PippoC x1i x2i h (app f x1i)) (app f x2i)
     .
 
 
@@ -165,9 +165,6 @@ proof_eq (app F1 X1) (app F2 X2) T H_app
     % sarà molto lungo da scrivere a mano
     . 
 
-
-% proof_eq (lambda B F) (lambda B' F') T H :- TODO.
-
 tau (setPi B C) (setPi B' C') P
     :- spy(interp (setPi B C) (setSigma T1 T2))
     ,  spy(T1 = setPi Bi Ci)
@@ -206,6 +203,7 @@ tau (setPi B C) (setPi B' C') P
                 )
         ) )
     . 
+
 
 tau_eq (setPi B C) (setPi B' C') P 
     :- spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
@@ -273,3 +271,6 @@ setoid_tran (setPi B C) H
             (forall_app q yi)
     )
     .
+
+% proof_eq (lambda B F) (lambda B' F') T H :- TODO.
+
