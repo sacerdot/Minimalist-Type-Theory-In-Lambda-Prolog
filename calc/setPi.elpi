@@ -179,11 +179,13 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(tau_eq B' B KB)
     ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(setoid_refl B Hi)
-    ,  spy(pi y1'\ pi y2'\ pi d'\ 
-        locDecl y1' Bi' =>
-            locDecl y2' Bi' =>
-                locDecl d' (EquB y1' y2') =>
-                    tau_eq B' B (FH y1' y2' d'))
+    ,  spy(pi y1'\ pi y2'\ pi d'\ sigma FH_2\ %Questo sigma interno server per far contento il typechecker
+        (locDecl y1' Bi', locDecl y2' Bi', locDecl d' (EquB y1' y2')) =>
+                    (
+                        tau_eq B' B  FH_2, FH_2 = (FH y1' y2' d') 
+                    )
+                    )
+                    
     ,  spy(P = 
         (w\ elim_setSigma w (_\setSigma T1' T2')
             f\p\ pair T1' T2'
