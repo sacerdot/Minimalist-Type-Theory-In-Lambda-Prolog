@@ -1,5 +1,16 @@
 % will not exist at the emtt level, so no interpretation is needed
 
+%%-- intensional propositional equality: propId
+
+type propId mttType -> mttTerm -> mttTerm -> mttType.
+type id     mttType -> mttTerm -> mttTerm.
+type elim_id    mttTerm 
+            -> (mttTerm -> mttTerm -> mttType) 
+            -> (mttTerm -> mttTerm)
+            -> mttTerm.
+
+
+
 ofType (propId A AA1 AA2) KIND IE 
     :- isa AA1 A int
     ,  isa AA2 A int

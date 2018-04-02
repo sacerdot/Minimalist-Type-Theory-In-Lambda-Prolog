@@ -1,5 +1,9 @@
 % for now this is only needed to interpret sum types, so no interpretation is needed.
 
+%%-- propositional conjunction: and
+type and mttType -> mttType -> mttType.
+type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
+type p1_and, p2_and mttTerm -> mttTerm.
 
 ofType (and B C) KIND IE
     :- ofType B KIND1 IE

@@ -9,6 +9,11 @@
 %%                                    CALCOLO                                    %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%-- dependents products: setPi
+type setPi mttType -> (mttTerm -> mttType) -> mttType.
+type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type app mttTerm -> mttTerm -> mttTerm.
+
 
 ofType (setPi B C) KIND3 IE
     :- (ofType B KIND1 IE)

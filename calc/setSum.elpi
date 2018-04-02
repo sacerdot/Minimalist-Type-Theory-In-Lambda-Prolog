@@ -1,4 +1,10 @@
 
+%%-- disjoint sum: setSum
+
+type setSum mttType -> mttType -> mttType.
+type inl, inr mttType -> mttType -> mttTerm -> mttTerm.
+type elim_setSum (mttTerm -> mttType) -> mttTerm -> (mttTerm -> mttTerm) -> (mttTerm -> mttTerm) -> mttTerm.
+
 %%Disjoint Sum Type
 
 ofType (setSum A B) KIND IE :- ofType A KIND1 IE, ofType B KIND2 IE,

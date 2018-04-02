@@ -1,6 +1,13 @@
 % for now this is only needed to interpret sum types, so no interpretation is needed.
 
 
+
+%%-- existential quantifier: exist
+type exist mttType -> (mttTerm -> mttType) -> mttType.
+type pair_exist mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
+type elim_exist mttTerm -> mttType -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
+
+
 ofType (exist B C) KIND IE
     :- ofType B KIND1 IE
     ,  (pi x\ locDecl x B  => ofType (C x) KIND2 IE)

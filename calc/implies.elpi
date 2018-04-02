@@ -1,4 +1,9 @@
 %as in forall just the needed predicates where implemented. most of the interpretation is missing
+%%-- implication: implies
+
+type implies    mttType -> mttType -> mttType.
+type impl_lam   mttType -> (mttTerm -> mttTerm) -> mttTerm.
+type impl_app   mttTerm -> mttTerm -> mttTerm.
 
 
 

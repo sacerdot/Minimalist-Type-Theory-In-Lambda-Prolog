@@ -2,7 +2,6 @@ accumulate debug.
 
 accumulate main.
 
-accumulate calc/setPi.
 accumulate calc/setSigma.
 accumulate calc/and.
 accumulate calc/propEq.
@@ -10,11 +9,14 @@ accumulate calc/forall.
 accumulate calc/exist.
 accumulate calc/propId.
 accumulate calc/implies.
-accumulate calc/letIn.
+%accumulate calc/letIn.
 accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
+accumulate calc/setPi.
 
+type m,l,f,g,h,i,n A.
+type test A.
 
 main :- nodebug => notquicktest.
 

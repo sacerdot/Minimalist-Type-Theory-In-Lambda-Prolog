@@ -1,3 +1,8 @@
+%%-- propositional disjunction: or
+
+type or mttType -> mttType -> mttType.
+type inl_or, inr_or mttType -> mttType -> mttTerm -> mttTerm.
+type elim_or mttType -> mttTerm -> (mttTerm -> mttTerm) -> (mttTerm -> mttTerm) -> mttTerm.
 
 ofType (or A B) KIND IE 
     :- ofType A KIND1 IE

@@ -1,4 +1,10 @@
 
+%%-- singleton set/unit type: singleton
+
+type  singleton mttType.
+type  star mttTerm.
+type  elim_singleton mttTerm -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
+
 
 
 ofType singleton set IE.

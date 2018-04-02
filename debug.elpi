@@ -1,12 +1,18 @@
+type nodebug, checks prop.
+type indent list nat -> prop.
+type indent_top nat -> prop.
+type count_indent' A -> A -> prop.
+type count_indent A -> prop.
 
 announce G :- bracket " " ">>" G "\n", fail.
 
 % a possible use is to check that intermediate terms and tipes are wellformed.
+
 check P :- checks, !, P.
 check _.
 
 %The only entry point for spy, is add a new indent and call the helper spy'
-spy G :- count_indent' T, indent [0 | T] => spy' G.
+spy G :- count_indent T, indent [0 | T] => spy' G.
 
 %by assuming the constant "nodebug" we can shut off the debugging locally
 spy' G :- nodebug, !, G.
