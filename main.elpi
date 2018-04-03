@@ -1,9 +1,6 @@
 type fixMe A -> B -> C.
 type k_propId mttType -> mttTerm.
 
-
-
-
 %%-- local definitions: letIn
 %this may soon change as it is still to be decided how this should look like
 type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.

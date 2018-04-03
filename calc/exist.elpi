@@ -1,8 +1,3 @@
-% for now this is only needed to interpret sum types, so no interpretation is needed.
-
-
-
-%%-- existential quantifier: exist
 type exist mttType -> (mttTerm -> mttType) -> mttType.
 type pair_exist mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 type elim_exist mttTerm -> mttType -> (mttTerm -> mttTerm -> mttTerm) -> mttTerm.
@@ -43,6 +38,7 @@ dconv (pair_exist B C Bb Cc) (pair_exist B' C' Bb' Cc')
     ,  (conv Bb Bb')
     ,  (conv Cc Cc')
     .
+
 dconv (elim_exist Pair M Mm) (elim_exist Pair' M' Mm') 
     :- (conv Pair Pair')
     ,  (of Pair (exist B C) IE)

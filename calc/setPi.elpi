@@ -205,7 +205,6 @@ tau_eq (setPi B C) (setPi B' C') P
                 (app f (FB y'))
                 (app g (FB y'))
                 (forall_app d (FB y'))
-                
     .
  
 
