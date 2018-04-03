@@ -131,11 +131,31 @@ proof_eq A B T Hi
     ,  nodebug => spy(Hi = Q Bi Ai Hi')
     .
 
+%% tau A1 A2 F construct a function of one argument from the interpretation of A1 to the interpretation of A2, 
+%%   the patter with the various predicated for the interpretation is that the input are 
+%%   exstensional and the outputs are extensional.
+
 %% constructing a function that, given int_terms of an int_type, returns int_terms of the same int_type (Identity!)
 tau A A (x \ x) :- !.
 
 tau_eq A A (x\y\h\ h) :- !.
 
+tau_eq P1 P2 F
+    :- ofType P1 K1 ext
+    ,  ofType P2 K2 ext
+    ,  pts_leq K1 propc
+    ,  pts_leq K2 propc
+    ,  conv P1 P2
+    ,  F = (_\_\_\ id singleton star)
+    .
+
+proof_eq A1 A2 T H
+    :- isa A1 T ext
+    ,  isa A2 T ext
+    ,  ofType T K ext
+    ,  pts_leq K propc
+    ,  H = id singleton star
+    .
 
 %interpret X:_ext T in un Xi di tipo Ti
 interp_isa X T Xi 

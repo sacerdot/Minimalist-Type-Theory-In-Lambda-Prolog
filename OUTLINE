@@ -1,7 +1,7 @@
 translation  | setPi | singleton | _ : Prop | propEq | implies | forall |
 -------------------------------------------------------------------------
 tau          |  *    |  -        |  #       |  *     | *       | *      |
-tau_eq       |  *    |  -        |          |  *     | ..      | ..     |
+tau_eq       |  *    |  -        |  *       |  *     | -       | -      |
 proof_eq     |  app  |  star     |          |  *     | ..      | ..     |
 interp       |  *    |  *        |  #       |  *     | *       | *      |
 setoid_eq    |  *    |  *        |  *       |  -     | -       | -      |
