@@ -417,10 +417,22 @@ setSigma_test :-
 %% library rules and tests
 
 in_library [] K :- K.
-in_library [(locDef N TY TE)|TL] K :-
-	   spy(isaType TY _ int),
-       	   spy(isa TE TY int),
-           spy(locDef N TY TE =>  in_library TL K).
+in_library [Entry|TL] K :-
+   spy(process_entry Entry Hyp),
+   spy(Hyp => in_library TL K).
+
+process_entry (locDef N TY TE) Hyp :-
+   spy(isaType TY _ int),
+   spy(isa TE TY int),
+   Hyp = locDef N TY TE.
+process_entry (univPi F) Hyp2 :-
+   (pi Bi \ ofType Bi set int => process_entry (F Bi) (Hyp Bi)),
+   Hyp2 = (pi Bi \ Hyp Bi :- isaType Bi set int).
+process_entry (univDepPi Bi F) Hyp2 :-
+   (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) => process_entry (F Ci) (Hyp Ci)),
+   Hyp2 = (pi Ci \ Hyp Ci :- (isaType (Ci x) set int :- of x Bi int)).
 
 
-testLib :- in_library [] (test s2 A Q Ai).
+testLib P :-
+ spy (setSigmaLib L),
+ spy (in_library L (setoid_eq (setPi singleton x \ singleton) P)).
