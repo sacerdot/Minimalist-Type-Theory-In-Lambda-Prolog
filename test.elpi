@@ -2,7 +2,6 @@ accumulate debug.
 
 accumulate main.
 
-accumulate calc/setSigma.
 accumulate calc/and.
 accumulate calc/propEq.
 accumulate calc/forall.
@@ -14,8 +13,10 @@ accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
 accumulate calc/setPi.
+accumulate calc/setSigma.
 
 type m,l,f,g,h,i,n A.
+type s1,s2,s3,s4,s5,s6,s7,s8 A.
 type test A.
 
 main :- nodebug => notquicktest.
@@ -23,9 +24,9 @@ main :- nodebug => notquicktest.
 sigmaTest :- nodebug => setSigma_test.
 
 macro_test I O 
-    :- nodebug => spy(ofType I Te ext)
+    :- nodebug => spy(ofType I _Te ext)
     ,  spy(interp I O)
-    ,  spy(ofType O Ti int)
+    ,  spy(ofType O _Ti int)
     .
 
 quicktest 
@@ -400,15 +401,15 @@ test s8 A Q:-
      	  
 setSigma_test :-
 	      print "||||||||||START S1|||||||||||\n",
-	      test s1 A1 Q1 Ai1,
+	      test s1 _A1 _Q1 _Ai1,
 	      print "||||||||||START S2||||||||||\n",
-	      test s2 A2 Q2 Ai2,
+	      test s2 _A2 _Q2 _Ai2,
 	      print "||||||||||START S3||||||||||\n",
-	      test s3 A3 Q3 Ai3,
+	      test s3 _A3 _Q3 _Ai3,
 	      print "||||||||||START S4||||||||||\n",
-	      test s4 A4 Q4 Ai4,
+	      test s4 _A4 _Q4 _Ai4,
 	      print "||||||||||START S5||||||||||\n",
-	      test s5 A5 Q5 Ai5,
+	      test s5 _A5 _Q5 _Ai5,
 	      print "||||||||||START S6||||||||||\n",
 	      test s6 A6 Q6 Ai6,
 	      print ["test s6:", A6, Q6, Ai6 ]

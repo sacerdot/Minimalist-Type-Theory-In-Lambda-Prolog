@@ -15,6 +15,12 @@ kind mttTerm,               mttType, mttKind, mttLevel type.
 type ext, int               mttLevel.				%% intensional and extensional predicates
 type col, set, propc, props mttKind.				%% types can be collections, sets, propositions
      	       	      	    					%% or small propositions   
+
+%% encoding/decoding propositions
+type encode mttType -> mttTerm.
+type decode mttTerm -> mttType.
+type propS  mttType.
+
 %% adds a typed term to the context
 type locDecl            mttTerm -> mttType -> prop.
 %% adds a type of a certain kind to the context
@@ -67,7 +73,7 @@ pts_fun _ _ col.
 pts_for A props props :- pts_leq A set, !.
 pts_for _ _ propc. 
 
-ofType A KIND IE :- locDeclType A KIND .
+ofType A KIND _IE :- locDeclType A KIND .
 
 isaType Type Kind IE 
     :- spy(ofType Type Kind' IE)
@@ -81,6 +87,12 @@ isa Term TY IE
 
 
 of X Y _ :-  locDecl X Y .
+
+%% the universe of small propositions
+of (encode T) propS IE :- ofType T props IE.
+ofType (decode T) props IE :- of T propS IE.
+hstep (encode (decode T)) T.
+hstep (decode (encode T)) T.
 
 %% !!!DEBUG mock typing of term M, returns chosen type T
 of (fixMe M T ) T int 
@@ -119,7 +131,7 @@ proof_eq A B T Hi
     
 %% case with A and B inverted (using symetry in the translation of propEq over the translated of type T)
 proof_eq A B T Hi
-    :- nodebug => spy(locDecl H (propEq T' B A))
+    :- nodebug => spy(locDecl H (propEq _T' B A))
     ,  !
     ,  nodebug => spy(interp_isa H (propEq T B A) Hi')
     ,  nodebug => spy (setoid_symm T Q)
@@ -250,7 +262,13 @@ in_library [Entry|TL] K :-
    spy(process_entry Entry Hyp),
    spy(Hyp => in_library TL K).
 
-process_entry (locDef N TY TE) Hyp :-
+kind libraryEntry type.
+type process_entry libraryEntry -> prop -> prop.
+type locDefL   mttTerm -> mttType -> mttTerm -> libraryEntry.
+type univPi    (mttType -> libraryEntry) -> libraryEntry.
+type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
+
+process_entry (locDefL N TY TE) Hyp :-
    spy(isaType TY _ int),
    spy(isa TE TY int),
    Hyp = locDef N TY TE.
@@ -259,4 +277,4 @@ process_entry (univPi F) Hyp2 :-
    Hyp2 = (pi Bi \ Hyp Bi :- isaType Bi set int).
 process_entry (univDepPi Bi F) Hyp2 :-
    (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) => process_entry (F Ci) (Hyp Ci)),
-   Hyp2 = (pi Ci \ Hyp Ci :- (isaType (Ci x) set int :- of x Bi int)).
+   Hyp2 = (pi Ci \ Hyp Ci :- pi x \ (isaType (Ci x) set int :- of x Bi int)).

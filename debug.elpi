@@ -49,22 +49,22 @@ count_indent' Old Tot
 count_indent' Old Old.
 
 countPred Pred Old Tot 
-    :- Pred X1 X2 X3 X4
+    :- Pred X1 _X2 X3 X4
     ,  not (member [[X3, X4], X1] Old)
     ,  !
     ,  countPred Pred [[[X3, X4], X1] | Old] Tot
     .
-countPred Pred Old Old.
+countPred _Pred Old Old.
 
 to_zero [] [].
-to_zero [X | L] [0|L'] :- to_zero L L'.
+to_zero [_ | L] [0|L'] :- to_zero L L'.
 count_indent TT :- count_indent'  [] T, to_zero T TT.
 
 /*print_indent :- count_indent' T,  print_dash T.
 */
 print_dash [].
-print_dash [X|L] :- print "-", print_dash L.
-str_dash C [] "".
+print_dash [_|L] :- print "-", print_dash L.
+str_dash _C [] "".
 %str_dash C [_ | E] "" :- E = [], !.
 str_dash C [_ | L] S :- str_dash C L SS, S is (C ^ SS), !.
 

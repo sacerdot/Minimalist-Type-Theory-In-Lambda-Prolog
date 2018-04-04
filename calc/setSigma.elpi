@@ -76,7 +76,7 @@ interp (pair B C BB CC) T :-
        	   	       	   				 %% interpretation of an x:B', just like BBi
        .
 
-interp (elim_setSigma Pair M MM) T :-
+/* interp (elim_setSigma Pair M MM) T :-
        print "ELIM_SETSIGMA INTERPRETATION",
        spy (of Pair (setSigma B C) ext),
        spy (interp B Bi),
@@ -95,7 +95,11 @@ interp (elim_setSigma Pair M MM) T :-
 						     (x\y\x))
 				       w2)))
        .
+*/
 
+type setSigma_setoid_eq mttType -> (mttTerm -> mttType) -> mttTerm.
+
+/*
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
        interp B Bi,
@@ -107,9 +111,9 @@ setoid_eq (setSigma B C) P :-
        (pi w\ locDecl w (setSigma Bi Ci) => ( p1 w (P1 w), p2 w (P2 w))),
        %% There exists an equality d between p1s and p1z such that
        %% p2z : (C p1z) and the cast to type (C p1z) of p2s:(C p1s) are equal over type (C p1z)
-       EquB' = (lam Bi x \ lam Bi y \ EquB x y),
-       (pi z \ EquC' z = (lam (Ci (P1 z) x \ lam (Ci (P1 z)) y \ EquC (P1 z) x y))),
-       (pi s \ pi z \ pi d \ FCC' s z d = lam (Ci (P1 s)) w \ FCC (P1 s) (P1 z) d w),
+       EquB' = (lambda Bi x \ lambda Bi y \ encode (EquB x y)),
+       (pi z \ EquC' z = (lambda (Ci (P1 z)) x \ lambda (Ci (P1 z)) y \ encode (EquC (P1 z) x y))),
+       (pi s \ pi z \ pi d \ FCC' s z d = lambda (Ci (P1 s)) w \ FCC (P1 s) (P1 z) d w),
        P = (s\z\
              app (app (app (app (app (setSigma_setoid_eq Bi Ci) s) z) EquB') (EquC' z))
               (FCC' s z d))
@@ -117,26 +121,31 @@ setoid_eq (setSigma B C) P :-
 %% 		      (EquC (P1 z)) ((FCC (P1 s) (P1 z) d) (P2 s))
 %%	     		      	    (P2 z))
 	.
+*/
+
+type setSigmaLib list libraryEntry -> prop.
 
 setSigmaLib L :-
  (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
  L =
+[]. /*
  [ univPi Bi \
     univDepPi Bi Ci \
-     locDef (setSigma_setoid_eq Bi Ci)
+     locDefL (setSigma_setoid_eq Bi Ci)
        (setPi (setSigma Bi Ci) s \
          setPi (setSigma Bi Ci) z \
-          setPi (setPi Bi _ \ setPi Bi _ \ props) equb \
-           setPi (setPi (Ci (P1 Bi Ci z)) _ \ setPi (Ci (P1 Bi Ci z)) _ \ props) equc \
-            setPi (setPi (Ci (P1 Bi Ci s)) _ \ Ci (P1 Bi Ci z)) fcc \ props)
+          setPi (setPi Bi _ \ setPi Bi _ \ propS) equb \
+           setPi (setPi (Ci (P1 Bi Ci z)) _ \ setPi (Ci (P1 Bi Ci z)) _ \ propS) _equc \
+            setPi (setPi (Ci (P1 Bi Ci s)) _ \ Ci (P1 Bi Ci z)) fcc \ propS)
        (lambda (setSigma Bi Ci) s \
          lambda (setSigma Bi Ci) z \
-          lambda (setPi Bi _ \ setPi Bi _ \ props) equb \
-           lambda (setPi (Ci (P1 Bi Ci z)) _ \ setPi (Ci (P1 Bi Ci z)) _ \ props) equc \
+          lambda (setPi Bi _ \ setPi Bi _ \ propS) equb \
+           lambda (setPi (Ci (P1 Bi Ci z)) _ \ setPi (Ci (P1 Bi Ci z)) _ \ propS) _equc \
             lambda (setPi (Ci (P1 Bi Ci s)) _ \ Ci (P1 Bi Ci z)) fcc \
-             exist (app (app equb (P1 Bi Ci s)) (P1 Bi Ci z)) d\
+             exist (decode (app (app equb (P1 Bi Ci s)) (P1 Bi Ci z))) d\
 	      (app (app eqc (app fcc (P2 Bi Ci s)) (P2 Bi Ci z))))
  ].
+*/
 	
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
