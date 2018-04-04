@@ -97,7 +97,7 @@ interp (pair B C BB CC) T :-
        .
 */
 
-type setSigma_setoid_eq mttType -> (mttTerm -> mttType) -> mttTerm.
+type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm.
 
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
@@ -111,11 +111,7 @@ setoid_eq (setSigma B C) P :-
        EquC' = (lambda Bi x \ lambda (Ci x) a \ lambda (Ci x) b \ encode (EquC x a b)),
        Cast = (lambda Bi x \ lambda Bi x' \ lambda (EquB x x') d \ lambda (Ci x) a \ FCC x x' d a),
        P = (s\z\
-             decode (app (app (app (app (app (setSigma_setoid_eq Bi Ci) EquB') EquC') Cast) s) z))
-%%             exist (EquB (P1 s) (P1 z)) d\
-%% 		      (EquC (P1 z)) ((FCC (P1 s) (P1 z) d) (P2 s))
-%%	     		      	    (P2 z))
-	.
+             decode (app (app (app (setoid_rel (setSigma Bi Ci)) (app (app (app (setSigma_setoid Bi Ci) EquB') EquC') Cast)) s) z)).
 
 type setSigmaLib list libraryEntry -> prop.
 
@@ -124,20 +120,19 @@ setSigmaLib L :-
  L =
  [ univPi Bi \
     univDepPi Bi Ci \
-     locDefL (setSigma_setoid_eq Bi Ci)
-       (setPi (setPi Bi _ \ setPi Bi _ \ propS) equb \
-         setPi (setPi Bi x \ setPi (Ci x) _ \ setPi (Ci x) _ \ propS) _equc \
-          setPi (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app equb x) x')) _ \ setPi (Ci x) _ \ Ci x') _cast \
-           % begin of output
-           setPi (setSigma Bi Ci) _s \ setPi (setSigma Bi Ci) _z \ propS)
-       (lambda (setPi Bi _ \ setPi Bi _ \ propS) equb \
-         lambda (setPi Bi x \ setPi (Ci x) _ \ setPi (Ci x) _ \ propS) equc \
-          lambda (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app equb x) x')) _ \ setPi (Ci x) _ \ Ci x') cast \
-           % begin of output
+     locDefL (setSigma_setoid Bi Ci)
+       (setPi (setoid Bi) bS \
+         setPi (setPi Bi x \ setoid (Ci x)) _cS \
+          setPi (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') _cast \
+           setoid (setSigma Bi Ci))
+       (lambda (setoid Bi) bS \
+         lambda (setPi Bi x \ setoid (Ci x)) cS \
+          lambda (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') cast \
+           % the setoid relation
            lambda (setSigma Bi Ci) s \
             lambda (setSigma Bi Ci) z \
-             encode (exist (decode (app (app equb (P1 Bi Ci s)) (P1 Bi Ci z))) d\
- 		      decode (app (app (app equc (P1 Bi Ci z))
+             encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
+ 		      decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app cS (P1 Bi Ci z)))
                               (app (app (app (app cast (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
                               (P2 Bi Ci z))))
  ].

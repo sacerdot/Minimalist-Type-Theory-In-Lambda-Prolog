@@ -416,5 +416,7 @@ setSigma_test :-
      .
 
 testLib P :-
- spy (setSigmaLib L),
- spy (in_library L (setoid_eq (setSigma singleton x \ singleton) P)).
+ in_library (setoid_eq (setSigma singleton x \ singleton) P).
+
+testLib2 P :-
+ in_library (setoid_eq (setSigma singleton y \ setSigma singleton x \ propEq singleton x y) P).

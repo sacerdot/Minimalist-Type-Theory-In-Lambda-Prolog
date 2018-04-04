@@ -23,8 +23,6 @@ type propS  mttType.
 
 %% adds a typed term to the context
 type locDecl            mttTerm -> mttType -> prop.
-%% adds a type of a certain kind to the context
-type locDeclType        mttType -> mttKind -> prop.
 
 %% given a type, returns its specific kind
 type ofType             mttType -> mttKind -> mttLevel -> prop.
@@ -33,8 +31,9 @@ type ofType             mttType -> mttKind -> mttLevel -> prop.
 %% "isa" checks if a term has type T, that is, if it is of some type T' such that T converts to T' (via conv)
 type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 
-%% !!!UNUSED
+%% local definitions and type definitions
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
+type locTypeDef     mttType -> mttKind -> mttType -> prop.
 
 %% conversion to (weak) head-normal form WHNF
 hnf A B :- (hstep A C), !, spy(hnf C B).
@@ -73,7 +72,7 @@ pts_fun _ _ col.
 pts_for A props props :- pts_leq A set, !.
 pts_for _ _ propc. 
 
-ofType A KIND _IE :- locDeclType A KIND .
+ofType A KIND _IE :- locTypeDef A KIND _.
 
 isaType Type Kind IE 
     :- spy(ofType Type Kind' IE)
@@ -259,18 +258,47 @@ macro_interp B Q
 
 locDecl X Y :- locDef X Y _.
 hstep X Y :- locDef X _ Y.
+hstep X Y :- locTypeDef X _ Y.
 
-in_library [] K :- K.
-in_library [Entry|TL] K :-
+type process_library list libraryEntry -> prop -> prop.
+
+process_library [] K :- K.
+process_library [Entry|TL] K :-
    spy(process_entry Entry Hyp),
-   spy(Hyp => in_library TL K).
+   spy(Hyp => process_library TL K).
+
+type in_library prop -> prop.
+
+type setoid mttType -> mttType.
+type setoid_rel mttType -> mttTerm.
+
+translateLib L1 :-
+ L1 = [
+   (univPi X \ locTypeDefL (setoid X) col (setPi X _ \ setPi X _ \ propS))
+ , (univPi X \ locDefL (setoid_rel X) (setPi (setoid X) _ \ setPi X _ \ setPi X _ \ propS) (lambda (setoid X) R \ R))
+ ].
+
+type append list A -> list A -> list A -> prop.
+
+append [] L L.
+append [H|TL] L1 [H|TL2] :- append TL L1 TL2.
+
+in_library P :-
+ translateLib L1,
+ setSigmaLib L2,
+ append L1 L2 L3,
+ process_library L3 P.
 
 kind libraryEntry type.
 type process_entry libraryEntry -> prop -> prop.
+type locTypeDefL mttType -> mttKind -> mttType -> libraryEntry.
 type locDefL   mttTerm -> mttType -> mttTerm -> libraryEntry.
 type univPi    (mttType -> libraryEntry) -> libraryEntry.
 type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
 
+process_entry (locTypeDefL N KIND TY) Hyp :-
+   spy(ofType TY KIND int),
+   Hyp = locTypeDef N KIND TY.
 process_entry (locDefL N TY TE) Hyp :-
    spy(isaType TY _ int),
    spy(isa TE TY int),
