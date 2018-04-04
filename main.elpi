@@ -92,8 +92,10 @@ of X Y _ :-  locDecl X Y .
 ofType propS col _IE.
 of (encode T) propS IE :- spy (ofType T props IE).
 ofType (decode T) props IE :- spy (of T propS IE).
-hstep (encode (decode T)) T.
-hstep (decode (encode T)) T.
+hstep (encode T) S :- hnf T (decode S).
+hstep (decode T) S :- hnf T (encode S).
+dconv (encode S1) (encode S2) :- conv S1 S2.
+dconv (decode S1) (decode S2) :- conv S1 S2.
 
 %% !!!DEBUG mock typing of term M, returns chosen type T
 of (fixMe M T ) T int 
