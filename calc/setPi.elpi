@@ -21,7 +21,7 @@ of (lambda B F) (setPi B C) IE
     .
 
 of (app Lam X) (CX) IE
-    :- spy(of Lam (setPi B C) IE)
+    :- spy(isa Lam (setPi B C) IE)
     ,  spy(isa X B IE)
     ,  CX = C X
     .
