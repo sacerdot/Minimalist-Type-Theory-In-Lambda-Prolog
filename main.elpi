@@ -89,8 +89,9 @@ isa Term TY IE
 of X Y _ :-  locDecl X Y .
 
 %% the universe of small propositions
-of (encode T) propS IE :- ofType T props IE.
-ofType (decode T) props IE :- of T propS IE.
+ofType propS col _IE.
+of (encode T) propS IE :- spy (ofType T props IE).
+ofType (decode T) props IE :- spy (of T propS IE).
 hstep (encode (decode T)) T.
 hstep (decode (encode T)) T.
 
@@ -273,8 +274,12 @@ process_entry (locDefL N TY TE) Hyp :-
    spy(isa TE TY int),
    Hyp = locDef N TY TE.
 process_entry (univPi F) Hyp2 :-
-   (pi Bi \ ofType Bi set int => process_entry (F Bi) (Hyp Bi)),
+   spy (pi Bi \ ofType Bi set int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- isaType Bi set int).
 process_entry (univDepPi Bi F) Hyp2 :-
-   (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) => process_entry (F Ci) (Hyp Ci)),
-   Hyp2 = (pi Ci \ Hyp Ci :- pi x \ (isaType (Ci x) set int :- of x Bi int)).
+   spy (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) =>
+                (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
+                spy (process_entry (F Ci) (Hyp Ci))),
+   Hyp2 = (pi Ci \ Hyp Ci :- (pi x \ (isaType (Ci x) set int :- of x Bi int))
+                % ,(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
+          ).

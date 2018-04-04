@@ -20,11 +20,11 @@ of (pair B C BB CC) (setSigma B C) IE
     .
 
 of (elim_setSigma Pair M MM) (M Pair) IE 
-    :- of Pair (setSigma B C) IE
-    ,  pi z \ locDecl z (setSigma B C) => ofType (M z) _ IE
+    :- spy (of Pair (setSigma B C) IE)
+    ,  pi z \ locDecl z (setSigma B C) => spy (ofType (M z) _ IE)
     ,  pi x \ pi y \
             locDecl x B => locDecl y (C x) =>  
-                isa (MM x y) (M (pair B C x y)) IE
+                spy (isa (MM x y) (M (pair B C x y)) IE)
     .
 
 hstep (elim_setSigma Pair M Mm) (Mm Bb Cc) 
@@ -99,7 +99,6 @@ interp (pair B C BB CC) T :-
 
 type setSigma_setoid_eq mttType -> (mttTerm -> mttType) -> mttTerm.
 
-/*
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
        interp B Bi,
@@ -108,44 +107,40 @@ setoid_eq (setSigma B C) P :-
        		      		 setoid_eq (C x) (EquC xi))),			   %% Equality over Ci xi
        macro_tau_cov_cov B B (x\x'\h\xi\xi'\hi\ tau (C x) (C x') (FCC xi xi' hi)), %% Cast from type (C x)i to (C x')i with
        		     			       	     	      	     	     	   %% x,x':B
-       (pi w\ locDecl w (setSigma Bi Ci) => ( p1 w (P1 w), p2 w (P2 w))),
-       %% There exists an equality d between p1s and p1z such that
-       %% p2z : (C p1z) and the cast to type (C p1z) of p2s:(C p1s) are equal over type (C p1z)
        EquB' = (lambda Bi x \ lambda Bi y \ encode (EquB x y)),
-       (pi z \ EquC' z = (lambda (Ci (P1 z)) x \ lambda (Ci (P1 z)) y \ encode (EquC (P1 z) x y))),
-       (pi s \ pi z \ pi d \ FCC' s z d = lambda (Ci (P1 s)) w \ FCC (P1 s) (P1 z) d w),
+       EquC' = (lambda Bi x \ lambda (Ci x) a \ lambda (Ci x) b \ encode (EquC x a b)),
+       Cast = (lambda Bi x \ lambda Bi x' \ lambda (EquB x x') d \ lambda (Ci x) a \ FCC x x' d a),
        P = (s\z\
-             app (app (app (app (app (setSigma_setoid_eq Bi Ci) s) z) EquB') (EquC' z))
-              (FCC' s z d))
+             decode (app (app (app (app (app (setSigma_setoid_eq Bi Ci) EquB') EquC') Cast) s) z))
 %%             exist (EquB (P1 s) (P1 z)) d\
 %% 		      (EquC (P1 z)) ((FCC (P1 s) (P1 z) d) (P2 s))
 %%	     		      	    (P2 z))
 	.
-*/
 
 type setSigmaLib list libraryEntry -> prop.
 
 setSigmaLib L :-
  (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
  L =
-[]. /*
  [ univPi Bi \
     univDepPi Bi Ci \
      locDefL (setSigma_setoid_eq Bi Ci)
-       (setPi (setSigma Bi Ci) s \
-         setPi (setSigma Bi Ci) z \
-          setPi (setPi Bi _ \ setPi Bi _ \ propS) equb \
-           setPi (setPi (Ci (P1 Bi Ci z)) _ \ setPi (Ci (P1 Bi Ci z)) _ \ propS) _equc \
-            setPi (setPi (Ci (P1 Bi Ci s)) _ \ Ci (P1 Bi Ci z)) fcc \ propS)
-       (lambda (setSigma Bi Ci) s \
-         lambda (setSigma Bi Ci) z \
-          lambda (setPi Bi _ \ setPi Bi _ \ propS) equb \
-           lambda (setPi (Ci (P1 Bi Ci z)) _ \ setPi (Ci (P1 Bi Ci z)) _ \ propS) _equc \
-            lambda (setPi (Ci (P1 Bi Ci s)) _ \ Ci (P1 Bi Ci z)) fcc \
-             exist (decode (app (app equb (P1 Bi Ci s)) (P1 Bi Ci z))) d\
-	      (app (app eqc (app fcc (P2 Bi Ci s)) (P2 Bi Ci z))))
+       (setPi (setPi Bi _ \ setPi Bi _ \ propS) equb \
+         setPi (setPi Bi x \ setPi (Ci x) _ \ setPi (Ci x) _ \ propS) _equc \
+          setPi (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app equb x) x')) _ \ setPi (Ci x) _ \ Ci x') _cast \
+           % begin of output
+           setPi (setSigma Bi Ci) _s \ setPi (setSigma Bi Ci) _z \ propS)
+       (lambda (setPi Bi _ \ setPi Bi _ \ propS) equb \
+         lambda (setPi Bi x \ setPi (Ci x) _ \ setPi (Ci x) _ \ propS) equc \
+          lambda (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app equb x) x')) _ \ setPi (Ci x) _ \ Ci x') cast \
+           % begin of output
+           lambda (setSigma Bi Ci) s \
+            lambda (setSigma Bi Ci) z \
+             encode (exist (decode (app (app equb (P1 Bi Ci s)) (P1 Bi Ci z))) d\
+ 		      decode (app (app (app equc (P1 Bi Ci z))
+                              (app (app (app (app cast (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
+                              (P2 Bi Ci z))))
  ].
-*/
 	
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
@@ -274,6 +269,6 @@ p1 Pair R :-
 
 p2 Pair R :-
    of Pair (setSigma B C) IE,
-   p1 Pair R1,
-   R = (elim_setSigma Pair (_\ (C R1)) (x\y\ y) )
+   spy (pi Pair \ of Pair (setSigma B C) IE => p1 Pair (R1 Pair)),
+   R = (elim_setSigma Pair (x\ C (R1 x)) (x\y\ y))
 .

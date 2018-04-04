@@ -9,9 +9,9 @@ type lambda mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type app mttTerm -> mttTerm -> mttTerm.
 
 ofType (setPi B C) KIND3 IE
-    :- (ofType B KIND1 IE)
+    :- spy (ofType B KIND1 IE)
     ,  (pi x\ locDecl x B
-        => (ofType (C x) KIND2 IE))
+        => spy (ofType (C x) KIND2 IE))
     ,  spy(pts_fun KIND1 KIND2 KIND3)
     .
 
