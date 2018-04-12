@@ -122,7 +122,7 @@ setSigmaLib L :-
     univDepPi Bi Ci \
      locDefL (setSigma_setoid Bi Ci)
        (setPi (setoid Bi) bS \
-         setPi (setPi Bi x \ setoid (Ci x)) _cS \
+         setPi (setoidDep Bi Ci) _cS \
           setPi (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') _cast \
            setoid (setSigma Bi Ci))
        (lambda (setoid Bi) bS \

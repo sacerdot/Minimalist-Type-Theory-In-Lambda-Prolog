@@ -271,11 +271,13 @@ type in_library prop -> prop.
 
 type setoid mttType -> mttType.
 type setoid_rel mttType -> mttTerm.
+type setoidDep mttType -> (mttTerm -> mttType) -> mttType.
 
 translateLib L1 :-
  L1 = [
    (univPi X \ locTypeDefL (setoid X) col (setPi X _ \ setPi X _ \ propS))
  , (univPi X \ locDefL (setoid_rel X) (setPi (setoid X) _ \ setPi X _ \ setPi X _ \ propS) (lambda (setoid X) R \ R))
+ , (univPi B \ (univDepPi B C \ locTypeDefL (setoidDep B C) col (setPi B x\ setoid (C x)) )) %needs cast
  ].
 
 type append list A -> list A -> list A -> prop.
