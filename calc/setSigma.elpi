@@ -136,7 +136,7 @@ new_interp_dep_type B (x \ singleton) O :-
 
 singletonLib L :-
  L =
- [ (locDef singleton_setoid (setoid singleton)
+ [ (locDefL singleton_setoid (setoid singleton)
     (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)))
  , (univPi Bi \
     locDefL (singleton_setoidDep Bi) (setoidDep Bi x \ singleton)
