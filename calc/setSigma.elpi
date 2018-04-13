@@ -141,9 +141,11 @@ singletonLib L :-
  , (univPi Bi \
     locDefL (singleton_setoidDep Bi) (setoidDep Bi x \ singleton)
     (lambda (setoid Bi) bS \
-      pair (FILLME1) (FILLME2)
+      pair
+        (setPi Bi _\ setoid singleton)
+        (_ \ setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton)
         (lambda Bi x \ singleton_setoid)
-        (lambda Bi x \ lambda Bi x' \ lambda (FILLME3) _ \ lambda singleton x \ x)
+        (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y)
     ))
  ].
 
