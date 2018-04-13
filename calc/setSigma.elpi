@@ -131,8 +131,7 @@ new_interp_type (setSigma B C) O :-
 
 new_interp_dep_type B (x \ singleton) O :-
    interp B Bi,
-   new_interp_type B Bs,
-   O = app (singleton_setoidDep Bi) Bs.
+   O = singleton_setoidDep Bi.
 
 singletonLib L :-
  L =
