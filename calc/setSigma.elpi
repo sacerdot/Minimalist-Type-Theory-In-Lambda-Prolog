@@ -115,6 +115,39 @@ setoid_eq (setSigma B C) P :-
 
 type setSigmaLib list libraryEntry -> prop.
 
+type new_interp_type mttType -> mttTerm -> prop.
+type new_interp_dep_type mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
+type singleton_setoid mttTerm.
+type singleton_setoidDep mttType -> mttTerm.
+
+new_interp_type singleton singleton_setoid.
+
+new_interp_type (setSigma B C) O :-
+   interp B Bi,
+   macro_interp B (x\xi\_\_\ interp (C x) (Ci xi)),
+   new_interp_type B Bs,
+   new_interp_dep_type B C Cs,
+   O = app (app (setSigma_setoid Bi Ci) Bs) Cs.
+
+new_interp_dep_type B (x \ singleton) O :-
+   interp B Bi,
+   O = singleton_setoidDep Bi.
+
+singletonLib L :-
+ L =
+ [ (locDefL singleton_setoid (setoid singleton)
+    (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)))
+ , (univPi Bi \
+    locDefL (singleton_setoidDep Bi) (setoidDep Bi x \ singleton)
+    (lambda (setoid Bi) bS \
+      pair
+        (setPi Bi _\ setoid singleton)
+        (_ \ setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton)
+        (lambda Bi x \ singleton_setoid)
+        (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y)
+    ))
+ ].
+
 setSigmaLib L :-
  (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
  L =

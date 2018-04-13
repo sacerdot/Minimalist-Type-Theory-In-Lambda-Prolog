@@ -303,9 +303,11 @@ append [H|TL] L1 [H|TL2] :- append TL L1 TL2.
 
 in_library P :-
  translateLib L1,
- setSigmaLib L2,
- append L1 L2 L3,
- process_library L3 P.
+ singletonLib L2,
+ setSigmaLib L3,
+ append L1 L2 L4,
+ append L4 L3 L5,
+ process_library L5 P.
 
 kind libraryEntry type.
 type process_entry libraryEntry -> prop -> prop.

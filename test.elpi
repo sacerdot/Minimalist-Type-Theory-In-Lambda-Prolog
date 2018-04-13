@@ -420,3 +420,9 @@ testLib P :-
 
 testLib2 P :-
  in_library (setoid_eq (setSigma singleton y \ setSigma singleton x \ propEq singleton x y) P).
+
+testLib3 P TY :-
+ in_library (
+  new_interp_type (setSigma singleton x \ singleton) P,
+  of P TY int
+ ).
