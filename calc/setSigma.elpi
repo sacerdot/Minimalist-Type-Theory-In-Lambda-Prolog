@@ -126,13 +126,14 @@ setSigmaLib L :-
           setPi (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') _cast \
            setoid (setSigma Bi Ci))
        (lambda (setoid Bi) bS \
-         lambda (setPi Bi x \ setoid (Ci x)) cS \
+         lambda (setoidDep Bi Ci) cS \
           lambda (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') cast \
            % the setoid relation
            lambda (setSigma Bi Ci) s \
             lambda (setSigma Bi Ci) z \
              encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
- 		      decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app cS (P1 Bi Ci z)))
+ 		      decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
+		      	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
                               (app (app (app (app cast (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
                               (P2 Bi Ci z))))
  ].
