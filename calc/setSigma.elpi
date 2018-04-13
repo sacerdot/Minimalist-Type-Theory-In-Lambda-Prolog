@@ -98,6 +98,7 @@ interp (pair B C BB CC) T :-
 */
 
 type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm.
+type setSigma_setoidDep mttType -> (mttType -> (mttTerm -> mttType)) -> mttTerm. 
 
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
@@ -156,20 +157,19 @@ setSigmaLib L :-
      locDefL (setSigma_setoid Bi Ci)
        (setPi (setoid Bi) bS \
          setPi (setoidDep Bi Ci) _cS \
-          setPi (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') _cast \
            setoid (setSigma Bi Ci))
        (lambda (setoid Bi) bS \
          lambda (setoidDep Bi Ci) cS \
-          lambda (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi (Ci x) _ \ Ci x') cast \
            % the setoid relation
            lambda (setSigma Bi Ci) s \
             lambda (setSigma Bi Ci) z \
              encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
  		      decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
 		      	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
-                              (app (app (app (app cast (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
+                              (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
                               (P2 Bi Ci z))))
- ].
+	       
+].
 	
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
