@@ -98,7 +98,7 @@ interp (pair B C BB CC) T :-
 */
 
 type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm.
-type setSigma_setoidDep mttType -> (mttType -> (mttTerm -> mttType)) -> mttTerm. 
+type setSigma_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttType) -> mttTerm. 
 
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
