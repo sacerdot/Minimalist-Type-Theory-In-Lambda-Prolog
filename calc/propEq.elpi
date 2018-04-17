@@ -56,7 +56,7 @@ tau (propEq T_ T1 T2) (propEq T T1' T2') (F)
                   forall_app ( 
                    impl_app ( 
                     forall_app ( 
-                     forall_app (k_propId T) T1i) T1i') F1) T2i) T2i') F2) x
+                     forall_app (k_propId Ti) T1i) T1i') F1) T2i) T2i') F2) x
         )
     .
 
