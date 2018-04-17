@@ -70,8 +70,19 @@ test n O
     .
 
 
-
-
+test pd1 A Q Qy
+ :- Long = ( forall singleton x\ forall singleton z \
+      setPi (propEq singleton x z) _ \
+       (setPi (setPi singleton y \ propEq singleton x y) f \
+         setPi (propEq (propEq singleton x x) (app f x) (eq singleton x)) p \
+          setPi (propEq (propEq singleton z z) (app f z) (eq singleton z)) q \
+           propEq (propEq (propEq singleton x x) (app f x) (eq singleton x)) p q)),
+    spy(ofType Long A ext),
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(interp Long Q),
+    %print "|||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||||\n",
+    spy(ofType Q Qy int)
+    .
 
 test m A Q Qy
  :- Long = ( forall singleton x\
