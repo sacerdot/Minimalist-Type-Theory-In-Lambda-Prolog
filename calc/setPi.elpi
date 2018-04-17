@@ -195,7 +195,8 @@ tau (setPi B C) (setPi B' C') P
 tau_eq (setPi B C) (setPi B' C') P 
     :- spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(tau B' B FB)
-    ,  P = f\g\d\ forall_lam B' y'\ %% check
+    ,  spy(interp B' Bi')
+    ,  P = f\g\d\ forall_lam Bi' y'\ %% check
             KC' (FB y') 
                 y'                  %% type mismatch: this should be intensional but it is not!
                 d
