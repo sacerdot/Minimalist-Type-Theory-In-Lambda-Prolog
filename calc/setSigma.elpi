@@ -20,7 +20,7 @@ of (pair B C BB CC) (setSigma B C) IE
     .
 
 of (elim_setSigma Pair M MM) (M Pair) IE 
-    :- spy (of Pair (setSigma B C) IE)
+    :- spy (isa Pair (setSigma B C) IE)
     ,  pi z \ locDecl z (setSigma B C) => spy (ofType (M z) _ IE)
     ,  pi x \ pi y \
             locDecl x B => locDecl y (C x) =>  
@@ -137,7 +137,12 @@ new_interp_dep_type B (x \ singleton) O :-
 singletonLib L :-
  L =
  [ (locDefL singleton_setoid (setoid singleton)
-    (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)))
+    (pair
+      (setPi singleton x \ setPi singleton y \ propS) 
+      (rel \ forall singleton x \ decode (app (app rel x) x))
+      (lambda singleton x \ lambda singleton y \ encode (propId singleton x y))
+      (forall_lam singleton x \ id singleton x)
+    ))
  , (univPi Bi \
     locDefL (singleton_setoidDep Bi) (setoidDep Bi x \ singleton)
     (lambda (setoid Bi) bS \
