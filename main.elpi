@@ -271,13 +271,24 @@ type in_library prop -> prop.
 
 type setoid mttType -> mttType.
 type setoid_rel mttType -> mttTerm.
+type setoid_reflL mttType -> mttTerm.
 type setoidDep mttType -> (mttTerm -> mttType) -> mttType.
 type setoidDepCarrier mttType -> (mttTerm -> mttType) -> mttTerm.
 type setoidDepCast mttType -> (mttTerm -> mttType) -> mttTerm.
 translateLib L1 :-
  L1 = [
-   (univPi X \ locTypeDefL (setoid X) col (setPi X _ \ setPi X _ \ propS))
- , (univPi X \ locDefL (setoid_rel X) (setPi (setoid X) _ \ setPi X _ \ setPi X _ \ propS) (lambda (setoid X) R \ R))
+   (univPi X \ locTypeDefL (setoid X) col
+     (setSigma
+       % setoid_rel
+       (setPi X _ \ setPi X _ \ propS) rel \
+       % setoid_reflL
+       (forall X x \ decode (app (app rel x) x))))
+ , (univPi X \ locDefL (setoid_rel X) (setPi (setoid X) _ \ setPi X _ \ setPi X _ \ propS)
+     (lambda (setoid X) R \
+       elim_setSigma R (_ \ setPi X _ \ setPi X _ \ propS) (x\y\x)))
+ , (univPi X \ locDefL (setoid_reflL X) (setPi (setoid X) R \ forall X x \ decode (app (app (app (setoid_rel X) R) x) x))
+     (lambda (setoid X) R \
+       elim_setSigma R (c \ forall X x \ decode (app (app (app (setoid_rel X) c) x) x)) (x\y\y)))
  , (univPi B \ (univDepPi B C \ locTypeDefL (setoidDep B C) col (setPi (setoid B) bS \ setSigma (setPi B x\ setoid (C x)) _\
    	       		      		    	       	    	       (setPi B x1\ setPi B x2\
 								       setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\

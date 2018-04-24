@@ -165,14 +165,27 @@ setSigmaLib L :-
            setoid (setSigma Bi Ci))
        (lambda (setoid Bi) bS \
          lambda (setoidDep Bi Ci) cS \
-           % the setoid relation
-           lambda (setSigma Bi Ci) s \
-            lambda (setSigma Bi Ci) z \
-             encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
+           pair
+            (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
+            (rel \ forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
+            % the setoid relation
+           (lambda (setSigma Bi Ci) s \
+             lambda (setSigma Bi Ci) z \
+              encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
  		      decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
 		      	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
                               (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
                               (P2 Bi Ci z))))
+           (forall_lam (setSigma Bi Ci) x \
+             pair_exist
+              (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
+              (d \ decode (app (app (app (setoid_rel (Ci (P1 Bi Ci x)))
+                (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x)))
+                (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))
+                  (P2 Bi Ci x)))
+              (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
+              (fixMe "riflessività seconda componente setSigma" _)
+           ))
 	       
 ].
 	
