@@ -74,6 +74,24 @@ pts_for _ _ propc.
 
 ofType A KIND _IE :- locTypeDef A KIND _.
 
+%% !!!DEBUG mock typing of term M, returns chosen type T
+of (fixMe M T ) T int 
+    :- !
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    ,  print M
+    ,  term_to_string T S, print S
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    .
+
+%%% !!!DEBUG mock type-checking of term M as a term of type T
+isa (fixMe M T) T int 
+    :- !
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    ,  print M
+    ,  term_to_string T S, print S
+    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
+    .
+
 isaType Type Kind IE 
     :- spy(ofType Type Kind' IE)
     ,  spy(pts_leq  Kind' Kind)
@@ -95,24 +113,6 @@ hstep (encode T) S :- hnf T (decode S).
 hstep (decode T) S :- hnf T (encode S).
 dconv (encode S1) (encode S2) :- conv S1 S2.
 dconv (decode S1) (decode S2) :- conv S1 S2.
-
-%% !!!DEBUG mock typing of term M, returns chosen type T
-of (fixMe M T ) T int 
-    :- !
-    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    ,  print M
-    ,  term_to_string T S, print S
-    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    .
-
-%%% !!!DEBUG mock type-checking of term M as a term of type T
-isa (fixMe M T) T int 
-    :- !
-    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    ,  print M
-    ,  term_to_string T S, print S
-    %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
-    .
 
 %% Functions used in interpretation of extensionally equivalent (conv) types. These cover general/
 %% degenerate cases, while the specific rules (for specific types) appear in their respective modules
