@@ -326,14 +326,17 @@ type locTypeDefL mttType -> mttKind -> mttType -> libraryEntry.
 type locDefL   mttTerm -> mttType -> mttTerm -> libraryEntry.
 type univPi    (mttType -> libraryEntry) -> libraryEntry.
 type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
+type hyp       prop -> libraryEntry -> libraryEntry.
 
 process_entry (locTypeDefL N KIND TY) Hyp :-
    spy(ofType TY KIND int),
-   Hyp = locTypeDef N KIND TY.
+   Hyp = locTypeDef N KIND TY,
+   print ["## New type definition: ", N].
 process_entry (locDefL N TY TE) Hyp :-
    spy(isaType TY _ int),
    spy(isa TE TY int),
-   Hyp = locDef N TY TE.
+   Hyp = locDef N TY TE,
+   print ["## New definition: ", N].
 process_entry (univPi F) Hyp2 :-
    spy (pi Bi \ ofType Bi set int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- isaType Bi set int).
@@ -344,3 +347,6 @@ process_entry (univDepPi Bi F) Hyp2 :-
    Hyp2 = (pi Ci \ Hyp Ci :- (pi x \ (isaType (Ci x) set int :- of x Bi int))
                 % ,(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ).
+process_entry (hyp H E) Hyp2 :-
+   spy (H => process_entry E Hyp),
+   Hyp2 = (Hyp :- H).
