@@ -433,12 +433,11 @@ testLib2 P :-
  in_library (setoid_eq (setSigma singleton y \ setSigma singleton x \ propEq singleton x y) P).
 
 testLib3 P TY :-
- in_library ( debug => (
-  spy (new_interp_type (setSigma singleton x \ singleton) P),
-  spy (of P TY int))
- ).
+ in_library ( % debug =>
+  (spy (new_interp_type (setSigma singleton x \ singleton) P),
+   spy (of P TY int))).
 
- in_library (
-  new_interp_type (setSigma singleton x \ singleton) P,
-  of P TY int
- ).
+testLib4 P TY :-
+ in_library ( % debug =>
+  (spy (new_interp_type (setSigma (setSigma singleton x \ singleton) f \ singleton) P),
+   spy (of P TY int))).
