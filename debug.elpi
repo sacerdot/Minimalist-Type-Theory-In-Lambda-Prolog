@@ -11,11 +11,11 @@ announce G :- bracket " " ">>" G "\n", fail.
 check P :- checks, !, P.
 check _.
 
+%by assuming the constant "nodebug" we can shut off the debugging locally
+spy G :- nodebug, !, G.
 %The only entry point for spy, is add a new indent and call the helper spy'
 spy G :- count_indent T, indent [0 | T] => spy' G.
 
-%by assuming the constant "nodebug" we can shut off the debugging locally
-spy' G :- nodebug, !, G.
 %by assuming a "indent_top N" predicate we can limit the depth of the debugging
 spy' G :- indent_top N, indent_depth M, N < M, !, G.
 spy' G :-  (bracket "_" "[+[Begin \n" G "\n", G, bracket "-" "]-]Success  \n" G "\n") , !. 
