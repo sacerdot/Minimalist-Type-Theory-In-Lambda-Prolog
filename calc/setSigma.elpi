@@ -124,10 +124,10 @@ type singleton_setoidDep mttType -> mttTerm.
 new_interp_type singleton singleton_setoid.
 
 new_interp_type (setSigma B C) O :-
-   interp B Bi,
-   macro_interp B (x\xi\_\_\ interp (C x) (Ci xi)),
-   new_interp_type B Bs,
-   new_interp_dep_type B C Cs,
+   spy (interp B Bi),
+   spy (macro_interp B (x\xi\_\_\ interp (C x) (Ci xi))),
+   spy (new_interp_type B Bs),
+   spy (new_interp_dep_type B C Cs),
    O = app (app (setSigma_setoid Bi Ci) Bs) Cs.
 
 new_interp_dep_type B (x \ singleton) O :-
@@ -159,7 +159,21 @@ setSigmaLib L :-
  L =
  [ univPi Bi \
     univDepPi Bi Ci \
-     locDefL (setSigma_setoid Bi Ci)
+     hyp (pi x\ isa x Bi int 
+     => pi y \ isa y (Ci x) int
+     => pi bS \ isa bS (setoid Bi) int 
+     => pi cS \ isa cS (setoidDep Bi Ci) int 
+     => conv
+        y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
+        )
+        (pi x\ locDecl x Bi 
+     => pi y \ locDecl y (Ci x) 
+     => pi bS \ locDecl bS (setoid Bi) 
+     => pi cS \ locDecl cS (setoidDep Bi Ci)  
+     => spy (conv
+        y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
+        ))
+     ( ( locDefL (setSigma_setoid Bi Ci)
        (setPi (setoid Bi) bS \
          setPi (setoidDep Bi Ci) _cS \
            setoid (setSigma Bi Ci))
@@ -179,13 +193,16 @@ setSigmaLib L :-
            (forall_lam (setSigma Bi Ci) x \
              pair_exist
               (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
-              (d \ decode (app (app (app (setoid_rel (Ci (P1 Bi Ci x)))
+              (d \ decode (app (app 
+              (app (setoid_rel (Ci (P1 Bi Ci x)))
                 (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x)))
-                (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))
+                (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
                   (P2 Bi Ci x)))
               (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
-              (fixMe "riflessività seconda componente setSigma" _)
-           ))
+              (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))            
+
+              %(fixMe "riflessività seconda componente setSigma" _)
+           ))))
 	       
 ].
 	
