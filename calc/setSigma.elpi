@@ -97,7 +97,7 @@ interp (pair B C BB CC) T :-
        .
 */
 
-type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm.
+type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 type setSigma_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttType) -> mttTerm. 
 
 setoid_eq (setSigma B C) P :-
@@ -112,7 +112,7 @@ setoid_eq (setSigma B C) P :-
        EquC' = (lambda Bi x \ lambda (Ci x) a \ lambda (Ci x) b \ encode (EquC x a b)),
        Cast = (lambda Bi x \ lambda Bi x' \ lambda (EquB x x') d \ lambda (Ci x) a \ FCC x x' d a),
        P = (s\z\
-             decode (app (app (app (setoid_rel (setSigma Bi Ci)) (app (app (app (setSigma_setoid Bi Ci) EquB') EquC') Cast)) s) z)).
+             decode (app (app (app (setoid_rel (setSigma Bi Ci)) (app (setSigma_setoid Bi Ci EquB' EquC') Cast)) s) z)).
 
 type setSigmaLib list libraryEntry -> prop.
 
@@ -128,7 +128,7 @@ new_interp_type (setSigma B C) O :-
    spy (macro_interp B (x\xi\_\_\ interp (C x) (Ci xi))),
    spy (new_interp_type B Bs),
    spy (new_interp_dep_type B C Cs),
-   O = app (app (setSigma_setoid Bi Ci) Bs) Cs.
+   O = setSigma_setoid Bi Ci Bs Cs.
 
 new_interp_dep_type B (x \ singleton) O :-
    interp B Bi,
@@ -159,50 +159,43 @@ setSigmaLib L :-
  L =
  [ univPi Bi \
     univDepPi Bi Ci \
-     hyp (pi x\ isa x Bi int 
-     => pi y \ isa y (Ci x) int
-     => pi bS \ isa bS (setoid Bi) int 
-     => pi cS \ isa cS (setoidDep Bi Ci) int 
-     => conv
-        y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
-        )
-        (pi x\ locDecl x Bi 
-     => pi y \ locDecl y (Ci x) 
-     => pi bS \ locDecl bS (setoid Bi) 
-     => pi cS \ locDecl cS (setoidDep Bi Ci)  
-     => spy (conv
-        y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
-        ))
-     ( ( locDefL (setSigma_setoid Bi Ci)
-       (setPi (setoid Bi) bS \
-         setPi (setoidDep Bi Ci) _cS \
-           setoid (setSigma Bi Ci))
-       (lambda (setoid Bi) bS \
-         lambda (setoidDep Bi Ci) cS \
-           pair
-            (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
-            (rel \ forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
-            % the setoid relation
-           (lambda (setSigma Bi Ci) s \
-             lambda (setSigma Bi Ci) z \
-              encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
- 		      decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
-		      	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
-                              (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
-                              (P2 Bi Ci z))))
-           (forall_lam (setSigma Bi Ci) x \
-             pair_exist
-              (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
-              (d \ decode (app (app 
-              (app (setoid_rel (Ci (P1 Bi Ci x)))
-                (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x)))
-                (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
-                  (P2 Bi Ci x)))
-              (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
-              (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))            
-
-              %(fixMe "riflessività seconda componente setSigma" _)
-           ))))
+     univPiT (setoid Bi) bS \
+      univPiT (setoidDep Bi Ci) cS \
+       hyp (pi x\ isa x Bi int 
+        => pi y \ isa y (Ci x) int
+        => conv
+           y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
+           )
+           (pi x\ locDecl x Bi 
+        => pi y \ locDecl y (Ci x) 
+        => spy (conv
+           y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
+           ))
+        ((locDefL (setSigma_setoid Bi Ci bS cS) (setoid (setSigma Bi Ci))
+          (pair
+             (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
+             (rel \ forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
+             % the setoid relation
+            (lambda (setSigma Bi Ci) s \
+              lambda (setSigma Bi Ci) z \
+               encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
+                    decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
+                    	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
+                               (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
+                               (P2 Bi Ci z))))
+            (forall_lam (setSigma Bi Ci) x \
+              pair_exist
+               (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
+               (d \ decode (app (app 
+               (app (setoid_rel (Ci (P1 Bi Ci x)))
+                 (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x)))
+                 (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
+                   (P2 Bi Ci x)))
+               (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
+               (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))            
+       
+               %(fixMe "riflessività seconda componente setSigma" _)
+            ))))
 	       
 ].
 	
