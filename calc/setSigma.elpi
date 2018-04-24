@@ -134,6 +134,13 @@ new_interp_dep_type B (x \ singleton) O :-
    interp B Bi,
    O = singleton_setoidDep Bi.
 
+new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
+   spy (interp A Ai),
+   macro_interp A (x\xi\_\_\ interp (B x) (Bi xi)),
+   (pi w \ locDecl w (setSigma Ai Bi) => (p1 w (P1 w), p2 w (P2 w))),
+   spy(macro_interp (setSigma A B) (x\xi\_\_\ interp (C (P1 x) (P2 x)) (Ci xi))),
+   O = setSigma_setoidDep Ai Bi Ci.
+
 singletonLib L :-
  L =
  [ (locDefL singleton_setoid (setoid singleton)
