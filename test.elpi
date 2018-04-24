@@ -17,6 +17,7 @@ accumulate calc/setSigma.
 
 type m,l,f,g,h,i,n A.
 type s1,s2,s3,s4,s5,s6,s7,s8 A.
+type pd1 A.
 type test A.
 
 main :- nodebug => notquicktest.
@@ -68,7 +69,6 @@ test n O
         )    
     , macro_test T O
     .
-
 
 test pd1 A Q Qy
  :- Long = ( forall singleton x\ forall singleton z \
