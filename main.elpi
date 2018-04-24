@@ -48,7 +48,7 @@ hnf A A.
 conv A A :- ! .
 conv A B :- (locDecl _ (propEq _ A B) ), !.
 conv A B :- (locDecl _ (propEq _ B A) ), !.
-conv A B :- spy(hnf A A'), spy( hnf B B'), spy( dconv A' B').
+conv A B :- (hnf A A'), ( hnf B B'), spy( dconv A' B').
 
 dconv A A :- !.
 
@@ -65,7 +65,7 @@ pts_prop props props props :- !.
 pts_prop _ _ propc.
 
 %% determines kind of a function type
-pts_fun A B set :- spy(pts_leq A set), spy(pts_leq B set), !.
+pts_fun A B set :- pts_leq A set, pts_leq B set, !.
 pts_fun _ _ col.
 
 %% determines kind of a universal quantifier
