@@ -344,12 +344,12 @@ setoid_symm (setSigma B C) H :-
 type p1, p2  A->A.	%% mttTerm->mttTerm? Needed for both ext and int pairs...
      	     		%% Currently unused
 p1 Pair R :-
-   of Pair (setSigma B C) IE,
+   isa Pair (setSigma B C_) IE_,
    R = (elim_setSigma Pair (_\B) (x\y\ x) )
    .
 
 p2 Pair R :-
-   of Pair (setSigma B C) IE,
+   isa Pair (setSigma B C) IE,
    spy (pi Pair \ of Pair (setSigma B C) IE => p1 Pair (R1 Pair)),
    R = (elim_setSigma Pair (x\ C (R1 x)) (x\y\ y))
 .
