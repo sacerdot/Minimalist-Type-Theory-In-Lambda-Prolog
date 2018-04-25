@@ -41,7 +41,7 @@ dconv (pair_exist B C Bb Cc) (pair_exist B' C' Bb' Cc')
 
 dconv (elim_exist Pair M Mm) (elim_exist Pair' M' Mm') 
     :- (conv Pair Pair')
-    ,  (of Pair (exist B C) IE)
+    ,  (isa Pair (exist B C) IE_)
     ,  (pi x\ pi y\ locDecl x B => locDecl y (C x)
         => conv (Mm x y) (Mm' x y))
     ,  (conv M M')
@@ -49,5 +49,5 @@ dconv (elim_exist Pair M Mm) (elim_exist Pair' M' Mm')
 
 dconv (exist B C) (exist B' C') 
     :- (conv B B')
-    ,  (pi x\ locDecl x A => conv (C x) (C' x))
+    ,  (pi x\ locDecl x B => conv (C x) (C' x))
     .
