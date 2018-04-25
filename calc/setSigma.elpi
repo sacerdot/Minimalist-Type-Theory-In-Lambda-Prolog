@@ -210,7 +210,6 @@ setSigmaLib L :-
       univPiT (setoidDep Ai Bi) bS \
        univPiT (setoidDep (setSigma Ai Bi) Ci) cS \
         locDefL (setSigma_setoidDep Ai Bi Ci aS bS cS) (setoidDep Ai (a \ setSigma (Bi a) (b \ Ci (pair Ai Bi a b))))
-         %(fixMe "<<< setSigma_setoid_dep" _)
          (lambda (setoid Ai) aS \
            pair
             (setPi Ai a\ setoid (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))))
@@ -218,7 +217,7 @@ setSigmaLib L :-
               setPi Ai a \ setPi Ai a' \
                setPi (decode (app (app (app (setoid_rel Ai) aS) a) a')) _ \
                 setPi (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))) _ \
-                 setSigma (Bi a) (b \ Ci (pair Ai Bi a b)))
+                 setSigma (Bi a') (b \ Ci (pair Ai Bi a' b)))
             (fixMe "<<< setSigma_setoid_dep_one" _)
             (fixMe "<<< setSigma_setoid_dep_two" _)
  ))
