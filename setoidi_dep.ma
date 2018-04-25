@@ -63,6 +63,23 @@ qed.
 
 axiom daemon: False.
 
+definition setoidDepGamma:
+ ∀A,B,C.
+  ∀sA: setoid A.
+   ∀sB: setoidDep A B sA.
+    setoidDep (Sig A B) C (setoidSigma ?? sA sB) →
+     ∀x. (setoidDep (B x) (λy:B x.C (mk_Sig A B x y)) (carrier A B sA sB x)).
+#A #B #C #sA #sB #sAB #x %
+ [ #y @(carrier ??? sAB)
+ | #y #y' #p @(cast ??? sAB)
+   % [ @refl | @trans [2: @cast_refl | skip] @p ]
+ | #y #y' #px @cast_proof
+ | #y #z @cast_refl
+ | #y1 #y2 #p @cast_sym 
+ | #y1 #y2 #y3 #p12 #p23 #y @cast_trans
+ ]
+qed.
+
 definition setoidDepSigma:
  ∀A,B,C.
   ∀sA: setoid A.
@@ -73,15 +90,7 @@ definition setoidDepSigma:
 #A #B #C #sA #sB #sAB %
  [ #x @setoidSigma
    [ @(carrier ??? sB)
-   | %
-     [ #y @(carrier ??? sAB)
-     | #y #y' #p @(cast ??? sAB)
-       % [ @refl | @trans [2: @cast_refl | skip] @p ]
-     | #y #y' #px @cast_proof
-     | #y #z @cast_refl
-     | #y1 #y2 #p @cast_sym 
-     | #y1 #y2 #y3 #p12 #p23 #y @cast_trans
-     ]]
+   | @(setoidDepGamma … sAB) ]
  | #x #x' #p * #y #z %
     [ @(cast … sB … p y)
     | @(cast … sAB … z) % [ @p | @refl ]]
@@ -118,15 +127,7 @@ definition setoidDepPi:
 #A #B #C #sA #sB #sAB %
  [ #x @setoidPi
    [ @(carrier ??? sB)
-   | %
-     [ #y @(carrier ??? sAB)
-     | #y #y' #p @(cast ??? sAB)
-       % [ @refl | @trans [2: @cast_refl | skip] @p ]
-     | #y #y' #px @cast_proof
-     | #y #z @cast_refl
-     | #y1 #y2 #p @cast_sym 
-     | #y1 #y2 #y3 #p12 #p23 #y @cast_trans
-     ]]
+   | @(setoidDepGamma … sAB) ]
  | #x #x' #p #f #y @(cast … (setoidSigma … sA sB) sAB … (f ?))
    [2: @(cast … sB … (sym … p) y)
    | %{p} @cast_sym [ @sym @p | @refl ]]
