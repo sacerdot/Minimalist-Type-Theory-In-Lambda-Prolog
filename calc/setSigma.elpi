@@ -202,7 +202,7 @@ setSigmaLib L :-
                    (P2 Bi Ci x)))
                (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
                (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))))))),
- % setSigma_setoid_dep
+ % setSigma_setoidDep
  (univPi Ai \
    univDepPi Ai Bi \
     univDepPi (setSigma Ai Bi) Ci \
