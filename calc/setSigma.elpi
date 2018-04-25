@@ -119,7 +119,7 @@ type setSigmaLib list libraryEntry -> prop.
 type new_interp_type mttType -> mttTerm -> prop.
 type new_interp_dep_type mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
 type singleton_setoid mttTerm.
-type singleton_setoidDep mttType -> mttTerm.
+type singleton_setoidDep mttType -> mttTerm -> mttTerm.
 
 new_interp_type singleton singleton_setoid.
 
@@ -132,7 +132,8 @@ new_interp_type (setSigma B C) O :-
 
 new_interp_dep_type B (x \ singleton) O :-
    interp B Bi,
-   O = singleton_setoidDep Bi.
+   new_interp_type B Bs,
+   O = singleton_setoidDep Bi Bs.
 
 new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
    spy (interp A Ai),
@@ -151,14 +152,14 @@ singletonLib L :-
       (forall_lam singleton x \ id singleton x)
     ))
  , (univPi Bi \
-    locDefL (singleton_setoidDep Bi) (setoidDep Bi x \ singleton)
-    (lambda (setoid Bi) bS \
-      pair
+    (univPiT (setoid Bi) bS \
+     locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
+      (pair
         (setPi Bi _\ setoid singleton)
         (_ \ setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton)
         (lambda Bi x \ singleton_setoid)
         (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y)
-    ))
+    )))
  ].
 
 setSigmaLib L :-
@@ -168,16 +169,16 @@ setSigmaLib L :-
   (univPi Bi \
     univDepPi Bi Ci \
      univPiT (setoid Bi) bS \
-      univPiT (setoidDep Bi Ci) cS \
+      univPiT (setoidDep Bi Ci bS) cS \
        hyp (pi x\ isa x Bi int 
         => pi y \ isa y (Ci x) int
         => conv
-           y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
+           y (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
            )
            (pi x\ locDecl x Bi 
         => pi y \ locDecl y (Ci x) 
         => spy (conv
-           y (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
+           y (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y) 
            ))
         ((locDefL (setSigma_setoid Bi Ci bS cS) (setoid (setSigma Bi Ci))
           (pair
@@ -188,8 +189,8 @@ setSigmaLib L :-
               lambda (setSigma Bi Ci) z \
                encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
                     decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
-                    	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
-                               (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
+                    	     	       	    		    	(app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci z)))
+                               (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
                                (P2 Bi Ci z))))
              % proof of reflexivity
             (forall_lam (setSigma Bi Ci) x \
@@ -197,11 +198,35 @@ setSigmaLib L :-
                (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
                (d \ decode (app (app 
                (app (setoid_rel (Ci (P1 Bi Ci x)))
-                 (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x)))
-                 (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
+                 (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x)))
+                 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
                    (P2 Bi Ci x)))
                (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
-               (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))))))),
+               (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x))) (P2 Bi Ci x)))))))
+/*
+ % gamma_setoidDep
+ (univPi Ai \
+   univDepPi Ai Bi \
+    univDepPi (setSigma Ai Bi) Ci \
+     univPiT (setoid Ai) aS \
+      univPiT (setoidDep Ai Bi) bS \
+       univPiT (setoidDep (setSigma Ai Bi) Ci) cS \
+ hyp debug true (
+        locDefL (gamma_setoidDep Ai Bi Ci aS bS cS)
+         (setPi Ai a \
+           setoidDep (Bi a) (b \ Ci (pair Ai Bi a b)))
+         (lambda Ai a \
+           pair
+            (setPi (Bi a) b\ setoid (Ci (pair Ai Bi a b)))
+            (_ \
+              setPi (Bi a) b \ setPi (Bi a) b' \
+               setPi (decode (app (app (app (setoid_rel (Bi a)) (app (app (app (setoidDepCarrier Ai Bi) bS) aS) a)) b) b')) _ \
+                setPi (Ci (pair Ai Bi a b)) _ \
+                 (Ci (pair Ai Bi a b')))
+            (fixMe "gamma_setoidDep_one" _)
+            (fixMe "gamma_setoidDep_two" _)
+         )
+)),
  % setSigma_setoidDep
  (univPi Ai \
    univDepPi Ai Bi \
@@ -209,6 +234,7 @@ setSigmaLib L :-
      univPiT (setoid Ai) aS \
       univPiT (setoidDep Ai Bi) bS \
        univPiT (setoidDep (setSigma Ai Bi) Ci) cS \
+hyp debug true (
         locDefL (setSigma_setoidDep Ai Bi Ci aS bS cS) (setoidDep Ai (a \ setSigma (Bi a) (b \ Ci (pair Ai Bi a b))))
          (lambda (setoid Ai) aS \
            pair
@@ -218,9 +244,13 @@ setSigmaLib L :-
                setPi (decode (app (app (app (setoid_rel Ai) aS) a) a')) _ \
                 setPi (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))) _ \
                  setSigma (Bi a') (b \ Ci (pair Ai Bi a' b)))
-            (fixMe "<<< setSigma_setoid_dep_one" _)
+            (lambda Ai a \ setSigma_setoid (Bi a) (b \ Ci (pair Ai Bi a b))
+              (app (app (app (setoidDepCarrier Ai Bi) bS) aS) a)
+              (fixMe "<< setSigma_setoid_dep_one" _))
             (fixMe "<<< setSigma_setoid_dep_two" _)
  ))
+)
+*/
 ].
 	
 tau (setSigma B C) (setSigma B' C') P :-
