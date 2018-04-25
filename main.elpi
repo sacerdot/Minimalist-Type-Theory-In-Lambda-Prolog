@@ -340,17 +340,17 @@ process_entry (locDefL N TY TE) Hyp :-
    print ["## New definition: ", N].
 process_entry (univPi F) Hyp2 :-
    spy (pi Bi \ ofType Bi set int => spy (process_entry (F Bi) (Hyp Bi))),
-   Hyp2 = (pi Bi \ Hyp Bi :- isaType Bi set int).
+   Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi set int)).
 process_entry (univDepPi Bi F) Hyp2 :-
    spy (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
-   Hyp2 = (pi Ci \ Hyp Ci :- (pi x \ (isaType (Ci x) set int :- of x Bi int))
-                % ,(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
+   Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) set int :- of x Bi int))
+                % , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ).
 process_entry (univPiT T F) Hyp2 :-
    spy (pi x \ of x T int => spy (process_entry (F x) (Hyp x))),
-   Hyp2 = (pi x \ Hyp x :- isa x T int).
+   Hyp2 = (pi x \ Hyp x :- spy(isa x T int)).
 process_entry (hyp H1 H2 E) Hyp2 :-
    spy (H1 => process_entry E Hyp),
-   Hyp2 = (Hyp :- H2).
+   Hyp2 = (Hyp :- spy(H2)).
