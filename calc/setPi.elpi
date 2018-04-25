@@ -68,7 +68,7 @@ interp (setPi B C) T
 
 
 interp (app F X) R 
-    :- spy(of F (setPi B C) ext)
+    :- spy(of F (setPi B C_) ext)
     ,  spy(interp_isa X B Xi)
     ,  spy(interp F Fi)
     ,  spy(of Fi T int)
@@ -107,17 +107,16 @@ setoid_eq (setPi B C) P
 %   T is a concrete type, while C is not!
 %   é la probabile causa di eventuali errori di arietà
 proof_eq (app F1 X1) (app F2 X2) T H_app 
-    :- of F1 (setPi B1 C1) ext
-    ,  of F2 (setPi B2 C2) ext
+    :- of F1 (setPi B1_ C1) ext
+    ,  of F2 (setPi B2_ C2_) ext
     ,  of X1 A1 ext
-    ,  of X2 A2 ext
+    ,  of X2 A2_ ext
 %    ,  check (conv (C1 X1) T)
 %    ,  check (conv (C2 X2) T)
 %    ,  check (conv A1 B1)
 %    ,  check (conv A2 B2)
 %    ,  check (conv (setPi B2 C2) (setPi B1 C1))
-    ,  B = B1 , C = C1, A = A1, A' = A2
-    ,  B' = B2, C' = C2
+    ,  C = C1, A = A1
     ,  X = X1, F = F1
     ,  X' = X2, F' = F2
     %  We need to use (setPi A C) in place of (setPi B C)
@@ -129,7 +128,7 @@ proof_eq (app F1 X1) (app F2 X2) T H_app
     ,  interp F Fi
     ,  interp_isa F' (setPi A C) Fi'
     ,  interp (setPi A C) (setSigma ACi PACi)
-    ,  ACi = setPi Ai Ci
+    ,  ACi = setPi Ai_ Ci_
     ,  interp_isa X A Xi
     ,  interp_isa X' A Xi'
     ,  P1Fi = elim_setSigma Fi (_\ACi) (a\b\a)
@@ -151,10 +150,10 @@ proof_eq (app F1 X1) (app F2 X2) T H_app
     .
 
 tau (setPi B C) (setPi B' C') P
-    :- spy(interp (setPi B C) (setSigma T1 T2))
-    ,  spy(T1 = setPi Bi Ci)
+    :- spy(interp (setPi B C) (setSigma T1 T2_))
+    ,  spy(T1 = setPi Bi_ Ci_)
     ,  spy(interp (setPi B' C') (setSigma T1' T2'))
-    ,  spy(T1' = setPi Bi' Ci')
+    ,  spy(T1' = setPi Bi' Ci'_)
     ,  spy(setoid_eq B' EquB')
     %,  spy(macro_tau B B (_\x2\_\_\x2i\hi\ setoid_eq (C x2) (EquC x2i)))
     ,  spy(tau B' B FB)
@@ -165,6 +164,7 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(setoid_refl B Hi)
     ,  spy(pi y1'\ pi y2'\ pi d'\ sigma FH_2\ %Questo sigma interno server per far contento il typechecker
+       % CSC: bug here I think: EquB is unbound!
         (locDecl y1' Bi', locDecl y2' Bi', locDecl d' (EquB y1' y2')) =>
                     (
                         tau_eq B' B  FH_2, FH_2 = (FH y1' y2' d') 
@@ -238,9 +238,7 @@ setoid_symm (setPi B C) H
     .
 
 setoid_tran (setPi B C) H 
-    :- spy(interp (setPi B C) SetPiBCi)
-    ,  spy(setoid_eq (setPi B C) EquBC)
-    ,  interp B Bi
+    :- interp B Bi
     ,  (pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => interp (C y) (Ci yi))
     ,  spy(pi y\ pi yi\ locDecl y B => locDecl yi Bi => interp y yi => setoid_tran (C y) (HC yi))
     ,  spy( H = f\g\h\p\q\ forall_lam Bi yi\ 
