@@ -43,7 +43,7 @@ interp (implies B C) (forall Bi Ci)
     .
 
 interp (impl_lam B F) (forall_lam Bi Fi) 
-    :- check(of (impl_lam B F) (implies B C) ext)
+    :- of (impl_lam B F) (implies B C_) ext
     ,  spy(interp B Bi)
     ,  spy(pi x\ pi xi\ (locDecl x B, locDecl xi Bi, interp x xi) => interp (F x) (Fi xi))
     .
