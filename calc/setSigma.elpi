@@ -98,7 +98,7 @@ interp (pair B C BB CC) T :-
 */
 
 type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
-type setSigma_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttTerm -> mttType) -> mttTerm. 
+type setSigma_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm. 
 
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
@@ -164,7 +164,8 @@ singletonLib L :-
 setSigmaLib L :-
  (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
  L =
- [ univPi Bi \
+ [% setSigma_setoid
+  (univPi Bi \
     univDepPi Bi Ci \
      univPiT (setoid Bi) bS \
       univPiT (setoidDep Bi Ci) cS \
@@ -190,6 +191,7 @@ setSigmaLib L :-
                     	     	       	    		    	(app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci z)))
                                (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
                                (P2 Bi Ci z))))
+             % proof of reflexivity
             (forall_lam (setSigma Bi Ci) x \
               pair_exist
                (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
@@ -199,11 +201,27 @@ setSigmaLib L :-
                  (app (app (app (app (app (app (setoidDepCast Bi Ci) cS) bS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
                    (P2 Bi Ci x)))
                (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
-               (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))            
-       
-               %(fixMe "riflessività seconda componente setSigma" _)
-            ))))
-	       
+               (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (app (setoidDepCarrier Bi Ci) cS) bS ) (P1 Bi Ci x))) (P2 Bi Ci x))))))),
+ % setSigma_setoid_dep
+ (univPi Ai \
+   univDepPi Ai Bi \
+    univDepPi (setSigma Ai Bi) Ci \
+     univPiT (setoid Ai) aS \
+      univPiT (setoidDep Ai Bi) bS \
+       univPiT (setoidDep (setSigma Ai Bi) Ci) cS \
+        locDefL (setSigma_setoidDep Ai Bi Ci aS bS cS) (setoidDep Ai (a \ setSigma (Bi a) (b \ Ci (pair Ai Bi a b))))
+         %(fixMe "<<< setSigma_setoid_dep" _)
+         (lambda (setoid Ai) aS \
+           pair
+            (setPi Ai a\ setoid (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))))
+            (_ \
+              setPi Ai a \ setPi Ai a' \
+               setPi (decode (app (app (app (setoid_rel Ai) aS) a) a')) _ \
+                setPi (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))) _ \
+                 setSigma (Bi a) (b \ Ci (pair Ai Bi a b)))
+            (fixMe "<<< setSigma_setoid_dep_one" _)
+            (fixMe "<<< setSigma_setoid_dep_two" _)
+ ))
 ].
 	
 tau (setSigma B C) (setSigma B' C') P :-
