@@ -16,14 +16,14 @@ of (pair_and B C BB CC) (and B C) IE
     .
 
 of (p1_and Pair) B IE 
-    :- of Pair (and B C) IE
+    :- of Pair (and B C_) IE
     .
 
 of (p2_and Pair) C IE 
-    :- of Pair (and B C) IE
+    :- of Pair (and B_ C) IE
     .
 
-hstep (p1_and Pair) (Bb) :- hnf Pair (pair_and B C Bb Cc).
+hstep (p1_and Pair) (Bb) :- hnf Pair (pair_and B_ C_ Bb Cc_).
 
 dconv (pair_and B C Bb Cc) (pair_and B' C' Bb' Cc')
     :- (conv B B')
@@ -33,7 +33,7 @@ dconv (pair_and B C Bb Cc) (pair_and B' C' Bb' Cc')
     .
 
 dconv (p1_and Pair) (p1_and Pair') 
-    :- (of Pair (and B C) IE)
+    :- (of Pair (and B_ C_) IE_)
     ,  (conv Pair Pair')
     .
 

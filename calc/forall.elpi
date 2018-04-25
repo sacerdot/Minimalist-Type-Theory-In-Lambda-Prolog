@@ -24,7 +24,7 @@ hstep (forall_app LAM Bb) (F Bb)
     ,  ofType B _ IE
     ,  isa Bb B IE
     ,  (pi x\ locDecl x B => isa (F x) (C x) IE )
-    ,  (pi x\ locDecl x B => ofType (C x) KIND IE )
+    ,  (pi x\ locDecl x B => ofType (C x) KIND_ IE )
     .
 
 dconv (forall B C) (forall B' C') 
@@ -59,8 +59,9 @@ interp (forall_lam B F) (forall_lam Bi Fi)
     .
 
 tau (forall B C) (forall B' C') P
-    :- spy(interp (forall B C) (forall Bi Ci))
-    ,  spy(interp (forall B' C') (forall Bi' Ci'))
+    :- % spy(interp (forall B C) (forall Bi_ Ci_))
+    % ,
+       spy(interp (forall B' C') (forall Bi' Ci'_))
     ,  spy(tau B' B FB)
     ,  spy(macro_tau B B'
         (x\x'\_\xi\xi'\hi\ tau (C x) (C' x') (FC' xi xi' hi)))
