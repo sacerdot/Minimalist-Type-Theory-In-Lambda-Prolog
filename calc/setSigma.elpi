@@ -267,7 +267,13 @@ setSigmaLib L :-
            (lambda Ai a \ setSigma_setoid (Bi a) (b \ Ci (pair Ai Bi a b))
              (app (app (setoidDepCarrier Ai Bi aS) bS) a)
              (app (gamma_setoidDep Ai Bi Ci aS bS cS) a))
-           (fixMe "<<< setSigma_setoid_dep_two" _)
+           (lambda Ai a \ lambda Ai a' \
+             lambda (decode (app (app (app (setoid_rel Ai) aS) a) a')) p \
+              lambda (setSigma (Bi a) b \ Ci (pair Ai Bi a b)) bc \
+               (pair (Bi a') (b \ Ci (pair Ai Bi a' b))
+                (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p)
+                 (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc))
+                (fixMe "<<< setSigma_setoid_dep_two" _)))
  )))))
 ].
 
