@@ -92,6 +92,21 @@ isa (fixMe M T) T int
     %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     .
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% <For debugging purposes> %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+type debugga mttTerm -> mttTerm.
+
+isa (debugga T) TY IE :-
+ print ["<@@@@@@@@@@", isa (debugga T) TY IE],
+ (debug => isa T TY IE),
+ print [">@@@@@@@@@@", isa (debugga T) TY IE].
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% </For debugging purposes> %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 isaType Type Kind IE 
     :- spy(ofType Type Kind' IE)
     ,  spy(pts_leq  Kind' Kind)
