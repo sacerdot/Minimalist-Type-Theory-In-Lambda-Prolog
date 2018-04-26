@@ -395,5 +395,4 @@ process_cut (conv_trans X Y Z) (conv X Z) :-
    spy(of X T int),
    spy(isa Y T int),
    spy(isa Z T int),
-   print "CUT",
    conv X Y, conv Y Z.

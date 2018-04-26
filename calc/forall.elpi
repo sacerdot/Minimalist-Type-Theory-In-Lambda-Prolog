@@ -10,7 +10,7 @@ ofType (forall B C) KIND3 IE
 
 of (forall_lam B F) (forall B C) IE
     :- spy(ofType B _ IE)
-    ,  spy(pi x\ locDecl x B => isa (F x) (C x) IE)
+    ,  spy(pi x\ locDecl x B => of (F x) (C x) IE)
     .
 
 of (forall_app Lam X) (CX) IE 
@@ -23,7 +23,7 @@ hstep (forall_app LAM Bb) (F Bb)
     :- hnf LAM (forall_lam B F)
     ,  ofType B _ IE
     ,  isa Bb B IE
-    ,  (pi x\ locDecl x B => isa (F x) (C x) IE )
+    ,  (pi x\ locDecl x B => of (F x) (C x) IE )
     ,  (pi x\ locDecl x B => ofType (C x) KIND_ IE )
     .
 
