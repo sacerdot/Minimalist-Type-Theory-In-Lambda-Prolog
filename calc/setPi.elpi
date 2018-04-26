@@ -17,7 +17,7 @@ ofType (setPi B C) KIND3 IE
 
 of (lambda B F) (setPi B C) IE
     :- spy (ofType B _ IE)
-    ,  spy (pi x\ locDecl x B => isa (F x) (C x) IE)
+    ,  spy (pi x\ locDecl x B => of (F x) (C x) IE)
     .
 
 of (app Lam X) (CX) IE
