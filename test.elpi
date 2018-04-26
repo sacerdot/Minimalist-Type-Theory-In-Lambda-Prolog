@@ -15,17 +15,17 @@ accumulate calc/singleton.
 accumulate calc/setPi.
 accumulate calc/setSigma.
 
-type m,l,f,g,h,i,n A.
-type s1,s2,s3,s4,s5,s6,s7,s8 A.
-type pd1 A.
+kind testFlag type.
+
+type m,l,f,g,h,i,n,p,q testFlag.
+type s1,s2,s3,s4,s5,s6,s7,s8 testFlag.
+type pd1 testFlag.
 type test A.
 
-main :- nodebug => notquicktest.
-
-sigmaTest :- nodebug => setSigma_test.
+sigmaTest :- setSigma_test.
 
 macro_test I O 
-    :- nodebug => spy(ofType I _Te ext)
+    :- spy(ofType I _Te ext)
     ,  spy(interp I O)
     ,  spy(ofType O _Ti int)
     .
@@ -49,6 +49,7 @@ quicktest
     ,  spy(setoid_tran (setPi (propEq singleton star star) x\(setPi (propEq singleton star star) x\singleton ) )  _), makeline
     ,  spy(setoid_refl (setPi (setPi (propEq singleton star star) x\singleton) x\(setPi (propEq singleton star star) x\singleton)) _), makeline
     .
+
 
 notquicktest 
     :- makeline
@@ -222,7 +223,7 @@ test f A Q Qy
     spy(ofType Q Qy int)
     .
 
-testZ A B C
+test p A B C
   :- Long = 
 (forall 
   singleton x\
@@ -248,7 +249,7 @@ testZ A B C
     , spy(ofType B C int)
     .
 			     
-testE A B C
+test q A B C
   :- Long = 
 (forall 
   (propEq singleton star star) x\
@@ -371,12 +372,12 @@ test s6 A Q Ai
 		            (lambda (propEq singleton star star) _ \ star)
 			    (eq (setPi (propEq singleton star star) _ \singleton) (lambda (propEq singleton star star) _ \ star)))))))),
 			    			       	     	 	   		
-	nodebug => (ofType Long A ext),
+	(ofType Long A ext),
 	print "CSC2",
-	nodebug => (interp Long Q),
+	(interp Long Q),
 	print "CSC3",
 	print ["test s6:", A, Q], 
-	nodebug => (ofType Q Ai int)
+	(ofType Q Ai int)
      .
 
 %% uses setoid_refl, prop_eq functions (prop_eq not yet implemented)

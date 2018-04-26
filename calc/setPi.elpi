@@ -30,7 +30,7 @@ hstep (app LAM Bb) (F Bb)
     :- (isa LAM (setPi B C) IE)
     ,  (ofType B _ IE)
     ,  (isa Bb B IE)
-    ,  (nodebug => hnf LAM (lambda B' F))
+    ,  (hnf LAM (lambda B' F))
     ,  conv B B'
     ,  (pi x\ locDecl x B => isa (F x) (C x) IE)
     ,  (pi x\ locDecl x B => ofType (C x) _ IE)

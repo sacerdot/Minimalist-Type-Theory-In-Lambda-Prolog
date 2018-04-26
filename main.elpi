@@ -134,9 +134,9 @@ dconv (decode S1) (decode S2) :- conv S1 S2.
 
 %% returns method to generate a proof for the equality of a term to itself
 proof_eq A A T H'
-    :- nodebug => spy(interp_isa A T Ai)
-    ,  nodebug => spy(setoid_refl T H)		% H is a proof of reflexivity for the translation of type T
-    ,  nodebug => spy(H' = H Ai)                % then applying H to the translation of A proves it equal to itself
+    :- spy(interp_isa A T Ai)
+    ,  spy(setoid_refl T H)		% H is a proof of reflexivity for the translation of type T
+    ,  spy(H' = H Ai)                % then applying H to the translation of A proves it equal to itself
     .
 
 %%  returns method to generate proof for the intensional equality, given a proof of the propositional one
@@ -148,13 +148,13 @@ proof_eq A B T Hi
     
 %% case with A and B inverted (using symetry in the translation of propEq over the translated of type T)
 proof_eq A B T Hi
-    :- nodebug => spy(locDecl H (propEq _T' B A))
+    :- spy(locDecl H (propEq _T' B A))
     ,  !
-    ,  nodebug => spy(interp_isa H (propEq T B A) Hi')
-    ,  nodebug => spy (setoid_symm T Q)
-    ,  nodebug => spy (interp_isa A T Ai)
-    ,  nodebug => spy (interp_isa B T Bi)
-    ,  nodebug => spy(Hi = Q Bi Ai Hi')
+    ,  spy(interp_isa H (propEq T B A) Hi')
+    ,  spy (setoid_symm T Q)
+    ,  spy (interp_isa A T Ai)
+    ,  spy (interp_isa B T Bi)
+    ,  spy(Hi = Q Bi Ai Hi')
     .
 
 %% tau A1 A2 F construct a function of one argument from the interpretation of A1 to the interpretation of A2, 
