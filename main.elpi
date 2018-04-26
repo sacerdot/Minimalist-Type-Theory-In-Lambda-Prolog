@@ -353,6 +353,10 @@ type univPi    (mttType -> libraryEntry) -> libraryEntry.
 type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
 type univPiT   mttType -> (mttTerm -> libraryEntry) -> libraryEntry.
 type hyp       prop -> prop -> libraryEntry -> libraryEntry.
+% Note: the first argument of cut must be made of only
+% pi, => and conv_trans. We could make the typing more precise
+type cut       prop -> libraryEntry -> libraryEntry.
+type conv_trans mttTerm -> mttTerm -> mttTerm -> prop.
 
 process_entry (locTypeDefL N KIND TY) Hyp :-
    spy(ofType TY KIND int),
@@ -379,3 +383,17 @@ process_entry (univPiT T F) Hyp2 :-
 process_entry (hyp H1 H2 E) Hyp2 :-
    spy (H1 => process_entry E Hyp),
    Hyp2 = (Hyp :- spy(H2)).
+process_entry (cut H E) Hyp2 :-
+   spy(process_cut H Hyp),
+   spy (Hyp => process_entry E Hyp2).
+
+process_cut (pi a \ C a) (pi a \ H a) :-
+   pi a \ spy(process_cut (C a) (H a)).
+process_cut (H1 => C) (H1 => H2) :-
+   spy(H1 => process_cut C H2).
+process_cut (conv_trans X Y Z) (conv X Z) :-
+   spy(of X T int),
+   spy(isa Y T int),
+   spy(isa Z T int),
+   print "CUT",
+   conv X Y, conv Y Z.

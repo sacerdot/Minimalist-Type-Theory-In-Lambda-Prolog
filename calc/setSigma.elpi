@@ -249,15 +249,13 @@ setSigmaLib L :-
         (hyp
          (pi x\ isa x (setSigma Ai Bi) int => pi y \ isa y (Ci x) int =>
            conv y (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) x) x) (forall_app (app (setoid_reflL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) x)) y))
-         (pi x\ locDecl x (setSigma Ai Bi) int => pi y \ locDecl y (Ci x) int =>
+         (pi x\ locDecl x (setSigma Ai Bi) => pi y \ locDecl y (Ci x) =>
            spy (conv y (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) x) x) (forall_app (app (setoid_reflL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) x)) y)))
         % CSC: here we should do something better than hyp
         % Hyp assumes the result of the cut of two convs (by transitivity)
         % and requires a proof of it every time it is used
-        (hyp
-          (pi a \ isa a Ai int => pi b \ isa b (Bi a) int => pi c \ isa c (Ci (pair Ai Bi a b)) int => conv c (app (app (app (app (app (setoidDepCast (Bi a) (b \ Ci (pair Ai Bi a b)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) (app (gamma_setoidDep Ai Bi Ci aS bS cS) a)) b) b) (forall_app (app (setoid_reflL (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b)) c))
-          (pi a \ locDecl a Ai int => pi b \ locDecl b (Bi a) int => pi c \ locDecl c (Ci (pair Ai Bi a b)) int => conv_trans c (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) (setSigma_setoid aS bS) cS) (pair Ai Bi a x)) (pair Ai Bi a x)) (forall_app (app (setoid_reflL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) (pair Ai Bi a x))) c)) (app (app (app (app (app (setoidDepCast (Bi a) (b \ Ci (pair Ai Bi a b)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) (app (gamma_setoidDep Ai Bi Ci aS bS cS) a)) b) b) (forall_app (app (setoid_reflL (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b)) c))
- (hyp foo true
+        (cut
+          (pi a \ locDecl a Ai => pi b \ locDecl b (Bi a) => pi c \ locDecl c (Ci (pair Ai Bi a b)) => conv_trans c (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) (pair Ai Bi a b)) (pair Ai Bi a b)) (forall_app (app (setoid_reflL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) (pair Ai Bi a b))) c) (app (app (app (app (app (setoidDepCast (Bi a) (b \ Ci (pair Ai Bi a b)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) (app (gamma_setoidDep Ai Bi Ci aS bS cS) a)) b) b) (forall_app (app (setoid_reflL (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b)) c))
          (locDefL (setSigma_setoidDep Ai Bi Ci aS bS cS) (setoidDep Ai (a \ setSigma (Bi a) (b \ Ci (pair Ai Bi a b))) aS)
          (pair
            (setPi Ai a\ setoid (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))))
@@ -266,18 +264,12 @@ setSigmaLib L :-
               setPi (decode (app (app (app (setoid_rel Ai) aS) a) a')) _ \
                setPi (setSigma (Bi a) (b \ Ci (pair Ai Bi a b))) _ \
                 setSigma (Bi a') (b \ Ci (pair Ai Bi a' b)))
-           (debugga (lambda Ai a \ setSigma_setoid (Bi a) (b \ Ci (pair Ai Bi a b))
+           (lambda Ai a \ setSigma_setoid (Bi a) (b \ Ci (pair Ai Bi a b))
              (app (app (setoidDepCarrier Ai Bi aS) bS) a)
-             (app (gamma_setoidDep Ai Bi Ci aS bS cS) a)))
+             (app (gamma_setoidDep Ai Bi Ci aS bS cS) a))
            (fixMe "<<< setSigma_setoid_dep_two" _)
- ))))))
+ )))))
 ].
-
-conv_trans_c X Y Z :-
- of X T int,
- isa Y T int,
- isa Z T int,
- conv X Y, conv Y Z.
 
 tau (setSigma B C) (setSigma B' C') P :-
     print "SETSIGMA TAU FUNCTION\n",
@@ -289,6 +281,7 @@ tau (setSigma B C) (setSigma B' C') P :-
 					       
     setoid_refl B' Hi,
     %%(interp B' Bi', pi w1 \ print ["CSC: ", B', Bi', Hi, w1, (FB w1), (Hi w1)]),   %% debug
+
     P = w\ elim_setSigma w (_\ setSigma Bi' Ci')	%% w: (setSigma Bi Ci)
       	   		   (w1\ w2\ pair Bi' Ci'
 			   	    	 (FB w1)
