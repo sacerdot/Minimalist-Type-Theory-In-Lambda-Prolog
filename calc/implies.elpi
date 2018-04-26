@@ -55,6 +55,7 @@ interp (impl_app F X ) (forall_app Fi Xi)
 
 tau (implies B C) (implies B' C') P
     :- spy(tau B' B FB)
+    ,  interp B' Bi'
     ,  spy(macro_tau B B' 
         x\x'\h\xi\xi'\hi\ tau C C' FC') 
     ,  spy(P = w\ impl_lam Bi' x\ FC' (app w (FB x)))
