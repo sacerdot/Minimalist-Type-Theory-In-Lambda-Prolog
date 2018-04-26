@@ -12,8 +12,8 @@ check P :- checks, !, P.
 check _.
 
 %The only entry point for spy, is add a new indent and call the helper spy'
+spy G :- nodebug, !, G.
 spy G :- debug, !, count_indent T, indent [0 | T] => spy' G.
-
 spy G :- G.
 
 %by assuming a "indent_top N" predicate we can limit the depth of the debugging
