@@ -250,3 +250,38 @@ setoid_tran (setPi B C) H
     )
     .
 
+%%%%%%%%%%%%%%%%%%
+%   LIBRARY		
+%%%%%%%%%%%%%%%%%%
+
+type setPiLib list libraryEntry -> prop.
+type pp mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttType.
+type setPi_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
+setPiLib Lp :-
+   Lp = [
+   (univPi Bi\
+    univDepPi Bi Ci\
+     univPiT (setoid Bi) bS\
+     univPiT (setoidDep Bi Ci bS) cS\
+     univPiT (setPi Bi Ci) h\
+      locTypeDefL (pp Bi Ci bS cS h) props (forall Bi y1\ forall Bi y2\ forall (decode (app (app (app (setoid_rel Bi) bS) y1 ) y2)) d\
+                       	             decode (app (app (app (setoid_rel (Ci y2)) (app (app (setoidDepCarrier Bi Ci bS) cS) y2))
+                                     	     	 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) y1) y2) d) (app h y1)))
+                              	   	     	 (app h y2)))),
+						 
+   (univPi Bi\
+   univDepPi Bi Ci\
+    univPiT (setoid Bi) bS\
+    univPiT (setoidDep Bi Ci bS) cS \
+     (locDefL (setPi_setoid Bi Ci bS cS) (setoid (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))))
+       (debugga (pair (setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\
+	       	      	setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\ propS)
+             	      (rel \ forall (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) x \ decode (app (app rel x) x))
+	     	      (fixMe "relation" (setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\
+	     	   	       		  setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\ propS))
+	     	      (fixMe "reflProof" (forall (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) x \
+		      	     		   decode (app (app (fixMe "relation" (setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\
+	     	   	       		  		      setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\ propS))
+						        x) x))))))) 
+  ].
+ 
