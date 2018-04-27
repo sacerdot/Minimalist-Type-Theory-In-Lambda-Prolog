@@ -41,9 +41,10 @@ hstep (elim_setSigma Pair M Mm) (Mm Bb Cc)
 dconv (setSigma B C) (setSigma B' C') :- (conv B B'), (pi x\ locDecl x B => conv (C x) (C' x)).
 
 dconv (pair B C BB CC) (pair B' C' BB' CC') 
-    :- (conv B B')
+    :- !, % The cut is to avoid the eta rule below
+       (conv B B')
     ,  (pi x\ locDecl x B => conv (C x) (C' x))
-    ,  (conv BB BB')                             %% conv BB BB modificato in conv BB BB'
+    ,  (conv BB BB')
     ,  (conv CC CC')
     .
 
@@ -53,6 +54,14 @@ dconv (elim_setSigma Pair M MM) (elim_setSigma Pair' M' MM')
     ,  spy(pi z\ locDecl z (setSigma B C) => conv (M z) (M' z))
     ,  spy(pi x\ pi y\  locDecl x B => locDecl y (C x) => conv (MM x y) (MM' x y))
     .
+
+% Eta rule
+dconv X (pair B C BB CC)
+    :- spy (isa X (setSigma B C) IE_)
+     , p1 X P1
+     , p2 X P2
+     , spy(conv P1 BB)
+     , spy (conv P2 CC).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                   TRADUZIONE                                   %%

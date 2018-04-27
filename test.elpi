@@ -446,7 +446,6 @@ testLib4 P TY :-
 testLib5 P TY :-
  in_library ( % debug =>
   (spy (new_interp_type (setSigma singleton x \ setSigma singleton y \ singleton) P),
-   %debug =>
    spy (of P TY int)
   )).
 
