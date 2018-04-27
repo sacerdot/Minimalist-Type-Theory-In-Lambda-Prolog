@@ -1,4 +1,4 @@
-type nodebug, debug, checks prop.
+type nodebug, debug, debug_fails_only, checks prop.
 type indent int -> prop.
 
 announce G :- bracket "." ">>" G "\n", fail.
@@ -8,8 +8,9 @@ check P :- checks, !, P.
 check _.
 
 indent 0.
-spy G :- debug, !, indent X, Y is X + 1, ((indent Y :- !) => spy' G).
-spy G :- G.
+spy G :- not nodebug, debug, !, indent X, Y is X + 1, ((indent Y :- !) => spy' G).
+spy G :- G, !.
+spy G :- debug_fails_only, bracket "+" "]Fail  \n" G "\n",  fail.
 
 spy' G :-  (bracket "_" "[Begin\n" G "\n", G, !, bracket "-" "]Success\n" G "\n"). 
 spy' G :-  bracket "+" "]Fail  \n" G "\n",  fail.
