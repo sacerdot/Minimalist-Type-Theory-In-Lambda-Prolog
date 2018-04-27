@@ -10,13 +10,13 @@ ofType singleton set IE_.
 of star singleton IE_.
 
 of (elim_singleton Star C Cc) (C Star) IE 
-    :- of Star singleton IE
-    ,  of Cc (C star) IE
+    :- isa Star singleton IE
     ,  (pi z\ locDecl z singleton => isaType (C z) col IE)
+    ,  isa Cc (C star) IE
     .
 
 hstep (elim_singleton star C Cc) Cc 
-    :- spy(of Cc (C star) IE)
+    :- spy(isa Cc (C star) IE)
     ,  spy(pi z\ locDecl z singleton => isaType (C z) col IE )
     .
 
