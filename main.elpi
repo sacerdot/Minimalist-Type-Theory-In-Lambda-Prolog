@@ -99,9 +99,15 @@ isa (fixMe M T) T int
 type debugga mttTerm -> mttTerm.
 
 isa (debugga T) TY IE :-
- print ["<@@@@@@@@@@", isa (debugga T) TY IE],
+ print ["<@@@@@@@@@@", isa T TY IE],
  (debug => isa T TY IE),
- print [">@@@@@@@@@@", isa (debugga T) TY IE].
+ print [">@@@@@@@@@@", isa T TY IE].
+
+type printa mttTerm -> mttTerm.
+
+isa (printa T) TY IE :-
+ print ["=@@@@@@@@@@", isa T TY IE],
+ isa T TY IE.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% </For debugging purposes> %%
