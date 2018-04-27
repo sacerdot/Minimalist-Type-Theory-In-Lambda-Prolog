@@ -87,9 +87,9 @@ interp (pair B C BB CC) T :-
 
 /* interp (elim_setSigma Pair M MM) T :-
        print "ELIM_SETSIGMA INTERPRETATION",
-       spy (of Pair (setSigma B C) ext),
+       spy (isa Pair (setSigma B C) ext),
        spy (interp B Bi),
-       spy (interp C Ci),
+       spy (pi x \ pi x' => locDecl x B => locDecl x' Bi => interp x x' => interp (C x) (Ci x')),
        spy (interp_isa MM (setPi (setSigma B C) D) MMi),
        spy (interp_isa Pair (setSigma B C) PairI),				%% needs isa? Possible problem with types of function
        	      	   					%% MM being different intensionally
