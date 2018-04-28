@@ -255,16 +255,17 @@ setoid_tran (setPi B C) H
 %%%%%%%%%%%%%%%%%%
 
 type setPiLib list libraryEntry -> prop.
-type pp mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttType.
+type respect mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttType.
 type setPi_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 setPiLib Lp :-
+   (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
    Lp = [
    (univPi Bi\
     univDepPi Bi Ci\
      univPiT (setoid Bi) bS\
      univPiT (setoidDep Bi Ci bS) cS\
      univPiT (setPi Bi Ci) h\
-      locTypeDefL (pp Bi Ci bS cS h) props (forall Bi y1\ forall Bi y2\ forall (decode (app (app (app (setoid_rel Bi) bS) y1 ) y2)) d\
+      locTypeDefL (respect Bi Ci bS cS h) props (forall Bi y1\ forall Bi y2\ forall (decode (app (app (app (setoid_rel Bi) bS) y1 ) y2)) d\
                        	             decode (app (app (app (setoid_rel (Ci y2)) (app (app (setoidDepCarrier Bi Ci bS) cS) y2))
                                      	     	 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) y1) y2) d) (app h y1)))
                               	   	     	 (app h y2)))),
@@ -273,15 +274,22 @@ setPiLib Lp :-
    univDepPi Bi Ci\
     univPiT (setoid Bi) bS\
     univPiT (setoidDep Bi Ci bS) cS \
-     (locDefL (setPi_setoid Bi Ci bS cS) (setoid (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))))
-       (debugga (pair (setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\
-	       	      	setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\ propS)
-             	      (rel \ forall (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) x \ decode (app (app rel x) x))
-	     	      (fixMe "relation" (setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\
-	     	   	       		  setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\ propS))
-	     	      (fixMe "reflProof" (forall (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) x \
-		      	     		   decode (app (app (fixMe "relation" (setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\
-	     	   	       		  		      setPi (setSigma (setPi Bi Ci) (h\ (pp Bi Ci bS cS h))) _\ propS))
-						        x) x))))))) 
+     (locDefL (setPi_setoid Bi Ci bS cS) (setoid (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))))
+             (pair (setPi (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) _\
+	       	      	setPi (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) _\ propS)
+             	      (rel \ forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) x \ decode (app (app rel x) x))
+		      % the setoid relation
+		      (lambda (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) z1\
+		       lambda (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) z2\
+		        encode (forall Bi y\
+			  decode (app (app (app (setoid_rel (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
+			  	      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z1) y))
+				      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z2) y))))
+		      % proof of reflexivity
+		      (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) z\
+		       forall_lam Bi y\
+		        forall_app (app (setoid_reflL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
+				   	(app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z) y)))))
+		      
   ].
  
