@@ -300,7 +300,7 @@ setPiLib Lp :-
       univPiT (setoid Ai) aS\
       univPiT (setoidDep Ai Bi aS) bS\
       univPiT (setoidDep (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS\
-      hyp debug debug
+      %hyp debug debug
       (hyp
 	(pi x\ isa x Ai int => pi y \ isa y (Bi x) int =>
           conv y (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x) x) (forall_app (app (setoid_reflL Ai) aS) x)) y))
