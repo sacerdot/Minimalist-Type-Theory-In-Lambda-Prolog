@@ -109,6 +109,7 @@ interp (pair B C BB CC) T :-
 type setSigma_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 type setSigma_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm. 
 type gamma_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+type setSigma_setoidRel mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 
 setoid_eq (setSigma B C) P :-
        print "SETSIGMA SETOID_EQ\n",
@@ -186,7 +187,22 @@ singletonLib L :-
 setSigmaLib L :-
  (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
  L =
- [% setSigma_setoid
+ [
+% setSigma_setoidRel
+  (univPi Bi\
+    univDepPi Bi Ci\
+     univPiT (setoid Bi) bS \
+      univPiT (setoidDep Bi Ci bS) cS \
+     locDefL (setSigma_setoidRel Bi Ci bS cS) (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
+       (lambda (setSigma Bi Ci) s \
+          lambda (setSigma Bi Ci) z \
+            encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
+               decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z)))
+	              	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci z)))
+                     	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
+                           (P2 Bi Ci z))))),
+     
+% setSigma_setoid
   (univPi Bi \
     univDepPi Bi Ci \
      univPiT (setoid Bi) bS \
@@ -199,26 +215,32 @@ setSigmaLib L :-
         (locDefL (setSigma_setoid Bi Ci bS cS) (setoid (setSigma Bi Ci))
          (pair
             (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
-            (rel \ forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
+            (rel \ (and (forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
+	               (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ setPi (decode (app (app rel x1) x2)) h\
+		                                                                  (decode (app (app rel x2) x1)))))
             % the setoid relation
-           (lambda (setSigma Bi Ci) s \
-             lambda (setSigma Bi Ci) z \
-              encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
-                   decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z))) (app
-                   	     	       	    		    	(app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci z)))
-                              (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
-                              (P2 Bi Ci z))))
-            % proof of reflexivity
-           (forall_lam (setSigma Bi Ci) x \
-             pair_exist
-              (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
-              (d \ decode (app (app 
-              (app (setoid_rel (Ci (P1 Bi Ci x)))
-                (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x)))
-                (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))                  
-                  (P2 Bi Ci x)))
-              (forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
-              (forall_app (app (setoid_reflL (Ci (P1 Bi Ci x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x))) (P2 Bi Ci x)))))),
+           (setSigma_setoidRel Bi Ci bS cS)
+	   (pair_and (forall (setSigma Bi Ci) x \
+	   	        decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) x))
+		     (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ setPi
+		        (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x1) x2)) h\
+		        (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x2) x1)))
+	             % proof of reflexivity
+                     (forall_lam (setSigma Bi Ci) x \
+             	     pair_exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
+              	        	(d \ decode (app (app 
+              	       		  (app (setoid_rel (Ci (P1 Bi Ci x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x)))
+				  (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))
+                        	  (P2 Bi Ci x)))
+                      		(forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
+                      		(forall_app (app (setoid_reflL (Ci (P1 Bi Ci x)))
+		        	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x))) (P2 Bi Ci x)))
+		    % proof of symmetry
+		    (fixMe "setSigma_setoid symmetry"
+		      (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ setPi
+		       (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x1) x2)) h\
+		       (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x2) x1))))))))
+		    ,
  % gamma_setoidDep
  (univPi Ai \
    univDepPi Ai Bi \

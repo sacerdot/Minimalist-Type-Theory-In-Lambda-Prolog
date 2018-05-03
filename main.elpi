@@ -364,7 +364,7 @@ in_library P :-
  append L1 L2 L4,
  append L4 L3 L5,
  append L5 Lp L6,
- process_library L4 P.
+ process_library L6 P.
 
 kind libraryEntry type.
 type process_entry libraryEntry -> prop -> prop.
