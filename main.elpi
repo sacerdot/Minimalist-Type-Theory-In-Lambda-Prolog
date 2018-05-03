@@ -303,28 +303,18 @@ translateLib L1 :-
      (setSigma
        % setoid_rel
        (setPi X _ \ setPi X _ \ propS)
-       (rel \ setSigma
-                 % setoid_reflL
-        	 (forall X x \ decode (app (app rel x) x))
-		 % setoid_symmL
-		 _\ (forall X x1\ forall X x2\ setPi (decode (app (app rel x1) x2)) h\ (decode (app (app rel x2) x1))))))
+       (rel \ and
+              % setoid_reflL
+              (forall X x \ decode (app (app rel x) x))
+              % setoid_symmL
+	      (forall X x1\ forall X x2\ setPi (decode (app (app rel x1) x2)) h\ (decode (app (app rel x2) x1))))))
  , (univPi X \ locDefL (setoid_rel X) (setPi (setoid X) _ \ setPi X _ \ setPi X _ \ propS)
      (lambda (setoid X) R \
        elim_setSigma R (_ \ setPi X _ \ setPi X _ \ propS) (x\y\x)))
  , (univPi X \ locDefL (setoid_reflL X) (setPi (setoid X) R \ forall X x \ decode (app (app (app (setoid_rel X) R) x) x))
      (lambda (setoid X) R \ 
        (elim_setSigma R (c \ forall X x \ decode (app (app (app (setoid_rel X) c) x) x))
-		      (p1\p2\ (elim_setSigma p2
-					   (_\ forall X x \ decode (app (app (app (setoid_rel X)
-		      	    		                      (pair (setPi X _ \ setPi X _ \ propS)
-								    (rel \ setSigma
-       								      (forall X x \ (decode (app (app rel x) x)))	
-		 					              (_\ (forall X x1\ forall X x2\ setPi
-								      	  (decode (app (app rel x1) x2)) h\
-                                         				  (decode (app (app rel x2) x1)))))
-									  p1
-									  p2)) x) x))
-		                           (x\y\x))))))
+		      (w1\w2\ p1_and w2))))
 					   
  , (univPi X\ locDefL (setoid_symmL X) (setPi (setoid X) R\ forall X x1\ forall X x2\
                                                setPi (decode (app (app (app (setoid_rel X) R) x1) x2)) h\
@@ -332,25 +322,7 @@ translateLib L1 :-
      (lambda (setoid X) R\
        (elim_setSigma R (c\ forall X x1\ forall X x2\ setPi (decode (app (app (app (setoid_rel X) c) x1) x2)) h\
                                                             (decode (app (app (app (setoid_rel X) c) x2) x1)))
-	 (p1\p2\ (elim_setSigma p2
-				(_\ forall X x1\ forall X x2\
-				    setPi (decode (app (app (app (setoid_rel X)
-				                       (pair (setPi X _ \ setPi X _ \ propS)
-						             (rel \ setSigma (forall X x \ (decode (app (app rel x) x)))	
-		 					                     (_\ (forall X x1\ forall X x2\ setPi
-								      	         (decode (app (app rel x1) x2)) h\
-                                         				         (decode (app (app rel x2) x1)))))
-							      p1
-							      p2)) x1) x2)) h\
-				     (decode (app (app (app (setoid_rel X)
-				                  (pair (setPi X _ \ setPi X _ \ propS)
-						        (rel \ setSigma (forall X x \ (decode (app (app rel x) x)))	
-		 					                     (_\ (forall X x1\ forall X x2\ setPi
-								      	         (decode (app (app rel x1) x2)) h\
-                                         				         (decode (app (app rel x2) x1)))))
-							 p1
-							 p2)) x2) x1)))
-				(x\y\y))))))
+	 (w1\w2\ p2_and w2 ))))
  , (univPi B \
     (univDepPi B C \
      (univPiT (setoid B) bS \

@@ -160,12 +160,12 @@ singletonLib L :-
  [ (locDefL singleton_setoid (setoid singleton)
     (pair
       (setPi singleton x \ setPi singleton y \ propS) 
-      (rel \ setSigma  (forall singleton x \ decode (app (app rel x) x))
-      	     	       (_\ (forall singleton x1\ forall singleton x2\ setPi (decode (app (app rel x1) x2)) h\
-		       	   	   	     	 		      	    (decode (app (app rel x2) x1)))))
+      (rel \ and  (forall singleton x \ decode (app (app rel x) x))
+      	     	  (forall singleton x1\ forall singleton x2\ setPi (decode (app (app rel x1) x2)) h\
+		       	   	   	     	 		      	    (decode (app (app rel x2) x1))))
       (lambda singleton x \ lambda singleton y \ encode (propId singleton x y))
-      (pair (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
-            (_\forall singleton x1\ forall singleton x2\
+      (pair_and (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
+                (forall singleton x1\ forall singleton x2\
 	    	      	setPi (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2)) h\
 		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))
             (forall_lam singleton x \ id singleton x)
