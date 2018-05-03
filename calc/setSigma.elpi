@@ -160,16 +160,24 @@ singletonLib L :-
  [ (locDefL singleton_setoid (setoid singleton)
     (pair
       (setPi singleton x \ setPi singleton y \ propS) 
-      (rel \ forall singleton x \ decode (app (app rel x) x))
+      (rel \ setSigma  (forall singleton x \ decode (app (app rel x) x))
+      	     	       (_\ (forall singleton x1\ forall singleton x2\ setPi (decode (app (app rel x1) x2)) h\
+		       	   	   	     	 		      	    (decode (app (app rel x2) x1)))))
       (lambda singleton x \ lambda singleton y \ encode (propId singleton x y))
-      (forall_lam singleton x \ id singleton x)
-    ))
+      (pair (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
+            (_\forall singleton x1\ forall singleton x2\
+	    	      	setPi (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2)) h\
+		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))
+            (forall_lam singleton x \ id singleton x)
+	    (fixMe "symm singleton_setoid" (forall singleton x1\ forall singleton x2\
+	    	      	setPi (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2)) h\
+		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))))))
  , (univPi Bi \
     (univPiT (setoid Bi) bS \
      locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
       (pair
         (setPi Bi _\ setoid singleton)
-        (_ \ setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton)
+	(_ \ setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton)
         (lambda Bi x \ singleton_setoid)
         (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y)
     )))
