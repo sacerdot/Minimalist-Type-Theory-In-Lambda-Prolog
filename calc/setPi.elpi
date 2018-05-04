@@ -328,11 +328,24 @@ setPiLib Lp :-
 		                forall_app (app (setoid_reflL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
 				   	(app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z) y))
 			    % proof of symmetry
-			    (fixMe "setPi_setoid symmetry"
-			    	   (forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) x1\
-			       	    (forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) x2\
-				     setPi (decode (app (app (setPi_setoidRel Bi Ci bS cS) x1) x2)) h\
-				      (decode (app (app (setPi_setoidRel Bi Ci bS cS) x2) x1))))))))),
+			     (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f1\
+			       forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f2\
+			       %% why can't I use setPi_setoidRel???
+			       %% lambda (decode (app (app (setPi_setoidRel Bi Ci bS cS) f1) f2)) h\
+			       %% possible problem with decoding/encoding?
+			        lambda (forall Bi y\
+			  	       decode (app (app (app (setoid_rel (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
+			  	       	      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) f1) y))
+				      	      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) f2) y))) h\ 
+				 forall_lam Bi y\
+				  (app
+				   (forall_app
+				    (forall_app
+				     (app (setoid_symmL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
+				    (app (P1 (setPi Bi Ci) (h\respect Bi Ci bS cS h) f1) y))
+				   (app (P1 (setPi Bi Ci) (h\respect Bi Ci bS cS h) f2) y))
+				  (forall_app h y)))))))
+,
     % setPi_setoidDep
     (univPi Ai\
      univDepPi Ai Bi\
