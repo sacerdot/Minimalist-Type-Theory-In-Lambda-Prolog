@@ -236,10 +236,36 @@ setSigmaLib L :-
                       		(forall_app (app (setoid_reflL (Ci (P1 Bi Ci x)))
 		        	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x))) (P2 Bi Ci x)))
 		    % proof of symmetry
-		    (fixMe "setSigma_setoid symmetry"
-		      (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ setPi
-		       (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x1) x2)) h\
-		       (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x2) x1))))))))
+		    (forall_lam (setSigma Bi Ci) x1\ forall_lam (setSigma Bi Ci) x2\
+		     lambda (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))) d\
+               	     	    	   (decode (app (app (app (setoid_rel (Ci (P1 Bi Ci x2)))
+	              	   	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x2)))
+                     	   	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x1)) (P1 Bi Ci x2)) d) (P2 Bi Ci x1)))
+                           	   (P2 Bi Ci x2)))) h\
+		      pair_exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x2)) (P1 Bi Ci x1)))
+		      		 (d\ (decode (app
+				       (app
+				     	 (app (setoid_rel (Ci (P1 Bi Ci x1)))
+				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x1)))
+		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x2)) (P1 Bi Ci x1))
+				        d)
+				        (P2 Bi Ci x2)))
+					(P2 Bi Ci x1))))
+
+				 (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))
+				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))) (x\y\x)))
+
+				 % Currently this second equality is set to be over (Ci (P1 Bi Ci x1)). This makes it difficult to build
+				 % it. Moving it to (Ci (P1 Bi Ci x2)) could clash with the setoid_symmL definition?
+				 (fixMe "second" (decode (app
+				       (app
+				     	 (app (setoid_rel (Ci (P1 Bi Ci x1)))
+				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x1)))
+		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x2)) (P1 Bi Ci x1))
+				        (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))
+				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))) (x\y\x))))
+				        (P2 Bi Ci x2)))
+					(P2 Bi Ci x1)))))))))
 		    ,
  % gamma_setoidDep
  (univPi Ai \
