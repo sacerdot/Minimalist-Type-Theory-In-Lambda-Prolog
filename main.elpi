@@ -99,14 +99,14 @@ isa (fixMe M T) T int
 type debugga mttTerm -> mttTerm.
 
 isa (debugga T) TY IE :-
- print ["<@@@@@@@@@@", isa T TY IE],
+ print "<@@@@@@@@@@" (isa T TY IE),
  (debug => isa T TY IE),
- print [">@@@@@@@@@@", isa T TY IE].
+ print ">@@@@@@@@@@" (isa T TY IE).
 
 type printa mttTerm -> mttTerm.
 
 isa (printa T) TY IE :-
- print ["=@@@@@@@@@@", isa T TY IE],
+ print "=@@@@@@@@@@" (isa T TY IE),
  isa T TY IE.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -382,12 +382,12 @@ type conv_trans mttTerm -> mttTerm -> mttTerm -> prop.
 process_entry (locTypeDefL N KIND TY) Hyp :-
    spy(ofType TY KIND int),
    Hyp = locTypeDef N KIND TY,
-   print ["## New type definition: ", N].
+   print "## New type definition: " N.
 process_entry (locDefL N TY TE) Hyp :-
    spy(isaType TY _ int),
    spy(isa TE TY int),
    Hyp = locDef N TY TE,
-   print ["## New definition: ", N].
+   print "## New definition: " N.
 process_entry (univPi F) Hyp2 :-
    spy (pi Bi \ ofType Bi set int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi set int)).
