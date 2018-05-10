@@ -330,13 +330,7 @@ setPiLib Lp :-
 			    % proof of symmetry
 			     (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f1\
 			       forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f2\
-			       %% why can't I use setPi_setoidRel???
-			       %% lambda (decode (app (app (setPi_setoidRel Bi Ci bS cS) f1) f2)) h\
-			       %% possible problem with decoding/encoding?
-			        lambda (forall Bi y\
-			  	       decode (app (app (app (setoid_rel (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
-			  	       	      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) f1) y))
-				      	      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) f2) y))) h\ 
+			       lambda (decode (app (app (setPi_setoidRel Bi Ci bS cS) f1) f2)) h\
 				 forall_lam Bi y\
 				  (app
 				   (forall_app
