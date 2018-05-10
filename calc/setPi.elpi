@@ -163,13 +163,6 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(tau_eq B' B KB)
     ,  spy(macro_tau B B' x\x'\_\xi\xi'\hi\ tau_eq (C x) (C' x') (KC' xi xi' hi))
     ,  spy(setoid_refl B Hi)
-    ,  spy(pi y1'\ pi y2'\ pi d'\ sigma FH_2\ %Questo sigma interno server per far contento il typechecker
-        (locDecl y1' Bi', locDecl y2' Bi', locDecl d' (EquB' y1' y2')) =>
-                    (
-                        tau_eq B' B  FH_2, FH_2 = (FH y1' y2' d') 
-                    )
-                    )
-                    
     ,  spy(P = 
         (w\ elim_setSigma w (_\setSigma T1' T2')
             f\p\ pair T1' T2'
@@ -178,7 +171,7 @@ tau (setPi B C) (setPi B' C') P
                     KC' (FB y2') 
                         y2' 
                         d' 
-                        (FCC (FB y1') (FB y2') (FH y1' y2' d') (app f (FB y1')))
+                        (FCC (FB y1') (FB y2') (KB y1' y2' d') (app f (FB y1')))
                         (app f (FB y2'))
                         (forall_app
                           (forall_app
@@ -261,7 +254,7 @@ type setPi_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTe
 type setPi_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
 type setPi_setoidRel mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 setPiLib Lp :-
-   (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
+   (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w)/*, p2 w (P2 Bi Ci w)*/)),
    Lp = [
    (univPi Bi\
     univDepPi Bi Ci\
