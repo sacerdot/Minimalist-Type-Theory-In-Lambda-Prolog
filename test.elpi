@@ -449,7 +449,7 @@ testLib5 P TY :-
    spy (of P TY int)
   )).
 
-testLib6 P TY :-
+testLib6 P _TY :-
  in_library ( debug =>
   (spy (new_interp_type (setSigma singleton x \ setSigma singleton y \ propEq singleton x y) P),
   true %spy (of P TY int)
