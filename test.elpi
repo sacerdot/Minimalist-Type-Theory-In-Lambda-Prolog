@@ -376,7 +376,7 @@ test s6 A Q Ai
 	print "CSC2",
 	(interp Long Q),
 	print "CSC3",
-	print ["test s6:", A, Q], 
+	print "test s6:" A Q, 
 	(ofType Q Ai int)
      .
 
