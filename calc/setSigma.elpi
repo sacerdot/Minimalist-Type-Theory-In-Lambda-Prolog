@@ -127,6 +127,24 @@ setoid_eq (setSigma B C) P :-
 
 type setSigmaLib list libraryEntry -> prop.
 
+/**** an exercise in translating terms so that they depend on
+      just one telescopic context variable ****/
+type pp mttTerm -> mttTerm -> mttTerm.
+translate T T' :- transl (lambda singleton _ \ T) T'.
+transl (lambda Gamma _ \ star) (lambda Gamma _ \ star).
+transl (lambda Gamma gamma \ lambda (A gamma) x\ M gamma x) OUT :-
+ (pi w \ locDecl w (setSigma Gamma A) => (p1 w (P1 w), p2 w (P2 w))),
+ transl (lambda (setSigma Gamma A) gamma_x \ M (P1 gamma_x) (P2 gamma_x)) O,
+ O = (lambda (setSigma Gamma A) gamma_x \ M' gamma_x),
+ OUT = (lambda Gamma gamma \ lambda (A gamma) x \ M' (pair Gamma A gamma x)).
+transl (lambda Gamma gamma \ pp (X gamma) (Y gamma))
+       (lambda Gamma gamma \ pp (X gamma) (Y gamma)).
+
+testaaa A :-
+ debug =>
+  translate (lambda singleton x \ lambda singleton y \ pp x y) A.
+/**** end of the exercise ****/
+
 type new_interp_type mttType -> mttTerm -> prop.
 type new_interp_dep_type mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
 type singleton_setoid mttTerm.
