@@ -166,11 +166,11 @@ tau (setPi B C) (setPi B' C') P
     ,  spy(P = 
         (w\ elim_setSigma w (_\setSigma T1' T2')
             f\p\ pair T1' T2'
-                (lambda Bi' x\ FC' (FB x) x (Hi (FB x)) (app f (FB x)))
+                (lambda Bi' x'\ FC' (FB x') x' (Hi (FB x')) (app f (FB x')))
                 (forall_lam Bi' y1'\ forall_lam Bi' y2'\ forall_lam (EquB' y1' y2') d'\
-                    KC' (FB y2') 
+                    KC' (FB y1') 
                         y2' 
-                        d' 
+                        (KB y1' y2' d') 
                         (FCC (FB y1') (FB y2') (KB y1' y2' d') (app f (FB y1')))
                         (app f (FB y2'))
                         (forall_app
