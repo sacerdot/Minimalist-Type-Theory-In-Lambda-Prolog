@@ -145,6 +145,66 @@ testaaa A :-
   translate (lambda singleton x \ lambda singleton y \ pp x y) A.
 /**** end of the exercise ****/
 
+/**** abstract a type over the subterms ****/
+/* input: a type T containing subterms
+   output: Delta, S and Terms such that
+     Delta |- S is a type,
+     Delta is a telescope
+     all terms in T are projections of the variable
+       of type Delta
+     Terms is an inhabitant of Delta s.t. S Terms = T */
+type abstract mttType -> mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
+
+abstract singleton singleton (_ \ singleton) star.
+abstract (propEq T T1 T2) Delta S Terms :-
+   spy(abstract T DeltaT ST TermsT),
+   Delta = (setSigma DeltaT x \ setSigma (ST x) _ \ ST x),
+   (pi delta \ locDecl delta Delta => (p1 delta (P1 delta), p2 delta (P2 delta))),
+   (pi delta \ pi t \ locDecl delta Delta => locDecl t (setSigma (ST (P1 delta)) _ \ (ST (P1 delta))) => (p1 t (P1' delta t), p2 t (P2' delta t))),
+   S = (delta \ propEq (ST (P1 delta)) (P1' delta (P2 delta)) (P2' delta (P2 delta))),
+   Terms =
+    (pair DeltaT (x \ setSigma (ST x) _ \ ST x) TermsT
+      (pair (ST TermsT) (_ \ ST TermsT) T1 T2)).
+abstract (setPi A B) Delta S Terms :-
+   spy(abstract A DeltaA SA TermsA),
+   (pi delta \ pi a \ locDecl delta DeltaA => locDecl a (SA delta) =>
+     spy(abstract (B a) (DeltaB delta a) (SB delta a) (TermsB delta a))),
+   Delta = (setSigma DeltaA delta \ setPi (SA delta) a \ DeltaB delta a),
+   (pi delta \ locDecl delta Delta => (p1 delta (P1 delta), p2 delta (P2 delta))),
+   S = (delta \ setPi (SA (P1 delta)) a \ SB (P1 delta) a (app (P2 delta) a)),
+   Terms =
+    (pair DeltaA (delta \ setPi (SA delta) a \ DeltaB delta a)
+      TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
+
+abstract_and_test T Delta S Terms :-
+ abstract T Delta S Terms,
+ ofType Delta _ ext,
+ isa Terms Delta ext,
+ conv T (S Terms).
+
+atest1 T Delta S Terms :-
+ T = (propEq singleton star star),
+ abstract_and_test T Delta S Terms.
+
+atest125 T Delta S Terms :-
+ T = (setPi singleton x \ singleton),
+ abstract_and_test T Delta S Terms.
+
+atest15 T Delta S Terms :-
+ T = (setPi singleton x \ propEq singleton x x),
+ abstract_and_test T Delta S Terms.
+
+atest2 T Delta S Terms :-
+ T = (setPi (propEq singleton star star) x \ propEq (propEq singleton star star) x x),
+ abstract_and_test T Delta S Terms.
+
+atest3 T Delta S Terms :-
+ pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
+  T y z = (setPi (propEq singleton y z) x \ propEq (propEq singleton z y) x x),
+  abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
+
+/**** end of abstract a type over the subterms ****/
+
 type new_interp_type mttType -> mttTerm -> prop.
 type new_interp_dep_type mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
 type singleton_setoid mttTerm.
@@ -487,8 +547,8 @@ setoid_symm (setSigma B C) H :-
 %%                                UTILITY                                         %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-type p1, p2  A->A.	%% mttTerm->mttTerm? Needed for both ext and int pairs...
-     	     		%% Currently unused
+type p1, p2  mttTerm -> mttTerm -> prop.
+
 p1 Pair R :-
    isa Pair (setSigma B C_) IE_,
    R = (elim_setSigma Pair (_\B) (x\y\ x) )
@@ -499,6 +559,3 @@ p2 Pair R :-
    spy (pi Pair \ of Pair (setSigma B C) IE => p1 Pair (R1 Pair)),
    R = (elim_setSigma Pair (x\ C (R1 x)) (x\y\ y))
 .
-
-
-
