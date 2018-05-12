@@ -17,11 +17,11 @@ of (pair_exist B C BB CC) (exist B C) IE
     .
 
 of (elim_exist Pair M MM) M IE 
-    :- spy(of Pair (exist B C) IE)
+    :- spy(isa Pair (exist B C) IE)
     ,  spy(ofType M KIND IE)
     ,  spy(pts_leq KIND propc)
     ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
-                spy(of (MM x y) M IE))
+                spy(isa (MM x y) M IE))
     .
 
 hstep (elim_exist W M MM) (MM Bb Cc) 
@@ -29,7 +29,7 @@ hstep (elim_exist W M MM) (MM Bb Cc)
     ,  isa Bb B IE
     ,  isa Cc (C Bb) IE
     ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
-            of (MM x y) M IE)
+            isa (MM x y) M IE)
     .
 
 dconv (pair_exist B C Bb Cc) (pair_exist B' C' Bb' Cc')
