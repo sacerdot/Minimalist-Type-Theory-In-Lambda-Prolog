@@ -183,6 +183,16 @@ abstract (setPi A B) Delta S Terms :-
    Terms =
     (pair DeltaA (delta \ setPi (SA delta) a \ DeltaB delta a)
       TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
+abstract (setSigma A B) Delta S Terms :-
+   spy(abstract A DeltaA SA TermsA),
+   (pi delta \ pi a \ locDecl delta DeltaA => locDecl a (SA delta) =>
+     spy(abstract (B a) (DeltaB delta a) (SB delta a) (TermsB delta a))),
+   Delta = (setSigma DeltaA delta \ setPi (SA delta) a \ DeltaB delta a),
+   S = (delta \ setSigma (SA (p1 delta)) a \ SB (p1 delta) a (app (p2 delta) a)),
+   Terms =
+    (pair DeltaA (delta \ setPi (SA delta) a \ DeltaB delta a)
+      TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
+
 
 abstract_and_test T Delta S Terms :-
  ofType T _ ext,
@@ -220,6 +230,12 @@ atest4 T Delta S Terms :-
  pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
   T y z = (setPi (propEq singleton y z) x \ propEq (propEq singleton z y) x x),
   abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
+
+atest5 T Delta S Terms :-
+ pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
+  T y z = (setSigma (propEq singleton y z) x \ propEq (propEq singleton y z) x x),
+  abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
+
 
 /**** end of abstract a type over the subterms ****/
 
