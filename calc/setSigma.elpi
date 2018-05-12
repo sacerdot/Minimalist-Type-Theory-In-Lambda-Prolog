@@ -12,6 +12,20 @@ ofType (setSigma B C) KIND IE
     ,  (pts_fun KIND1 KIND2 KIND)
     .
 
+%%%% Begin of: extension to the calculus: primitive projections
+%% I do not make them convertible with their expansion.
+%% Adding them as parametric definitions to the library is a problem
+%% because of the way we look for proofs of (propEq _ A B) in the
+%% extensional calculus.
+type p1,p2 mttTerm -> mttTerm.
+
+of (p1 Pair) B IE :- isa Pair (setSigma B _) IE.
+of (p2 Pair) (C (p1 Pair)) IE :- isa Pair (setSigma B_ C) IE.
+
+hstep (p1 Pair) Bb :- hnf Pair (pair _ _ Bb _).
+hstep (p2 Pair) Cc :- hnf Pair (pair _ _ _ Cc).
+%%%% End of:   extension to the calculus: primitive projections
+
 of (pair B C BB CC) (setSigma B C) IE 
     :- (ofType B _ IE)
     ,  (ofType (C BB) _ IE)
@@ -58,10 +72,8 @@ dconv (elim_setSigma Pair M MM) (elim_setSigma Pair' M' MM')
 % Eta rule
 dconv X (pair B C BB CC)
     :- spy (isa X (setSigma B C) IE_)
-     , p1 X P1
-     , p2 X P2
-     , spy(conv P1 BB)
-     , spy (conv P2 CC).
+     , spy(conv (p1 X) BB)
+     , spy (conv (p2 X) CC).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                   TRADUZIONE                                   %%
@@ -133,8 +145,7 @@ type pp mttTerm -> mttTerm -> mttTerm.
 translate T T' :- transl (lambda singleton _ \ T) T'.
 transl (lambda Gamma _ \ star) (lambda Gamma _ \ star).
 transl (lambda Gamma gamma \ lambda (A gamma) x\ M gamma x) OUT :-
- (pi w \ locDecl w (setSigma Gamma A) => (p1 w (P1 w), p2 w (P2 w))),
- transl (lambda (setSigma Gamma A) gamma_x \ M (P1 gamma_x) (P2 gamma_x)) O,
+ transl (lambda (setSigma Gamma A) gamma_x \ M (p1 gamma_x) (p2 gamma_x)) O,
  O = (lambda (setSigma Gamma A) gamma_x \ M' gamma_x),
  OUT = (lambda Gamma gamma \ lambda (A gamma) x \ M' (pair Gamma A gamma x)).
 transl (lambda Gamma gamma \ pp (X gamma) (Y gamma))
@@ -159,9 +170,7 @@ abstract singleton singleton (_ \ singleton) star.
 abstract (propEq T T1 T2) Delta S Terms :-
    spy(abstract T DeltaT ST TermsT),
    Delta = (setSigma DeltaT x \ setSigma (ST x) _ \ ST x),
-   (pi delta \ locDecl delta Delta => (p1 delta (P1 delta), p2 delta (P2 delta))),
-   (pi delta \ pi t \ locDecl delta Delta => locDecl t (setSigma (ST (P1 delta)) _ \ (ST (P1 delta))) => (p1 t (P1' delta t), p2 t (P2' delta t))),
-   S = (delta \ propEq (ST (P1 delta)) (P1' delta (P2 delta)) (P2' delta (P2 delta))),
+   S = (delta \ propEq (ST (p1 delta)) (p1 (p2 delta)) (p2 (p2 delta))),
    Terms =
     (pair DeltaT (x \ setSigma (ST x) _ \ ST x) TermsT
       (pair (ST TermsT) (_ \ ST TermsT) T1 T2)).
@@ -170,8 +179,7 @@ abstract (setPi A B) Delta S Terms :-
    (pi delta \ pi a \ locDecl delta DeltaA => locDecl a (SA delta) =>
      spy(abstract (B a) (DeltaB delta a) (SB delta a) (TermsB delta a))),
    Delta = (setSigma DeltaA delta \ setPi (SA delta) a \ DeltaB delta a),
-   (pi delta \ locDecl delta Delta => (p1 delta (P1 delta), p2 delta (P2 delta))),
-   S = (delta \ setPi (SA (P1 delta)) a \ SB (P1 delta) a (app (P2 delta) a)),
+   S = (delta \ setPi (SA (p1 delta)) a \ SB (p1 delta) a (app (p2 delta) a)),
    Terms =
     (pair DeltaA (delta \ setPi (SA delta) a \ DeltaB delta a)
       TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
@@ -227,11 +235,10 @@ new_interp_dep_type B (x \ singleton) O :-
 new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
    spy (interp A Ai),
    macro_interp A (x\xi\_\_\ interp (B x) (Bi xi)),
-   (pi w \ locDecl w (setSigma Ai Bi) => (p1 w (P1 w), p2 w (P2 w))),
-   spy(macro_interp (setSigma A B) (x\xi\_\_\ interp (C (P1 x) (P2 x)) (Ci xi))),
+   spy(macro_interp (setSigma A B) (x\xi\_\_\ interp (C (p1 x) (p2 x)) (Ci xi))),
    new_interp_type A As,
    new_interp_dep_type A B Bs,
-   new_interp_dep_type (setSigma A B) (x \ C (P1 x) (P2 x)) Cs,
+   new_interp_dep_type (setSigma A B) (x \ C (p1 x) (p2 x)) Cs,
    O = setSigma_setoidDep Ai Bi Ci As Bs Cs.
 
 singletonLib L :-
@@ -263,7 +270,6 @@ singletonLib L :-
  ].
 
 setSigmaLib L :-
- (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w), p2 w (P2 Bi Ci w))),
  L =
  [
 % setSigma_setoidRel
@@ -274,11 +280,11 @@ setSigmaLib L :-
      locDefL (setSigma_setoidRel Bi Ci bS cS) (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
        (lambda (setSigma Bi Ci) s \
           lambda (setSigma Bi Ci) z \
-            encode (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci s)) (P1 Bi Ci z))) d\
-               decode (app (app (app (setoid_rel (Ci (P1 Bi Ci z)))
-	              	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci z)))
-                     	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci s)) (P1 Bi Ci z)) d) (P2 Bi Ci s)))
-                           (P2 Bi Ci z))))),
+            encode (exist (decode (app (app (app (setoid_rel Bi) bS) (p1 s)) (p1 z))) d\
+               decode (app (app (app (setoid_rel (Ci (p1 z)))
+	              	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 z)))
+                     	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 s)) (p1 z)) d) (p2 s)))
+                           (p2 z))))),
      
 % setSigma_setoid
   (univPi Bi \
@@ -305,45 +311,45 @@ setSigmaLib L :-
 		        (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x2) x1)))
 	             % proof of reflexivity
                      (forall_lam (setSigma Bi Ci) x \
-             	     pair_exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x)) (P1 Bi Ci x)))
+             	     pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 x)))
               	        	(d \ decode (app (app 
-              	       		  (app (setoid_rel (Ci (P1 Bi Ci x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x)))
-				  (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x)) (P1 Bi Ci x)) d) (P2 Bi Ci x)))
-                        	  (P2 Bi Ci x)))
-                      		(forall_app (app (setoid_reflL Bi) bS) (P1 Bi Ci x))
-                      		(forall_app (app (setoid_reflL (Ci (P1 Bi Ci x)))
-		        	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x))) (P2 Bi Ci x)))
+              	       		  (app (setoid_rel (Ci (p1 x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x)))
+				  (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 x)) d) (p2 x)))
+                        	  (p2 x)))
+                      		(forall_app (app (setoid_reflL Bi) bS) (p1 x))
+                      		(forall_app (app (setoid_reflL (Ci (p1 x)))
+		        	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x))) (p2 x)))
 		    % proof of symmetry
 		    (forall_lam (setSigma Bi Ci) x1\ forall_lam (setSigma Bi Ci) x2\
-		     lambda (exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))) d\
-               	     	    	   (decode (app (app (app (setoid_rel (Ci (P1 Bi Ci x2)))
-	              	   	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x2)))
-                     	   	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x1)) (P1 Bi Ci x2)) d) (P2 Bi Ci x1)))
-                           	   (P2 Bi Ci x2)))) h\
-		      pair_exist (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x2)) (P1 Bi Ci x1)))
+		     lambda (exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) d\
+               	     	    	   (decode (app (app (app (setoid_rel (Ci (p1 x2)))
+	              	   	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x2)))
+                     	   	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x1)) (p1 x2)) d) (p2 x1)))
+                           	   (p2 x2)))) h\
+		      pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x2)) (p1 x1)))
 		      		 (d\ (decode (app
 				       (app
-				     	 (app (setoid_rel (Ci (P1 Bi Ci x1)))
-				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x1)))
-		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x2)) (P1 Bi Ci x1))
+				     	 (app (setoid_rel (Ci (p1 x1)))
+				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x1)))
+		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x2)) (p1 x1))
 				        d)
-				        (P2 Bi Ci x2)))
-					(P2 Bi Ci x1))))
+				        (p2 x2)))
+					(p2 x1))))
 
-				 (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))
-				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))) (x\y\x)))
+				 (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2))
+				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) (x\y\x)))
 
-				 % Currently this second equality is set to be over (Ci (P1 Bi Ci x1)). This makes it difficult to build
-				 % it. Moving it to (Ci (P1 Bi Ci x2)) could clash with the setoid_symmL definition?
+				 % Currently this second equality is set to be over (Ci (p1 x1)). This makes it difficult to build
+				 % it. Moving it to (Ci (p1 x2)) could clash with the setoid_symmL definition?
 				 (fixMe "second" (decode (app
 				       (app
-				     	 (app (setoid_rel (Ci (P1 Bi Ci x1)))
-				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (P1 Bi Ci x1)))
-		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (P1 Bi Ci x2)) (P1 Bi Ci x1))
-				        (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))
-				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (P1 Bi Ci x1)) (P1 Bi Ci x2))) (x\y\x))))
-				        (P2 Bi Ci x2)))
-					(P2 Bi Ci x1)))))))))
+				     	 (app (setoid_rel (Ci (p1 x1)))
+				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x1)))
+		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x2)) (p1 x1))
+				        (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2))
+				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) (x\y\x))))
+				        (p2 x2)))
+					(p2 x1)))))))))
 		    ,
  % gamma_setoidDep
  (univPi Ai \
@@ -415,19 +421,19 @@ setSigmaLib L :-
               lambda (setSigma (Bi a) b \ Ci (pair Ai Bi a b)) bc \
                (pair (Bi a') (b \ Ci (pair Ai Bi a' b))
                 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p)
-                 (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc))
+                 (p1 bc))
                 (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS)
-                  (pair Ai Bi a (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc)))
-                  (pair Ai Bi a' (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc))))
+                  (pair Ai Bi a (p1 bc)))
+                  (pair Ai Bi a' (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (p1 bc))))
                   (pair_exist
                     (decode (app (app (app (setoid_rel Ai) aS) a) a'))
                     (p' \ decode (app (app (app (setoid_rel (Bi a'))
                       (app (app (setoidDepCarrier Ai Bi aS) bS) a'))
-                      (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p') (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc)))
-                      (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc))))
+                      (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p') (p1 bc)))
+                      (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (p1 bc))))
                     p
-                    (forall_app (app (setoid_reflL (Bi a')) (app (app (setoidDepCarrier Ai Bi aS) bS) a')) (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (P1 (Bi a) (b \ Ci (pair Ai Bi a b)) bc)))))
-                (P2 (Bi a) (b \ Ci (pair Ai Bi a b)) bc)))))))))
+                    (forall_app (app (setoid_reflL (Bi a')) (app (app (setoidDepCarrier Ai Bi aS) bS) a')) (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (p1 bc)))))
+                (p2 bc)))))))))
 ].
 
 tau (setSigma B C) (setSigma B' C') P :-
@@ -450,7 +456,7 @@ tau (setSigma B C) (setSigma B' C') P :-
 
 tau_eq (setSigma B C) (setSigma B' C') P :-
        print "SETSIGMA TAU_EQ FUNCTION\n",
-       interp (setSigma B C) (setSigma Bi Ci),
+       %interp (setSigma B C) (setSigma Bi_ Ci_),
        tau B B' TB,
        tau_eq B B' TeqB,
        setoid_eq B EquB,
@@ -463,99 +469,75 @@ tau_eq (setSigma B C) (setSigma B' C') P :-
 						  
        macro_tau_cov_cov B B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)), %% Cast from type (C x1)i to (C x2)i with
        		     			       	     	      	     	     	       %% both x1 and x2 terms of type B
-       pi w\ (locDecl w (setSigma Bi Ci)) => ( p1 w (P1 w),
-       	  	       	      	     	       p2 w (P2 w)),
-      
        P = s\z\d\
-		pair_exist (EquB'(TB (P1 s)) (TB (P1 z)))			       %% type of equality on Bi'
-			   (_\ (EquC' (TB (P1 z))) 		     	    	       %% type of equality on (C' x')i
-			       	 ((TC (P1 z) (FB (P1 z)) (Hi (P1 z)))
-				   ((FCC (P1 s) (P1 z) (elim_exist d (EquB (P1 s) (P1 z))(x\y\ x)))
-				      (P2 s)))
-			    	 ((TC (P1 z) (FB (P1 z)) (Hi (P1 z)))
-				   (P2 z))      
+		pair_exist (EquB'(TB (p1 s)) (TB (p1 z)))			       %% type of equality on Bi'
+			   (_\ (EquC' (TB (p1 z))) 		     	    	       %% type of equality on (C' x')i
+			       	 ((TC (p1 z) (FB (p1 z)) (Hi (p1 z)))
+				   ((FCC (p1 s) (p1 z) (elim_exist d (EquB (p1 s) (p1 z))(x\y\ x)))
+				      (p2 s)))
+			    	 ((TC (p1 z) (FB (p1 z)) (Hi (p1 z)))
+				   (p2 z))      
 			       )
-			   (TeqB (P1 s)							%% Equality over Bi'...
-				 (P1 z)
-				 (elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-			   ((TeqC (P1 s)						%% Equality over (C' TB(p1z))i...
-			   	  (TB (P1 z))
-				  (TeqB (P1 s)  
-				  	(P1 z)
-				 	(elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x))))
-			      ((FCC (P1 s) (P1 z) (elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-			         (P2 s))       
-			      (P2 z) 	       
-			      ( elim_exist d ((EquC (P1 z))
-			      		       	    ((FCC (P1 s) (P1 z) (elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-						       (P2 s))       
-			    		            (P2 z))
+			   (TeqB (p1 s)							%% Equality over Bi'...
+				 (p1 z)
+				 (elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+			   ((TeqC (p1 s)						%% Equality over (C' TB(p1z))i...
+			   	  (TB (p1 z))
+				  (TeqB (p1 s)  
+				  	(p1 z)
+				 	(elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x))))
+			      ((FCC (p1 s) (p1 z) (elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+			         (p2 s))       
+			      (p2 z) 	       
+			      ( elim_exist d ((EquC (p1 z))
+			      		       	    ((FCC (p1 s) (p1 z) (elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+						       (p2 s))       
+			    		            (p2 z))
 			    		     (x\y\ y)))       
        .
 
 setoid_refl (setSigma B C) H :-
      print "SETSIGMA SETOID_REFL FUNCTION\n",
-     interp (setSigma B C) (setSigma Bi Ci),
+     %interp (setSigma B C) (setSigma Bi Ci),
      setoid_eq B EquB,
      setoid_refl B HB,
      macro_interp B (x\xi\_\_\ ( (setoid_eq (C x) (EquC xi)),
      		    	       	 (setoid_refl (C x) (HC xi)) )),
-     pi w\ (locDecl w (setSigma Bi Ci)) => ( p1 w (P1 w),
-       	  	       	      	     	       p2 w (P2 w)),
-     H = z\ pair_exist (EquB (P1 z) (P1 z) )
-       	    	       (_\ (EquC (P1 z)) (P2 z) (P2 z))
-		       (HB (P1 z))
-		       ((HC (P1 z)) (P2 z))
+     H = z\ pair_exist (EquB (p1 z) (p1 z) )
+       	    	       (_\ (EquC (p1 z)) (p2 z) (p2 z))
+		       (HB (p1 z))
+		       ((HC (p1 z)) (p2 z))
     	%% checks?
      .
 
 setoid_symm (setSigma B C) H :-
       print "SETSIGMA SETOID_SYMM FUNCTION",
-      interp (setSigma B C) (setSigma Bi Ci),
+      %interp (setSigma B C) (setSigma Bi Ci),
       setoid_eq B EquB,
       setoid_symm B SB,
       macro_interp B (x\xi\_\_\ ( (setoid_eq (C x) (EquC xi)),
       		     		  (setoid_symm (C x) (SC xi)) )),
       macro_tau_cov_cov B B (x1\x2\h\x1i\x2i\hi\ tau (C x1) (C x2) (FCC x1i x2i hi)),
-      pi w\ (locDecl w (setSigma Bi Ci)) => ( p1 w (P1 w),
-       	  	       	      	     	       p2 w (P2 w)),
       H = s\z\d\
-      	  pair_exist (EquB (P1 z) (P1 s))					            %% Type of equality over Bi of p1z p1s
-      	  	     ( _\ (EquC (P1 z))                         			    %% Type of equality over (C p1z)i between 
-		       	     (P2 z)  				   			    %% p2z and the cast to (C p1z)i of p2s
-		       	     ((FCC (P1 s) (P1 z) (elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-			     	 (P2 s)))
-		     (SB (P1 s)							%% First element, obtained by induction on B 
-		     	 (P1 z)
-		     	 (elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-		     ((SC (P1 z))      	     	    				%% Second element, obtained by induction on (C p1z)
-		     	  ((FCC (P1 s)						%% because of this, H will produce an equality over 
-			  	(P1 z)						%% (C p1z)i between z and s, possibly causing problems?
-			  	(elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-			      (P2 s))
-			  (P2 z)
-			  (( elim_exist d ((EquC (P1 z))
-			      		       	 ((FCC (P1 s) (P1 z)
-			    	  		      	(elim_exist d (EquB (P1 s) (P1 z)) (x\y\ x)))
-						    (P2 s))       
-			    			 (P2 z))
+      	  pair_exist (EquB (p1 z) (p1 s))					            %% Type of equality over Bi of p1z p1s
+      	  	     ( _\ (EquC (p1 z))                         			    %% Type of equality over (C p1z)i between 
+		       	     (p2 z)  				   			    %% p2z and the cast to (C p1z)i of p2s
+		       	     ((FCC (p1 s) (p1 z) (elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+			     	 (p2 s)))
+		     (SB (p1 s)							%% First element, obtained by induction on B 
+		     	 (p1 z)
+		     	 (elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+		     ((SC (p1 z))      	     	    				%% Second element, obtained by induction on (C p1z)
+		     	  ((FCC (p1 s)						%% because of this, H will produce an equality over 
+			  	(p1 z)						%% (C p1z)i between z and s, possibly causing problems?
+			  	(elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+			      (p2 s))
+			  (p2 z)
+			  (( elim_exist d ((EquC (p1 z))
+			      		       	 ((FCC (p1 s) (p1 z)
+			    	  		      	(elim_exist d (EquB (p1 s) (p1 z)) (x\y\ x)))
+						    (p2 s))       
+			    			 (p2 z))
 					  (x\y\ y))))
 	%% checks?
       .
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                UTILITY                                         %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-type p1, p2  mttTerm -> mttTerm -> prop.
-
-p1 Pair R :-
-   isa Pair (setSigma B C_) IE_,
-   R = (elim_setSigma Pair (_\B) (x\y\ x) )
-   .
-
-p2 Pair R :-
-   isa Pair (setSigma B C) IE,
-   spy (pi Pair \ of Pair (setSigma B C) IE => p1 Pair (R1 Pair)),
-   R = (elim_setSigma Pair (x\ C (R1 x)) (x\y\ y))
-.

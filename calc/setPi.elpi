@@ -254,7 +254,6 @@ type setPi_setoid mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTe
 type setPi_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
 type setPi_setoidRel mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 setPiLib Lp :-
-   (pi Bi \ pi Ci \ pi w \ locDecl w (setSigma Bi Ci) => (p1 w (P1 Bi Ci w)/*, p2 w (P2 Bi Ci w)*/)),
    Lp = [
    (univPi Bi\
     univDepPi Bi Ci\
@@ -293,8 +292,8 @@ setPiLib Lp :-
 		       lambda (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) z2\
 		        encode (forall Bi y\
 			  decode (app (app (app (setoid_rel (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
-			  	      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z1) y))
-				      (app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z2) y)))))),
+			  	      (app (p1 z1) y))
+				      (app (p1 z2) y)))))),
    % setPi_setoid
    (univPi Bi\
    univDepPi Bi Ci\
@@ -319,7 +318,7 @@ setPiLib Lp :-
 		      	    (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) z\
 		       	      forall_lam Bi y\
 		                forall_app (app (setoid_reflL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
-				   	(app (P1 (setPi Bi Ci) (h\ respect Bi Ci bS cS h) z) y))
+				   	(app (p1 z) y))
 			    % proof of symmetry
 			     (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f1\
 			       forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f2\
@@ -329,8 +328,8 @@ setPiLib Lp :-
 				   (forall_app
 				    (forall_app
 				     (app (setoid_symmL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
-				    (app (P1 (setPi Bi Ci) (h\respect Bi Ci bS cS h) f1) y))
-				   (app (P1 (setPi Bi Ci) (h\respect Bi Ci bS cS h) f2) y))
+				    (app (p1 f1) y))
+				   (app (p1 f2) y))
 				  (forall_app h y)))))))
 ,
     % setPi_setoidDep
