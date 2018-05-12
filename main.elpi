@@ -100,12 +100,12 @@ type debugga mttTerm -> mttTerm.
 
 isa (debugga T) TY IE :-
  print "<@@@@@@@@@@" (isa T TY IE),
- (debug => isa T TY IE),
+ (debug => spy(isa T TY IE)),
  print ">@@@@@@@@@@" (isa T TY IE).
 
 of (debugga T) TY IE :-
  print "<@@@@@@@@@@" (of T TY IE),
- (debug => of T TY IE),
+ (debug => spy(of T TY IE)),
  print ">@@@@@@@@@@" (of T TY IE).
 
 type printa mttTerm -> mttTerm.
