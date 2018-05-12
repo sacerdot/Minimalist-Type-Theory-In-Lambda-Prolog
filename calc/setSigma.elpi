@@ -185,6 +185,7 @@ abstract (setPi A B) Delta S Terms :-
       TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
 
 abstract_and_test T Delta S Terms :-
+ ofType T _ ext,
  abstract T Delta S Terms,
  ofType Delta _ ext,
  isa Terms Delta ext,
@@ -207,6 +208,15 @@ atest2 T Delta S Terms :-
  abstract_and_test T Delta S Terms.
 
 atest3 T Delta S Terms :-
+ pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
+  T y z = (setPi (propEq singleton y z) x \ propEq (propEq singleton y z) x x),
+  abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
+
+/* The next example (i.e. T) is well typed only extensionally: to type the
+     target of the setPi one needs the hypothesis in scope.
+   Therefore the generated Terms is not :-(  because the hypothesis is not in
+     scope there. */
+atest4 T Delta S Terms :-
  pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
   T y z = (setPi (propEq singleton y z) x \ propEq (propEq singleton z y) x x),
   abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
