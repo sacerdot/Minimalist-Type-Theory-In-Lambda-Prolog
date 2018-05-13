@@ -183,19 +183,8 @@ abstract (setPi A B) Delta S Terms :-
    Terms =
     (pair DeltaA (delta \ setPi (SA delta) a \ DeltaB delta a)
       TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
-abstract (setSigma A B) Delta S Terms :-
-   spy(abstract A DeltaA SA TermsA),
-   (pi delta \ pi a \ locDecl delta DeltaA => locDecl a (SA delta) =>
-     spy(abstract (B a) (DeltaB delta a) (SB delta a) (TermsB delta a))),
-   Delta = (setSigma DeltaA delta \ setPi (SA delta) a \ DeltaB delta a),
-   S = (delta \ setSigma (SA (p1 delta)) a \ SB (p1 delta) a (app (p2 delta) a)),
-   Terms =
-    (pair DeltaA (delta \ setPi (SA delta) a \ DeltaB delta a)
-      TermsA (lambda (SA TermsA) a \ TermsB TermsA a)).
-
 
 abstract_and_test T Delta S Terms :-
- ofType T _ ext,
  abstract T Delta S Terms,
  ofType Delta _ ext,
  isa Terms Delta ext,
@@ -219,23 +208,8 @@ atest2 T Delta S Terms :-
 
 atest3 T Delta S Terms :-
  pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
-  T y z = (setPi (propEq singleton y z) x \ propEq (propEq singleton y z) x x),
-  abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
-
-/* The next example (i.e. T) is well typed only extensionally: to type the
-     target of the setPi one needs the hypothesis in scope.
-   Therefore the generated Terms is not :-(  because the hypothesis is not in
-     scope there. */
-atest4 T Delta S Terms :-
- pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
   T y z = (setPi (propEq singleton y z) x \ propEq (propEq singleton z y) x x),
   abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
-
-atest5 T Delta S Terms :-
- pi y \ pi z \ locDecl y singleton => locDecl z singleton => (
-  T y z = (setSigma (propEq singleton y z) x \ propEq (propEq singleton y z) x x),
-  abstract_and_test (T y z) (Delta y z) (S y z) (Terms y z)).
-
 
 /**** end of abstract a type over the subterms ****/
 
@@ -317,7 +291,20 @@ setSigmaLib L :-
     univDepPi Bi Ci \
      univPiT (setoid Bi) bS \
       univPiT (setoidDep Bi Ci bS) cS \
-       hyp
+      hyp
+       (pi x1\ isa x1 Bi int => pi x2\ isa x2 Bi int => pi y1\ isa y1 (Ci x1) int => pi y2\ isa y2 (Ci x2) int =>
+         pi p\ isa p (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) int =>
+          (conv y2 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x1) x2) p) y1)) =>
+	    (conv y1 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x2) x1)
+	   	   	(app (forall_app (forall_app (app (setoid_symmL Bi) bS) x1) x2) p))
+		     y2)))
+      true /*(pi x1\ locDecl x1 Bi => pi x2\ locDecl x2 Bi => pi y1\ locDecl y1 (Ci x1) => pi y2\ locDecl y2 (Ci x2) =>
+         pi p\ locDecl p (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) =>
+	   (conv y2 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x1) x2) p) y1)) =>
+	    (conv y1 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x2) x1)
+	   	   	(app (forall_app (forall_app (app (setoid_symmL Bi) bS) x1) x2) p))
+		     y2)))*/
+       (hyp
         (pi x\ isa x Bi int => pi y \ isa y (Ci x) int =>
           conv y (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y))
         (pi x\ locDecl x Bi => pi y \ locDecl y (Ci x) =>
@@ -346,13 +333,15 @@ setSigmaLib L :-
                       		(forall_app (app (setoid_reflL (Ci (p1 x)))
 		        	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x))) (p2 x)))
 		    % proof of symmetry
-		    (forall_lam (setSigma Bi Ci) x1\ forall_lam (setSigma Bi Ci) x2\
+		    (debugga (forall_lam (setSigma Bi Ci) x1\ forall_lam (setSigma Bi Ci) x2\
 		     lambda (exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) d\
                	     	    	   (decode (app (app (app (setoid_rel (Ci (p1 x2)))
 	              	   	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x2)))
                      	   	   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x1)) (p1 x2)) d) (p2 x1)))
                            	   (p2 x2)))) h\
-		      pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x2)) (p1 x1)))
+                      elim_exist h (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x2) x1))
+                       (h1 \ h2 \
+		         pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x2)) (p1 x1)))
 		      		 (d\ (decode (app
 				       (app
 				     	 (app (setoid_rel (Ci (p1 x1)))
@@ -361,21 +350,23 @@ setSigmaLib L :-
 				        d)
 				        (p2 x2)))
 					(p2 x1))))
-
-				 (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2))
-				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) (x\y\x)))
-
-				 % Currently this second equality is set to be over (Ci (p1 x1)). This makes it difficult to build
-				 % it. Moving it to (Ci (p1 x2)) could clash with the setoid_symmL definition?
-				 (fixMe "second" (decode (app
-				       (app
-				     	 (app (setoid_rel (Ci (p1 x1)))
-				 	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x1)))
-		    		       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x2)) (p1 x1))
-				        (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2))
-				  (elim_exist h (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) (x\y\x))))
-				        (p2 x2)))
-					(p2 x1)))))))))
+				 (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2)) h1)
+				 (app (forall_app (forall_app (app (setoid_symmL (Ci (p1 x1)))
+				     (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x1)))
+				     (p2 x1))
+				     (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x2)) (p1 x1))
+				     	  (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2))
+				  	  h1))
+				       (p2 x2)))
+				     (fixMe "proof_transp h2"
+				     	    (decode (app (app (app (setoid_rel (Ci (p1 x1)))
+				     	    	    (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x1)))
+						    (p2 x1))
+						    (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x2)) (p1 x1))
+				     	  	    	 (app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2))
+				  	  		      h1))
+				      		       (p2 x2)))))
+)))))))))
 		    ,
  % gamma_setoidDep
  (univPi Ai \
