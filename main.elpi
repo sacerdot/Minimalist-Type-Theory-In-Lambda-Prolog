@@ -50,7 +50,23 @@ conv A B :- (locDecl _ (propEq _ A B) ), !.
 conv A B :- (locDecl _ (propEq _ B A) ), !.
 conv A B :- (hnf A A'), ( hnf B B'), spy( dconv A' B').
 
+conv A B :- spy(hnf A A'), spy( hnf B B'), spy(locDecl _ (propEq _ A1 B1)), spy(hnf A1 A2), spy(hnf B1 B2), spy((A' = A2, B' = B2) ; (A' = B2 , B' = A2)). 
+
 dconv A A :- !.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% <Experimental Sigma lookup> %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%conv A B :- spy(locDecl X (setSigma T1 T2)), spy(deeplook T1 (p1 X) A B ; deeplook (T2 X) (p2 X) A B).
+%conv A B :- spy(isa A (setSigma T1 T2)), spy(deeplook T1 (p1 A) A B ; deeplook (T2 A) (p2 A) A B).
+%conv B A :- spy(isa A (setSigma T1 T2)), spy(deeplook T1 (p1 A) A B ; deeplook (T2 A) (p2 A) A B).
+%
+%deeplook (setSigma T1 T2) X A B:- deeplook T1 (p1 X) A B ; deeplook (T2 X) (p2 X) A B.
+%deeplook (propEq _ A B) _ A B.
+%deeplook (propEq _ A B) _ B A.
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% </Experimental Sigma lookup> %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 %% rules summarizing all different embeddings between the four kinds of types
 pts_leq A A.
