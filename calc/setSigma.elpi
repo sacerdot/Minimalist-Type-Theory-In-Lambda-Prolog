@@ -288,36 +288,32 @@ singletonLib L :-
   (univPi Bi \
     (univPiT (setoid Bi) bS \
       locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
-       (pair
-        (setPi Bi _\ setoid singleton) (carrier\
-        (setSigma (setPi Bi x \ setPi Bi x' \
-		     setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton) cast\
-		  (setPi Bi x1\ setPi Bi x2\
-	     	    setPi singleton y1\ setPi singleton y2\
-	             setPi (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
-	              setPi (decode (app (app (app (setoid_rel singleton) (app carrier x1)) y1) y2)) d2\
-	               (decode (app (app (app (setoid_rel singleton)
-			     (app carrier x2))
-			     (app (app (app (app cast x1) x2) d1) y1))
-			     (app (app (app (app cast x1) x2) d1) y2))))))
-      	(lambda Bi x \ singleton_setoid)
-        (pair (setPi Bi x \ setPi Bi x' \
-		     setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton) (cast\
-	     (setPi Bi x1\ setPi Bi x2\
-	     	    setPi singleton y1\ setPi singleton y2\
-	             setPi (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
-	              setPi (decode (app (app (app (setoid_rel singleton) (app (lambda Bi x \ singleton_setoid) x1)) y1) y2)) d2\
-	               (decode (app (app (app (setoid_rel singleton)
-			     (app (lambda Bi x \ singleton_setoid) x2))
-			     (app (app (app (app cast x1) x2) d1) y1))
-			     (app (app (app (app cast x1) x2) d1) y2)))))
-             (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y)
+       (pair (setSigma (setPi Bi _\ setoid singleton) _\
+             	       (setPi Bi x \ setPi Bi x' \
+		       	      setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton))
+	     (cc\ (setPi Bi x1\ setPi Bi x2\
+	     	setPi singleton y1\ setPi singleton y2\
+	          setPi (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
+	            setPi (decode (app (app (app (setoid_rel singleton)
+		    	  	       (app (elim_setSigma cc (_\ (setPi Bi _\ setoid singleton)) (x\y\x)) x1)) y1) y2)) d2\
+	              (decode (app (app (app (setoid_rel singleton)
+			      (app (elim_setSigma cc (_\ (setPi Bi _\ setoid singleton)) (x\y\x)) x2))
+			      (app (app (app (app (elim_setSigma cc
+			      	   	     	    (_\ (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x'))
+						    	       _ \ setPi singleton _ \ singleton)) (x\y\y)) x1) x2) d1) y1))
+			      (app (app (app (app (elim_setSigma cc
+			      	   	     	    (_\ (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x'))
+						    	       _ \ setPi singleton _ \ singleton)) (x\y\y)) x1) x2) d1) y2)))))
+      	     (pair (setPi Bi _\ setoid singleton)
+	     	   (_\ (setPi Bi x \ setPi Bi x' \
+		       	      setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton))
+	           (lambda Bi x \ singleton_setoid)
+		   (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y))
 	     (lambda Bi x1\ lambda Bi x2\ lambda singleton y1\ lambda singleton y2\
 	       lambda (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
 	        lambda (decode (app (app (app (setoid_rel singleton) (app (lambda Bi x \ singleton_setoid) x1)) y1) y2)) d2\
-		 d2))
-		 
-    )))
+		 d2))	 
+    ))
  ].
 
 setSigmaLib L :-
