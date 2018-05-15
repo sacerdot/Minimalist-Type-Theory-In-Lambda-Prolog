@@ -345,51 +345,57 @@ translateLib L1 :-
        (elim_setSigma R (c\ forall X x1\ forall X x2\ setPi (decode (app (app (app (setoid_rel X) c) x1) x2)) h\
                                                             (decode (app (app (app (setoid_rel X) c) x2) x1)))
 	 (w1\w2\ p2_and w2 ))))
- ,
- 
- (univPi B \
-    (univDepPi B C \
-     (univPiT (setoid B) bS \
+
+ , (univPi B\
+    (univDepPi B C\
+     (univPiT (setoid B) bS\
        locTypeDefL (setoidDep B C bS) col
-        (setSigma (setPi B x\ setoid (C x)) carrier\
-	  (setSigma (setPi B x1\ setPi B x2\
-	  	      setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
-	    	       setPi (C x1) _ \ C x2) cast\
-	   (setPi B x1\ setPi B x2\
-	     setPi (C x1) y1\ setPi (C x1) y2\
-	      setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) d1\  % needed for cast
-	       setPi (decode (app (app (app (setoid_rel (C x1)) (app carrier x1)) y1) y2)) d2\
-	        (decode (app (app (app (setoid_rel (C x2))
-			     (app carrier x2))
-			     (app (app (app (app cast x1) x2) d1) y1))
-			     (app (app (app (app cast x1) x2) d1) y2)))))))))
-
- , (univPi B \
-    (univDepPi B C \
-     (univPiT (setoid B) bS \
-       locDefL (setoidDepCarrier B C bS)
-        (setPi (setoidDep B C bS) s \ setPi B x \ setoid (C x))
-   	(lambda (setoidDep B C bS) s \
-          elim_setSigma s (_ \ (setPi B x \ setoid (C x))) (x\y\x)))))
+        (setSigma (setSigma (setPi B x\ setoid (C x)) _\
+		  	    (setPi B x1\ setPi B x2\
+	            	      setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
+		     	    	setPi (C x1) _\ C x2)) cc\
+		  (setPi B x1\ setPi B x2\
+		    setPi (C x1) y1\ setPi (C x1) y2\
+		     setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) d1\
+		      setPi (decode (app (app (app (setoid_rel (C x1))
+		      	    	    (app (elim_setSigma cc (_\ (setPi B x\ setoid (C x))) (x\y\x)) x1)) y1) y2)) d2\
+		       (decode (app (app (app (setoid_rel (C x2))
+		       	       	    	 (app (elim_setSigma cc (_\ (setPi B x\ setoid (C x))) (x\y\x)) x2))
+					 (app (app (app (app (elim_setSigma cc
+					      	   	     		    (_\ (setPi B x1\ setPi B x2\
+	            	      						    	setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
+		     	    							setPi (C x1) _\ C x2))
+									    (x\y\y)) x1) x2) d1) y1))
+					 (app (app (app (app (elim_setSigma cc
+					      	   	     		    (_\ (setPi B x1\ setPi B x2\
+	            	      						    	setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
+		     	    							setPi (C x1) _\ C x2))
+									    (x\y\y)) x1) x2) d1) y2))))))))
 	  
-, (univPi B \
-   (univDepPi B C \
-    (univPiT (setoid B) bS \
-      locDefL (setoidDepCast B C bS)
-       (setPi (setoidDep B C bS) s \
-   	 (setPi B x1\ setPi B x2\
-           setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _ \
-            setPi (C x1) _ \ C x2))
+, (univPi B\
+   (univDepPi B C\
+    (univPiT (setoid B) bS\
+     (locDefL (setoidDepCarrier B C bS)
+       (setPi (setoidDep B C bS) s\ setPi B x\ setoid (C x))
        (lambda (setoidDep B C bS) s\
-         elim_setSigma s
-          (_\ setPi B x1\ setPi B x2\ setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\ setPi (C x1) _ \ C x2)
-	  (p1\p2\
-	     (elim_setSigma p2 (_\ (setPi B x1\ setPi B x2\
-	  	      	      	    setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
-	    	       		     setPi (C x1) _ \ C x2))
-			      (x\y\x)))))))
+         elim_setSigma s (_\ (setPi B x\ setoid (C x)))
+	   	       (w1\w2\ elim_setSigma w1 (_\ (setPi B x\ setoid (C x))) (x\y\x)))))))
+	  
 
-, 
+, (univPi B\
+   (univDepPi B C\
+    (univPiT (setoid B) bS\
+     locDefL (setoidDepCast B C bS)
+      (setPi (setoidDep B C bS) s\
+       (setPi B x1\ setPi B x2\
+         setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
+	  setPi (C x1) _\ C x2))
+     (lambda (setoidDep B C bS) s\
+       elim_setSigma s (_\ setPi B x1\ setPi B x2\ setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\ setPi (C x1) _\ C x2)
+       		     (w1\w2\
+			elim_setSigma w1 (_\ setPi B x1\ setPi B x2\
+				      	     setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\ setPi (C x1) _\ C x2) (x\y\y))))))
+,
    (univPi B\
    (univDepPi B C\
     (univPiT (setoid B) bS\
@@ -413,22 +419,7 @@ translateLib L1 :-
 			     (app (app (setoidDepCarrier B C bS) s) x2))
 			     (app (app (app (app (app (setoidDepCast B C bS) s) x1) x2) d1) y1))
 			     (app (app (app (app (app (setoidDepCast B C bS) s) x1) x2) d1) y2)))))
-	 (w1\w2\ (elim_setSigma w2
-	    (w2\ (setPi B x1\ setPi B x2\
-	     setPi (C x1) y1\ setPi (C x1) y2\
-	      setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) d1\
-	       setPi (decode (app (app (app (setoid_rel (C x1)) (app w1 x1)) y1) y2)) d2\
-	        (decode (app (app (app (setoid_rel (C x2))
-			     (app w1 x2))
-			     (app (app (app (app (elim_setSigma w2
-			                (_\ (setPi B x1\ setPi B x2\
-	  	      	     	       	    setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
-	    	       			    setPi (C x1) _ \ C x2)) (x\y\x)) x1) x2) d1) y1))
-			     (app (app (app (app (elim_setSigma w2
-			                (_\ (setPi B x1\ setPi B x2\
-	  	      	     	       	    setPi (decode (app (app (app (setoid_rel B) bS) x1) x2)) _\
-	    	       			    setPi (C x1) _ \ C x2)) (x\y\x)) x1) x2) d1) y2)))))
-		 (x\y\y))))))))
+	 (x\y\y))))))
  ].
 
 type append list A -> list A -> list A -> prop.
