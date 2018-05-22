@@ -341,14 +341,14 @@ setSigmaLib L :-
      univPiT (setoid Bi) bS \
       univPiT (setoidDep Bi Ci bS) cS \
       (hyp
-      (pi x1\ isa x1 Bi int => pi x2\ isa x2 Bi int => pi y1\ isa y1 (Ci x1) int => pi y2\ isa y2 (Ci x2) int =>
+      (pi x1\ isa x1 Bi int => pi x2\ isa x2 Bi int => pi y2\ isa y2 (Ci x2) int =>
          pi p\ isa p (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) int =>
        (dconv y2
        	     (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x1) x2) p)
    	     	  (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x2) x1)
        		       (app (forall_app (forall_app (app (setoid_symmL Bi) bS) x1) x2) p))
 	     y2))))
-      (pi x1\ locDecl x1 Bi => pi x2\ locDecl x2 Bi => pi y1\ locDecl y1 (Ci x1) => pi y2\ locDecl y2 (Ci x2) =>
+      (pi x1\ locDecl x1 Bi => pi x2\ locDecl x2 Bi => pi y2\ locDecl y2 (Ci x2) =>
          pi p\ locDecl p (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) =>
        (dconv y2
        	     (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x1) x2) p)
@@ -356,14 +356,14 @@ setSigmaLib L :-
        		       (app (forall_app (forall_app (app (setoid_symmL Bi) bS) x1) x2) p))
 	     y2))))
       (hyp
-      (pi x1\ isa x1 Bi int => pi x2\ isa x2 Bi int => pi y1\ isa y1 (Ci x1) int => pi y2\ isa y2 (Ci x2) int =>
+      (pi x1\ isa x1 Bi int => pi x2\ isa x2 Bi int => pi y1\ isa y1 (Ci x1) int =>
          pi p\ isa p (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) int =>
 	    (dconv (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x2) x1)
             	     	  (app (forall_app (forall_app (app (setoid_symmL Bi) bS) x1) x2) p))
          		  (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x1) x2)
              		       p) y1))
 		  y1))
-      (pi x1\ locDecl x1 Bi => pi x2\ locDecl x2 Bi => pi y1\ locDecl y1 (Ci x1) => pi y2\ locDecl y2 (Ci x2) =>
+      (pi x1\ locDecl x1 Bi => pi x2\ locDecl x2 Bi => pi y1\ locDecl y1 (Ci x1) =>
          pi p\ locDecl p (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) =>
 	    (dconv (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x2) x1)
             	     	  (app (forall_app (forall_app (app (setoid_symmL Bi) bS) x1) x2) p))
@@ -507,14 +507,14 @@ setSigmaLib L :-
 	   	   	(app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
 		     y2)))
       (hyp
-      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int =>
          pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
 	    (dconv (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
             	     	  (app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
          		  (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2)
              		       p) y1))
 		  y1))
-       (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y1\ locDecl y1 (Bi x1) => pi y2\ locDecl y2 (Bi x2)  =>
+       (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y1\ locDecl y1 (Bi x1) =>
          pi p\ locDecl p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) =>
 	    (dconv (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
             	     	  (app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
@@ -522,14 +522,14 @@ setSigmaLib L :-
              		       p) y1))
 		  y1))
        (hyp
-       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (Bi x2) int =>
          pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
         (dconv y2
        	     (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
    	     	  (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
        		       (app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
 	     y2))))
-       (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y1\ locDecl y1 (Bi x1) => pi y2\ locDecl y2 (Bi x2)  =>
+       (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y2\ locDecl y2 (Bi x2)  =>
          pi p\ locDecl p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) =>
         (dconv y2
        	     (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
@@ -640,7 +640,7 @@ setSigmaLib L :-
 		     y2)))
 	(true)
         (hyp
-      	(pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+      	(pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int =>
          pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
 	    (dconv (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
             	     	  (app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
@@ -649,7 +649,7 @@ setSigmaLib L :-
 		  y1))
 	(true)
         (hyp
-        (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+        (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (Bi x2) int =>
          pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
         (dconv y2
        	     (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
