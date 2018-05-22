@@ -41,14 +41,8 @@ of (elim_setSigma Pair M MM) (M Pair) IE
                 spy (isa (MM x y) (M (pair B C x y)) IE)
     .
 
-hstep (elim_setSigma Pair M Mm) (Mm Bb Cc) 
-    :- hnf Pair (pair B C Bb Cc)
-    ,  isa Bb B _
-    ,  isa Cc (C Bb) _
-    ,  pi z\ locDecl z (setSigma B C) => ofType (M z) _ IE
-    ,  pi x \ pi y \
-        locDecl x B  => locDecl y (C x) =>  
-            isa (Mm x y) (M (pair B C x y))  IE
+hstep (elim_setSigma Pair _M Mm) (Mm Bb Cc) 
+    :- hnf Pair (pair _B _C Bb Cc)
     .
 
 

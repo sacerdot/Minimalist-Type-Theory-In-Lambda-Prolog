@@ -30,11 +30,7 @@ of (elim_id P C CC) (C AA1 AA2) int
     ,  spy(pi x\ locDecl x A => of (CC x) (C x x) int)
     .
 
-hstep (elim_id (id A AA) C CC) (CC AA)
-    :- spy(isa AA A int)
-    ,  spy(pi x\ pi y\ locDecl x A => locDecl y A => isaType (C x y) propc int)
-    ,  spy(pi x\ locDecl x A => of (CC x) (C x x) int)
-    .
+hstep (elim_id (id _A AA) _C CC) (CC AA).
 
 dconv (id A AA) (id A' AA') :- (conv A A'),(conv AA AA').
 

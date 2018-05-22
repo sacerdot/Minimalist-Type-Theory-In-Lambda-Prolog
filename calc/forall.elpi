@@ -20,11 +20,7 @@ of (forall_app Lam X) (CX) IE
     .
 
 hstep (forall_app LAM Bb) (F Bb) 
-    :- hnf LAM (forall_lam B F)
-    ,  ofType B _ IE
-    ,  isa Bb B IE
-    ,  (pi x\ locDecl x B => of (F x) (C x) IE )
-    ,  (pi x\ locDecl x B => ofType (C x) KIND_ IE )
+    :- hnf LAM (forall_lam _B F)
     .
 
 dconv (forall B C) (forall B' C') 
@@ -32,13 +28,6 @@ dconv (forall B C) (forall B' C')
     ,  (pi x\ locDecl x B => conv (C x) (C' x))
     .
 dconv (forall_app F X) (forall_app F' X') :- (conv F F'), (conv X X').
-
-dconv (forall_lam B F) (forall_lam B' F') 
-    :- (conv B B')
-    ,  (pi x\ locDecl x B =>
-                (conv (F x) (F' x))
-       )
-    .
 
 interp (forall B C) (forall B' C') :-
         spy (interp B B'),

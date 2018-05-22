@@ -20,13 +20,7 @@ of (impl_app Lam X) C IE
     .
 
 hstep (impl_app LAM Bb) (F Bb)
-    :- hnf LAM (impl_lam B F)
-    ,  ofType B KIND IE
-    ,  (pts_leq KIND propc)
-    ,  isa Bb B IE
-    ,  (pi x\ locDecl x B => isa (F x) (C x) IE )
-    ,  (pi x\ locDecl x B => ofType (C x) KIND' IE )
-    ,  pts_leq KIND' propc
+    :- hnf LAM (impl_lam _B F)
     .
 
         

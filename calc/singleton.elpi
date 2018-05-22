@@ -16,8 +16,7 @@ of (elim_singleton Star C Cc) (C Star) IE
     .
 
 hstep (elim_singleton star C Cc) Cc 
-    :- spy(isa Cc (C star) IE)
-    ,  spy(pi z\ locDecl z singleton => isaType (C z) col IE )
+    :- spy(isa Cc (C star) IE_)
     .
 
 dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC CC',

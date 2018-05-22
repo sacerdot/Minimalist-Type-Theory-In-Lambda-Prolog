@@ -24,12 +24,8 @@ of (elim_exist Pair M MM) M IE
                 spy(isa (MM x y) M IE))
     .
 
-hstep (elim_exist W M MM) (MM Bb Cc) 
-    :- hnf W (pair_exist B C Bb Cc)
-    ,  isa Bb B IE
-    ,  isa Cc (C Bb) IE
-    ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
-            isa (MM x y) M IE)
+hstep (elim_exist W _M MM) (MM Bb Cc) 
+    :- hnf W (pair_exist _B _C Bb Cc)
     .
 
 dconv (pair_exist B C Bb Cc) (pair_exist B' C' Bb' Cc')

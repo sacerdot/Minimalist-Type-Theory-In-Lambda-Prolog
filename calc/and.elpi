@@ -33,8 +33,7 @@ dconv (pair_and B C Bb Cc) (pair_and B' C' Bb' Cc')
     .
 
 dconv (p1_and Pair) (p1_and Pair') 
-    :- (of Pair (and B_ C_) IE_)
-    ,  (conv Pair Pair')
+    :- (conv Pair Pair')
     .
 
 dconv (and B C) (and B' C') 

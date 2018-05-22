@@ -29,26 +29,18 @@ of (elim_or C W Cl Cr) C IE
      , spy (pi y\ locDecl y B => isa (Cr y) C IE) 
      .
 
-hstep (elim_or C W Cl Cr) (Cl Wl) 
-    :- (hnf W (inl_or A B Wl))
-    ,  (isa W (or A B) IE)
-    ,  (pi z\ locDecl z (or A B) => ofType C KIND_ IE)
-    ,  (pi x\ locDecl x A => isa (Cl x) C IE) 
-    ,  (pi y\ locDecl y B => isa (Cr y) C IE)
+hstep (elim_or _C W Cl _Cr) (Cl Wl) 
+    :- (hnf W (inl_or _A _B Wl))
     .
 
-hstep (elim_or C W Cl Cr) (Cr Wr)
-    :- (hnf W (inr_or A B Wr))
-    ,  (isa W (or A B) IE)
-    ,  (pi z\ locDecl z (or A B) => ofType C KIND_ IE)
-    ,  (pi x\ locDecl x A => isa (Cl x) C IE) 
-    ,  (pi y\ locDecl y B => isa (Cr y) C IE)
+hstep (elim_or _C W _Cl Cr) (Cr Wr)
+    :- (hnf W (inr_or _A _B Wr))
     .
 
 dconv (elim_or C W Cl Cr) (elim_or C' W' Cl' Cr')
     :- (conv W W')
-    ,  (of W (or A B) IE_)
-    ,  (pi z \ locDecl z (or A B) => (conv C C') )
-    ,  (pi z \ locDecl z (or A B) => (conv (Cl z) (Cl' z) ) )
-    ,  (pi z \ locDecl z (or A B) => (conv (Cr z) (Cr' z) ) )
+    ,  (of W AB IE_)
+    ,  (pi z \ conv C C')
+    ,  (pi z \ locDecl z AB => (conv (Cl z) (Cl' z) ) )
+    ,  (pi z \ locDecl z AB => (conv (Cr z) (Cr' z) ) )
     .
