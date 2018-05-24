@@ -86,7 +86,7 @@ pts_fun _ _ col.
 
 %% determines kind of a universal quantifier
 pts_for A props props :- pts_leq A set, !.
-pts_for _ _ propc. 
+pts_for _ B propc :- pts_leq B propc.
 
 mode (of i o o).
 mode (ofType i o o).
