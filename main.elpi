@@ -78,7 +78,7 @@ pts_leq propc col.
 
 %% determines kind of a proposition type
 pts_prop props props props :- !.
-pts_prop _ _ propc.
+pts_prop A B propc :- pts_leq A propc, pts_leq B propc.
 
 %% determines kind of a function type
 pts_fun A B set :- pts_leq A set, pts_leq B set, !.
@@ -86,7 +86,7 @@ pts_fun _ _ col.
 
 %% determines kind of a universal quantifier
 pts_for A props props :- pts_leq A set, !.
-pts_for _ _ propc. 
+pts_for _ B propc :- pts_leq B propc.
 
 mode (of i o o).
 mode (ofType i o o).
