@@ -10,14 +10,12 @@ ofType (or A B) KIND IE
     ,  (pts_prop KIND1 KIND2 KIND).
 
 of (inr_or A B Bb) (or A B) IE 
-    :- ofType B _ IE
-     , ofType A _ IE
+    :- ofType (or A B) _ IE
      , (isa Bb B IE)
      .
 
 of (inl_or A B Aa) (or A B) IE  
-    :- ofType A _ IE
-     , ofType B _ IE
+    :- ofType (or A B) _ IE
      , (isa Aa A IE)
      .
 

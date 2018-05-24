@@ -4,13 +4,13 @@ type impl_app   mttTerm -> mttTerm -> mttTerm.
 
 
 ofType (implies B C) KIND IE
-    :- ofType B KIND IE
-    ,  (pi x\ locDecl x B => ofType C KIND IE)
+    :- ofType B KIND1 IE
+    ,  (pi x\ locDecl x B => ofType C KIND2 IE)
+    ,  (pts_prop KIND1 KIND2 KIND)
     .
 
 of (impl_lam B F) (implies B C) IE
-    :- spy(isaType B propc IE)
-    ,  spy(isaType C propc IE)
+    :- spy(ofType (implies B C) _ IE)
     ,  spy(pi x\ locDecl x B => isa (F x) C IE)
     .
 
