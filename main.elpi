@@ -456,6 +456,7 @@ type process_entry libraryEntry -> prop -> prop.
 type locTypeDefL mttType -> mttKind -> mttType -> libraryEntry.
 type locDefL   mttTerm -> mttType -> mttTerm -> libraryEntry.
 type univPi    (mttType -> libraryEntry) -> libraryEntry.
+type univProp    (mttType -> libraryEntry) -> libraryEntry.
 type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
 type univPiT   mttType -> (mttTerm -> libraryEntry) -> libraryEntry.
 type hyp       prop -> prop -> libraryEntry -> libraryEntry.
@@ -476,6 +477,9 @@ process_entry (locDefL N TY TE) Hyp :-
 process_entry (univPi F) Hyp2 :-
    spy (pi Bi \ ofType Bi set int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi set int)).
+process_entry (univProp F) Hyp2 :-
+   spy (pi Bi \ ofType Bi props int => spy (process_entry (F Bi) (Hyp Bi))),
+   Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi props int)).
 process_entry (univDepPi Bi F) Hyp2 :-
    spy (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
