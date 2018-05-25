@@ -8,19 +8,19 @@ ofType (exist B C) KIND IE
     ,  (pi x\ locDecl x B  => ofType (C x) KIND2 IE)
     ,  pts_for KIND1 KIND2 KIND
     .
-    
+
 of (pair_exist B C BB CC) (exist B C) IE 
-    :- spy(ofType (exist B C) _ IE)
-    ,  spy(isa BB B IE)
+    :- spy(isa BB B IE)
     ,  spy(isa CC (C BB) IE)
+    ,  spy(ofType (exist B C) _ IE)
     .
 
 of (elim_exist Pair M MM) M IE 
     :- spy(isa Pair (exist B C) IE)
-    ,  spy(ofType M KIND IE)
-    ,  spy(pts_leq KIND propc)
+    ,  spy(ofType (exist B C) KIND IE)
     ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
                 spy(isa (MM x y) M IE))
+    ,  spy(ofType M KIND IE)
     .
 
 hstep (elim_exist W _M MM) (MM Bb Cc) 

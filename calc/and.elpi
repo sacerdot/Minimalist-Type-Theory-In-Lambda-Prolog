@@ -9,9 +9,9 @@ ofType (and B C) KIND IE
     .
     
 of (pair_and B C BB CC) (and B C) IE 
-    :- ofType (and B C) _ IE
-    ,  (isa BB B IE)
+    :- (isa BB B IE)
     ,  (isa CC C IE)
+    ,  ofType (and B C) _ IE
     .
 
 of (p1_and Pair) B IE 

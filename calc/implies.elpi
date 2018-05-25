@@ -10,8 +10,8 @@ ofType (implies B C) KIND IE
     .
 
 of (impl_lam B F) (implies B C) IE
-    :- spy(ofType (implies B C) _ IE)
-    ,  spy(pi x\ locDecl x B => of (F x) C IE)
+    :- spy(pi x\ locDecl x B => of (F x) C IE)
+    ,  spy(ofType (implies B C) _ IE)
     .
 
 of (impl_app Lam X) C IE
