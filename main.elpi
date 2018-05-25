@@ -445,10 +445,11 @@ concat [H|TL] R :- concat TL L, append H L R.
 in_library P :-
  translateLib L1,
  trueLib L2,
- singletonLib L3,
- setSigmaLib L4,
- setPiLib L5,
- concat [L1,L2,L3,L4 /*,L5*/] L,
+ propLib L3,
+ singletonLib L4,
+ setSigmaLib L5,
+ setPiLib L6,
+ concat [L1,L2,L3,L4 /*,L5,L6*/] L,
  process_library L P.
 
 kind libraryEntry type.

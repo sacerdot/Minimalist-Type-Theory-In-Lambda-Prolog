@@ -324,6 +324,28 @@ trueLib L :-
   (locDefL mk_trueT trueT (id singleton star))
  ].
 
+type prop_setoid mttType -> mttTerm.
+
+propLib L :-
+ L =
+ [
+% prop_setoid (to be used for all propositions, i.e. and, implies, or, ...)
+  (univProp Xi \
+    locDefL (prop_setoid Xi) (setoid Xi)
+     (pair
+       (setPi Xi _ \ setPi Xi _ \ propS)
+       (rel \ (and (forall Xi x \ decode (app (app rel x) x))
+                   (forall Xi x1\ forall Xi x2\ implies (decode (app (app rel x1) x2)) (decode (app (app rel x2) x1)))))
+       % the setoid relation
+       (lambda Xi _ \ lambda Xi _ \ encode trueT)
+       (pair_and
+         (forall Xi _ \ trueT)
+         (forall Xi _ \ forall Xi _ \ implies trueT trueT)
+         % proof of reflexivity
+         (forall_lam Xi _ \ mk_trueT)
+         (forall_lam Xi _ \ forall_lam Xi _ \ impl_lam trueT _ \ mk_trueT))))
+ ].
+
 setSigmaLib L :-
  L =
  [
