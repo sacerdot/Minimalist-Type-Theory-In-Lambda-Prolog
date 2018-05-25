@@ -36,7 +36,7 @@ type locDef         mttTerm -> mttType -> mttTerm -> prop.
 type locTypeDef     mttType -> mttKind -> mttType -> prop.
 
 %% conversion to (weak) head-normal form WHNF
-hnf A B :- (hstep A C), !, spy(hnf C B).
+hnf A B :- (hstep A C), !, (hnf C B).
 hnf A A.
 
 %dstep A B :- spy(hstep A B).
