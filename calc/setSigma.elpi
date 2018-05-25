@@ -689,15 +689,19 @@ setSigmaLib L :-
 	(cut
 	   (pi a\ locDecl a Ai => pi b1\ locDecl b1 (Bi a) => pi b2 \ locDecl b2 (Bi a) => pi y2\ locDecl y2 (Ci (pair Ai Bi a b2)) =>
 	     pi p\ locDecl p (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2))  =>
-	      pi q\ locDecl q (decode (app (app (app (setoid_rel (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS))
-	      	    	      	      (pair Ai Bi a b1)) (pair Ai Bi a b2))) =>
 	   conv_trans y2
 	     % middle term
 	     (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS))
 	     	  cS)
 		  (pair Ai Bi a b1))
 		  (pair Ai Bi a b2))
-		  q)
+		  (pair_exist (decode (app (app (app (setoid_rel Ai) aS) a) a))
+		   	       (d \ decode
+      			       (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a))
+          		       	    (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a) d)
+           			    	  b1)) b2))
+			       (forall_app (app (setoid_reflL Ai) aS) a)
+			       p))
 		  (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS))
 		       cS)
 		       (pair Ai Bi a b2))
@@ -706,7 +710,13 @@ setSigmaLib L :-
 		       	    (setSigma_setoid Ai Bi aS bS))
 			    (pair Ai Bi a b1))
 			    (pair Ai Bi a b2))
-			    q))
+			    (pair_exist (decode (app (app (app (setoid_rel Ai) aS) a) a))
+		   	       (d \ decode
+      			       (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a))
+          		       	    (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a) d)
+           			    	  b1)) b2))
+			       (forall_app (app (setoid_reflL Ai) aS) a)
+			       p)))
 		       y2))
 	      %target term
 	      (app (app (app (app (app (setoidDepCast (Bi a) (b\ Ci (pair Ai Bi a b))
