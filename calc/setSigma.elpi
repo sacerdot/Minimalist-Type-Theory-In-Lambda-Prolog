@@ -312,6 +312,18 @@ singletonLib L :-
     ))
  ].
 
+type trueT mttType.
+type mk_trueT mttTerm.
+
+trueLib L :-
+ L =
+ [
+% true
+  (locTypeDefL trueT props (propId singleton star star)),
+% mk_trueT
+  (locDefL mk_trueT trueT (id singleton star))
+ ].
+
 setSigmaLib L :-
  L =
  [
