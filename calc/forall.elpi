@@ -2,15 +2,15 @@ type forall     mttType -> (mttTerm -> mttType) -> mttType.
 type forall_lam mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type forall_app mttTerm -> mttTerm -> mttTerm.
 
-ofType (forall B C) KIND3 IE 
-    :- spy(ofType B KIND IE)
-    ,  spy(pi x\ locDecl x B  => spy(ofType (C x) KIND' IE))
-    ,  spy(pts_for KIND KIND' KIND3)
+ofType (forall B C) KIND IE 
+    :- spy(ofType B KIND1 IE)
+    ,  spy(pi x\ locDecl x B  => spy(ofType (C x) KIND2 IE))
+    ,  spy(pts_for KIND1 KIND2 KIND)
     .
 
 of (forall_lam B F) (forall B C) IE
-    :- spy(ofType B _ IE)
-    ,  spy(pi x\ locDecl x B => of (F x) (C x) IE)
+    :- spy(pi x\ locDecl x B => of (F x) (C x) IE)
+    ,  spy(ofType (forall B C) _ IE)
     .
 
 of (forall_app Lam X) (CX) IE 

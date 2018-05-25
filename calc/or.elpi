@@ -10,21 +10,19 @@ ofType (or A B) KIND IE
     ,  (pts_prop KIND1 KIND2 KIND).
 
 of (inr_or A B Bb) (or A B) IE 
-    :- ofType B _ IE
-     , ofType A _ IE
+    :- ofType (or A B) _ IE
      , (isa Bb B IE)
      .
 
 of (inl_or A B Aa) (or A B) IE  
-    :- ofType A _ IE
-     , ofType B _ IE
+    :- ofType (or A B) _ IE
      , (isa Aa A IE)
      .
 
 of (elim_or C W Cl Cr) C IE 
     :- spy (of W (or A B) IE)
-     , spy (ofType (or A B) _ IE) 
-     , spy (pi z\ locDecl z (or A B) => ofType C KIND_ IE)
+     , spy (pi z\ locDecl z (or A B) => ofType C KIND IE)
+     , spy (pts_leq KIND propc)
      , spy (pi x\ locDecl x A => spy(isa (Cl x) C IE) ) 
      , spy (pi y\ locDecl y B => isa (Cr y) C IE) 
      .
