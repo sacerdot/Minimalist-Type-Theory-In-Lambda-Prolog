@@ -17,8 +17,7 @@ of (pair_exist B C BB CC) (exist B C) IE
 
 of (elim_exist Pair M MM) M IE 
     :- spy(isa Pair (exist B C) IE)
-    ,  spy(ofType (exist B C) KIND IE)
-    ,  spy(isaType M KIND IE)
+    ,  spy(isaType M propc IE)
     ,  (pi x \ pi y \ locDecl x B => locDecl y (C x) =>  
                 spy(isa (MM x y) M IE))
     .
