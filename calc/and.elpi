@@ -24,6 +24,8 @@ of (p2_and Pair) C IE
 
 hstep (p1_and Pair) (Bb) :- hnf Pair (pair_and B_ C_ Bb Cc_).
 
+hstep (p2_and Pair) (Cc) :- hnf Pair (pair_and B_ C_ Bb_ Cc).
+
 dconv (pair_and B C Bb Cc) (pair_and B' C' Bb' Cc')
     :- (conv B B')
     ,  (conv C C')
