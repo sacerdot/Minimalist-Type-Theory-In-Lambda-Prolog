@@ -437,15 +437,19 @@ type append list A -> list A -> list A -> prop.
 append [] L L.
 append [H|TL] L1 [H|TL2] :- append TL L1 TL2.
 
+type concat list (list A) -> list A -> prop.
+
+concat [] [].
+concat [H|TL] R :- concat TL L, append H L R.
+
 in_library P :-
  translateLib L1,
- singletonLib L2,
- setSigmaLib L3,
- setPiLib Lp,
- append L1 L2 L4,
- append L4 L3 L5,
- append L5 Lp L6,
- process_library L5 P.
+ trueLib L2,
+ singletonLib L3,
+ setSigmaLib L4,
+ setPiLib L5,
+ concat [L1,L2,L3,L4 /*,L5*/] L,
+ process_library L P.
 
 kind libraryEntry type.
 type process_entry libraryEntry -> prop -> prop.
