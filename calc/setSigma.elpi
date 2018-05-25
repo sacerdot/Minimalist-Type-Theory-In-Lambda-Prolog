@@ -677,6 +677,15 @@ setSigmaLib L :-
            conv y (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) x) x) (forall_app (app (setoid_reflL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) x)) y))
          (pi x\ locDecl x (setSigma Ai Bi) => pi y \ locDecl y (Ci x) =>
            spy (conv y (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) x) x) (forall_app (app (setoid_reflL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) x)) y)))
+        (hyp
+        (pi x1\ isa x1 (setSigma Ai Bi) int => pi x2\ isa x2 (setSigma Ai Bi) int => pi y2\ isa y2 (Ci x2) int =>
+         pi p\ isa p (decode (app (app (app (setoid_rel (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) x1) x2)) int =>
+	 (conv y2
+       	     (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) x1) x2) p)
+   	     	  (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS) x2) x1)
+       		       (impl_app (forall_app (forall_app (app (setoid_symmL (setSigma Ai Bi)) (setSigma_setoid Ai Bi aS bS)) x1) x2) p))
+	     y2))))
+	(true)
 	(cut
 	   (pi a\ locDecl a Ai => pi b1\ locDecl b1 (Bi a) => pi b2 \ locDecl b2 (Bi a) => pi y2\ locDecl y2 (Ci (pair Ai Bi a b2)) =>
 	     pi p\ locDecl p (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2))  =>
@@ -785,7 +794,7 @@ setSigmaLib L :-
                     	   (forall_app (app (setoid_reflL (Bi a')) (app (app (setoidDepCarrier Ai Bi aS) bS) a'))
 			   	       (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a) a') p) (p1 bc)))))
                         (p2 bc)))))))
-		)))))))))))
+		))))))))))))
 ].
 
 tau (setSigma B C) (setSigma B' C') P :-
