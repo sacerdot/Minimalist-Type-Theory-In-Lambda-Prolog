@@ -449,7 +449,7 @@ in_library P :-
  singletonLib L4,
  setSigmaLib L5,
  setPiLib L6,
- concat [L1,L2,L3,L4 /*,L5 ,L6*/] L,
+ concat [L1,L2,L3,L4 ,L5 /*,L6*/] L,
  process_library L P.
 
 kind libraryEntry type.
@@ -465,6 +465,7 @@ type hyp       prop -> prop -> libraryEntry -> libraryEntry.
 % pi, => and conv_trans. We could make the typing more precise
 type cut       prop -> libraryEntry -> libraryEntry.
 type conv_trans mttTerm -> mttTerm -> mttTerm -> prop.
+type conv_trans_symm mttTerm -> mttTerm -> mttTerm -> prop.
 type conv_symm mttTerm -> mttTerm -> prop.
 
 process_entry (locTypeDefL N KIND TY) Hyp :-
@@ -509,6 +510,13 @@ process_cut (conv_trans X Y Z) AA /*CSC: MAYBE AN ELPI BUG HERE? (conv X Z)*/ :-
    spy(isa Z T int),
    spy(conv X Y), spy(conv Y Z),
    AA = conv X Z.
+
+process_cut (conv_trans_symm X Y Z) AA /*CSC: MAYBE AN ELPI BUG HERE? (conv X Z)*/ :-
+   spy(of X T int),
+   spy(isa Y T int),
+   spy(isa Z T int),
+   spy(conv X Y), spy(conv Y Z),
+   AA = conv Z X.
 
 process_cut (conv_symm X Y) AA :-
    spy(of X T int),
