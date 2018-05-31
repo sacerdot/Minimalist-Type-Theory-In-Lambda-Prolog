@@ -248,6 +248,7 @@ type setPi_setoidDep mttType -> (mttTerm -> mttType) -> (mttTerm -> mttType) -> 
 type setPi_setoidRel mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm.
 setPiLib Lp :-
    Lp = [
+   % property for intensional setPi
    (univPi Bi\
     univDepPi Bi Ci\
      univPiT (setoid Bi) bS\
@@ -257,8 +258,8 @@ setPiLib Lp :-
                        	             decode (app (app (app (setoid_rel (Ci y2)) (app (app (setoidDepCarrier Bi Ci bS) cS) y2))
                                      	     	 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) y1) y2) d) (app h y1)))
                               	   	     	 (app h y2)))),
-   (
-    univPi Ai\
+   % property for intensional dependent setPi
+   (univPi Ai\
     univDepPi Ai Bi\
     univDepPi (setSigma Ai Bi) Ci\
      univPiT (setoid Ai) aS\
@@ -266,13 +267,57 @@ setPiLib Lp :-
      univPiT (setoidDep (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS)) cS\
      univPiT Ai a\
      univPiT (setPi (Bi a) (b\ Ci (pair Ai Bi a b))) h\
-     hyp (pi x\ isa x Ai int => pi y \ isa y (Bi x) int =>
+     (hyp
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+        pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
+         conv y2 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p) y1) =>
+          conv y1 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
+                     (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
+		     y2))
+      (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (Bi x1)  => pi y2\ locDecl y2 (Bi x2)  =>
+        pi p\ locDecl p (decode (app (app (app (setoid_rel Ai) aS) x1) x2))  =>
+         conv y2 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p) y1) =>
+          conv y1 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
+                     (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
+		     y2))
+     (hyp
+       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int =>
+        pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
+         conv (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
+                   (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
+              	   (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
+		   y1))
+	       y1)
+       (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (Bi x1)  =>
+        pi p\ locDecl p (decode (app (app (app (setoid_rel Ai) aS) x1) x2))  =>
+         conv (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
+                   (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
+              	   (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
+		   y1))
+	       y1)
+     (hyp
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (Bi x2) int =>
+        pi p\ isa p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) int =>
+       	conv y2
+            (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
+              	 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
+                      (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
+		 y2)))
+      (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y2\ locDecl y2 (Bi x2) =>
+        pi p\ locDecl p (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) =>
+       	conv y2
+            (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x1) x2) p)
+              	 (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x2) x1)
+                      (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) x1) x2) p))
+		 y2)))
+     (hyp (pi x\ isa x Ai int => pi y \ isa y (Bi x) int =>
              conv y (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x) x) (forall_app (app (setoid_reflL Ai) aS) x)) y))
          (pi x\ locDecl x Ai => pi y \ locDecl y (Bi x) =>
              spy (conv y (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) x) x) (forall_app (app (setoid_reflL Ai) aS) x)) y)))
       (locTypeDefL (respectDep Ai Bi Ci aS bS cS h a) props (respect (Bi a) (b\ Ci (pair Ai Bi a b))
 					      	       	    (app (app (setoidDepCarrier Ai Bi aS) bS) a)
-						              (app (gamma_setoidDep Ai Bi Ci aS bS cS) a) h))),
+						              (app (gamma_setoidDep Ai Bi Ci aS bS cS) a) h))))))),
+							      
    % setPi_setoidRel
    (univPi Bi\
     univDepPi Bi Ci\
@@ -293,7 +338,7 @@ setPiLib Lp :-
     univPiT (setoid Bi) bS\
     univPiT (setoidDep Bi Ci bS) cS \
      (locDefL (setPi_setoid Bi Ci bS cS) (setoid (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))))
-             (pair (setPi (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) _\
+             (debugga (pair (setPi (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) _\
 	       	      	setPi (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) _\ propS)
              	   (rel \ and (forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) x \ decode (app (app rel x) x))
 		      	      (forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) x1\
@@ -323,7 +368,7 @@ setPiLib Lp :-
 				     (app (setoid_symmL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
 				    (app (p1 f1) y))
 				   (app (p1 f2) y))
-				  (forall_app h y)))))))
+				  (forall_app h y))))))))
 ,
     % setPi_setoidDep
     (univPi Ai\
