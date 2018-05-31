@@ -5,9 +5,6 @@
 type propEq mttType -> mttTerm -> mttTerm -> mttType.
 type eq   mttType -> mttTerm -> mttTerm.
 
-pts_eq K props :- pts_leq K set, !.
-pts_eq _ propc.
-
 ofType (propEq A AA1 AA2) KIND ext 
     :- ofType A KIND' ext
     ,  pts_eq KIND' KIND
