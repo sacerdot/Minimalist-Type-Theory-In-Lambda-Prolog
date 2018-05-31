@@ -12,11 +12,10 @@ type elim_id    mttTerm
 
 
 ofType (propId A AA1 AA2) KIND _IE
-    :- isa AA1 A int
+    :- ofType A KIND' int
+    ,  pts_eq KIND' KIND
+    ,  isa AA1 A int
     ,  isa AA2 A int
-    ,  ofType A KIND1 int
-    ,  (spy(pts_leq KIND1 set , KIND = props), ! 
-       ;  KIND = propc)
     .
 
 of (id A AA) (propId A AA AA) int 
