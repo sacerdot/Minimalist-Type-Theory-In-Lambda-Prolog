@@ -25,9 +25,9 @@ of (inl A B Aa) (setSum A B) IE
 of (elim_setSum C W Cl Cr) (C W) IE 
     :- spy (of W (setSum A B) IE)
      , spy (ofType (setSum A B) _ IE) 
-     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) KIND_ IE)
-     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inr A B x)) IE) ) 
-     , spy (pi y\ locDecl y B => isa (Cr y) (C (inl A B y)) IE) 
+     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) col IE)
+     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inl A B x)) IE) ) 
+     , spy (pi y\ locDecl y B => isa (Cr y) (C (inr A B y)) IE) 
      .
 
 hstep (elim_setSum _C W Cl _Cr) (Cl Wl) 
