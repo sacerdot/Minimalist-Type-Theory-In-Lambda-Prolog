@@ -7,8 +7,8 @@ type elim_setSum (mttTerm -> mttType) -> mttTerm -> (mttTerm -> mttTerm) -> (mtt
 
 %%Disjoint Sum Type
 
-ofType (setSum A B) KIND IE :- ofType A KIND1 IE, ofType B KIND2 IE,
-    pts_fun KIND1 KIND2 KIND.
+ofType (setSum A B) set IE :- ofType A KIND1 IE, ofType B KIND2 IE,
+    pts_fun KIND1 KIND2 set.
 
 of (inr A B Bb) (setSum A B) IE 
     :- ofType B _ IE
