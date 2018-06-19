@@ -7,8 +7,8 @@ type elim_setSum (mttTerm -> mttType) -> mttTerm -> (mttTerm -> mttTerm) -> (mtt
 
 %%Disjoint Sum Type
 
-ofType (setSum A B) KIND IE :- ofType A KIND1 IE, ofType B KIND2 IE,
-    pts_fun KIND1 KIND2 KIND.
+ofType (setSum A B) set IE :- ofType A KIND1 IE, ofType B KIND2 IE,
+    pts_fun KIND1 KIND2 set.
 
 of (inr A B Bb) (setSum A B) IE 
     :- ofType B _ IE
@@ -25,9 +25,9 @@ of (inl A B Aa) (setSum A B) IE
 of (elim_setSum C W Cl Cr) (C W) IE 
     :- spy (of W (setSum A B) IE)
      , spy (ofType (setSum A B) _ IE) 
-     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) KIND_ IE)
-     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inr A B x)) IE) ) 
-     , spy (pi y\ locDecl y B => isa (Cr y) (C (inl A B y)) IE) 
+     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) col IE)
+     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inl A B x)) IE) ) 
+     , spy (pi y\ locDecl y B => isa (Cr y) (C (inr A B y)) IE) 
      .
 
 hstep (elim_setSum _C W Cl _Cr) (Cl Wl) 
