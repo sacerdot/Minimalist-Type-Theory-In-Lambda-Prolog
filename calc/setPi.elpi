@@ -384,13 +384,19 @@ setPiLib Lp :-
 		                	  forall_app (app (setoid_reflL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
 				   	   (app (p1 z) y))
 				       % proof of transitivity
-				       (fixMe "setPi_setoid transitivity"
-				       	      (forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) x\
-				               	forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) y\
-				     	 	 forall (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) z\
-				      	  	  implies (decode (app (app (setPi_setoidRel Bi Ci bS cS) x) y))
-				       	   	   (implies (decode (app (app (setPi_setoidRel Bi Ci bS cS) y) z))
-				            	    (decode (app (app (setPi_setoidRel Bi Ci bS cS) x) z))))))
+				        (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f\
+					  forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) g\
+					   forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) h\
+					    impl_lam (decode (app (app (setPi_setoidRel Bi Ci bS cS) f) g)) u\
+					     impl_lam (decode (app (app (setPi_setoidRel Bi Ci bS cS) g) h)) v\
+					      forall_lam Bi y\
+					       (impl_app (impl_app (forall_app (forall_app (forall_app
+					         (app (setoid_tranL (Ci y)) (app (app (setoidDepCarrier Bi Ci bS) cS) y))
+						 (app (p1 f) y))
+						 (app (p1 g) y))
+						 (app (p1 h) y))
+						 (forall_app u y))
+						 (forall_app v y))))
 			    % proof of symmetry
 			     (forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f1\
 			       forall_lam (setSigma (setPi Bi Ci) (h\ (respect Bi Ci bS cS h))) f2\
@@ -972,6 +978,6 @@ setPiLib Lp :-
 							  				      y2))))))
 
 				  ))))))))
-	)))))))))))))				
+	)))))))))))))		
   ]. 
  
