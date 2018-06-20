@@ -265,18 +265,35 @@ new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
 
 singletonLib L :-
  L =
- [ (locDefL singleton_setoid (setoid singleton)
+ [
+   (locDefL singleton_setoid (setoid singleton)
     (pair
       (setPi singleton x \ setPi singleton y \ propS) 
-      (rel \ and  (forall singleton x \ decode (app (app rel x) x))
+      (rel \ and  (and (forall singleton x \ decode (app (app rel x) x))
+      	     	       (forall singleton x\ forall singleton y\ forall singleton z\ implies (decode (app (app rel x) y))
+		       	       (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
       	     	  (forall singleton x1\ forall singleton x2\ implies (decode (app (app rel x1) x2))
 		       	   	   	     	 		      	    (decode (app (app rel x2) x1))))
       (lambda singleton x \ lambda singleton y \ encode (propId singleton x y))
-      (pair_and (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
+      (pair_and (and (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
+      		     (forall singleton x\ forall singleton y\ forall singleton z\
+		      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
+		       	 (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
+			   (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z)))))
                 (forall singleton x1\ forall singleton x2\
 	    	      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2))
 		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))
-            (forall_lam singleton x \ id singleton x)
+            (pair_and (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
+		      (forall singleton x\ forall singleton y\ forall singleton z\
+		      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
+		       	 (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
+			   (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z))))
+		      (forall_lam singleton x \ id singleton x)
+		      (fixMe "tran singleton_setoid"
+		      	     (forall singleton x\ forall singleton y\ forall singleton z\
+		      	      implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
+		       	       (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
+			        (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z))))))
 	    (fixMe "symm singleton_setoid" (forall singleton x1\ forall singleton x2\
 	    	      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2))
 		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))))))
@@ -334,15 +351,20 @@ propLib L :-
     locDefL (prop_setoid Xi) (setoid Xi)
      (pair
        (setPi Xi _ \ setPi Xi _ \ propS)
-       (rel \ (and (forall Xi x \ decode (app (app rel x) x))
+       (rel \ (and (and (forall Xi x \ decode (app (app rel x) x))
+       	      	   	(forall Xi x\ forall Xi y\ forall Xi z\ implies (decode (app (app rel x) y))
+		         (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
                    (forall Xi x1\ forall Xi x2\ implies (decode (app (app rel x1) x2)) (decode (app (app rel x2) x1)))))
        % the setoid relation
        (lambda Xi _ \ lambda Xi _ \ encode trueT)
        (pair_and
-         (forall Xi _ \ trueT)
+	 (and (forall Xi _ \ trueT)
+       	      (forall Xi _\ forall Xi _\ forall Xi _\ implies trueT (implies trueT trueT)))
          (forall Xi _ \ forall Xi _ \ implies trueT trueT)
-         % proof of reflexivity
-         (forall_lam Xi _ \ mk_trueT)
+	 (pair_and (forall Xi _ \ trueT)
+	 	   (forall Xi _\ forall Xi _\ forall Xi _\ implies trueT (implies trueT trueT))
+		   (forall_lam Xi _ \ mk_trueT)
+		   (forall_lam Xi _\ forall_lam Xi _\ forall_lam Xi _\ impl_lam trueT _\ impl_lam trueT _\ mk_trueT))
          (forall_lam Xi _ \ forall_lam Xi _ \ impl_lam trueT _ \ mk_trueT))))
  ].
 
@@ -419,26 +441,43 @@ setSigmaLib L :-
         (locDefL (setSigma_setoid Bi Ci bS cS) (setoid (setSigma Bi Ci))
          (pair
             (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
-            (rel \ (and (forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
-	               (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ implies (decode (app (app rel x1) x2))
+            (rel \ (and (and (forall (setSigma Bi Ci) x \ decode (app (app rel x) x))
+	    	   	     (forall (setSigma Bi Ci) x\ forall (setSigma Bi Ci) y\ forall (setSigma Bi Ci) z\
+			       implies (decode (app (app rel x) y)) (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
+	                (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ implies (decode (app (app rel x1) x2))
 		                                                                  (decode (app (app rel x2) x1)))))
             % the setoid relation
            (setSigma_setoidRel Bi Ci bS cS)
-	   (pair_and (forall (setSigma Bi Ci) x \
-	   	        decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) x))
+	   (pair_and (and (forall (setSigma Bi Ci) x \ decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) x))
+	   	     	  (forall (setSigma Bi Ci) x\ forall (setSigma Bi Ci) y\ forall (setSigma Bi Ci) z\
+			    implies (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) y)) 
+			     (implies (decode (app (app (setSigma_setoidRel Bi Ci bS cS) y) z))
+			      (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) z)))))
 		     (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ implies
 		        (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x1) x2))
 		        (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x2) x1)))
-	             % proof of reflexivity
-                     (forall_lam (setSigma Bi Ci) x \
-             	     pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 x)))
-              	        	(d \ decode (app (app 
-              	       		  (app (setoid_rel (Ci (p1 x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x)))
-				  (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 x)) d) (p2 x)))
-                        	  (p2 x)))
-                      		(forall_app (app (setoid_reflL Bi) bS) (p1 x))
-                      		(forall_app (app (setoid_reflL (Ci (p1 x)))
-		        	   (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x))) (p2 x)))
+	            
+		     (pair_and (forall (setSigma Bi Ci) x \ decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) x))
+		     	       (forall (setSigma Bi Ci) x\ forall (setSigma Bi Ci) y\ forall (setSigma Bi Ci) z\
+			       	 implies (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) y)) 
+			          (implies (decode (app (app (setSigma_setoidRel Bi Ci bS cS) y) z))
+			           (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) z))))
+			       % proof of reflexivity
+                     	       (forall_lam (setSigma Bi Ci) x \
+             	     	         pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 x)))
+              	        	 	    (d \ decode (app (app 
+              	       		  	       (app (setoid_rel (Ci (p1 x))) (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x)))
+				  	       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 x)) d) (p2 x)))
+                        	  	       (p2 x)))
+                      		            (forall_app (app (setoid_reflL Bi) bS) (p1 x))
+                      			    (forall_app (app (setoid_reflL (Ci (p1 x)))
+		        	  	       (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 x))) (p2 x)))
+			       % proof of transitivity
+			        (fixMe "setSigma transitivity"
+				       (forall (setSigma Bi Ci) x\ forall (setSigma Bi Ci) y\ forall (setSigma Bi Ci) z\
+			       	        implies (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) y)) 
+			          	 (implies (decode (app (app (setSigma_setoidRel Bi Ci bS cS) y) z))
+			           	  (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) z))))))
 		    % proof of symmetry
 		    (forall_lam (setSigma Bi Ci) x1\ forall_lam (setSigma Bi Ci) x2\
 		     impl_lam (exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x1)) (p1 x2))) d\
@@ -1040,6 +1079,7 @@ setSigmaLib L :-
 	  (pi a\ locDecl a Ai => pi b1\ locDecl b1 (Bi a) => pi b2 \ locDecl b2 (Bi a) => pi y1\ locDecl y1 (Ci (pair Ai Bi a b1)) =>
 	     pi y2\ locDecl y2 (Ci (pair Ai Bi a b2)) =>
 	     pi p\ locDecl p (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2))  =>
+	     
 	     conv y2 (app (app (app (app (app (setoidDepCast (setSigma Ai Bi) Ci (setSigma_setoid Ai Bi aS bS))
 	     	       cS)
 		       (pair Ai Bi a b1))

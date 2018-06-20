@@ -329,6 +329,7 @@ type setoid mttType -> mttType.
 type setoid_rel mttType -> mttTerm.
 type setoid_reflL mttType -> mttTerm.
 type setoid_symmL mttType -> mttTerm.
+type setoid_tranL mttType -> mttTerm.
 type setoidDep mttType -> (mttTerm -> mttType) -> mttTerm -> mttType.
 type setoidDepCarrier mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
 type setoidDepCast mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
@@ -339,18 +340,21 @@ translateLib L1 :-
      (setSigma
        % setoid_rel
        (setPi X _ \ setPi X _ \ propS)
-       (rel \ and
-              % setoid_reflL
-              (forall X x \ decode (app (app rel x) x))
+       (rel \ and  (and % setoid_reflL
+              	   	(forall X x \ decode (app (app rel x) x))
+		   	% setoid_tranL
+		   	(forall X x\ forall X y\ forall X z\ implies (decode (app (app rel x) y)) (implies (decode (app (app rel y) z)) 
+				(decode (app (app rel x) z)))))
               % setoid_symmL
 	      (forall X x1\ forall X x2\ implies (decode (app (app rel x1) x2))  (decode (app (app rel x2) x1))))))
  , (univPi X \ locDefL (setoid_rel X) (setPi (setoid X) _ \ setPi X _ \ setPi X _ \ propS)
      (lambda (setoid X) R \
        elim_setSigma R (_ \ setPi X _ \ setPi X _ \ propS) (x\y\x)))
- , (univPi X \ locDefL (setoid_reflL X) (setPi (setoid X) R \ forall X x \ decode (app (app (app (setoid_rel X) R) x) x))
+ ,
+  (univPi X \ locDefL (setoid_reflL X) (setPi (setoid X) R \ forall X x \ decode (app (app (app (setoid_rel X) R) x) x))
      (lambda (setoid X) R \ 
        (elim_setSigma R (c \ forall X x \ decode (app (app (app (setoid_rel X) c) x) x))
-		      (w1\w2\ p1_and w2))))
+		      (w1\w2\ p1_and (p1_and w2)))))
 					   
  , (univPi X\ locDefL (setoid_symmL X) (setPi (setoid X) R\ forall X x1\ forall X x2\
                                                implies (decode (app (app (app (setoid_rel X) R) x1) x2))
@@ -359,6 +363,13 @@ translateLib L1 :-
        (elim_setSigma R (c\ forall X x1\ forall X x2\ implies (decode (app (app (app (setoid_rel X) c) x1) x2))
                                                             (decode (app (app (app (setoid_rel X) c) x2) x1)))
 	 (w1\w2\ p2_and w2 ))))
+, (univPi X\ locDefL (setoid_tranL X) (setPi (setoid X) R\ forall X x\ forall X y\ forall X z\
+  	     	      implies (decode (app (app (app (setoid_rel X) R) x) y))
+		       (implies (decode (app (app (app (setoid_rel X) R) y) z)) (decode (app (app (app (setoid_rel X) R) x) z))))
+		     (lambda (setoid X) R\
+		      (elim_setSigma R (c\ forall X x\ forall X y\ forall X z\ implies (decode (app (app (app (setoid_rel X) c) x) y))
+		       		  (implies (decode (app (app (app (setoid_rel X) c) y) z)) (decode (app (app (app (setoid_rel X) c) x) z))))
+				     (w1\w2\ p2_and (p1_and w2)))))
 
  , (univPi B\
     (univDepPi B C\
@@ -453,7 +464,7 @@ in_library P :-
  singletonLib L4,
  setSigmaLib L5,
  setPiLib L6,
- concat [L1,L2,L3,L4 ,L5 /* ,L6 */] L,
+ concat [L1,L2,L3,L4 ,L5 /*, L6*/] L,
  process_library L P.
 
 kind libraryEntry type.
