@@ -244,3 +244,65 @@ impliesLib L :- L = [
  		   mk_trueT)
   )))))))
  ].
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (implies B C) Result
+    :- starify_nonset_ops_type B B'
+    ,  starify_nonset_ops_type C C'
+    ,  Result = (implies B' C')
+    ,  !
+    .
+
+collapse_star_ops_type (implies B C) Result
+    :- collapse_star_ops_type B B'
+    ,  collapse_star_ops_type C C'
+    ,  spy((B' = extractor_singleton, C' = extractor_singleton
+        ,    Result = extractor_singleton)
+        , !; Result = (implies B' C'))
+    ,  !
+    .
+
+
+starify_nonset_ops (impl_lam B F) Result
+    :- starify_nonset_ops_type B B'
+    ,  pi x\ locDecl x B => starify_nonset_ops (F x) (F' x)
+    ,  Result = (impl_lam B' F')
+    ,  !
+    . 
+
+collapse_term (impl_lam extractor_singleton (x\extractor_star)) Result []
+    :- Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (impl_lam B F) Result SetList
+    :- collapse_star_ops_type B B'
+    ,  pi b\ locDecl b B => extract_set_ops (F b) (F' b) SetList
+    ,  spy(collapse_term (impl_lam B' F') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (impl_app Lam X) Result
+    :- starify_nonset_ops Lam Lam'
+    ,  starify_nonset_ops X X'
+    ,  Result = (impl_app Lam' X')
+    ,  !
+    .
+
+collapse_term (impl_app extractor_star extractor_star) Result []
+    :- Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (impl_app Lam X) Result SetList
+    :- extract_set_ops Lam Lam' LamList
+    ,  extract_set_ops X X' XList
+    ,  spy(collapse_term (impl_app Lam' X') Result [])
+    ,  concat [XList, LamList] SetList
+    ,  !
+    .
+
