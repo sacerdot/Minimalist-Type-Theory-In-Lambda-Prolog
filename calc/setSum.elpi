@@ -7,8 +7,8 @@ type elim_setSum (mttTerm -> mttType) -> mttTerm -> (mttTerm -> mttTerm) -> (mtt
 
 %%Disjoint Sum Type
 
-ofType (setSum A B) KIND IE :- ofType A KIND1 IE, ofType B KIND2 IE,
-    pts_fun KIND1 KIND2 KIND.
+ofType (setSum A B) set IE :- ofType A KIND1 IE, ofType B KIND2 IE,
+    pts_fun KIND1 KIND2 set.
 
 of (inr A B Bb) (setSum A B) IE 
     :- ofType B _ IE
@@ -25,7 +25,7 @@ of (inl A B Aa) (setSum A B) IE
 of (elim_setSum C W Cl Cr) (C W) IE 
     :- spy (of W (setSum A B) IE)
      , spy (ofType (setSum A B) _ IE) 
-     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) col IE)
+     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) _ IE)
      , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inl A B x)) IE) ) 
      , spy (pi y\ locDecl y B => isa (Cr y) (C (inr A B y)) IE) 
      .
@@ -44,3 +44,119 @@ dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
     ,  (pi z \ locDecl z AB => (conv (Cl z) (Cl' z) ) )
     ,  (pi z \ locDecl z AB => (conv (Cr z) (Cr' z) ) )
     .
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (setSum A B) Result
+    :- starify_nonset_ops_type A A'
+    ,  starify_nonset_ops_type B B'
+    ,  Result = (setSum A' B')
+    ,  !
+    .
+
+collapse_star_ops_type (setSum B C) Result
+    :- collapse_star_ops_type B B'
+    ,  collapse_star_ops_type C C'
+    ,  spy((B' = extractor_singleton, C' = extractor_singleton
+        ,    Result = extractor_singleton)
+        , !; Result = (setSum B' C'))
+    ,  !
+    .
+
+
+starify_nonset_ops (inl A B AA) Result
+    :- starify_nonset_ops_type A A'
+    ,  starify_nonset_ops_type B B'
+    ,  starify_nonset_ops AA AA'
+    ,  Result = (inl A' B' AA')
+    ,  !
+    .
+
+%%it needs both singletons because otherwise the type collapser can't match its result
+collapse_term (inl extractor_singleton extractor_singleton extractor_star) Result []
+    :- Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (inl A B AA) Result SetList
+    :- spy(extract_set_ops AA AA' SetList)
+    ,  spy(collapse_star_ops_type A A')
+    ,  spy(collapse_star_ops_type B B')
+    ,  spy(collapse_term (inl A' B' AA') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (inr A B BB) Result
+    :- starify_nonset_ops_type A A'
+    ,  starify_nonset_ops_type B B'
+    ,  starify_nonset_ops BB BB'
+    ,  Result = (inr A' B' BB')
+    ,  !
+    .
+
+collapse_term (inr extractor_singleton extractor_singleton extractor_star) Result []
+    :- Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (inr A B BB) Result SetList
+    :- spy(extract_set_ops BB BB' SetList)
+    ,  spy(collapse_star_ops_type A A')
+    ,  spy(collapse_star_ops_type B B')
+    ,  spy(collapse_term (inr A' B' BB') Result [])
+    ,  !
+    .
+
+
+%% I have no clue on how to construct a proper WC, so I wrap everything
+wrap_enlarged_sets (elim_setSum C W Cl Cr) Result
+    :- isa W (setSum L R) int
+    ,  pi w\ locDecl w (setSum L R) => ofType (C w) KindC int
+%%    ,  ofType L KindL int
+%%    ,  ofType R KindR int
+%%    ,  ((KindL = set
+%%        ,    WCl = (l\ app (lambda (C W) (x\extractor_star)) (Cl l)))
+%%        , !; WCl = Cl)
+%%    ,  ((KindR = set
+%%        ,    WCr = (r\ app (lambda (C W) (x\extractor_star)) (Cr r)))
+%%        , !; WCr = Cr)
+%%    ,  WC = ???
+    ,  ((KindC = set
+        ,    WCl = (l\ app (lambda (C W) (x\extractor_star)) (Cl l)), WCr = (r\ app (lambda (C W) (x\extractor_star)) (Cr r)), WC = (w\ extractor_singleton))
+        , !; WCl = Cl, WCr = Cr, WC = C)
+    ,  spy(Result = (elim_setSum WC W WCl WCr))
+    ,  !
+    .
+
+starify_nonset_ops (elim_setSum C W Cl Cr) Result
+    :- wrap_enlarged_sets (elim_setSum C W Cl Cr) (elim_setSum WC WW WCl WCr)
+    ,  starify_nonset_ops WW W'
+    ,  isa WW (setSum L R) int
+    ,  pi w\ locDecl w (setSum L R) => starify_nonset_ops_type (WC w) (C' w)
+    ,  pi l\ locDecl l L => starify_nonset_ops (WCl l) (Cl' l)
+    ,  pi r\ locDecl r R => starify_nonset_ops (WCr r) (Cr' r)
+    ,  Result = (elim_setSum C' W' Cl' Cr')
+    ,  !
+    .
+
+%% ERROR: non sa se chiamare Cl o Cr
+collapse_term (elim_setSum _C extractor_star Cl _Cr) Result ElimList
+    :- extract_set_ops (Cl extractor_star) Result ElimList
+    ,  !
+    .
+
+extract_set_ops (elim_setSum C W Cl Cr) Result SetList
+    :- extract_set_ops W W' WList
+    ,  isa W (setSum L R) int
+    ,  pi w\ locDecl w (setSum L R) => collapse_star_ops_type (C w) (C' w)
+    ,  pi l\ locDecl l L => extract_set_ops (Cl l) (Cl' l) ClList
+    ,  pi r\ locDecl r R => extract_set_ops (Cr r) (Cr' r) CrList
+    ,  spy(collapse_term (elim_setSum C' W' Cl' Cr') Result [])
+    ,  concat [CrList, ClList, WList] SetList
+    ,  !
+    .
+

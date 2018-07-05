@@ -42,3 +42,81 @@ dconv (elim_or C W Cl Cr) (elim_or C' W' Cl' Cr')
     ,  (pi z \ locDecl z AB => (conv (Cl z) (Cl' z) ) )
     ,  (pi z \ locDecl z AB => (conv (Cr z) (Cr' z) ) )
     .
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (or A B) Result
+    :- starify_nonset_ops_type A A'
+    ,  starify_nonset_ops_type B B'
+    ,  Result = (or A' B')
+    ,  !
+    .
+
+collapse_star_ops_type (or B C) Result
+    :- collapse_star_ops_type B B'
+    ,  collapse_star_ops_type C C'
+    ,  spy((B' = extractor_singleton, C' = extractor_singleton
+        ,    Result = extractor_singleton)
+        , !; Result = (or B' C'))
+    ,  !
+    .
+
+
+starify_nonset_ops (inl_or A B AA) Result
+    :- starify_nonset_ops_type A A'
+    ,  starify_nonset_ops_type B B'
+    ,  starify_nonset_ops AA AA'
+    ,  Result = (inl_or A' B' AA')
+    ,  !
+    .
+
+extract_set_ops (inl_or A B AA) Result SetList
+    :- spy(extract_set_ops AA AA' SetList)
+    ,  spy(collapse_star_ops_type A A')
+    ,  spy(collapse_star_ops_type B B')
+    ,  spy(collapse_term (inl_or A' B' AA') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (inr_or A B BB) Result
+    :- starify_nonset_ops_type A A'
+    ,  starify_nonset_ops_type B B'
+    ,  starify_nonset_ops BB BB'
+    ,  Result = (inr_or A' B' BB')
+    ,  !
+    .
+
+extract_set_ops (inr_or A B AA) Result SetList
+    :- spy(extract_set_ops AA AA' SetList)
+    ,  spy(collapse_star_ops_type A A')
+    ,  spy(collapse_star_ops_type B B')
+    ,  spy(collapse_term (inr_or A' B' AA') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (elim_or C W Cl Cr) Result
+    :- starify_nonset_ops W W'
+    ,  starify_nonset_ops_type C C'
+    ,  isa W (or L R) int
+    ,  pi l\ locDecl l L => starify_nonset_ops (Cl l) (Cl' l)
+    ,  pi r\ locDecl r R => starify_nonset_ops (Cr r) (Cr' r)
+    ,  Result = (elim_or C' W' Cl' Cr')
+    ,  !
+    .
+
+extract_set_ops (elim_or C W Cl Cr) Result SetList
+    :- extract_set_ops W W' WList
+    ,  collapse_star_ops_type C C'
+    ,  isa W (or L R) int
+    ,  pi l\ locDecl l L => extract_set_ops (Cl l) (Cl' l) ClList
+    ,  pi r\ locDecl r R => extract_set_ops (Cr r) (Cr' r) CrList
+    ,  spy(collapse_term (elim_or C' W' Cl' Cr') Result [])
+    ,  concat [CrList, ClList, WList] SetList
+    ,  !
+    .
+
