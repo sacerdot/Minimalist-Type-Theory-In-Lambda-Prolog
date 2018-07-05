@@ -1,0 +1,29 @@
+%% Base cases definition for extraction
+
+starify_type set A A :- !.
+starify_type _   _ extractor_singleton.
+
+starify_nonset_ops_type TA Result
+    :- ofType TA AKind int
+    ,  spy(starify_type AKind TA Result)
+    ,  !
+    .
+
+starify_term set A A :- !.
+starify_term _   A A :- spy(name A), !.
+starify_term _   _ extractor_star.
+
+starify_nonset_ops A Result
+    :- of A TA int
+    ,  ofType TA AKind int
+    ,  spy(starify_term AKind A Result)
+    ,  !
+    .
+
+
+collapse_star_ops_type A A.
+
+collapse_term A A [].
+
+extract_set_ops A A [].
+

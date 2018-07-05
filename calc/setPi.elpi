@@ -969,3 +969,83 @@ setPiLib Lp :-
 	)))))))))))))
   ]. 
  
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (setPi B C) Result
+    :- starify_nonset_ops_type B B'
+    ,  pi b\ locDecl b B => starify_nonset_ops_type (C b) (C' b)
+    ,  spy(Result = (setPi B' C'))
+    ,  !
+    .
+
+collapse_star_ops_type (setPi B C) Result
+    :- collapse_star_ops_type B B'
+    ,  pi b\ locDecl b B => collapse_star_ops_type (C b) (C' b)
+    ,  spy((B' = extractor_singleton, C' = (x\ extractor_singleton)
+        ,    Result = extractor_singleton)
+        , !; Result = (setPi B' C'))
+    ,  !
+    .
+
+
+%% wrap_enlarged_sets is not necessary because this is the implementation of the wrapping itself
+
+starify_nonset_ops (lambda B F) Result
+    :- starify_nonset_ops_type B B'
+    ,  pi b\ locDecl b B => starify_nonset_ops (F b) (F' b)
+    ,  spy(Result = (lambda B' F'))
+    ,  !
+    .
+
+collapse_term (lambda extractor_singleton (x\extractor_star)) Result []
+    :- Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (lambda B F) Result SetList
+    :- collapse_star_ops_type B B'
+    ,  pi b\ locDecl b B => extract_set_ops (F b) (F' b) SetList
+    ,  spy(collapse_term (lambda B' F') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (app Lam X) Result
+    :- starify_nonset_ops Lam Lam'
+    ,  starify_nonset_ops X X'
+    ,  spy(Result = (app Lam' X'))
+    ,  !
+    .
+
+collapse_term (app extractor_star extractor_star) Result []
+    :- Result = extractor_star
+    ,  !
+    .
+
+%%   !!! ATTENZIONE NON FUNZIONA SE LA LAMBDA E' CONTENUTA IN ALTRO !!!
+collapse_term (app (lambda B (x\extractor_star)) X) Result AppList
+    :- (isa X B int, !; fail)
+    ,  ofType B Kind int
+    ,  ((Kind = set, AppList = [X]), !; AppList = [])
+    ,  Result = extractor_star
+    ,  !
+    .
+
+%%   !!! ATTENZIONE NON FUNZIONA SE LA LAMBDA E' CONTENUTA IN ALTRO !!!
+collapse_term (app (lambda extractor_singleton Lam) extractor_star) Result AppList
+    :- extract_set_ops (Lam extractor_star) Result AppList
+    ,  !
+    .
+
+extract_set_ops (app Lam X) Result SetList
+    :- extract_set_ops Lam Lam' LamList
+    ,  extract_set_ops X X' XList
+    ,  spy(collapse_term (app Lam' X') Result AppList)
+    ,  concat [AppList, XList, LamList] SetList
+    ,  !
+    .
+
