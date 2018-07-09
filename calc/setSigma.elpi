@@ -499,14 +499,22 @@ setSigmaLib L :-
 							            (p2 z))))
 						   (impl_app (impl_app (forall_app (forall_app (forall_app
 						     (app (setoid_tranL Bi) bS) (p1 x)) (p1 y)) (p1 z)) u1) v1)
-						   (fixMe "transitivity over Ci"
+						   /*(fixMe "transitivity over Ci"
 						    (decode (app (app (app (setoid_rel (Ci (p1 z)))
 						    	    	 (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 z)))
 								 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 z))
 				        			      (impl_app (impl_app (forall_app (forall_app (forall_app
 						     		        (app (setoid_tranL Bi) bS) (p1 x)) (p1 y)) (p1 z)) u1) v1))
 								      (p2 x)))
-							         (p2 z))))))))
+							         (p2 z))))*/
+                                                    (impl_app (impl_app (forall_app (forall_app (forall_app
+						     (app (setoid_tranL (Ci (p1 z))) (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 z)))
+                                                      (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 z)) (fixMe "u1 o v1" _)) (p2 x)))
+                                                      (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 y)) (p1 z)) v1) (p2 y)))
+                                                      (p2 z))
+                                                      (fixMe "casted u2" _))
+                                                      v2)
+                                                    ))))
 
 )
 		    % proof of symmetry
