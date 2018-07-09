@@ -122,6 +122,9 @@ isa (fixMe M T) T int
     %,  print "|||||||||||||||||||||||||||||||||||||||||\n|||||||||||||||||||||||||||||||||||||||||\n"
     .
 
+%%% !!!DEBUG a fixMe is convertible with everything
+dconv (fixMe M T) _.
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% <For debugging purposes> %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
