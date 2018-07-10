@@ -40,10 +40,20 @@ dconv (propId A AA1 AA2) (propId A' AA1' AA2') :- spy (conv A A'), spy (conv AA1
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+wrap_enlarged_sets_type (propId A AA1 AA2) Result
+    :- ofType A KindA int
+    ,  ((KindA = set
+        ,    WAA1 = (app (lambda A (x\extractor_star)) AA1), WAA2 = (app (lambda A (x\extractor_star)) AA2), WA = extractor_singleton)
+        , !; WAA1 = AA1, WAA2 = AA2, WA = A)
+    ,  spy(Result = (propId WA WAA1 WAA2))
+    ,  !
+    .
+
 starify_nonset_ops_type (propId A AA1 AA2) Result
-    :- starify_nonset_ops AA1 AA1'
-    ,  starify_nonset_ops AA2 AA2'
-    ,  starify_nonset_ops_type A A'
+    :- wrap_enlarged_sets_type (propId A AA1 AA2) (propId WA WAA1 WAA2)
+	,  starify_nonset_ops WAA1 AA1'
+    ,  starify_nonset_ops WAA2 AA2'
+    ,  starify_nonset_ops_type WA A'
     ,  spy(Result = (propId A' AA1' AA2'))
     ,  !
     .
@@ -59,9 +69,19 @@ collapse_star_ops_type (propId A AA1 AA2) Result
     .
 
 
+wrap_enlarged_sets (id A AA) Result
+    :- ofType A KindA int
+    ,  ((KindA = set
+        ,    WAA = (app (lambda A (x\extractor_star)) AA), WA = extractor_singleton)
+        , !; WAA = AA, WA = A)
+    ,  spy(Result = (id WA WAA))
+    ,  !
+    .
+
 starify_nonset_ops (id A AA) Result
-    :- starify_nonset_ops AA AA'
-    ,  starify_nonset_ops_type A A'
+    :- wrap_enlarged_sets (id A AA) (id WA WAA)
+	,  starify_nonset_ops WAA AA'
+    ,  starify_nonset_ops_type WA A'
     ,  spy(Result = (id A' AA'))
     ,  !
     .
