@@ -595,4 +595,3 @@ testExtr 44 A :- debug => starify_nonset_ops (elim_id (id singleton star) (x\ y\
 testExtr 45 A :- debug => starify_nonset_ops (elim_setSigma (pair col_t (_\col_t) col_e col_e) (x\singleton) (l\r\ star)) A.
 testExtr 46 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\singleton) star star) (x\col_t) (l\r\ col_e)) A.
 
-

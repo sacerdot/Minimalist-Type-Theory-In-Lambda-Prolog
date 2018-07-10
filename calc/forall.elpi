@@ -65,9 +65,7 @@ tau (forall B C) (forall B' C') P
 
 wrap_enlarged_sets_type (forall B C) Result
     :- ofType B KindB int
-    ,  pi b\ locDecl b B => ofType (C b) KindC int
-    ,  pts_for KindB KindC Kind
-    ,  ((Kind = propc, KindB = set
+    ,  ((KindB = set
         ,    WB = extractor_singleton)
         , !; WB = B)
     ,  spy(Result = (forall WB C))
@@ -94,10 +92,7 @@ collapse_star_ops_type (forall B C) Result
 
 wrap_enlarged_sets (forall_lam B F) Result
     :- ofType B KindB int
-    ,  pi b\ locDecl b B => of (F b) (C b) int
-    ,  pi b\ locDecl b B => ofType (C b) KindC int
-    ,  pts_for KindB KindC Kind
-    ,  ((Kind = propc, KindB = set
+    ,  ((KindB = set
         ,    WB = extractor_singleton)
         , !; WB = B)
     ,  spy(Result = (forall_lam WB F))
@@ -128,10 +123,7 @@ extract_set_ops (forall_lam B F) Result SetList
 wrap_enlarged_sets (forall_app Lam X) Result
     :- of X B int
     ,  ofType B KindB int
-    ,  isa Lam (forall B C) int
-    ,  ofType (C X) KindC int
-    ,  pts_for KindB KindC Kind
-    ,  ((Kind = propc, KindB = set
+    ,  ((KindB = set
         ,    WX = (app (lambda B (x\extractor_star)) X))
         , !; WX = X)
     ,  spy(Result = (forall_app Lam WX))
