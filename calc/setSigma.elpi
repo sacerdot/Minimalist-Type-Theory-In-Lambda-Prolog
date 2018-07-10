@@ -438,6 +438,41 @@ setSigmaLib L :-
           conv y (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y))
         (pi x\ locDecl x Bi => pi y \ locDecl y (Ci x) =>
           spy (conv y (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) x) x) (forall_app (app (setoid_reflL Bi) bS) x)) y)))
+	  
+      % hyp for distributing cast over transitivity
+	(hyp
+	  (pi x\ isa x (setSigma Bi Ci) int => pi y\ isa y (setSigma Bi Ci) int => pi z\ isa z (setSigma Bi Ci) int =>
+	    pi u1\ isa u1 (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 y))) int =>
+	     pi v1\ isa v1 (decode (app (app (app (setoid_rel Bi) bS) (p1 y)) (p1 z))) int =>
+	      conv (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) 
+       	      	   	(p1 y)) 
+	   		(p1 z))
+            		v1)
+           		(app (app (app (app (app (setoidDepCast Bi Ci bS) cS) 
+	   		     (p1 x)) 
+			     (p1 y))
+             		     u1) 
+			     (p2 x)))
+		   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) 
+       	    	   	(p1 x)) 
+	    		(p1 z))
+            		(impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Bi) bS) 
+	    	      		  (p1 x))
+                      		  (p1 y)) 
+		      		  (p1 z)) 
+		      		  u1) 
+		      		  v1)) 
+	    	        (p2 x)))
+	   /*(pi x\ locDecl x (setSigma Bi Ci) => pi y\ locDecl y (setSigma Bi Ci) => pi z\ locDecl z (setSigma Bi Ci) =>
+	    pi u1\ locDecl u1 (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 y))) =>
+	     pi v1\ locDecl v1 (decode (app (app (app (setoid_rel Bi) bS) (p1 y)) (p1 z))) =>
+	      conv (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 y)) (p1 z)) v1)
+           		(app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 y)) u1) (p2 x)))
+		   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 z))
+            		(impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Bi) bS) 
+	    	      		  (p1 x)) (p1 y)) (p1 z)) u1) v1)) 
+	    	        (p2 x)))*/
+	   (true)
         (locDefL (setSigma_setoid Bi Ci bS cS) (setoid (setSigma Bi Ci))
          (pair
             (setPi (setSigma Bi Ci) _ \ setPi (setSigma Bi Ci) _ \ propS)
@@ -445,7 +480,7 @@ setSigmaLib L :-
 	    	   	     (forall (setSigma Bi Ci) x\ forall (setSigma Bi Ci) y\ forall (setSigma Bi Ci) z\
 			       implies (decode (app (app rel x) y)) (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
 	                (forall (setSigma Bi Ci) x1\ forall (setSigma Bi Ci) x2\ implies (decode (app (app rel x1) x2))
-		                                                                  (decode (app (app rel x2) x1)))))
+	                                                                 (decode (app (app rel x2) x1)))))
             % the setoid relation
            (setSigma_setoidRel Bi Ci bS cS)
 	   (pair_and (and (forall (setSigma Bi Ci) x \ decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) x))
@@ -491,7 +526,7 @@ setSigmaLib L :-
 				    (elim_exist u (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) z))
 				     (u1\ u2\ elim_exist v (decode (app (app (setSigma_setoidRel Bi Ci bS cS) x) z))
 				      (v1\ v2\
-				        pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 z)))
+				        (pair_exist (decode (app (app (app (setoid_rel Bi) bS) (p1 x)) (p1 z)))
 						   (d\ (decode (app (app (app (setoid_rel (Ci (p1 z)))
 				 	   	       	       	    (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 z)))
 		    		       				    (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 z))
@@ -499,22 +534,25 @@ setSigmaLib L :-
 							            (p2 z))))
 						   (impl_app (impl_app (forall_app (forall_app (forall_app
 						     (app (setoid_tranL Bi) bS) (p1 x)) (p1 y)) (p1 z)) u1) v1)
-						   /*(fixMe "transitivity over Ci"
-						    (decode (app (app (app (setoid_rel (Ci (p1 z)))
-						    	    	 (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 z)))
-								 (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 z))
-				        			      (impl_app (impl_app (forall_app (forall_app (forall_app
-						     		        (app (setoid_tranL Bi) bS) (p1 x)) (p1 y)) (p1 z)) u1) v1))
-								      (p2 x)))
-							         (p2 z))))*/
                                                     (impl_app (impl_app (forall_app (forall_app (forall_app
 						     (app (setoid_tranL (Ci (p1 z))) (app (app (setoidDepCarrier Bi Ci bS) cS) (p1 z)))
-                                                      (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 z)) (fixMe "u1 o v1" _)) (p2 x)))
+                                                      (app (app (app (app (app (setoidDepCast Bi Ci bS) cS)
+						      	   (p1 x))
+							   (p1 z))
+						      	   (impl_app (impl_app (forall_app (forall_app (forall_app
+						     	   	     (app (setoid_tranL Bi) bS) (p1 x)) (p1 y)) (p1 z)) u1) v1))
+							   (p2 x)))
                                                       (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 y)) (p1 z)) v1) (p2 y)))
                                                       (p2 z))
-                                                      (fixMe "casted u2" _))
+                                                      (app (app (app (app (app (app (app (proof_trasp Bi Ci bS) cS)
+						      	   (p1 y))
+							   (p1 z))
+							   (app (app (app (app (app (setoidDepCast Bi Ci bS) cS) (p1 x)) (p1 y)) u1) (p2 x)))
+							   (p2 y))
+							   v1)
+							   u2))
                                                       v2)
-                                                    ))))
+                                                    )))))
 
 )
 		    % proof of symmetry
@@ -549,7 +587,7 @@ setSigmaLib L :-
 					    (p2 x1)))
 					   (p2 x2))
 					   (impl_app (forall_app (forall_app (app (setoid_symmL Bi) bS) (p1 x1)) (p1 x2)) h1))
-					   h2)))))))))))),
+					   h2))))))))))))),
 
  % gamma_trasp
  (univPi Ai\
