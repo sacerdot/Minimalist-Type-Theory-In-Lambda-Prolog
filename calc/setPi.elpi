@@ -661,19 +661,44 @@ setPiLib Lp :-
 
       % hyps for transitivity
       (hyp
-        (pi a1\ isa a1 Ai int => pi a2\ isa a2 Ai int => pi d\ isa d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) int =>
-	    conv d (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS)
-		   	     a1) a2) a2) d) (forall_app (app (setoid_reflL Ai) aS) a2)))
-        (pi a1\ locDecl a1 Ai  => pi a2\ locDecl a2 Ai => pi d\ locDecl d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) =>
-	    conv d (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS)
-		   	     a1) a2) a2) d) (forall_app (app (setoid_reflL Ai) aS) a2)))
+        (pi a1\ isa a1 Ai int => pi a2\ isa a2 Ai int => pi a3\ isa a3 Ai int =>
+	  pi d\ isa d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) int =>
+	   pi d'\ isa d' (decode (app (app (app (setoid_rel Ai) aS) a2) a3)) int =>
+	    conv a2 a3 =>
+	     conv d (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS) a1) a2) a3) d) d'))
+        (pi a1\ locDecl a1 Ai  => pi a2\ locDecl a2 Ai => pi a3\ isa a3 Ai int =>
+	  pi d\ locDecl d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) =>
+	   pi d'\ locDecl d' (decode (app (app (app (setoid_rel Ai) aS) a2) a3)) =>
+	    conv a2 a3 =>
+	     conv d (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS) a1) a2) a3) d) d'))
       (hyp
-        (pi a1\ isa a1 Ai int => pi a2\ isa a2 Ai int => pi d\ isa d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) int =>
-	    conv d (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS)
-		   	     a1) a1) a2) (forall_app (app (setoid_reflL Ai) aS) a1)) d))
-	(pi a1\ locDecl a1 Ai => pi a2\ locDecl a2 Ai => pi d\ locDecl d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) =>
-	    conv d (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS)
-		   	     a1) a1) a2) (forall_app (app (setoid_reflL Ai) aS) a1)) d))
+        (pi a1\ isa a1 Ai int => pi a2\ isa a2 Ai int => pi a3\ isa a3 Ai int =>
+	  pi d\ isa d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) int =>
+	   pi d'\ isa d' (decode (app (app (app (setoid_rel Ai) aS) a2) a3)) int =>
+	    conv a1 a2 =>
+	     conv d' (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS) a1) a2) a3) d) d'))
+	(pi a1\ locDecl a1 Ai => pi a2\ locDecl a2 Ai => pi a3\ locDecl a3 Ai =>
+	  pi d\ locDecl d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) =>
+	   pi d'\ locDecl d' (decode (app (app (app (setoid_rel Ai) aS) a2) a3)) =>
+	    conv a1 a2 =>
+	     conv d' (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL Ai) aS) a1) a2) a3) d) d'))
+      (hyp
+        (pi a\ isa a Ai int => pi b1\ isa b1 (Bi a) int => pi b2\ isa b2 (Bi a) int => pi b3\ isa b3 (Bi a) int =>
+	  pi d\ isa d (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2)) int =>
+	   pi d'\ isa d' (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2)) int =>
+	    conv b2 b3 =>
+	     conv d
+	     	  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi a))
+		  	    (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2) b3) d) d'))
+	(pi a\ locDecl a Ai => pi b1\ locDecl b1 (Bi a)  => pi b2\ locDecl b2 (Bi a) => pi b3\ locDecl b3 (Bi a) =>
+	  pi d\ locDecl d (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2)) =>
+	   pi d'\ locDecl d' (decode (app (app (app (setoid_rel (Bi a)) (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2)) =>
+	    conv b2 b3 =>
+	     conv d
+	     	  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi a))
+		  	    (app (app (setoidDepCarrier Ai Bi aS) bS) a)) b1) b2) b3) d) d'))
+			    
+      
       % hyp for distributing cast over transitivity
       (hyp
        (pi a\ isa a (setSigma Ai Bi) int => pi b\ isa b (setSigma Ai Bi) int => pi c\ isa c (setSigma Ai Bi) int =>
@@ -720,7 +745,7 @@ setPiLib Lp :-
 	  pi d\ locDecl d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) =>
 	   pi d'\ locDecl d' (decode (app (app (app (setoid_rel (Bi a2)) (app (app (setoidDepCarrier Ai Bi aS) bS) a2)) y1 ) y2)) =>
 	    pi f\ locDecl f (setPi (Bi a1) (b\ Ci (pair Ai Bi a1 b))) =>
-	  (conv_trans
+	  (conv_trans_symm
 		     % base term
 	             (app (app (app (app (app (setoidDepCast (Bi a2) (b \ Ci (pair Ai Bi a2 b))
              	     	  (app (app (setoidDepCarrier Ai Bi aS) bS) a2))
@@ -982,6 +1007,6 @@ setPiLib Lp :-
 							     d')))
 
 				  ))))))))
-	)))))))))))))))
+	))))))))))))))))
   ]. 
  
