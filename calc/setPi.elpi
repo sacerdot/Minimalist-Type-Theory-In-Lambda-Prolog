@@ -672,7 +672,8 @@ setPiLib Lp :-
 		 y2))
 	     y2)
 
-      % CUTS TO HANDLE HYPS INSIDE p1, p2. SEE WHAT THEY LOOK LIKE AND THEN GENERALIZE THEM
+     %% this cut resolves the hyp in case of p2.
+     %% NB: There is a Fail of this kind before the cut gets to be processed (successfully).
       (cut
        (pi a1\ locDecl a1 Ai => pi a2\ locDecl a2 Ai => pi y\ locDecl y (Bi a2) => 
 	 pi d\ locDecl d (decode (app (app (app (setoid_rel Ai) aS) a1) a2)) =>
@@ -685,7 +686,7 @@ setPiLib Lp :-
    	       (app (app (app (app (app (setoidDepCast Ai Bi aS) bS) a2) a1)
                	   	 (impl_app (forall_app (forall_app (app (setoid_symmL Ai) aS) a1) a2) d))
          		 y))
-	  y)
+	  y) 
 
       % hyps on reflexivity
       (hyp
