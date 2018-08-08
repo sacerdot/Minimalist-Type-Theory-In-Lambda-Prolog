@@ -141,11 +141,15 @@ of (debugga T) TY IE :-
  (debug => spy(of T TY IE)),
  print ">@@@@@@@@@@" (of T TY IE).
 
+hstep (debugga T) T.
+
 type printa mttTerm -> mttTerm.
 
 isa (printa T) TY IE :-
  print "=@@@@@@@@@@" (isa T TY IE),
  isa T TY IE.
+
+hstep (printa T) T.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %% </For debugging purposes> %%
