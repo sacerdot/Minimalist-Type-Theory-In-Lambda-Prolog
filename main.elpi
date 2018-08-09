@@ -8,7 +8,12 @@ type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
 
 
 /* UNITYPED COMPUTATIONAL PREDICATES */
-type hstep, dconv, hnf,  conv, interp A -> A -> prop. 
+type hstep, dconv, hnf,  conv, interp A -> A -> prop.
+
+/* NEW INTERPRETATION PREDICATES */
+type new_interp_type mttType -> mttTerm -> prop.
+type new_interp_dep_type mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
+
  
 /*MTT PREDICATES*/
 kind mttTerm,               mttType, mttKind, mttLevel type.
@@ -454,6 +459,45 @@ translateLib L1 :-
 	 (x\y\y))))))
  ].
 
+type trueT mttType.
+type mk_trueT mttTerm.
+
+trueLib L :-
+ L =
+ [
+% true
+  (locTypeDefL trueT props (propId singleton star star)),
+% mk_trueT
+  (locDefL mk_trueT trueT (id singleton star))
+ ].
+
+% Library for abbreviations common to all propositions
+type prop_setoid mttType -> mttTerm.
+propLib L :-
+ L =
+ [
+% prop_setoid (to be used for all propositions, i.e. and, implies, or, ...)
+  (univProp Xi \
+    locDefL (prop_setoid Xi) (setoid Xi)
+     (pair
+       (setPi Xi _ \ setPi Xi _ \ propS)
+       (rel \ (and (and (forall Xi x \ decode (app (app rel x) x))
+       	      	   	(forall Xi x\ forall Xi y\ forall Xi z\ implies (decode (app (app rel x) y))
+		         (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
+                   (forall Xi x1\ forall Xi x2\ implies (decode (app (app rel x1) x2)) (decode (app (app rel x2) x1)))))
+       % the setoid relation
+       (lambda Xi _ \ lambda Xi _ \ encode trueT)
+       (pair_and
+	 (and (forall Xi _ \ trueT)
+       	      (forall Xi _\ forall Xi _\ forall Xi _\ implies trueT (implies trueT trueT)))
+         (forall Xi _ \ forall Xi _ \ implies trueT trueT)
+	 (pair_and (forall Xi _ \ trueT)
+	 	   (forall Xi _\ forall Xi _\ forall Xi _\ implies trueT (implies trueT trueT))
+		   (forall_lam Xi _ \ mk_trueT)
+		   (forall_lam Xi _\ forall_lam Xi _\ forall_lam Xi _\ impl_lam trueT _\ impl_lam trueT _\ mk_trueT))
+         (forall_lam Xi _ \ forall_lam Xi _ \ impl_lam trueT _ \ mk_trueT))))
+ ].
+
 type append list A -> list A -> list A -> prop.
 
 append [] L L.
@@ -481,6 +525,7 @@ type locDefL   mttTerm -> mttType -> mttTerm -> libraryEntry.
 type univPi    (mttType -> libraryEntry) -> libraryEntry.
 type univProp    (mttType -> libraryEntry) -> libraryEntry.
 type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
+type univDepProp mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
 type univPiT   mttType -> (mttTerm -> libraryEntry) -> libraryEntry.
 type hyp       prop -> prop -> libraryEntry -> libraryEntry.
 % Note: the first argument of cut must be made of only
@@ -512,6 +557,13 @@ process_entry (univDepPi Bi F) Hyp2 :-
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) set int :- of x Bi int))
                 % , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ).
+process_entry (univDepProp Bi F) Hyp2 :-
+   spy (pi Ci \ (pi x \ ofType (Ci x) props int :- of x Bi int) =>
+                (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
+                spy (process_entry (F Ci) (Hyp Ci))),
+   Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) props int :- of x Bi int))
+                % , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
+          ). 
 process_entry (univPiT T F) Hyp2 :-
    spy (pi x \ of x T int => spy (process_entry (F x) (Hyp x))),
    Hyp2 = (pi x \ Hyp x :- spy(isa x T int)).

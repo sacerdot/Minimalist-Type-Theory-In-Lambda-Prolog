@@ -235,12 +235,8 @@ atest5 T Delta S Terms :-
 
 /**** end of abstract a type over the subterms ****/
 
-type new_interp_type mttType -> mttTerm -> prop.
-type new_interp_dep_type mttType -> (mttTerm -> mttType) -> mttTerm -> prop.
 type singleton_setoid mttTerm.
 type singleton_setoidDep mttType -> mttTerm -> mttTerm.
-
-new_interp_type singleton singleton_setoid.
 
 new_interp_type (setSigma B C) O :-
    spy (interp B Bi),
@@ -248,11 +244,6 @@ new_interp_type (setSigma B C) O :-
    spy (new_interp_type B Bs),
    spy (new_interp_dep_type B C Cs),
    O = setSigma_setoid Bi Ci Bs Cs.
-
-new_interp_dep_type B (x \ singleton) O :-
-   interp B Bi,
-   new_interp_type B Bs,
-   O = singleton_setoidDep Bi Bs.
 
 new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
    spy (interp A Ai),
@@ -262,111 +253,6 @@ new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
    new_interp_dep_type A B Bs,
    new_interp_dep_type (setSigma A B) (x \ C (p1 x) (p2 x)) Cs,
    O = setSigma_setoidDep Ai Bi Ci As Bs Cs.
-
-singletonLib L :-
- L =
- [
-   (locDefL singleton_setoid (setoid singleton)
-    (pair
-      (setPi singleton x \ setPi singleton y \ propS) 
-      (rel \ and  (and (forall singleton x \ decode (app (app rel x) x))
-      	     	       (forall singleton x\ forall singleton y\ forall singleton z\ implies (decode (app (app rel x) y))
-		       	       (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
-      	     	  (forall singleton x1\ forall singleton x2\ implies (decode (app (app rel x1) x2))
-		       	   	   	     	 		      	    (decode (app (app rel x2) x1))))
-      (lambda singleton x \ lambda singleton y \ encode (propId singleton x y))
-      (pair_and (and (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
-      		     (forall singleton x\ forall singleton y\ forall singleton z\
-		      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
-		       	 (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
-			   (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z)))))
-                (forall singleton x1\ forall singleton x2\
-	    	      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2))
-		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))
-            (pair_and (forall singleton x \ decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) x))
-		      (forall singleton x\ forall singleton y\ forall singleton z\
-		      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
-		       	 (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
-			   (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z))))
-		      (forall_lam singleton x \ id singleton x)
-		      (fixMe "tran singleton_setoid"
-		      	     (forall singleton x\ forall singleton y\ forall singleton z\
-		      	      implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
-		       	       (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
-			        (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z))))))
-	    (fixMe "symm singleton_setoid" (forall singleton x1\ forall singleton x2\
-	    	      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2))
-		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))))))
- ,
-  (univPi Bi \
-    (univPiT (setoid Bi) bS \
-      locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
-       (pair (setSigma (setPi Bi _\ setoid singleton) _\
-             	       (setPi Bi x \ setPi Bi x' \
-		       	      setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton))
-	     (cc\ (setPi Bi x1\ setPi Bi x2\
-	     	setPi singleton y1\ setPi singleton y2\
-	          setPi (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
-	            setPi (decode (app (app (app (setoid_rel singleton)
-		    	  	       (app (elim_setSigma cc (_\ (setPi Bi _\ setoid singleton)) (x\y\x)) x1)) y1) y2)) d2\
-	              (decode (app (app (app (setoid_rel singleton)
-			      (app (elim_setSigma cc (_\ (setPi Bi _\ setoid singleton)) (x\y\x)) x2))
-			      (app (app (app (app (elim_setSigma cc
-			      	   	     	    (_\ (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x'))
-						    	       _ \ setPi singleton _ \ singleton)) (x\y\y)) x1) x2) d1) y1))
-			      (app (app (app (app (elim_setSigma cc
-			      	   	     	    (_\ (setPi Bi x \ setPi Bi x' \ setPi (decode (app (app (app (setoid_rel Bi) bS) x) x'))
-						    	       _ \ setPi singleton _ \ singleton)) (x\y\y)) x1) x2) d1) y2)))))
-      	     (pair (setPi Bi _\ setoid singleton)
-	     	   (_\ (setPi Bi x \ setPi Bi x' \
-		       	      setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton))
-	           (lambda Bi x \ singleton_setoid)
-		   (lambda Bi x \ lambda Bi x' \ lambda (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ lambda singleton y \ y))
-	     (lambda Bi x1\ lambda Bi x2\ lambda singleton y1\ lambda singleton y2\
-	       lambda (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
-	        lambda (decode (app (app (app (setoid_rel singleton) (app (lambda Bi x \ singleton_setoid) x1)) y1) y2)) d2\
-		 d2))	 
-    ))
- ].
-
-type trueT mttType.
-type mk_trueT mttTerm.
-
-trueLib L :-
- L =
- [
-% true
-  (locTypeDefL trueT props (propId singleton star star)),
-% mk_trueT
-  (locDefL mk_trueT trueT (id singleton star))
- ].
-
-type prop_setoid mttType -> mttTerm.
-
-propLib L :-
- L =
- [
-% prop_setoid (to be used for all propositions, i.e. and, implies, or, ...)
-  (univProp Xi \
-    locDefL (prop_setoid Xi) (setoid Xi)
-     (pair
-       (setPi Xi _ \ setPi Xi _ \ propS)
-       (rel \ (and (and (forall Xi x \ decode (app (app rel x) x))
-       	      	   	(forall Xi x\ forall Xi y\ forall Xi z\ implies (decode (app (app rel x) y))
-		         (implies (decode (app (app rel y) z)) (decode (app (app rel x) z)))))
-                   (forall Xi x1\ forall Xi x2\ implies (decode (app (app rel x1) x2)) (decode (app (app rel x2) x1)))))
-       % the setoid relation
-       (lambda Xi _ \ lambda Xi _ \ encode trueT)
-       (pair_and
-	 (and (forall Xi _ \ trueT)
-       	      (forall Xi _\ forall Xi _\ forall Xi _\ implies trueT (implies trueT trueT)))
-         (forall Xi _ \ forall Xi _ \ implies trueT trueT)
-	 (pair_and (forall Xi _ \ trueT)
-	 	   (forall Xi _\ forall Xi _\ forall Xi _\ implies trueT (implies trueT trueT))
-		   (forall_lam Xi _ \ mk_trueT)
-		   (forall_lam Xi _\ forall_lam Xi _\ forall_lam Xi _\ impl_lam trueT _\ impl_lam trueT _\ mk_trueT))
-         (forall_lam Xi _ \ forall_lam Xi _ \ impl_lam trueT _ \ mk_trueT))))
- ].
 
 setSigmaLib L :-
  L =
