@@ -515,7 +515,8 @@ in_library P :-
  singletonLib L4,
  setSigmaLib L5,
  setPiLib L6,
- concat [L1,L2,L3,L4 ,L5, L6] L,
+ impliesLib Limpl,
+ concat [L1,L2,L3,L4 ,L5, L6, Limpl] L,
  process_library L P.
 
 kind libraryEntry type.
@@ -562,7 +563,7 @@ process_entry (univDepProp Bi F) Hyp2 :-
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) props int :- of x Bi int))
-                % , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
+                , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ). 
 process_entry (univPiT T F) Hyp2 :-
    spy (pi x \ of x T int => spy (process_entry (F x) (Hyp x))),
