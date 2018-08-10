@@ -516,7 +516,8 @@ in_library P :-
  setSigmaLib L5,
  setPiLib L6,
  impliesLib Limpl,
- concat [L1,L2,L3,L4 ,L5, L6, Limpl] L,
+ forallLib Lforall,
+ concat [L1,L2,L3,L4 ,L5, L6, Lforall, Limpl] L,
  process_library L P.
 
 kind libraryEntry type.
