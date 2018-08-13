@@ -62,3 +62,29 @@ tau_eq (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 
 
 proof_eq  _ _ (propEq _T _A _B) (id singleton star).
+
+
+/* NEW INTERPRETATION AND LIBRARY */
+type propEqLib list libraryEntry -> prop.
+type propEq_setoidDep mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+
+new_interp_type (propEq A Aa1 Aa2) O :-
+  spy(interp A Ai),
+  new_interp_type A As,
+     % Aa1 and Aa2 should be both of ext type A
+  spy(interp_isa Aa1 A Aa1i),
+  spy(interp_isa Aa2 A Aa2i),
+  O = (prop_setoid (setoid (decode (app (app (app (setoid_rel Ai) AS) Aa1i) Aa2i)))).
+
+new_interp_dep_type A (a\ (propEq (B a) Bb1 Bb2)) O :-
+  spy(interp A Ai),
+  macro_interp A (a\ai\_\_\ interp (B a) (Bi ai)),
+  macro_interp A (a\ai\_\_\ (interp_isa Bb1 (B a) Bb1i, interp_isa Bb2 (B a) Bb2i)),
+  new_interp_type A As,
+  new_interp_dep_type A B Bs,
+  O = (propEq_setoidDep Ai Bi As Bs Bb1i Bb2i).
+  %% Bb1i and Bb2i declarations with univPiT would require to know an element ai of Ai
+  %% possibly need a new abstraction mechanism for terms of dependent types (univDepPiT)
+
+
+
