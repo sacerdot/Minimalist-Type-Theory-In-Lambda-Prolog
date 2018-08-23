@@ -87,7 +87,7 @@ new_interp_dep_type B (x \ singleton) O :-
 
 singletonLib L :-
  L =
- [
+ [ 
    (locDefL singleton_setoid (setoid singleton)
     (pair
       (setPi singleton x \ setPi singleton y \ propS) 
@@ -110,19 +110,23 @@ singletonLib L :-
 		      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
 		       	 (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
 			   (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z))))
+		      % reflexivity
 		      (forall_lam singleton x \ id singleton x)
-		      (fixMe "tran singleton_setoid"
-		      	     (forall singleton x\ forall singleton y\ forall singleton z\
-		      	      implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) y))
-		       	       (implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) y) z))
-			        (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x) z))))))
-	    (fixMe "symm singleton_setoid" (forall singleton x1\ forall singleton x2\
-	    	      	implies (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x1) x2))
-		       	   	 (decode (app (app (lambda singleton x \ lambda singleton y \ encode (propId singleton x y)) x2) x1)))))))
+		      % transitivity
+		      (forall_lam singleton x\ forall_lam singleton y\ forall_lam singleton z\
+		      	      impl_lam (propId singleton x y) d1\
+		       	       (impl_lam (propId singleton y z) d2\
+			       (elim_singleton z (v1\ (propId singleton x v1))
+			       		       	 (elim_singleton x (v2\ (propId singleton v2 star)) (id singleton star))))))
+	    %% symmetry 
+	   (forall_lam singleton x1\ forall_lam singleton x2\
+	     impl_lam (propId singleton x1 x2) d\
+	     	(elim_id d (x\y\ (propId singleton y x)) (x\ id singleton x) ))
+	   )))
  ,
   (univPi Bi \
     (univPiT (setoid Bi) bS \
-      locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
+      (locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
        (pair (setSigma (setPi Bi _\ setoid singleton) _\
              	       (setPi Bi x \ setPi Bi x' \
 		       	      setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton))
@@ -148,5 +152,5 @@ singletonLib L :-
 	       lambda (decode (app (app (app (setoid_rel Bi) bS) x1) x2)) d1\
 	        lambda (decode (app (app (app (setoid_rel singleton) (app (lambda Bi x \ singleton_setoid) x1)) y1) y2)) d2\
 		 d2))	 
-    ))
+    )))
  ].
