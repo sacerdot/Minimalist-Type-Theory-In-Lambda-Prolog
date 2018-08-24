@@ -19,6 +19,7 @@ hstep (elim_singleton star C Cc) Cc
     :- spy(isa Cc (C star) IE_)
     .
 
+
 dconv (elim_singleton T C CC) (elim_singleton T' C' CC') :- conv T T' , conv CC CC',
     (pi z\ locDecl z singleton => conv (C z) (C' z)).
 
@@ -77,17 +78,18 @@ interp (elim_singleton T C CC) (elim_singleton Ti Ci CCi)
     ,  spy(pi x\ locDecl x singleton => spy(interp (C x) (Ci x)))
     .
 /* SINGLETON NEW INTERPRETATION AND LIBRARY */
-
 new_interp_type singleton singleton_setoid.
 
 new_interp_dep_type B (x \ singleton) O :-
    interp B Bi,
    new_interp_type B Bs,
    O = singleton_setoidDep Bi Bs.
+   
+conv X Y :- isa X singleton IE, isa Y singleton IE.
 
 singletonLib L :-
  L =
- [ 
+ [
    (locDefL singleton_setoid (setoid singleton)
     (pair
       (setPi singleton x \ setPi singleton y \ propS) 
@@ -125,8 +127,9 @@ singletonLib L :-
 	   )))
  ,
   (univPi Bi \
-    (univPiT (setoid Bi) bS \
-      (locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
+    (univPiT (setoid Bi) bS\
+
+     (locDefL (singleton_setoidDep Bi bS) (setoidDep Bi (x \ singleton) bS)
        (pair (setSigma (setPi Bi _\ setoid singleton) _\
              	       (setPi Bi x \ setPi Bi x' \
 		       	      setPi (decode (app (app (app (setoid_rel Bi) bS) x) x')) _ \ setPi singleton _ \ singleton))
