@@ -591,12 +591,12 @@ type univDepPiT mttType -> (mttTerm -> mttType) -> ((mttTerm -> mttTerm) -> libr
 
 process_entry (univDepPiT Ai Bi F) Hyp2 :-
    spy (pi t\
-       	      	% (pi x \ ofType (Bi x) col int :- of x Ai int) =>
-                % (pi x \ pi y \ dconv (Bi x) (Bi y) :- conv x y) =>
+       	      	%(pi x \ ofType (Bi x) col int :- of x Ai int) =>
+                %(pi x \ pi y \ dconv (Bi x) (Bi y) :- conv x y) =>
                 (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
 		spy(process_entry (F t) (Hyp t))),
-   Hyp2 = (pi t\ (Hyp t) :- % spy (pi x\ (isaType (Bi x) col int :- of x Ai int)),
-   	      	     	    spy(pi x\ isa (t x) (Bi x) int)).
+   Hyp2 = (pi t\ Hyp t :- %spy (pi x\ (isaType (Bi x) col int :- of x Ai int)),
+   	      	     	    spy(pi x\ isa (t x) (Bi x) int  :- of x Ai int)).
 
 process_entry (hyp H1 H2 E) Hyp2 :-
    spy (H1 => process_entry E Hyp),
