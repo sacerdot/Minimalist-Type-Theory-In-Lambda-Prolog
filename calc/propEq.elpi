@@ -6,10 +6,10 @@ type propEq mttType -> mttTerm -> mttTerm -> mttType.
 type eq   mttType -> mttTerm -> mttTerm.
 
 ofType (propEq A AA1 AA2) KIND ext 
-    :- ofType A KIND' ext
-    ,  pts_eq KIND' KIND
-    ,  isa AA1 A ext
-    ,  isa AA2 A ext
+    :- spy(ofType A KIND' ext)
+    ,  spy(pts_eq KIND' KIND)
+    ,  spy(isa AA1 A ext)
+    ,  spy(isa AA2 A ext)
     .
 
 
@@ -66,7 +66,8 @@ proof_eq  _ _ (propEq _T _A _B) (id singleton star).
 
 /* NEW INTERPRETATION AND LIBRARY */
 type propEqLib list libraryEntry -> prop.
-type propEq_setoidDep mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> mttTerm -> mttTerm.
+type propEq_setoidDep mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> (mttTerm -> mttTerm) ->
+     (mttTerm -> mttTerm) -> mttTerm.
 
 new_interp_type (propEq A Aa1 Aa2) O :-
   spy(interp A Ai),
@@ -74,12 +75,12 @@ new_interp_type (propEq A Aa1 Aa2) O :-
      % Aa1 and Aa2 should be both of ext type A
   spy(interp_isa Aa1 A Aa1i),
   spy(interp_isa Aa2 A Aa2i),
-  O = (prop_setoid (setoid (decode (app (app (app (setoid_rel Ai) AS) Aa1i) Aa2i)))).
+  O = (prop_setoid (decode (app (app (app (setoid_rel Ai) As) Aa1i) Aa2i))).
 
-new_interp_dep_type A (a\ (propEq (B a) Bb1 Bb2)) O :-
+new_interp_dep_type A (a\ (propEq (B a) (Bb1 a) (Bb2 a))) O :-
   spy(interp A Ai),
   macro_interp A (a\ai\_\_\ interp (B a) (Bi ai)),
-  macro_interp A (a\ai\_\_\ (interp_isa Bb1 (B a) Bb1i, interp_isa Bb2 (B a) Bb2i)),
+  macro_interp A (a\ai\_\_\ (interp_isa (Bb1 a) (B a) (Bb1i ai), interp_isa (Bb2 a) (B a) (Bb2i ai))),
   new_interp_type A As,
   new_interp_dep_type A B Bs,
   O = (propEq_setoidDep Ai Bi As Bs Bb1i Bb2i).
@@ -87,4 +88,35 @@ new_interp_dep_type A (a\ (propEq (B a) Bb1 Bb2)) O :-
   %% possibly need a new abstraction mechanism for terms of dependent types (univDepPiT)
 
 
-
+propEqLib L :- L = [
+ (univPi Ai\
+   univDepPi Ai Bi\
+    univPiT (setoid Ai) aS\
+     univPiT (setoidDep Ai Bi aS) bS\
+      univDepPiT Ai Bi b1\
+       univDepPiT Ai Bi b2\
+        hyp debug debug
+        (locDefL (propEq_setoidDep Ai Bi aS bS b1 b2) (setoidDep Ai (a\ (propEq (Bi a) (b1 a) (b2 a))) aS)
+		 (fixMe "prova" (setSigma (setSigma (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x))) _\
+		  	    (setPi Ai x1\ setPi Ai x2\
+	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ propEq (Bi x2) (b1 x2) (b2 x2))) cc\
+		  (setPi Ai x1\ setPi Ai x2\
+		    setPi (propEq (Bi x1) (b1 x1) (b2 x1)) y1\ setPi (propEq (Bi x1) (b1 x1) (b2 x1)) y2\
+		     setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) d1\
+		      setPi (decode (app (app (app (setoid_rel (propEq (Bi x1) (b1 x1) (b2 x1)))
+		      	    	    (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))) (x\y\x)) x1)) y1) y2)) d2\
+		       (decode (app (app (app (setoid_rel (propEq (Bi x2) (b1 x2) (b2 x2)))
+		       	       	    	 (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))) (x\y\x)) x2))
+					 (app (app (app (app (elim_setSigma cc
+					      	   	     		    (_\ (setPi Ai x1\ setPi Ai x2\
+	            	      						    	setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		     	    							setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ propEq (Bi x2)
+										      	      	      	      (b1 x2) (b2 x2)))
+									    (x\y\y)) x1) x2) d1) y1))
+					 (app (app (app (app (elim_setSigma cc
+					      	   	     		    (_\ (setPi Ai x1\ setPi Ai x2\
+	            	      						    	setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		     	    							setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ propEq (Bi x2)
+										 (b1 x2) (b2 x2)))
+									    (x\y\y)) x1) x2) d1) y2))))))))].

@@ -85,7 +85,7 @@ new_interp_dep_type B (x \ singleton) O :-
    new_interp_type B Bs,
    O = singleton_setoidDep Bi Bs.
    
-conv X Y :- isa X singleton IE, isa Y singleton IE.
+% conv X Y :- isa X singleton IE, isa Y singleton IE.
 
 singletonLib L :-
  L =
