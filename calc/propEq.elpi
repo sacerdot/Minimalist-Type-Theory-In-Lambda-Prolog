@@ -5,12 +5,11 @@
 type propEq mttType -> mttTerm -> mttTerm -> mttType.
 type eq   mttType -> mttTerm -> mttTerm.
 
-ofType (propEq A AA1 AA2) KIND IE
-    :- print "|||||||||||||||||DEBUG|||||||||||||||",
-       spy(ofType A KIND' IE)
+ofType (propEq A AA1 AA2) KIND ext
+    :- spy(ofType A KIND' ext)
     ,  spy(pts_eq  KIND' KIND)
-    ,  spy(isa AA1 A IE)
-    ,  spy(isa AA2 A IE)
+    ,  spy(isa AA1 A ext)
+    ,  spy(isa AA2 A ext)
     .
 
 
@@ -71,6 +70,8 @@ type propEq_trasp mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> (mttT
      (mttTerm -> mttTerm) -> mttTerm -> mttType.
 type propEq_setoidDep mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> (mttTerm -> mttTerm) ->
      (mttTerm -> mttTerm) -> mttTerm.
+type dep_eq mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> mttTerm -> (mttTerm -> mttTerm) ->
+     (mttTerm -> mttTerm) -> mttType.
 
 
 new_interp_type (propEq A Aa1 Aa2) O :-
@@ -100,29 +101,56 @@ propEqLib L :- L = [
    univPiT (setoidDep Ai Bi aS) bS\
    univDepPiT Ai Bi b1\
    univDepPiT Ai Bi b2\
-   univPiT (setSigma (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x))) _\
-		  	    (setPi Ai x1\ setPi Ai x2\
-	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2)))) cc\
+   univPiT (setSigma (setPi Ai x\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))) _\
+	       (setPi Ai x1\ setPi Ai x2\
+	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		  setPi (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+		    (decode (app (app (app (setoid_rel (Bi x2))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2))))) cc\
    (locTypeDefL (propEq_trasp Ai Bi aS bS b1 b2 cc) col
    		(setPi Ai x1\ setPi Ai x2\
-		    setPi (propEq (Bi x1) (b1 x1) (b2 x1)) y1\ setPi (propEq (Bi x1) (b1 x1) (b2 x1)) y2\
-		     setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) d1\
-		      setPi (decode (app (app (app (setoid_rel (propEq (Bi x1) (b1 x1) (b2 x1)))
-		      	    	    (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))) (x\y\x)) x1)) y1) y2)) d2\
-		       (decode (app (app (app (setoid_rel ((propEq (Bi x2) (b1 x2) (b2 x2))))
-		       	       	    	 (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))) (x\y\x)) x2))
-					 (app (app (app (app (elim_setSigma cc
+            setPi (decode (app (app (app (setoid_rel (Bi x1))
+		 	       (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) y1\
+	     setPi (decode (app (app (app (setoid_rel (Bi x1))
+		 	       	(app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) y2\
+              setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) d1\
+	      setPi (decode (app (app (app (setoid_rel (decode (app (app (app (setoid_rel (Bi x1))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))))
+		      	    	 (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x))))) (x\y\x)) x1)) y1) y2)) d2\
+	       (decode (app (app (app (setoid_rel ((decode (app (app (app (setoid_rel (Bi x2))
+		 	    (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
+		       	    (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x))))) (x\y\x)) x2))
+			    (app (app (app (app (elim_setSigma cc
 							       (_\ (setPi Ai x1\ setPi Ai x2\
-								setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-								setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-							    (x\y\y)) x1) x2) d1) y1))
-				         (app (app (app (app (elim_setSigma cc
-							     (_\ (setPi Ai x1\ setPi Ai x2\
-								 setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-								 setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-							     (x\y\y)) x1) x2) d1) y2)))))),
-   
+								   setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+								   setPi (decode (app (app (app (setoid_rel (Bi x1))
+				   (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+				   (decode (app (app (app (setoid_rel (Bi x2))
+				   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
+							       (x\y\y)) x1) x2) d1) y1))
+			    (app (app (app (app (elim_setSigma cc
+							       (_\ (setPi Ai x1\ setPi Ai x2\
+								   setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+								   setPi (decode (app (app (app (setoid_rel (Bi x1))
+				   (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+				   (decode (app (app (app (setoid_rel (Bi x2))
+				   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
+							       (x\y\y)) x1) x2) d1) y2)))))),
+
+ (univPi Ai\
+   univDepPi Ai Bi\
+    univPiT (setoid Ai) aS\
+     univPiT (setoidDep Ai Bi aS) bS\
+      univPiT Ai x\
+       univDepPiT Ai Bi b1\
+        univDepPiT Ai Bi b2\
+	 locTypeDefL (dep_eq Ai Bi aS bS x b1 b2) props
+	 	     (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))),
+       
  (univPi Ai\
    univDepPi Ai Bi\
     univPiT (setoid Ai) aS\
@@ -130,43 +158,52 @@ propEqLib L :- L = [
       univDepPiT Ai Bi b1\
        univDepPiT Ai Bi b2\
         %hyp debug debug
-        (locDefL (propEq_setoidDep Ai Bi aS bS b1 b2) (setoidDep Ai (a\ (propEq (Bi a) (b1 a) (b2 a))) aS)
-   (pair (setSigma (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x))) _\
-		  	    (setPi Ai x1\ setPi Ai x2\
-	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-	 (cc\ (setPi Ai x1\ setPi Ai x2\
-		    setPi (propEq (Bi x1) (b1 x1) (b2 x1)) y1\ setPi (propEq (Bi x1) (b1 x1) (b2 x1)) y2\
-		     setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) d1\
-		      setPi (decode (app (app (app (setoid_rel (propEq (Bi x1) (b1 x1) (b2 x1)))
-		      	    	    (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))) (x\y\x)) x1)) y1) y2)) d2\
-		       (decode (app (app (app (setoid_rel ((propEq (Bi x2) (b1 x2) (b2 x2))))
-		       	       	    	 (app (elim_setSigma cc (_\ (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))) (x\y\x)) x2))
-					 (app (app (app (app (elim_setSigma cc
-							       (_\ (setPi Ai x1\ setPi Ai x2\
-								setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-								setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-							    (x\y\y)) x1) x2) d1) y1))
-				         (app (app (app (app (elim_setSigma cc
-							     (_\ (setPi Ai x1\ setPi Ai x2\
-								 setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-								 setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-							     (x\y\y)) x1) x2) d1) y2)))))
-	(pair (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))
-	      (_\ (setPi Ai x1\ setPi Ai x2\
-	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-	      (lambda Ai x\ (prop_setoid (propEq (Bi x) (b1 x) (b2 x))))
-	      (fixMe "cast" (setPi Ai x1\ setPi Ai x2\
-	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2)))))
-	%%% sostituire cc appropriato
-	(fixMe "proof_trasp" (propEq_trasp Ai Bi aS bS b1 b2
-	   (pair (setPi Ai x\ setoid (propEq (Bi x) (b1 x) (b2 x)))
-	      (_\ (setPi Ai x1\ setPi Ai x2\
-	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))
-	      (lambda Ai x\ (prop_setoid (propEq (Bi x) (b1 x) (b2 x))))
-	      (fixMe "cast" (setPi Ai x1\ setPi Ai x2\
-	            	      setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		     	    	setPi (propEq (Bi x1) (b1 x1) (b2 x1)) _\ (propEq (Bi x2) (b1 x2) (b2 x2))))))))))].
+        (locDefL (propEq_setoidDep Ai Bi aS bS b1 b2)
+		 (setoidDep Ai (a\ (decode (app (app (app (setoid_rel (Bi a))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) a)) (b1 a)) (b2 a)))) aS)
+		 (pair (setSigma (setPi Ai x\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))) _\
+	       (setPi Ai x1\ setPi Ai x2\
+	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		  setPi (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+		    (decode (app (app (app (setoid_rel (Bi x2))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
+
+     (cc\ (propEq_trasp Ai Bi aS bS b1 b2 cc))
+     (pair (setPi Ai x\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x))))
+	   (_\ (setPi Ai x1\ setPi Ai x2\
+	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		  setPi (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+		    (decode (app (app (app (setoid_rel (Bi x2))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
+	   (lambda Ai x \ (prop_setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))))
+	   (fixMe "cast" (setPi Ai x1\ setPi Ai x2\
+	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		  setPi (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+		    (decode (app (app (app (setoid_rel (Bi x2))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2))))))
+     %% Sostituire il cc appropriato
+     (fixMe "proof_trasp"
+       (propEq_trasp Ai Bi aS bS b1 b2
+       		     (pair (setPi Ai x\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x))))
+	   (_\ (setPi Ai x1\ setPi Ai x2\
+	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		  setPi (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+		    (decode (app (app (app (setoid_rel (Bi x2))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
+	   (lambda Ai x \ (prop_setoid (decode (app (app (app (setoid_rel (Bi x))
+		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))))
+	   (fixMe "cast" (setPi Ai x1\ setPi Ai x2\
+	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
+		  setPi (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
+		    (decode (app (app (app (setoid_rel (Bi x2))
+		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2))))))))))
+   )].
