@@ -82,7 +82,7 @@ pts_leq set col.
 pts_leq propc col.
 
 %% determines kind of a equality type
-pts_eq K props :- pts_leq K set, !.
+pts_eq K props :- spy(pts_leq K set), !.
 pts_eq _ propc.
 
 %% determines kind of a proposition type
@@ -348,7 +348,7 @@ type setoidDepCast mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
 type proof_trasp  mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm.
 translateLib L1 :-
  L1 = [
-   (univPi X \ locTypeDefL (setoid X) col
+   (univCol X \ locTypeDefL (setoid X) col
      (setSigma
        % setoid_rel
        (setPi X _ \ setPi X _ \ propS)
@@ -518,7 +518,7 @@ in_library P :-
  impliesLib Limpl,
  forallLib Lforall,
  propEqLib LpropEq,
- concat [L1,L2,L3,L4 ,L5, L6, Lforall, Limpl /*, LpropEq*/] L,
+ concat [L1,L2,L3,L4 ,L5, L6, Lforall, Limpl, LpropEq] L,
  process_library L P.
 
 kind libraryEntry type.
@@ -532,6 +532,8 @@ type univDepPi mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry
 type univDepProp mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
 type univDepCol mttType -> ((mttTerm -> mttType) -> libraryEntry) -> libraryEntry.
 type univPiT   mttType -> (mttTerm -> libraryEntry) -> libraryEntry.
+type univDepPiT mttType -> (mttTerm -> mttType) -> ((mttTerm -> mttTerm) -> libraryEntry) -> libraryEntry.
+
 type hyp       prop -> prop -> libraryEntry -> libraryEntry.
 % Note: the first argument of cut must be made of only
 % pi, => and conv_trans. We could make the typing more precise
@@ -549,16 +551,19 @@ process_entry (locDefL N TY TE) Hyp :-
    spy(isa TE TY int),
    Hyp = locDef N TY TE,
    print "## New definition: " N.
+   
 process_entry (univPi F) Hyp2 :-
    spy (pi Bi \ ofType Bi set int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi set int)).
+   
 process_entry (univCol F) Hyp2 :-
    spy (pi Bi \ ofType Bi col int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi col int)).
+   
 process_entry (univProp F) Hyp2 :-
    spy (pi Bi \ ofType Bi props int => spy (process_entry (F Bi) (Hyp Bi))),
    Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi props int)).
-   
+
 process_entry (univDepPi Bi F) Hyp2 :-
    spy (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
@@ -571,15 +576,15 @@ process_entry (univDepProp Bi F) Hyp2 :-
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) props int :- of x Bi int))
-                , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
+                %, spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ).
-
+	  
 process_entry (univDepCol Bi F) Hyp2 :-
    spy (pi Ci \ (pi x \ ofType (Ci x) col int :- of x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) col int :- of x Bi int))
-                , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
+                %, spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ). 
 
 
@@ -587,15 +592,12 @@ process_entry (univPiT T F) Hyp2 :-
    spy (pi x \ of x T int => spy (process_entry (F x) (Hyp x))),
    Hyp2 = (pi x \ Hyp x :- spy(isa x T int)).
 
-type univDepPiT mttType -> (mttTerm -> mttType) -> ((mttTerm -> mttTerm) -> libraryEntry) -> libraryEntry.
-
 process_entry (univDepPiT Ai Bi F) Hyp2 :-
-   spy (pi t\
-       	      	%(pi x \ ofType (Bi x) col int :- of x Ai int) =>
-                %(pi x \ pi y \ dconv (Bi x) (Bi y) :- conv x y) =>
+   spy (pi t\   (pi x \ ofType (Bi x) set int :- of x Ai int) =>
+                (pi x \ pi y \ dconv (Bi x) (Bi y) :- conv x y) =>
                 (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
 		spy(process_entry (F t) (Hyp t))),
-   Hyp2 = (pi t\ Hyp t :- %spy (pi x\ (isaType (Bi x) col int :- of x Ai int)),
+   Hyp2 = (pi t\ Hyp t :-   spy (pi x\ (isaType (Bi x) set int :- of x Ai int)),  %this should hold already?
    	      	     	    spy(pi x\ isa (t x) (Bi x) int  :- of x Ai int)).
 
 process_entry (hyp H1 H2 E) Hyp2 :-
