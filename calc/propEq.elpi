@@ -157,7 +157,6 @@ propEqLib L :- L = [
      univPiT (setoidDep Ai Bi aS) bS\
       univDepPiT Ai Bi b1\
        univDepPiT Ai Bi b2\
-        %hyp debug debug
         (locDefL (propEq_setoidDep Ai Bi aS bS b1 b2)
 		 (setoidDep Ai (a\ (decode (app (app (app (setoid_rel (Bi a))
 		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) a)) (b1 a)) (b2 a)))) aS)
@@ -181,11 +180,11 @@ propEqLib L :- L = [
 		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
 	   (lambda Ai x \ (prop_setoid (decode (app (app (app (setoid_rel (Bi x))
 		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))))
-	   (fixMe "cast" (setPi Ai x1\ setPi Ai x2\
-	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		  setPi (decode (app (app (app (setoid_rel (Bi x1))
-		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
-		    (decode (app (app (app (setoid_rel (Bi x2))
+	   (lambda Ai x1\ lambda Ai x2\
+	     lambda (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) d\
+	      lambda (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) p\
+	       (fixMe "cast" (decode (app (app (app (setoid_rel (Bi x2))
 		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2))))))
      %% Sostituire il cc appropriato
      (fixMe "proof_trasp"
@@ -200,10 +199,10 @@ propEqLib L :- L = [
 		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2)))))
 	   (lambda Ai x \ (prop_setoid (decode (app (app (app (setoid_rel (Bi x))
 		 	       	   	   	(app (app (setoidDepCarrier Ai Bi aS) bS) x)) (b1 x)) (b2 x)))))
-	   (fixMe "cast" (setPi Ai x1\ setPi Ai x2\
-	         setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
-		  setPi (decode (app (app (app (setoid_rel (Bi x1))
-		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) _\
-		    (decode (app (app (app (setoid_rel (Bi x2))
+	   (lambda Ai x1\ lambda Ai x2\
+	     lambda (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) d\
+	      lambda (decode (app (app (app (setoid_rel (Bi x1))
+		   		     (app (app (setoidDepCarrier Ai Bi aS) bS) x1)) (b1 x1)) (b2 x1))) p\
+	       (fixMe "cast" (decode (app (app (app (setoid_rel (Bi x2))
 		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2))))))))))
    )].
