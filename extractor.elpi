@@ -1,29 +1,240 @@
 %% Base cases definition for extraction
 
 starify_type set A A :- !.
+starify_type col propS extractor_singleton :- !.
+starify_type col A A :- !.
 starify_type _   _ extractor_singleton.
 
+starify_nonset_ops_type (decode A) Result
+    :- starify_nonset_ops A A'
+    ,  Result = (decode A')
+    ,  !
+    .
+
 starify_nonset_ops_type TA Result
-    :- ofType TA AKind int
+    :- ofType TA AKind @level
     ,  spy(starify_type AKind TA Result)
     ,  !
     .
 
 starify_term set A A :- !.
+starify_term col A A :- !.
 starify_term _   A A :- spy(name A), !.
 starify_term _   _ extractor_star.
 
+starify_nonset_ops (encode A) Result
+    :- starify_nonset_ops_type A A'
+    ,  Result = (encode A')
+    ,  !
+    .
+
 starify_nonset_ops A Result
-    :- of A TA int
-    ,  ofType TA AKind int
+    :- of A TA @level
+    ,  ofType TA AKind @level
     ,  spy(starify_term AKind A Result)
     ,  !
     .
 
 
-collapse_star_ops_type A A.
+collapse_type (decode extractor_star) Result
+    :- Result = extractor_singleton
+    ,  !
+    .
+
+collapse_type A A.
+
+extract_set_ops_type (decode A) Result SetList
+    :- extract_set_ops A A' SetList
+    ,  spy(collapse_type (decode A') Result)
+    ,  !
+    .
+
+extract_set_ops_type A A [].
+
+collapse_term (encode extractor_singleton) Result []
+    :- Result = extractor_star
+    ,  !
+    .
 
 collapse_term A A [].
 
+extract_set_ops (encode A) Result SetList
+    :- extract_set_ops_type A A' SetList
+    ,  spy(collapse_term (encode A') Result [])
+    ,  !
+    .
+
 extract_set_ops A A [].
+
+is_informative set true.
+is_informative col true.
+is_informative props false.
+is_informative propc false.
+
+
+reabstract_term_ (lambda B F) H M Result Abstracted
+    :- pi b\ locDecl b B => reabstract_term_ (F b) H M (F' b) Abstracted
+    ,  spy(Result = (lambda B F'))
+    ,  !
+    .
+reabstract_term_ (app Lam X) H M Result Abstracted
+    :- reabstract_term_ Lam H M Lam' LamAbstracted
+    ,  reabstract_term_ X H M X' XAbstracted
+    ,  spy(Result = (app Lam' X'))
+    ,  spy(logic_or LamAbstracted XAbstracted Abstracted)
+    ,  !
+    .
+
+reabstract_term_ (pair B C BB CC) H M Result Abstracted
+    :- reabstract_term_ BB H M BB' BAbstracted
+    ,  reabstract_term_ CC H M CC' CAbstracted
+    ,  spy(Result = (pair B C BB' CC'))
+    ,  spy(logic_or BAbstracted CAbstracted Abstracted)
+    ,  !
+    .
+reabstract_term_ (p1 Pair) H M Result Abstracted
+    :- reabstract_term_ Pair H M Pair' Abstracted
+    ,  spy(Result = (p1 Pair'))
+    ,  !
+    .
+reabstract_term_ (p2 Pair) H M Result Abstracted
+    :- reabstract_term_ Pair H M Pair' Abstracted
+    ,  spy(Result = (p2 Pair'))
+    ,  !
+    .
+reabstract_term_ (elim_setSigma Pair MT MM) H M Result Abstracted
+    :- reabstract_term_ Pair H M Pair' PairAbstracted
+    ,  isa Pair (setSigma B C) @level
+    ,  pi b\ pi c\ locDecl b B => locDecl c (C b) =>
+        reabstract_term_ (MM b c) H M (MM' b c) MMAbstracted
+    ,  spy(Result = (elim_setSigma Pair' MT MM'))
+    ,  spy(logic_or PairAbstracted MMAbstracted Abstracted)
+    ,  !
+    .
+
+reabstract_term_ (inl A B AA) H M Result Abstracted
+    :- reabstract_term_ AA H M AA' Abstracted
+    ,  spy(Result = (inl A B AA'))
+    ,  !
+    .
+reabstract_term_ (inr A B BB) H M Result Abstracted
+    :- reabstract_term_ BB H M BB' Abstracted
+    ,  spy(Result = (inr A B BB'))
+    ,  !
+    .
+reabstract_term_ (elim_setSum C W Cl Cr) H M Result Abstracted
+    :- reabstract_term_ W H M W' WAbstracted
+    ,  isa W (setSum A B) @level
+    ,  pi l\ locDecl l A => reabstract_term_ (Cl l) H M (Cl' l) ClAbstracted
+    ,  pi r\ locDecl r B => reabstract_term_ (Cr r) H M (Cr' r) CrAbstracted
+    ,  spy(Result = (elim_setSum C W' Cl' Cr'))
+    ,  spy(logic_or ClAbstracted CrAbstracted CAbstracted)
+    ,  spy(logic_or WAbstracted CAbstracted Abstracted)
+    ,  !
+    .
+
+reabstract_term_ A H M Result Abstracted
+    :- spy((name A, A = H
+        ,    Result = M, Abstracted = true)
+        , !; Result = A, Abstracted = false)
+    ,  !
+    .
+
+
+logic_or true _ true :- !.
+logic_or _ true true :- !.
+logic_or _ _ false.
+
+perform_abstractions [H|TL] Term Result Abstracted
+    :- !
+    ,  of H HType @level
+    ,  spy(extract_set_ops_type HType XType _)
+    ,  pi x\ locDecl x XType =>
+        (
+              spy(perform_abstractions TL Term Term1 Abstracted1)
+            , spy(reabstract_term_ Term1 H x (Term2 x) Abstracted2)
+            , spy(Result = (lambda XType Term2))
+            , spy(logic_or Abstracted1 Abstracted2 Abstracted)
+        )
+    ,  !
+    .
+
+perform_abstractions [] Term Term false :- !.
+
+collect_vars (lambda B F) Exc List
+    :- pi b\ locDecl b B => collect_vars (F b) [b|Exc] List
+    ,  !
+    .
+collect_vars (app Lam X) Exc List
+    :- spy(collect_vars Lam Exc LamList)
+    ,  spy(collect_vars X Exc XList)
+    ,  spy(concat [LamList, XList] List)
+    ,  !
+    .
+
+collect_vars (pair _B _C BB CC) Exc List
+    :- spy(collect_vars BB Exc BList)
+    ,  spy(collect_vars CC Exc CList)
+    ,  spy(concat [BList, CList] List)
+    ,  !.
+collect_vars (p1 Pair) Exc List
+    :- collect_vars Pair Exc List
+    ,  !
+    .
+collect_vars (p2 Pair) Exc List
+    :- collect_vars Pair Exc List
+    ,  !
+    .
+collect_vars (elim_setSigma Pair _M MM) Exc List
+    :- collect_vars Pair Exc PairList
+    ,  isa Pair (setSigma B C) @level
+    ,  pi b\ pi c\ locDecl b B => locDecl c (C b) => spy(collect_vars (MM b c) [c|[b|Exc]] MMList)
+    ,  spy(concat [PairList, MMList] List)
+    ,  !
+    .
+
+collect_vars (inl _A _B AA) Exc List
+    :- collect_vars AA Exc List
+    ,  !
+    .
+collect_vars (inr _A _B BB) Exc List
+    :- collect_vars BB Exc List
+    ,  !
+    .
+collect_vars (elim_setSum _C W Cl Cr) Exc List
+    :- collect_vars W Exc WList
+    ,  isa W (setSum A B) @level
+    ,  pi l\ locDecl l A => collect_vars (Cl l) [l|Exc] ClList
+    ,  pi r\ locDecl r B => collect_vars (Cr r) [r|Exc] CrList
+    ,  spy(concat [WList, ClList, CrList] List)
+    ,  !
+    .
+
+is_in A [H|TL] Result :- spy((A = H, Result = true), !; is_in A TL Result), !.
+is_in _ [] false.
+
+collect_vars A Exc Result
+    :- name A
+    ,  spy(is_in A Exc IsIn)
+    ,  ((IsIn = true, Result = []), !; Result = [A])
+    , !
+    .
+collect_vars _ _ [].
+
+extract_term true A [Result]
+    :- spy(collect_vars A [] List)
+    ,  spy(perform_abstractions List A A' Abstracted)
+    ,  ((Abstracted = true, Result = A'), !; Result = A)
+    ,  !
+    .
+
+extract_term false _ [].
+
+extract_collapsing_input Term Type Kind Result
+    :- of Term Type' @level
+    ,  spy(extract_set_ops_type Type' Type _, !; fail)
+    ,  ofType Type Kind @level
+    ,  spy(is_informative Kind NeedsExtraction)
+    ,  spy(extract_term NeedsExtraction Term Result)
+    .
 

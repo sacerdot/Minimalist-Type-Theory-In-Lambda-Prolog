@@ -29,107 +29,119 @@ of (elim_id P C CC) (C AA1 AA2) int
     ,  spy(pi x\ locDecl x A => of (CC x) (C x x) int)
     .
 
+
 hstep (elim_id (id _A AA) _C CC) (CC AA).
 
-dconv (id A AA) (id A' AA') :- (conv A A'),(conv AA AA').
 
-dconv (propId A AA1 AA2) (propId A' AA1' AA2') :- spy (conv A A'), spy (conv AA1 AA1'), spy(conv AA2 AA2').
+dconv (propId A AA1 AA2) (propId A' AA1' AA2')
+    :- spy (conv A A')
+    ,  spy (conv AA1 AA1')
+    ,  spy(conv AA2 AA2')
+    .
 
+dconv (id A AA) (id A' AA')
+    :- (conv A A')
+    ,  (conv AA AA')
+    .
+
+dconv (elim_id P C CC) (elim_id P' C' CC')
+    :- conv P P'
+    ,  isa P (propId A _ _) int
+    ,  pi x\ pi y\ locDecl x A => locDecl y A => conv (C x y) (C' x y)
+    ,  pi x\ locDecl x A => conv (CC x) (CC' x)
+    .
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-wrap_enlarged_sets_type (propId A AA1 AA2) Result
-    :- ofType A KindA int
-    ,  ((KindA = set
-        ,    WAA1 = (app (lambda A (x\extractor_star)) AA1), WAA2 = (app (lambda A (x\extractor_star)) AA2), WA = extractor_singleton)
-        , !; WAA1 = AA1, WAA2 = AA2, WA = A)
-    ,  spy(Result = (propId WA WAA1 WAA2))
-    ,  !
-    .
-
 starify_nonset_ops_type (propId A AA1 AA2) Result
-    :- wrap_enlarged_sets_type (propId A AA1 AA2) (propId WA WAA1 WAA2)
-	,  starify_nonset_ops WAA1 AA1'
-    ,  starify_nonset_ops WAA2 AA2'
-    ,  starify_nonset_ops_type WA A'
+    :- starify_nonset_ops AA1 AA1'
+    ,  starify_nonset_ops AA2 AA2'
+    ,  starify_nonset_ops_type A A'
     ,  spy(Result = (propId A' AA1' AA2'))
     ,  !
     .
 
-collapse_star_ops_type (propId A AA1 AA2) Result
-    :- extract_set_ops AA1 AA1' _AAList
-    ,  extract_set_ops AA2 AA2' _AAList
-    ,  collapse_star_ops_type A A'
-    ,  spy((A' = extractor_singleton, AA1' = extractor_star, AA2' = extractor_star
-        ,    Result = extractor_singleton)
-        , !; Result = (propId A' AA1' AA2'))
+collapse_type (propId A _AA1 _AA2) Result
+    :- conv A extractor_singleton
+    ,  Result = extractor_singleton
     ,  !
     .
 
-
-wrap_enlarged_sets (id A AA) Result
-    :- ofType A KindA int
-    ,  ((KindA = set
-        ,    WAA = (app (lambda A (x\extractor_star)) AA), WA = extractor_singleton)
-        , !; WAA = AA, WA = A)
-    ,  spy(Result = (id WA WAA))
+extract_set_ops_type (propId A AA1 AA2) Result SetList
+    :- extract_set_ops AA1 AA11 AA1List
+    ,  extract_set_ops AA2 AA21 AA2List
+    ,  extract_set_ops_type A A1 AList
+    ,  extract_collapsing_input AA11 A1 K1 AA11List
+    ,  extract_collapsing_input AA21 A1 K1 AA21List
+    ,  spy((is_informative K1 false
+        ,    A' = A1, AA1' = AA11, AA2' = AA21)
+        , !; A' = extractor_singleton, AA1' = extractor_star, AA2' = extractor_star)
+    ,  spy(concat [AA21List, AA11List, AA2List, AA1List, AList] SetList)
+    ,  spy(collapse_type (propId A' AA1' AA2') Result)
     ,  !
     .
+
 
 starify_nonset_ops (id A AA) Result
-    :- wrap_enlarged_sets (id A AA) (id WA WAA)
-	,  starify_nonset_ops WAA AA'
-    ,  starify_nonset_ops_type WA A'
+    :- starify_nonset_ops AA AA'
+    ,  starify_nonset_ops_type A A'
     ,  spy(Result = (id A' AA'))
     ,  !
     .
 
-collapse_term (id extractor_singleton extractor_star) Result []
-    :- Result = extractor_star
+%% C 1  ==>  1
+collapse_term (id A _AA) Result []
+    :- conv A extractor_singleton
+    ,  Result = extractor_star
     ,  !
     .
 
+%% A' -> C A'  ==>  A' -> C 1
 extract_set_ops (id A AA) Result SetList
-    :- spy(extract_set_ops AA AA' SetList)
-    ,  spy(collapse_star_ops_type A A')
+    :- spy(extract_set_ops_type A A1 AList)
+    ,  spy(extract_set_ops AA AA1 AAList)
+    ,  spy(extract_collapsing_input AA1 A1 K1 AA1List)
+    ,  spy((is_informative K1 false
+        ,    A' = A1, AA' = AA1)
+        , !; A' = extractor_singleton, AA' = extractor_star)
+    ,  spy(concat [AA1List, AAList, AList] SetList)
     ,  spy(collapse_term (id A' AA') Result [])
     ,  !
     .
 
 
-wrap_enlarged_sets (elim_id P C CC) Result
-    :- pi x\ pi y\ locDecl x A => locDecl y A => ofType (C x y) KindC int
-    ,  ((KindC = set
-        ,    WCC = (z\ app (lambda (C P P) (x\extractor_star)) (CC z))), WC = (x\y\ extractor_singleton)
-        , !; WCC = CC, WC = C)
-    ,  spy(Result = (elim_id P WC WCC))
-    ,  !
-    .
-
 starify_nonset_ops (elim_id P C CC) Result
-    :- wrap_enlarged_sets (elim_id P C CC) (elim_id P WC WCC)
-    ,  starify_nonset_ops P P'
+    :- starify_nonset_ops P P'
     ,  isa P (propId A _ _) int
-    ,  pi x\ locDecl x A => pi y\ locDecl y A => starify_nonset_ops_type (WC x y) (C' x y)
-    ,  pi x\ locDecl x A => starify_nonset_ops (WCC x) (CC' x)
+    ,  pi x\ locDecl x A => pi y\ locDecl y A => starify_nonset_ops_type (C x y) (C' x y)
+    ,  pi x\ locDecl x A => starify_nonset_ops (CC x) (CC' x)
     ,  spy(Result = (elim_id P' C' CC'))
     ,  !
     .
 
-collapse_term (elim_id extractor_star _C CC) Result ElimList
-    :- extract_set_ops (CC extractor_star) Result ElimList
+%% 1 -> A'  ==>  A'
+collapse_term (elim_id P _C CC) Result SetList
+    :- isa P extractor_singleton int
+    ,  extract_set_ops (CC extractor_star) Result SetList
+    ,  !
+    .
+
+%% C 1 -> A'  ==>  A'
+collapse_term (elim_id P _C CC) Result SetList
+    :- isa P (propId extractor_singleton _ _) int
+    ,  extract_set_ops (CC extractor_star) Result SetList
     ,  !
     .
 
 extract_set_ops (elim_id P C CC) Result SetList
-    :- extract_set_ops P P' IdList
-    ,  isa P (propId A _ _) int
-    ,  pi x\ locDecl x A => pi y\ locDecl y A => collapse_star_ops_type (C x y) (C' x y)
+    :- isa P (propId A _ _) int
+    ,  extract_set_ops P P' IdList
+    ,  pi x\ locDecl x A => pi y\ locDecl y A => extract_set_ops_type (C x y) (C' x y) CList
     ,  pi x\ locDecl x A => extract_set_ops (CC x) (CC' x) CCList
     ,  spy(collapse_term (elim_id P' C' CC') Result ElimList)
-    ,  concat [ElimList, CCList, IdList] SetList
+    ,  concat [ElimList, CCList, CList, IdList] SetList
     ,  !
     .
 

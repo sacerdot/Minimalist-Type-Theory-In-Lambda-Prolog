@@ -1,3 +1,5 @@
+% implies
+
 type implies    mttType -> mttType -> mttType.
 type impl_lam   mttType -> (mttTerm -> mttTerm) -> mttTerm.
 type impl_app   mttTerm -> mttTerm -> mttTerm.
@@ -256,12 +258,18 @@ starify_nonset_ops_type (implies B C) Result
     ,  !
     .
 
-collapse_star_ops_type (implies B C) Result
-    :- collapse_star_ops_type B B'
-    ,  collapse_star_ops_type C C'
-    ,  spy((B' = extractor_singleton, C' = extractor_singleton
-        ,    Result = extractor_singleton)
-        , !; Result = (implies B' C'))
+collapse_type (implies B C) Result
+    :- conv B extractor_singleton
+    ,  conv C extractor_singleton
+    ,  Result = extractor_singleton
+    ,  !
+    .
+
+extract_set_ops_type (implies B C) Result SetList
+    :- extract_set_ops_type B B' BList
+    ,  extract_set_ops_type C C' CList
+    ,  concat [CList, BList] SetList
+    ,  spy(collapse_type (implies B' C') Result)
     ,  !
     .
 
@@ -273,14 +281,17 @@ starify_nonset_ops (impl_lam B F) Result
     ,  !
     . 
 
-collapse_term (impl_lam extractor_singleton (x\extractor_star)) Result []
-    :- Result = extractor_star
+%% (1 -> 1) -> C (1 -> 1)  ==>  1 -> C 1
+collapse_term (impl_lam B F) Result []
+    :- isa (impl_lam B F) (implies extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
     ,  !
     .
 
 extract_set_ops (impl_lam B F) Result SetList
-    :- collapse_star_ops_type B B'
-    ,  pi b\ locDecl b B => extract_set_ops (F b) (F' b) SetList
+    :- extract_set_ops_type B B' BList
+    ,  pi b\ locDecl b B => extract_set_ops (F b) (F' b) FList
+    ,  concat [FList, BList] SetList
     ,  spy(collapse_term (impl_lam B' F') Result [])
     ,  !
     .
@@ -293,8 +304,19 @@ starify_nonset_ops (impl_app Lam X) Result
     ,  !
     .
 
-collapse_term (impl_app extractor_star extractor_star) Result []
-    :- Result = extractor_star
+%% 1  ==>  1  (1)
+collapse_term (impl_app Lam X) Result []
+    :- isa Lam extractor_singleton @level
+    ,  isa X extractor_singleton @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+%% 1 -> 1  ==>  1  (1)
+collapse_term (impl_app Lam X) Result []
+    :- isa Lam (implies extractor_singleton extractor_singleton) @level
+    ,  isa X extractor_singleton @level
+    ,  Result = extractor_star
     ,  !
     .
 
