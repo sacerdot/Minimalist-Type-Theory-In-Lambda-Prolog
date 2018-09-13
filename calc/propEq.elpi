@@ -64,7 +64,6 @@ tau_eq (propEq _ _ _ ) (propEq _ _ _) (h\h'\k\ k).
 proof_eq  _ _ (propEq _T _A _B) (id singleton star).
 
 
-<<<<<<< HEAD
 /* NEW INTERPRETATION AND LIBRARY */
 type propEqLib list libraryEntry -> prop.
 type propEq_trasp mttType -> (mttTerm -> mttType) -> mttTerm -> mttTerm -> (mttTerm -> mttTerm) ->
@@ -207,7 +206,7 @@ propEqLib L :- L = [
 	       (fixMe "cast" (decode (app (app (app (setoid_rel (Bi x2))
 		 	       	 (app (app (setoidDepCarrier Ai Bi aS) bS) x2)) (b1 x2)) (b2 x2))))))))))
    )].
-=======
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -268,4 +267,3 @@ extract_set_ops (eq A AA) Result SetList
     ,  !
     .
 
->>>>>>> Rewrite of the starification and collapse to allow col extraction, translation from mtt to ocaml and haskell, lists.
