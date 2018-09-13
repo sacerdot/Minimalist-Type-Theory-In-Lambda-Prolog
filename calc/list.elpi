@@ -1,0 +1,134 @@
+%%-- list
+
+type list mttType -> mttType.
+type list_empty mttType -> mttTerm.
+type list_cons mttType -> mttTerm -> mttTerm -> mttTerm.
+type elim_list (mttTerm -> mttType) -> mttTerm -> mttTerm -> (mttTerm -> mttTerm -> mttTerm -> mttTerm) -> mttTerm.
+
+ofType (list C) set IE
+    :- ofType C Kind IE
+    ,  pts_leq Kind set
+    .
+
+of (list_empty C) (list C) IE 
+    :- ofType (list C) set IE
+    .
+
+of (list_cons C Head Tail) (list C) IE  
+    :- ofType (list C) set IE
+    ,  isa Head C IE
+    ,  isa Tail (list C) IE
+    .
+
+of (elim_list L List LA LL) (L List) IE 
+    :- spy(of List (list C) IE) 
+    ,  spy(pi z\ locDecl z (list C) => ofType (L z) _ IE)
+    ,  spy(isa LA (L (list_empty C)) IE)
+    ,  spy(pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+        isa (LL y x z) (L (list_cons C y x)) IE)  
+    .
+
+
+hstep (elim_list _L List LA _LL) (LA) 
+    :- hnf List (list_empty _C)
+    .
+
+hstep (elim_list L List LA LL) (LL Head Tail (elim_list L Tail LA LL)) 
+    :- hnf List (list_cons _C Head Tail)
+    .
+
+
+dconv (list C) (list C')
+    :- conv C C'
+    .
+
+dconv (list_empty C) (list_empty C')
+    :- conv C C'
+    .
+
+dconv (list_cons C Head Tail) (list_cons C' Head' Tail')
+    :- conv C C'
+    ,  conv Head Head'
+    ,  conv Tail Tail'
+    .
+
+dconv (elim_list L List LA LL) (elim_list L' List' LA' LL') 
+    :- conv List List'
+    ,  isa List (list C) _
+    ,  pi z\ locDecl z (list C) => conv (L z) (L' z)
+    ,  conv LA LA'
+    ,  pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+        conv (LL y x z) (LL' y x z)
+    .
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (list C) Result
+    :- starify_nonset_ops_type C C'
+    ,  Result = (list C')
+    ,  !
+    .
+
+extract_set_ops_type (list C) Result SetList
+    :- extract_set_ops_type C C' SetList
+    ,  collapse_type (list C') Result
+    ,  !
+    .
+
+
+starify_nonset_ops (list_empty C) Result
+    :- starify_nonset_ops_type C C'
+    ,  Result = (list_empty C')
+    ,  !
+    .
+
+extract_set_ops (list_empty C) Result SetList
+    :- spy(extract_set_ops_type C C' SetList)
+    ,  spy(collapse_term (list_empty C') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (list_cons C Head Tail) Result
+    :- starify_nonset_ops_type C C'
+    ,  starify_nonset_ops Head Head'
+    ,  starify_nonset_ops Tail Tail'
+    ,  Result = (list_cons C' Head' Tail')
+    ,  !
+    .
+
+extract_set_ops (list_cons C Head Tail) Result SetList
+    :- spy(extract_set_ops_type C C' CList)
+    ,  spy(extract_set_ops Head Head' HeadList)
+    ,  spy(extract_set_ops Tail Tail' TailList)
+    ,  concat [TailList, HeadList, CList] SetList
+    ,  spy(collapse_term (list_cons C' Head' Tail') Result [])
+    ,  !
+    .
+
+
+starify_nonset_ops (elim_list L List LA LL) Result
+    :- starify_nonset_ops List List'
+    ,  isa List (list C) @level
+    ,  pi z\ locDecl z (list C) => starify_nonset_ops_type (L z) (L' z)
+    ,  spy(starify_nonset_ops LA LA')
+    ,  spy(pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+        starify_nonset_ops (LL y x z) (LL' y x z))
+    ,  Result = (elim_list L' List' LA' LL')
+    ,  !
+    .
+
+extract_set_ops (elim_list L List LA LL) Result SetList
+    :- extract_set_ops List List' ListList
+    ,  isa List (list C) @level
+    ,  pi z\ locDecl z (list C) => extract_set_ops_type (L z) (L' z) LList
+    ,  spy(extract_set_ops LA LA' LAList)
+    ,  spy(pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+        extract_set_ops (LL y x z) (LL' y x z) LLList)
+    ,  spy(collapse_term (elim_list L' List' LA' LL') Result ElimList)
+    ,  spy(concat [ElimList, LLList, LAList, LList, ListList] SetList)
+    ,  !
+    .
+

@@ -9,6 +9,7 @@ accumulate calc/exist.
 accumulate calc/propId.
 accumulate calc/implies.
 %accumulate calc/letIn.
+accumulate calc/list.
 accumulate calc/or.
 accumulate calc/setSum.
 accumulate calc/singleton.
@@ -463,10 +464,12 @@ testLib6 P _TY :-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 type bool_t mttType.
+type bool_e mttTerm.
 type true_bool mttTerm.
 type false_bool mttTerm.
 
 ofType bool_t props IE_.
+of bool_e bool_t IE_.
 of true_bool bool_t IE_.
 of false_bool bool_t IE_.
 
@@ -484,8 +487,10 @@ of propc_e propc_t IE_.
 
 typecheckExtr X Type :- testExtr X Result, debug => spy(of Result Type int).
 
-testStEx X Result SetList:- testExtr X Term, debug => spy(extract_set_ops Term Result SetList).
-typecheckStEx X Type :- testStEx X Result _SetList, debug => spy(of Result Type int).
+testStEx X A :- testExtr X Term, debug => spy(extract_set_ops Term Result SetList), concat [[Result], SetList] A.
+typecheckStExList [SH|STL] [RH|RTL] :- of SH RH int, typecheckStExList STL RTL, !.
+typecheckStExList [] [].
+typecheckStEx X Type :- testStEx X Result, debug => typecheckStExList Result Type.
 
 testExtr 1 A :- debug => starify_nonset_ops (id (propId bool_t true_bool true_bool) (id bool_t true_bool)) A.
 testExtr 2 A :- debug => starify_nonset_ops (id (propId singleton star star) (id singleton star)) A.
@@ -501,51 +506,57 @@ testExtr 11 A :- debug => starify_nonset_ops (elim_id (id singleton star) (x\ y\
 testExtr 12 A :- debug => starify_nonset_ops (elim_id (id bool_t true_bool) (x\ y\ propId bool_t x y) (x\ id bool_t x)) A.
 testExtr 13 A :- debug => starify_nonset_ops (elim_id (id bool_t true_bool) (x\ y\ implies bool_t bool_t) (x\ impl_lam bool_t (_\x))) A.
 testExtr 14 A :- debug => starify_nonset_ops (elim_singleton star (x\ singleton) star) A.
-testExtr 15 A :- debug => starify_nonset_ops (p1 (pair singleton (x\ col_t) star col_e)) A.
-testExtr 16 A :- debug => starify_nonset_ops (p2 (pair col_t (x\ singleton) col_e star)) A.
+testExtr 15 A :- debug => starify_nonset_ops (p1 (pair singleton (x\ bool_t) star bool_e)) A.
+testExtr 16 A :- debug => starify_nonset_ops (p2 (pair bool_t (x\ singleton) bool_e star)) A.
 testExtr 17 A :- debug => starify_nonset_ops (elim_setSum (x\setSum singleton bool_t) (inl singleton bool_t star) (l\ inl singleton bool_t l) (r\ inr singleton bool_t r)) A.
 testExtr 18 A :- debug => starify_nonset_ops (elim_setSum (x\setSum bool_t bool_t) (inl bool_t bool_t true_bool) (l\ inl bool_t bool_t l) (r\ inr bool_t bool_t r)) A.
 testExtr 19 A :- debug => starify_nonset_ops (elim_setSum (x\setSum singleton singleton) (inl singleton singleton star) (l\ inl singleton singleton l) (r\ inr singleton singleton r)) A.
 testExtr 20 A :- debug => starify_nonset_ops (elim_setSum (x\setSum singleton (implies bool_t bool_t)) (inl singleton (implies bool_t bool_t) star) (l\ inl singleton (implies bool_t bool_t) l) (r\ inr singleton (implies bool_t bool_t) r)) A.
-
-%% non funziona perche' non riesce a fare dconv di inl e inr
 testExtr 21 A :- debug => starify_nonset_ops
 (
 	elim_setSum (x\ propId (setSum singleton bool_t) x x) (inl singleton bool_t star)
 		(l\ id (setSum singleton bool_t) (inl singleton bool_t l))
 		(r\ id (setSum singleton bool_t) (inr singleton bool_t r))
 ) A.
-
-testExtr 22 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\col_t) star col_e) (x\singleton) (l\r\ l)) A.
+testExtr 22 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\bool_t) star bool_e) (x\singleton) (l\r\ l)) A.
 testExtr 23 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\bool_t) star true_bool) (x\bool_t) (l\r\ r)) A.
 testExtr 24 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\bool_t) star true_bool) (x\singleton) (l\r\ l)) A.
-testExtr 25 A :- debug => starify_nonset_ops (elim_setSigma (pair bool_t (_\col_t) true_bool col_e) (x\bool_t) (l\r\ l)) A.
-
+testExtr 25 A :- debug => starify_nonset_ops (elim_setSigma (pair bool_t (_\bool_t) true_bool bool_e) (x\bool_t) (l\r\ l)) A.
 testExtr 26 A :- debug => starify_nonset_ops (pair singleton (x\propId bool_t true_bool true_bool) star (id bool_t true_bool)) A.
-testExtr 27 A :- debug => starify_nonset_ops (app (lambda (setSigma (propId bool_t true_bool true_bool) (_\singleton)) (x\ id (setSigma (propId bool_t true_bool true_bool) (_\singleton)) x)) (pair (propId bool_t true_bool true_bool) (_\singleton) (id bool_t true_bool) star)) A.
-testExtr 28 A :- debug => starify_nonset_ops (app (lambda (setSigma (setSigma bool_t (_\bool_t)) (_\singleton)) (x\ id (setSigma (setSigma bool_t (_\bool_t)) (_\singleton)) x)) (pair (setSigma bool_t (_\bool_t)) (_\singleton) (pair bool_t (_\bool_t) true_bool false_bool) star)) A.
-testExtr 29 A :- debug => starify_nonset_ops
-(app
+testExtr 27 A :- debug => starify_nonset_ops (app
+    (lambda
+        (setSigma (propId bool_t true_bool true_bool) (_\singleton))
+        (x\ id (setSigma (propId bool_t true_bool true_bool) (_\singleton)) x))
+    (pair (propId bool_t true_bool true_bool) (_\singleton) (id bool_t true_bool) star)
+) A.
+testExtr 28 A :- debug => starify_nonset_ops (app
+    (lambda
+        (setSigma (setSigma bool_t (_\bool_t)) (_\singleton))
+        (x\ id (setSigma (setSigma bool_t (_\bool_t)) (_\singleton)) x))
+    (pair (setSigma bool_t (_\bool_t)) (_\singleton)
+        (pair bool_t (_\bool_t) true_bool false_bool)
+        star)
+) A.
+testExtr 29 A :- debug => starify_nonset_ops (app
 	(lambda (setSigma singleton (_\setSigma bool_t (_\bool_t)))
 		(x\ id (setSigma singleton (_\setSigma bool_t (_\bool_t))) x)
 	)
 	(pair singleton (_\setSigma bool_t (_\bool_t))
 		star (pair bool_t (_\bool_t) true_bool false_bool))
 ) A.
-testExtr 30 A :- debug => starify_nonset_ops
-(app
-	(lambda (setSigma singleton (_\col_t))
-		(x\ id (setSigma singleton (_\col_t)) x)
+testExtr 30 A :- debug => starify_nonset_ops (app
+	(lambda (setSigma singleton (_\bool_t))
+		(x\ id (setSigma singleton (_\bool_t)) x)
 	)
-	(pair singleton (_\col_t) star col_e)
+	(pair singleton (_\bool_t) star bool_e)
 ) A.
 testExtr 31 A :- debug => starify_nonset_ops
 (app
-	(lambda (setSigma bool_t (_\setSigma singleton (_\col_t)))
-		(x\ id (setSigma bool_t (_\setSigma singleton (_\col_t))) x)
+	(lambda (setSigma bool_t (_\setSigma singleton (_\bool_t)))
+		(x\ id (setSigma bool_t (_\setSigma singleton (_\bool_t))) x)
 	)
-	(pair bool_t (_\setSigma singleton (_\col_t))
-		true_bool (pair singleton (_\col_t) star col_e))
+	(pair bool_t (_\setSigma singleton (_\bool_t))
+		true_bool (pair singleton (_\bool_t) star bool_e))
 ) A.
 testExtr 32 A :- debug => starify_nonset_ops
 (app
@@ -557,31 +568,31 @@ testExtr 32 A :- debug => starify_nonset_ops
 ) A.
 testExtr 33 A :- debug => starify_nonset_ops
 (app
-	(lambda (setSigma singleton (_\setSigma singleton (_\col_t)))
-		(x\ id (setSigma singleton (_\setSigma singleton (_\col_t))) x)
+	(lambda (setSigma singleton (_\setSigma singleton (_\bool_t)))
+		(x\ id (setSigma singleton (_\setSigma singleton (_\bool_t))) x)
 	)
-	(pair singleton (_\setSigma singleton (_\col_t))
-		star (pair singleton (_\col_t) star col_e))
+	(pair singleton (_\setSigma singleton (_\bool_t))
+		star (pair singleton (_\bool_t) star bool_e))
 ) A.
 testExtr 34 A :- debug => starify_nonset_ops
 (app
 	(p1 (pair 
-		(setPi (setSigma singleton (_\col_t)) (x\setSigma singleton (_\col_t)))
+		(setPi (setSigma singleton (_\bool_t)) (x\setSigma singleton (_\bool_t)))
 		(_\bool_t)
-		(lambda (setSigma singleton (_\col_t)) (x\ x))
+		(lambda (setSigma singleton (_\bool_t)) (x\ x))
 		true_bool
 	))
-	(pair singleton (_\col_t) star col_e)
+	(pair singleton (_\bool_t) star bool_e)
 ) A.
 testExtr 35 A :- debug => starify_nonset_ops
 (app
 	(p1 (pair 
-		(setPi (setSigma singleton (_\col_t)) (x\setSigma singleton (_\col_t)))
+		(setPi (setSigma singleton (_\bool_t)) (x\setSigma singleton (_\bool_t)))
 		(_\singleton)
-		(lambda (setSigma singleton (_\col_t)) (x\ x))
+		(lambda (setSigma singleton (_\bool_t)) (x\ x))
 		star
 	))
-	(pair singleton (_\col_t) star col_e)
+	(pair singleton (_\bool_t) star bool_e)
 ) A.
 testExtr 36 A :- debug => starify_nonset_ops (pair_exist singleton (_\propc_t) star propc_e) A.
 testExtr 37 A :- debug => starify_nonset_ops (pair_exist singleton (_\bool_t) star true_bool) A.
@@ -592,6 +603,23 @@ testExtr 41 A :- debug => starify_nonset_ops (app (lambda singleton (x\true_bool
 testExtr 42 A :- debug => starify_nonset_ops (pair (exist singleton (_\propc_t)) (_\singleton)(pair_exist singleton (_\propc_t) star propc_e) star) A.
 testExtr 43 A :- debug => starify_nonset_ops (pair (forall singleton (x\propc_t)) (_\singleton)(forall_lam singleton (x\propc_e)) star) A.
 testExtr 44 A :- debug => starify_nonset_ops (elim_id (id singleton star) (x\ y\ exist singleton (x\propc_t)) (x\ pair_exist singleton (x\propc_t) x propc_e)) A.
-testExtr 45 A :- debug => starify_nonset_ops (elim_setSigma (pair col_t (_\col_t) col_e col_e) (x\singleton) (l\r\ star)) A.
-testExtr 46 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\singleton) star star) (x\col_t) (l\r\ col_e)) A.
+testExtr 45 A :- debug => starify_nonset_ops (elim_setSigma (pair bool_t (_\bool_t) bool_e bool_e) (x\singleton) (l\r\ star)) A.
+testExtr 46 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\singleton) star star) (x\bool_t) (l\r\ bool_e)) A.
+testExtr 47 A :- debug => starify_nonset_ops (app
+	(lambda (setPi singleton (x\ setSigma singleton (_\singleton))) (y\ app y star))
+	(lambda singleton (x\ pair singleton (_\singleton) x x))
+) A.
+testExtr 48 A :- debug => starify_nonset_ops (app
+	(lambda (setPi singleton (x\singleton)) (y\ app y star))
+	(lambda singleton (x\x))
+) A.
+testExtr 49 A :- debug => starify_nonset_ops (app
+	(lambda (setPi bool_t (x\ setSigma (propId bool_t x x) (_\singleton)))
+		(y\ id (setSigma (propId bool_t true_bool true_bool) (_\singleton)) (app y true_bool))
+	)
+	(lambda bool_t
+		(x\ pair (propId bool_t x x) (_\singleton) (id bool_t x) star)
+	)
+) A.
+
 

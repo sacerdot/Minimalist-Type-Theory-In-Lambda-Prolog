@@ -82,32 +82,24 @@ interp (elim_singleton T C CC) (elim_singleton Ti Ci CCi)
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-wrap_enlarged_sets (elim_singleton Star C CC) Result
-    :- pi s\ locDecl s singleton => ofType (C s) KindC int
-    ,  ((KindC = set
-        ,    WCC = (app (lambda (WC Star) (x\extractor_star)) CC), WC = (s\extractor_singleton))
-        , !; WCC = CC, WC = C)
-    ,  spy(Result = (elim_singleton Star WC WCC))
-    ,  !
-    .
-
 starify_nonset_ops (elim_singleton Star C CC) Result 
-    :- wrap_enlarged_sets (elim_singleton Star C CC) (elim_singleton Star WC WCC)
-    ,  starify_nonset_ops Star Star'
-    ,  pi s\ locDecl s singleton => starify_nonset_ops_type (WC s) (C' s)
-    ,  starify_nonset_ops WCC CC'
+    :- starify_nonset_ops Star Star'
+    ,  pi s\ locDecl s singleton => starify_nonset_ops_type (C s) (C' s)
+    ,  starify_nonset_ops CC CC'
     ,  spy(Result = (elim_singleton Star' C' CC'))
     ,  !
     .
 
-collapse_term (elim_singleton _Star (x\extractor_singleton) extractor_star) Result []
-    :- Result = extractor_star
+%% 1 -> 1  ==>  1
+collapse_term (elim_singleton Star C _CC) Result []
+    :- conv (C Star) extractor_singleton
+    ,  Result = extractor_star
     ,  !
     .
 
 extract_set_ops (elim_singleton Star C CC) Result SetList
     :- extract_set_ops Star Star' []
-    ,  pi s\ locDecl s singleton => collapse_star_ops_type (C s) (C' s)
+    ,  pi s\ locDecl s singleton => extract_set_ops_type (C s) (C' s) []
     ,  extract_set_ops CC CC' SetList
     ,  spy(collapse_term (elim_singleton Star' C' CC') Result [])
     ,  !
