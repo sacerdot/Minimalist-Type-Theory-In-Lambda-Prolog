@@ -1,3 +1,4 @@
+%
 type fixMe A -> B -> C.
 type k_propId mttType -> mttTerm.
 
@@ -636,9 +637,12 @@ process_cut (conv_symm X Y) AA :-
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+macro @level :- int.
+%%macro @level :- ext.
+
 type extractor_singleton mttType.
 type extractor_star mttTerm.
 
-ofType extractor_singleton props int.
-of extractor_star extractor_singleton int.
+ofType extractor_singleton props @level.
+of extractor_star extractor_singleton @level.
 

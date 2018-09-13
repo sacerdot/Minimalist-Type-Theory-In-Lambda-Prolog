@@ -1,3 +1,5 @@
+%%-- propositional conjunction: and
+
 type and mttType -> mttType -> mttType.
 type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
 type p1_and, p2_and mttTerm -> mttTerm.
@@ -54,12 +56,18 @@ starify_nonset_ops_type (and B C) Result
     ,  !
     .
 
-collapse_star_ops_type (and B C) Result
-    :- collapse_star_ops_type B B'
-    ,  collapse_star_ops_type C C'
-    ,  spy((B' = extractor_singleton, C' = extractor_singleton
-        ,    Result = extractor_singleton)
-        , !; Result = (and B' C'))
+collapse_type (and B C) Result
+    :- conv B extractor_singleton
+    ,  conv C extractor_singleton
+    ,  Result = extractor_singleton
+    ,  !
+    .
+
+extract_set_ops_type (and B C) Result SetList
+    :- extract_set_ops_type B B' BList
+    ,  extract_set_ops_type C C' CList
+    ,  concat [CList, BList] SetList
+    ,  spy(collapse_type (and B' C') Result)
     ,  !
     .
 
@@ -72,16 +80,19 @@ starify_nonset_ops (pair_and B C BB CC) Result
     ,  !
     .
 
-collapse_term (pair_and extractor_singleton extractor_singleton extractor_star extractor_star) Result []
-    :- Result = extractor_star
+%% 1 -> 1 -> 1 x 1  ==>  1
+collapse_term (pair_and B C BB CC) Result []
+    :- isa (pair_and B C BB CC) (and extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
     ,  !
     .
 
 extract_set_ops (pair_and B C BB CC) Result SetList
-    :- extract_set_ops BB BB' BList
-    ,  extract_set_ops CC CC' CList
-    ,  concat [CList, BList] SetList
-    ,  collapse_star_ops_type (and B C) (and B' C')
+    :- extract_set_ops BB BB' BBList
+    ,  extract_set_ops CC CC' CCList
+    ,  extract_set_ops_type B B' BList
+    ,  extract_set_ops_type C C' CList
+    ,  concat [CCList, BBList, CList, BList] SetList
     ,  spy(collapse_term (pair_and B' C' BB' CC') Result [])
     ,  !
     .
@@ -93,13 +104,17 @@ starify_nonset_ops (p1_and Pair) Result
     ,  !
     .
 
-collapse_term (p1_and extractor_star) Result []
-    :- Result = extractor_star
+%% 1 -> 1  ==>  1
+collapse_term (p1_and Pair) Result []
+    :- isa Pair extractor_singleton @level
+    ,  Result = extractor_star
     ,  !
     .
 
-collapse_term (p1_and (pair _B (x\extractor_singleton) BB extractor_star)) Result []
-    :- Result = BB
+%% 1 x 1 -> 1  ==>  1
+collapse_term (p1_and Pair) Result []
+    :- isa Pair (and extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
     ,  !
     .
 
@@ -116,13 +131,17 @@ starify_nonset_ops (p2_and Pair) Result
     ,  !
     .
 
-collapse_term (p2_and extractor_star) Result []
-    :- Result = extractor_star
+%% 1 -> 1  ==>  1
+collapse_term (p2_and Pair) Result []
+    :- isa Pair extractor_singleton @level
+    ,  Result = extractor_star
     ,  !
     .
 
-collapse_term (p2_and (pair extractor_singleton _C extractor_star CC)) Result []
-    :- Result = CC
+%% 1 x 1 -> 1  ==>  1
+collapse_term (p2_and Pair) Result []
+    :- isa Pair (and extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
     ,  !
     .
 

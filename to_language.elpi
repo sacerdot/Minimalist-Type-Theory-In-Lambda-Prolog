@@ -1,0 +1,381 @@
+%% to_ocaml
+%% setSum -> type ('a, 'b) set_sum = Inl of 'a | Inr of 'b;;
+%% setSigma -> type ('a, 'b) set_sigma = { l: 'a; r: 'b };;
+%% setPi -> type ('a, 'b) set_pi = { p: ('a -> 'b) };;
+%% list -> 'a list
+%% type dummy = Dummy;;
+
+%% to_haskell
+%% setSum -> data SetSum a b = Inl a | Inr b  deriving (Show)
+%% setSigma -> data SetSigma a b = SetSigma { l :: a, r :: b }  deriving (Show)
+%% setPi -> data SetPi a b = SetPi { p :: a -> b }
+%% data Dummy = Dummy
+
+kind language type.
+type ocaml, haskell language.
+
+%%macro @language :- ocaml.
+macro @language :- haskell.
+
+translate_program_to ocaml Code' Result
+    :- Result is Code' ^ ";;"
+    ,  !
+    .
+translate_program_to haskell Code' Result
+    :- Result is Code'
+    ,  !
+    .
+
+translate_program Code Result
+    :- translate_program_ Code Code'
+    ,  translate_program_to @language Code' Result
+    ,  !
+    .
+
+%% setSum
+
+translate_setSum_to ocaml A' B' Result
+    :- Result is "(" ^ A' ^ ", " ^ B' ^ ") set_sum"
+    ,  !
+    .
+translate_setSum_to haskell A' B' Result
+    :- Result is "SetSum (" ^ A' ^ ") (" ^ B' ^ ")"
+    ,  !
+    .
+
+translate_type_ (setSum A B) Result
+    :- translate_type_ A A'
+    ,  translate_type_ B B'
+    ,  translate_setSum_to @language A' B' Result
+    ,  !
+    .
+
+
+translate_inl_to ocaml AA' Result
+    :- Result is "(Inl " ^ AA' ^ ")"
+    ,  !
+    .
+translate_inl_to haskell AA' Result
+    :- Result is "(Inl " ^ AA' ^ ")"
+    ,  !
+    .
+
+translate_program_ (inl _A _B AA) Result
+    :- translate_program_ AA AA'
+    ,  translate_inl_to @language AA' Result
+    ,  !
+    .
+
+
+translate_inr_to ocaml BB' Result
+    :- Result is "(Inr " ^ BB' ^ ")"
+    ,  !
+    .
+translate_inr_to haskell BB' Result
+    :- Result is "(Inr " ^ BB' ^ ")"
+    ,  !
+    .
+
+translate_program_ (inr _A _B BB) Result
+    :- translate_program_ BB BB'
+    ,  translate_inr_to @language BB' Result
+    ,  !
+    .
+
+
+translate_elim_setSum_to ocaml W' Cl' Sl Cr' Sr Result
+    :- Result is "(match " ^ W' ^ " with | Inl inl -> (fun " ^ Sl ^ " -> " ^ Cl' ^ ") inl | Inr inr -> (fun " ^ Sr ^ " -> " ^ Cr' ^ ") inr)"
+    ,  !
+    .
+translate_elim_setSum_to haskell W' Cl' Sl Cr' Sr Result
+    :- Result is "(case " ^ W' ^ " of {Inl inl -> (\\" ^ Sl ^ " -> " ^ Cl' ^ ") inl; Inr inr -> (\\" ^ Sr ^ " -> " ^ Cr' ^ ") inr})"
+    ,  !
+    .
+
+translate_program_ (elim_setSum _C W Cl Cr) Result
+    :- translate_program_ W W'
+    ,  isa W (setSum L R) @level
+    ,  pi l\ locDecl l L => (translate_program_ (Cl l) Cl', translate_program_ l Sl)
+    ,  pi r\ locDecl r R => (translate_program_ (Cr r) Cr', translate_program_ r Sr)
+    ,  translate_elim_setSum_to @language W' Cl' Sl Cr' Sr Result
+    ,  !
+    .
+
+%% setSigma
+
+translate_setSigma_to ocaml B' C' Result
+    :- Result is "(" ^ B' ^ ", " ^ C' ^ ") set_sigma"
+    ,  !
+    .
+translate_setSigma_to haskell B' C' Result
+    :- Result is "SetSigma (" ^ B' ^ ") (" ^ C' ^ ")"
+    ,  !
+    .
+
+translate_type_ (setSigma B C) Result
+    :- translate_type_ B B'
+    ,  pi b\ locDecl b B => translate_type_ (C b) C'
+    ,  translate_setSigma_to @language B' C' Result
+    ,  !
+    .
+
+
+translate_pair_to ocaml BB' CC' Result
+    :- Result is "{ l = " ^ BB' ^ "; r = " ^ CC' ^ " }"
+    ,  !
+    .
+translate_pair_to haskell BB' CC' Result
+    :- Result is "(SetSigma " ^ BB' ^ " " ^ CC' ^ ")"
+    ,  !
+    .
+
+translate_program_ (pair _B _C BB CC) Result
+    :- translate_program_ BB BB'
+    ,  translate_program_ CC CC'
+    ,  translate_pair_to @language BB' CC' Result
+    ,  !
+    .
+
+
+translate_p1_to ocaml Pair' Result
+    :- Result is Pair' ^ ".l"
+    ,  !
+    .
+translate_p1_to haskell Pair' Result
+    :- Result is "(l " ^ Pair' ^ ")"
+    ,  !
+    .
+
+translate_program_ (p1 Pair) Result
+    :- translate_program_ Pair Pair'
+    ,  translate_p1_to @language Pair' Result
+    ,  !
+    .
+
+
+translate_p2_to ocaml Pair' Result
+    :- Result is Pair' ^ ".r"
+    ,  !
+    .
+translate_p2_to haskell Pair' Result
+    :- Result is "(r " ^ Pair' ^ ")"
+    ,  !
+    .
+
+translate_program_ (p2 Pair) Result
+    :- translate_program_ Pair Pair'
+    ,  translate_p2_to @language Pair' Result
+    ,  !
+    .
+
+
+translate_elim_setSigma_to ocaml Pair' MM' Sb Sc Result
+    :- Result is "((fun " ^ Sb ^ " " ^ Sc ^ " -> " ^ MM' ^ ") " ^ Pair' ^ ".l " ^ Pair' ^ ".r)"
+    ,  !
+    .
+translate_elim_setSigma_to haskell Pair' MM' Sb Sc Result
+    :- Result is "((\\" ^ Sb ^ " " ^ Sc ^ " -> " ^ MM' ^ ") " ^ "(l " ^ Pair' ^") " ^ "(r " ^ Pair' ^"))"
+    ,  !
+    .
+
+translate_program_ (elim_setSigma Pair _M MM) Result
+    :- translate_program_ Pair Pair'
+    ,  isa Pair (setSigma B C) @level
+    ,  pi b\ pi c\ locDecl b B => locDecl c (C b) => (translate_program_ (MM b c) MM', translate_program_ b Sb, translate_program_ c Sc)
+    ,  translate_elim_setSigma_to @language Pair' MM' Sb Sc Result
+    ,  !
+    .
+
+%% setPi
+
+translate_setPi_to ocaml B' C' Result
+    :- Result is "(" ^ B' ^ ", " ^ C' ^ ") set_pi"
+    ,  !
+    .
+translate_setPi_to haskell B' C' Result
+    :- Result is "SetPi (" ^ B' ^ ") (" ^ C' ^ ")"
+    ,  !
+    .
+
+translate_type_ (setPi B C) Result
+    :- translate_type_ B B'
+    ,  pi b\ locDecl b B => translate_type_ (C b) C'
+    ,  translate_setPi_to @language B' C' Result
+    ,  !
+    .
+
+
+translate_lambda_to ocaml F' Sb Result
+    :- Result is "{ p = (fun " ^ Sb ^ " -> " ^ F' ^ ") }"
+    ,  !
+    .
+translate_lambda_to haskell F' Sb Result
+    :- Result is "(SetPi (\\" ^ Sb ^ " -> " ^ F' ^ "))"
+    ,  !
+    .
+
+translate_program_ (lambda B F) Result
+    :- pi b\ locDecl b B => (translate_program_ (F b) F', translate_program_ b Sb)
+    ,  translate_lambda_to @language F' Sb Result
+    ,  !
+    .
+
+
+translate_app_to ocaml Lam' X' Result
+    :- Result is "(" ^ Lam' ^ ".p " ^ X' ^ ")"
+    ,  !
+    .
+translate_app_to haskell Lam' X' Result
+    :- Result is "(p " ^ Lam' ^ " " ^ X' ^ ")"
+    ,  !
+    .
+
+translate_program_ (app Lam X) Result
+    :- translate_program_ Lam Lam'
+    ,  translate_program_ X X'
+    ,  translate_app_to @language Lam' X' Result
+    ,  !
+    .
+
+%% list
+
+translate_list_to ocaml C' Result
+    :- Result is C' ^ " list"
+    ,  !
+    .
+translate_list_to haskell C' Result
+    :- Result is "[ (" ^ C' ^ ") ]"
+    ,  !
+    .
+
+translate_type_ (list C) Result
+    :- translate_type_ C C'
+    ,  translate_list_to @language C' Result
+    ,  !
+    .
+
+
+translate_list_empty_to ocaml Result
+    :- Result is "[]"
+    ,  !
+    .
+translate_list_empty_to haskell Result
+    :- Result is "[]"
+    ,  !
+    .
+
+translate_program_ (list_empty _C) Result
+    :- translate_list_empty_to @language Result
+    ,  !
+    .
+
+
+translate_list_cons_to ocaml Head' Tail' Result
+    :- Result is "(" ^ Head' ^ "::" ^ Tail' ^ ")"
+    ,  !
+    .
+translate_list_cons_to haskell Head' Tail' Result
+    :- Result is "(" ^ Head' ^ ":" ^ Tail' ^ ")"
+    ,  !
+    .
+
+translate_program_ (list_cons _C Head Tail) Result
+    :- translate_program_ Head Head'
+    ,  translate_program_ Tail Tail'
+    ,  translate_list_cons_to @language Head' Tail' Result
+    ,  !
+    .
+
+
+translate_elim_list_to ocaml List' LA' LL' Sy Sx Sz Result
+    :- Result is "(let rec elim_list = (fun list -> match list with | [] -> " ^ LA' ^ " | h::t -> (fun " ^ Sy ^ " " ^ Sx ^ " " ^ Sz ^ " -> " ^ LL' ^ ") h t (elim_list t)) in elim_list " ^ List' ^ ")"
+    ,  !
+    .
+translate_elim_list_to haskell List' LA' LL' Sy Sx Sz Result
+    :- Result is "(let elim_list = (\\list -> case list of {[] -> " ^ LA' ^ "; h:t -> (\\" ^ Sy ^ " " ^ Sx ^ " " ^ Sz ^ " -> " ^ LL' ^ ") h t (elim_list t)}) in elim_list " ^ List' ^ ")"
+    ,  !
+    .
+
+translate_program_ (elim_list L List LA LL) Result
+    :- translate_program_ List List'
+    ,  translate_program_ LA LA'
+    ,  spy(of List (list C) @level)
+    ,  pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => (translate_program_ (LL y x z) LL', translate_program_ y Sy, translate_program_ x Sx, translate_program_ z Sz)
+    ,  translate_elim_list_to @language List' LA' LL' Sy Sx Sz Result
+    ,  !
+    .
+
+%% singleton
+
+translate_singleton_to ocaml Result
+    :- Result is "()"
+    ,  !
+    .
+translate_singleton_to haskell Result
+    :- Result is "unit"
+    ,  !
+    .
+
+translate_type_ singleton Result
+    :- translate_singleton_to @language Result
+    ,  !
+    .
+
+translate_type_ extractor_singleton Result
+    :- translate_singleton_to @language Result
+    ,  !
+    .
+
+
+translate_star_to ocaml Result
+    :- Result is "()"
+    ,  !
+    .
+translate_star_to haskell Result
+    :- Result is "()"
+    ,  !
+    .
+
+translate_program_ star Result
+    :- translate_star_to @language Result
+    ,  !
+    .
+
+translate_program_ extractor_star Result
+    :- translate_star_to @language Result
+    ,  !
+    .
+
+
+translate_program_ (elim_singleton _Star _C CC) Result
+    :- translate_program_ CC CC'
+    ,  Result is CC'
+    ,  !
+    .
+
+% base case
+
+translate_program_ A Result
+    :- name A
+    ,  term_to_string A S
+    ,  Result is S
+    ,  !
+    .
+
+translate_dummy_type_to ocaml _A "dummy".
+translate_dummay_type_to haskell _A "Dummy".
+
+translate_type_ A Result
+    :- translate_dummy_type_to @language A Result
+    ,  !
+    .
+
+
+translate_dummy_to ocaml _A "Dummy".
+translate_dummy_to haskell _A "Dummy".
+
+translate_program_ A Result
+    :- translate_dummy_to @language A Result
+    ,  !
+    .
+
