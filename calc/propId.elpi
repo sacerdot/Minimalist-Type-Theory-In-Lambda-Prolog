@@ -55,20 +55,10 @@ dconv (elim_id P C CC) (elim_id P' C' CC')
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-wrap_enlarged_sets_type (propId A AA1 AA2) Result
-    :- ofType A KindA int
-    ,  ((KindA = set
-        ,    WAA1 = (app (lambda A (x\extractor_star)) AA1), WAA2 = (app (lambda A (x\extractor_star)) AA2), WA = extractor_singleton)
-        , !; WAA1 = AA1, WAA2 = AA2, WA = A)
-    ,  spy(Result = (propId WA WAA1 WAA2))
-    ,  !
-    .
-
 starify_nonset_ops_type (propId A AA1 AA2) Result
-    :- wrap_enlarged_sets_type (propId A AA1 AA2) (propId WA WAA1 WAA2)
-	,  starify_nonset_ops WAA1 AA1'
-    ,  starify_nonset_ops WAA2 AA2'
-    ,  starify_nonset_ops_type WA A'
+    :- starify_nonset_ops AA1 AA1'
+    ,  starify_nonset_ops AA2 AA2'
+    ,  starify_nonset_ops_type A A'
     ,  spy(Result = (propId A' AA1' AA2'))
     ,  !
     .
@@ -93,20 +83,24 @@ extract_set_ops_type (propId A AA1 AA2) Result SetList
     ,  !
     .
 
-
-wrap_enlarged_sets (id A AA) Result
-    :- ofType A KindA int
-    ,  ((KindA = set
-        ,    WAA = (app (lambda A (x\extractor_star)) AA), WA = extractor_singleton)
-        , !; WAA = AA, WA = A)
-    ,  spy(Result = (id WA WAA))
+extract_set_ops_type (propId A AA1 AA2) Result SetList
+    :- extract_set_ops AA1 AA11 AA1List
+    ,  extract_set_ops AA2 AA21 AA2List
+    ,  extract_set_ops_type A A1 AList
+    ,  extract_collapsing_input AA11 A1 K1 AA11List
+    ,  extract_collapsing_input AA21 A1 K1 AA21List
+    ,  spy((is_informative K1 false
+        ,    A' = A1, AA1' = AA11, AA2' = AA21)
+        , !; A' = extractor_singleton, AA1' = extractor_star, AA2' = extractor_star)
+    ,  spy(concat [AA21List, AA11List, AA2List, AA1List, AList] SetList)
+    ,  spy(collapse_type (propId A' AA1' AA2') Result)
     ,  !
     .
 
+
 starify_nonset_ops (id A AA) Result
-    :- wrap_enlarged_sets (id A AA) (id WA WAA)
-	,  starify_nonset_ops WAA AA'
-    ,  starify_nonset_ops_type WA A'
+    :- starify_nonset_ops AA AA'
+    ,  starify_nonset_ops_type A A'
     ,  spy(Result = (id A' AA'))
     ,  !
     .

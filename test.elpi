@@ -622,3 +622,4 @@ testExtr 49 A :- debug => starify_nonset_ops (app
 	)
 ) A.
 
+
