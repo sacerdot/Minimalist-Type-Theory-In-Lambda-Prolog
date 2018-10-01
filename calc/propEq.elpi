@@ -89,9 +89,6 @@ new_interp_type (propEq A Aa1 Aa2) O :-
   %new_interp_type A As,
   %new_interp_dep_type A B Bs,
   %O = (propEq_setoidDep Ai Bi As Bs).
-  %% Bb1i and Bb2i declarations with univPiT would require to know an element ai of Ai
-  %% possibly need a new abstraction mechanism for terms of dependent types (univDepPiT)
-
 
 propEqLib L :- L = [
 
@@ -530,21 +527,99 @@ propEqLib L :- L = [
 			   % il setoide di (setSigma (Bi x) (_\ (Bi x)))
 			   (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
 								 (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))
-			   % il setoide dell'uguaglianza dipendente dalla coppia
-			   (fixMe "setoidEq"
-			    (setSigma (setSigma
-			     (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
-				       (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v)))) _\ 
-			      (setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
-				setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
-						   (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
-								 (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
-				  setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
-							  (p1 v1)) (p2 v1))) _\
-				    (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
-							  (p1 v2)) (p2 v2))))) 
-
-							   (cc\ (eqDep_trasp Ai x Bi aS bS b2S cc)))))
+	%%%%%%%%% SETOIDE DELL'UGUAGLIANZA DIPENDENTE DALLA COPPIA %%%%%%%%%%%
+			   (pair (setSigma
+       (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v)))) _\ 
+	(setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
+	  setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+			     (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					   (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
+	    setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+				    (p1 v1)) (p2 v1))) _\
+	      (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+				    (p1 v2)) (p2 v2)))))
+      (cc\ (eqDep_trasp Ai x Bi aS bS b2S cc))
+      (pair (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+            (_\ (setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
+	      setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
+		setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) _\
+		  (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2)))))
+	    % Carrier term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v\
+	      prop_setoid (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+	    % Cast term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v1\
+	     lambda (setSigma (Bi x) (_\ (Bi x))) v2\
+	      lambda (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) d\
+		lambda (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) r1\
+	      (elim_exist d (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2))) (d1\d2\
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+	          (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+		  (p1 v2))
+		  (p2 v1))
+		  (p2 v2))
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+			  (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  (p1 v2))
+			  (p1 v1))
+			  (p2 v1))
+			  (impl_app (forall_app (forall_app (app (setoid_symmL (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	    (p1 v1)) (p1 v2)) 
+			  	    d1))
+			  r1))
+		  (fixMe "eq2" (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	      		  (p2 v1)) (p2 v2)))))))))
+     (fixMe "proof_trasp term"
+       (eqDep_trasp Ai x Bi aS bS b2S (pair (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+            (_\ (setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
+	      setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
+		setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) _\
+		  (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2)))))
+	    % Carrier term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v\
+	      prop_setoid (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+	    % Cast term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v1\
+	     lambda (setSigma (Bi x) (_\ (Bi x))) v2\
+	      lambda (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) d\
+		lambda (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) r1\
+	      (elim_exist d (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2))) (d1\d2\
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+	          (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+		  (p1 v2))
+		  (p2 v1))
+		  (p2 v2))
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+			  (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  (p1 v2))
+			  (p1 v1))
+			  (p2 v1))
+			  (impl_app (forall_app (forall_app (app (setoid_symmL (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	    (p1 v1)) (p1 v2)) 
+			  	    d1))
+			  r1))
+		  (fixMe "eq2" (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	      		  (p2 v1)) (p2 v2)))))))))))))
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% cast term
 	(fixMe "cast" (setPi Ai x1\ setPi Ai x2\
 	  setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
@@ -570,21 +645,99 @@ propEqLib L :- L = [
 			   % il setoide di (setSigma (Bi x) (_\ (Bi x)))
 			   (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
 								 (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))
-			   % il setoide dell'uguaglianza dipendente dalla coppia
-			   (fixMe "setoidEq"
-			    (setSigma (setSigma
-			     (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
-				       (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v)))) _\ 
-			      (setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
-				setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
-						   (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
-								 (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
-				  setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
-							  (p1 v1)) (p2 v1))) _\
-				    (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
-							  (p1 v2)) (p2 v2))))) 
-
-							   (cc\ (eqDep_trasp Ai x Bi aS bS b2S cc)))))
+	%%%%%%%%% SETOIDE DELL'UGUAGLIANZA DIPENDENTE DALLA COPPIA %%%%%%%%%%%
+			   (pair (setSigma
+       (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v)))) _\ 
+	(setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
+	  setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+			     (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					   (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
+	    setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+				    (p1 v1)) (p2 v1))) _\
+	      (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+				    (p1 v2)) (p2 v2)))))
+      (cc\ (eqDep_trasp Ai x Bi aS bS b2S cc))
+      (pair (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+            (_\ (setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
+	      setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
+		setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) _\
+		  (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2)))))
+	    % Carrier term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v\
+	      prop_setoid (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+	    % Cast term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v1\
+	     lambda (setSigma (Bi x) (_\ (Bi x))) v2\
+	      lambda (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) d\
+		lambda (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) r1\
+	      (elim_exist d (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2))) (d1\d2\
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+	          (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+		  (p1 v2))
+		  (p2 v1))
+		  (p2 v2))
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+			  (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  (p1 v2))
+			  (p1 v1))
+			  (p2 v1))
+			  (impl_app (forall_app (forall_app (app (setoid_symmL (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	    (p1 v1)) (p1 v2)) 
+			  	    d1))
+			  r1))
+		  (fixMe "eq2" (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	      		  (p2 v1)) (p2 v2)))))))))
+     (fixMe "proof_trasp term"
+       (eqDep_trasp Ai x Bi aS bS b2S (pair (setPi (setSigma (Bi x) (_\ (Bi x))) v\ setoid (decode (app (app (app (setoid_rel (Bi x))
+		 (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+            (_\ (setPi (setSigma (Bi x) (_\ (Bi x))) v1\ setPi (setSigma (Bi x) (_\ (Bi x))) v2\
+	      setPi (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) _\
+		setPi (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) _\
+		  (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2)))))
+	    % Carrier term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v\
+	      prop_setoid (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)) (p1 v)) (p2 v))))
+	    % Cast term
+	    (lambda (setSigma (Bi x) (_\ (Bi x))) v1\
+	     lambda (setSigma (Bi x) (_\ (Bi x))) v2\
+	      lambda (decode (app (app (app (setoid_rel (setSigma (Bi x) (_\ (Bi x))))
+				 (setSigma_setoid (Bi x) (_\ (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x)
+					       (app (gamma_setoidDep Ai Bi (s\ (Bi (p1 s))) aS bS b2S) x))) v1) v2)) d\
+		lambda (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v1)) (p2 v1))) r1\
+	      (elim_exist d (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+					(p1 v2)) (p2 v2))) (d1\d2\
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+	          (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+		  (p1 v2))
+		  (p2 v1))
+		  (p2 v2))
+		  (impl_app (impl_app (forall_app (forall_app (forall_app (app (setoid_tranL (Bi x))
+			  (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  (p1 v2))
+			  (p1 v1))
+			  (p2 v1))
+			  (impl_app (forall_app (forall_app (app (setoid_symmL (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	    (p1 v1)) (p1 v2)) 
+			  	    d1))
+			  r1))
+		  (fixMe "eq2" (decode (app (app (app (setoid_rel (Bi x)) (app (app (setoidDepCarrier Ai Bi aS) bS) x))
+			  	      		  (p2 v1)) (p2 v2)))))))))))))
+      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 	% cast term
 	(fixMe "cast" (setPi Ai x1\ setPi Ai x2\
 	  setPi (decode (app (app (app (setoid_rel Ai) aS) x1) x2)) _\
