@@ -1880,85 +1880,109 @@ setPiLib Lp :-
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops_type (setPi B C) Result
-    :- starify_nonset_ops_type B B'
-    ,  pi b\ locDecl b B => starify_nonset_ops_type (C b) (C' b)
+starify_nonset_ops_type (setPi B C) LibMap Result
+    :- starify_nonset_ops_type B LibMap B'
+    ,  ((name C, C' = C)
+        , !; pi b\ locDecl b B => starify_nonset_ops_type (C b) LibMap (C' b))
     ,  spy(Result = (setPi B' C'))
     ,  !
     .
 
-collapse_type (setPi _B C) Result
-    :- conv C (_\extractor_singleton)
-    ,  Result = extractor_singleton
-    ,  !
-    .
-
-extract_set_ops_type (setPi B C) Result SetList
-    :- extract_set_ops_type B B' BList
-    ,  pi b\ locDecl b B => extract_set_ops_type (C b) (C' b) CList
-    ,  concat [CList, BList] SetList
-    ,  spy(collapse_type (setPi B' C') Result)
-    ,  !
-    .
-
-
-starify_nonset_ops (lambda B F) Result
-    :- starify_nonset_ops_type B B'
-    ,  pi b\ locDecl b B => starify_nonset_ops (F b) (F' b)
+starify_nonset_ops (lambda B F) LibMap Result
+    :- spy(starify_nonset_ops_type B LibMap B')
+    ,  spy((name F, F' = F)
+        , !; pi b\ locDecl b B => starify_nonset_ops (F b) LibMap (F' b))
     ,  spy(Result = (lambda B' F'))
     ,  !
     .
 
-%% (A' -> 1) -> C (A' -> 1)  ==>  1 -> C 1
-collapse_term (lambda B F) Result []
-    :- isa (lambda B F) (setPi B (_\ extractor_singleton)) @level
-    ,  Result = extractor_star
-    ,  !
-    .
-
-extract_set_ops (lambda B F) Result SetList
-    :- spy(extract_set_ops_type B B' BList)
-    ,  spy(pi b\ locDecl b B => extract_set_ops (F b) (F' b) FList)
-    ,  spy(concat [FList, BList] SetList)
-    ,  spy(collapse_term (lambda B' F') Result [])
-    ,  !
-    .
-
-
-starify_nonset_ops (app Lam X) Result
-    :- starify_nonset_ops Lam Lam'
-    ,  starify_nonset_ops X X'
+starify_nonset_ops (app Lam X) LibMap Result
+    :- starify_nonset_ops Lam LibMap Lam'
+    ,  starify_nonset_ops X LibMap X'
     ,  spy(Result = (app Lam' X'))
     ,  !
     .
 
-%% 1  ==>  1  (A')
-collapse_term (app Lam X) Result AppList
-    :- isa Lam extractor_singleton @level
-    ,  extract_collapsing_input X _ _ AppList
+
+collapse_type (setPi _B C) Result _Vars _VarMap _LibMap []
+    :- conv C (_\extractor_singleton)
+    ,  Result = extractor_singleton
+    ,  !
+    .
+collapse_type (setPi B C) Result Vars VarMap LibMap SetList
+    :- conv B extractor_singleton
+    ,  spy(extract_set_ops_type (C extractor_star) Result Vars VarMap LibMap SetList)
+    ,  !
+    .
+
+extract_set_ops_type (setPi B C) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+    ,  ((name C, map_var C VarMap C', CList = [])
+        , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
+            extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (chain b d VarMap) LibMap CList))
+    ,  spy(collapse_type (setPi B' C') Result Vars VarMap LibMap PiList)
+    ,  concat [PiList, CList, BList] SetList
+    ,  !
+    .
+
+%% (A' -> 1)  ==>  1
+collapse_term (lambda B F) Result _Vars _VarMap _LibMap []
+    :- spy(isa (lambda B F) (setPi B (_\ extractor_singleton)) @level)
     ,  Result = extractor_star
     ,  !
     .
 
+%% (1 -> A')  ==>  A'
+collapse_term (lambda B F) Result Vars VarMap LibMap LamList
+    :- spy(isa (lambda B F) (setPi extractor_singleton _) @level)
+    ,  extract_set_ops (F extractor_star) Result Vars VarMap LibMap LamList
+    ,  !
+    .
+
+extract_set_ops (lambda B F) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+    ,  ((name F, spy(map_var F VarMap F', FList = []))
+        , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
+            extract_set_ops (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] (chain b d VarMap) LibMap FList))
+    ,  spy(collapse_term (lambda B' F') Result Vars VarMap LibMap LamList)
+    ,  spy(concat [LamList, FList, BList] SetList)
+    ,  !
+    .
+
+%% 1  ==>  1  (A')
+collapse_term (app Lam X) Result Vars VarMap LibMap AppList
+    :- isa Lam extractor_singleton @level
+    ,  spy(extract_collapsing_input Vars VarMap LibMap X _ AppList)
+    ,  spy(Result = extractor_star)
+    ,  !
+    .
+
 %% A' -> 1  ==>  1  (A')
-collapse_term (app Lam X) Result AppList
-    :- isa Lam (setPi B (_\extractor_singleton)) @level
-    ,  extract_collapsing_input X B _ AppList
+collapse_term (app Lam X) Result Vars VarMap LibMap AppList
+    :- isa Lam (setPi _ (_\extractor_singleton)) @level
+    ,  extract_collapsing_input Vars VarMap LibMap X _ AppList
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 -> N  ==>  N  (se passato direttamente)
-collapse_term (app (lambda extractor_singleton F) X) Result AppList
+collapse_term (app (lambda extractor_singleton F) X) Result Vars VarMap LibMap AppList
     :- isa X extractor_singleton @level
-    ,  extract_set_ops (F extractor_star) Result AppList
+    ,  extract_set_ops (F extractor_star) Result Vars VarMap LibMap AppList
     ,  !
     .
 
-extract_set_ops (app Lam X) Result SetList
-    :- spy(extract_set_ops Lam Lam' LamList)
-    ,  spy(extract_set_ops X X' XList)
-    ,  spy(collapse_term (app Lam' X') Result AppList)
+%% A'  ==>  A'
+collapse_term (app Lam X) Result _Vars _VarMap _LibMap []
+    :- isa X extractor_singleton @level
+    ,  ((isa Lam (setPi singleton _) @level, Result = (app Lam X)), !; Result = Lam)
+    ,  !
+    .
+
+extract_set_ops (app Lam X) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops Lam Lam' Vars VarMap LibMap LamList)
+    ,  spy(extract_set_ops X X' Vars VarMap LibMap XList)
+    ,  spy(collapse_term (app Lam' X') Result Vars VarMap LibMap AppList)
     ,  spy(concat [AppList, XList, LamList] SetList)
     ,  !
     .

@@ -164,26 +164,33 @@ singletonLib L :-
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops (elim_singleton Star C CC) Result 
-    :- starify_nonset_ops Star Star'
-    ,  pi s\ locDecl s singleton => starify_nonset_ops_type (C s) (C' s)
-    ,  starify_nonset_ops CC CC'
+starify_nonset_ops (elim_singleton Star C CC) LibMap Result 
+    :- starify_nonset_ops Star LibMap Star'
+    ,  ((name C, C' = C)
+        , !; pi s\ locDecl s singleton => starify_nonset_ops_type (C s) LibMap (C' s))
+    ,  starify_nonset_ops CC LibMap CC'
     ,  spy(Result = (elim_singleton Star' C' CC'))
     ,  !
     .
 
+
+extract_set_ops_type singleton singleton _ _ _ [] :- !.
+
+extract_set_ops star star _ _ _ [] :- !.
+
 %% 1 -> 1  ==>  1
-collapse_term (elim_singleton Star C _CC) Result []
+collapse_term (elim_singleton Star C _CC) Result _Vars _VarMap _LibMap []
     :- conv (C Star) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
-extract_set_ops (elim_singleton Star C CC) Result SetList
-    :- extract_set_ops Star Star' []
-    ,  pi s\ locDecl s singleton => extract_set_ops_type (C s) (C' s) []
-    ,  extract_set_ops CC CC' SetList
-    ,  spy(collapse_term (elim_singleton Star' C' CC') Result [])
+extract_set_ops (elim_singleton Star C CC) Result Vars VarMap LibMap SetList
+    :- extract_set_ops Star Star' Vars VarMap LibMap []
+    ,  ((name C, map_var C VarMap C')
+        , !; pi s\ locDecl s singleton => extract_set_ops_type (C s) (C' s) [(var_term _ s)|Vars] VarMap LibMap [])
+    ,  extract_set_ops CC CC' Vars VarMap LibMap SetList
+    ,  spy(collapse_term (elim_singleton Star' C' CC') Result Vars VarMap LibMap [])
     ,  !
     .
 

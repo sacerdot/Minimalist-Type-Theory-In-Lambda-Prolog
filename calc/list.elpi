@@ -65,69 +65,84 @@ dconv (elim_list L List LA LL) (elim_list L' List' LA' LL')
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops_type (list C) Result
-    :- starify_nonset_ops_type C C'
+starify_nonset_ops_type (list C) LibMap Result
+    :- starify_nonset_ops_type C LibMap C'
     ,  Result = (list C')
     ,  !
     .
 
-extract_set_ops_type (list C) Result SetList
-    :- extract_set_ops_type C C' SetList
-    ,  collapse_type (list C') Result
-    ,  !
-    .
-
-
-starify_nonset_ops (list_empty C) Result
-    :- starify_nonset_ops_type C C'
+starify_nonset_ops (list_empty C) LibMap Result
+    :- starify_nonset_ops_type C LibMap C'
     ,  Result = (list_empty C')
     ,  !
     .
 
-extract_set_ops (list_empty C) Result SetList
-    :- spy(extract_set_ops_type C C' SetList)
-    ,  spy(collapse_term (list_empty C') Result [])
-    ,  !
-    .
-
-
-starify_nonset_ops (list_cons C Head Tail) Result
-    :- starify_nonset_ops_type C C'
-    ,  starify_nonset_ops Head Head'
-    ,  starify_nonset_ops Tail Tail'
+starify_nonset_ops (list_cons C Head Tail) LibMap Result
+    :- starify_nonset_ops_type C LibMap C'
+    ,  starify_nonset_ops Head LibMap Head'
+    ,  starify_nonset_ops Tail LibMap Tail'
     ,  Result = (list_cons C' Head' Tail')
     ,  !
     .
 
-extract_set_ops (list_cons C Head Tail) Result SetList
-    :- spy(extract_set_ops_type C C' CList)
-    ,  spy(extract_set_ops Head Head' HeadList)
-    ,  spy(extract_set_ops Tail Tail' TailList)
-    ,  concat [TailList, HeadList, CList] SetList
-    ,  spy(collapse_term (list_cons C' Head' Tail') Result [])
-    ,  !
-    .
-
-
-starify_nonset_ops (elim_list L List LA LL) Result
-    :- starify_nonset_ops List List'
+starify_nonset_ops (elim_list L List LA LL) LibMap Result
+    :- starify_nonset_ops List LibMap List'
     ,  isa List (list C) @level
-    ,  pi z\ locDecl z (list C) => starify_nonset_ops_type (L z) (L' z)
-    ,  spy(starify_nonset_ops LA LA')
-    ,  spy(pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
-        starify_nonset_ops (LL y x z) (LL' y x z))
+    , ((name L, L' = L)
+        , !; pi z\ locDecl z (list C) => starify_nonset_ops_type (L z) LibMap (L' z))
+    ,  spy(starify_nonset_ops LA LibMap LA')
+    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) => (name (LL y x), LL' = LL))
+        , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+            starify_nonset_ops (LL y x z) LibMap (LL' y x z))
     ,  Result = (elim_list L' List' LA' LL')
     ,  !
     .
 
-extract_set_ops (elim_list L List LA LL) Result SetList
-    :- extract_set_ops List List' ListList
+
+extract_set_ops_type (list C) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type C C' Vars VarMap LibMap SetList
+    ,  collapse_type (list C') Result Vars VarMap LibMap []
+    ,  !
+    .
+
+extract_set_ops (list_empty C) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type C C' Vars VarMap LibMap SetList)
+    ,  spy(collapse_term (list_empty C') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+extract_set_ops (list_cons C Head Tail) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type C C' Vars VarMap LibMap CList)
+    ,  spy(extract_set_ops Head Head' Vars VarMap LibMap HeadList)
+    ,  spy(extract_set_ops Tail Tail' Vars VarMap LibMap TailList)
+    ,  concat [TailList, HeadList, CList] SetList
+    ,  spy(collapse_term (list_cons C' Head' Tail') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% N -> 1  ==>  1
+collapse_term (elim_list L List _LA _LL) Result Vars VarMap LibMap ElimList
+    :- conv (L List) extractor_singleton
+    ,  extract_collapsing_input Vars VarMap LibMap List _ ElimList
+    ,  Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (elim_list L List LA LL) Result Vars VarMap LibMap SetList
+    :- extract_set_ops List List' Vars VarMap LibMap ListList
     ,  isa List (list C) @level
-    ,  pi z\ locDecl z (list C) => extract_set_ops_type (L z) (L' z) LList
-    ,  spy(extract_set_ops LA LA' LAList)
-    ,  spy(pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
-        extract_set_ops (LL y x z) (LL' y x z) LLList)
-    ,  spy(collapse_term (elim_list L' List' LA' LL') Result ElimList)
+    ,  isa List' (list C') @level
+    , ((name L, map_var L VarMap L', LList = [])
+        , !; pi z\ locDecl z (list C) => pi s\ locDecl s (list C') => 
+            extract_set_ops_type (L z) (L' s) [(var_term _ s)|[(var_term _ z)|Vars]] (chain z s VarMap) LibMap LList)
+    ,  spy(extract_set_ops LA LA' Vars VarMap LibMap LAList)
+    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) =>
+         pi b\ locDecl b C' => pi a\ locDecl a (list C') =>
+            (name (LL y x), map_var (LL y x) VarMap (LL' b a), LLList = []))
+        , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+             pi b\ locDecl b C' => pi a\ locDecl a (list C') => pi c\ locDecl c (L' a) =>
+            extract_set_ops (LL y x z) (LL' b a c) [(var_term _ z)|[(var_term _ x)|[(var_term _ y)|[(var_term _ c)|[(var_term _ a)|[(var_term _ b)|Vars]]]]]] (chain z c (chain x a (chain y b VarMap))) LibMap LLList)
+    ,  spy(collapse_term (elim_list L' List' LA' LL') Result Vars VarMap LibMap ElimList)
     ,  spy(concat [ElimList, LLList, LAList, LList, ListList] SetList)
     ,  !
     .
