@@ -81,20 +81,6 @@ starify_nonset_ops (elim_id P C CC) LibMap Result
     ,  !
     .
 
-extract_set_ops_type (propId A AA1 AA2) Result SetList
-    :- extract_set_ops AA1 AA11 AA1List
-    ,  extract_set_ops AA2 AA21 AA2List
-    ,  extract_set_ops_type A A1 AList
-    ,  extract_collapsing_input AA11 A1 K1 AA11List
-    ,  extract_collapsing_input AA21 A1 K1 AA21List
-    ,  spy((is_informative K1 false
-        ,    A' = A1, AA1' = AA11, AA2' = AA21)
-        , !; A' = extractor_singleton, AA1' = extractor_star, AA2' = extractor_star)
-    ,  spy(concat [AA21List, AA11List, AA2List, AA1List, AList] SetList)
-    ,  spy(collapse_type (propId A' AA1' AA2') Result)
-    ,  !
-    .
-
 
 collapse_type (propId A _AA1 _AA2) Result _Vars _VarMap _LibMap []
     :- conv A extractor_singleton
