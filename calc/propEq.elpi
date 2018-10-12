@@ -1,4 +1,3 @@
-
 %% calc_Eq.elpi
 
 
@@ -751,59 +750,59 @@ propEqLib L :- L = [
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops_type (propEq A AA1 AA2) Result
-    :- starify_nonset_ops AA1 AA1'
-    ,  starify_nonset_ops AA2 AA2'
-    ,  starify_nonset_ops_type A A'
+starify_nonset_ops_type (propEq A AA1 AA2) LibMap Result
+    :- starify_nonset_ops AA1 LibMap AA1'
+    ,  starify_nonset_ops AA2 LibMap AA2'
+    ,  starify_nonset_ops_type A LibMap A'
     ,  spy(Result = (propEq A' AA1' AA2'))
     ,  !
     .
 
-collapse_type (propEq A _AA1 _AA2) Result
+starify_nonset_ops (eq A AA) LibMap Result
+    :- starify_nonset_ops AA LibMap AA'
+    ,  starify_nonset_ops_type A LibMap A'
+    ,  spy(Result = (eq A' AA'))
+    ,  !
+    .
+
+
+collapse_type (propEq A _AA1 _AA2) Result _Vars _VarMap _LibMap []
     :- conv A extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .
 
-extract_set_ops_type (propEq A AA1 AA2) Result SetList
-    :- extract_set_ops AA1 AA11 AA1List
-    ,  extract_set_ops AA2 AA21 AA2List
-    ,  extract_set_ops_type A A1 AList
-    ,  extract_collapsing_input AA11 A1 K1 AA11List
-    ,  extract_collapsing_input AA21 A1 K1 AA21List
-    ,  spy((is_informative K1 false
-        ,    A' = A1, AA1' = AA11, AA2' = AA21)
-        , !; A' = extractor_singleton, AA1' = extractor_star, AA2' = extractor_star)
+extract_set_ops_type (propEq A AA1 AA2) Result Vars VarMap LibMap SetList
+    :- extract_set_ops AA1 AA11 Vars VarMap LibMap AA1List
+    ,  extract_set_ops AA2 AA21 Vars VarMap LibMap AA2List
+    ,  extract_set_ops_type A A1 Vars VarMap LibMap AList
+    ,  extract_collapsing_input Vars VarMap LibMap AA11 AA1' AA11List
+    ,  extract_collapsing_input Vars VarMap LibMap AA21 AA2' AA21List
+    ,  spy((AA1' = extractor_star, AA2' = extractor_star
+        ,    A' = extractor_singleton)
+        , !; A' = A1)
     ,  spy(concat [AA21List, AA11List, AA2List, AA1List, AList] SetList)
-    ,  spy(collapse_type (propEq A' AA1' AA2') Result)
-    ,  !
-    .
-
-
-starify_nonset_ops (eq A AA) Result
-    :- starify_nonset_ops AA AA'
-    ,  starify_nonset_ops_type A A'
-    ,  spy(Result = (eq A' AA'))
+    ,  spy(collapse_type (propEq A' AA1' AA2') Result Vars VarMap LibMap [])
     ,  !
     .
 
 %% C 1  ==>  1
-collapse_term (eq A _AA) Result []
+collapse_term (eq A _AA) Result _Vars _VarMap _LibMap []
     :- conv A extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
 %% A' -> C A'  ==>  A' -> C 1
-extract_set_ops (eq A AA) Result SetList
-    :- spy(extract_set_ops_type A A1 AList)
-    ,  spy(extract_set_ops AA AA1 AAList)
-    ,  spy(extract_collapsing_input AA1 A1 K1 AA1List)
-    ,  spy((is_informative K1 false
-        ,    A' = A1, AA' = AA1)
-        , !; A' = extractor_singleton, AA' = extractor_star)
+extract_set_ops (eq A AA) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type A A1 Vars VarMap LibMap AList)
+    ,  spy(extract_set_ops AA AA1 Vars VarMap LibMap AAList)
+    ,  spy(extract_collapsing_input Vars VarMap LibMap AA1 AA' AA1List)
+    ,  spy((AA' = extractor_star
+        ,    A' = extractor_singleton)
+        , !; A' = A1)
     ,  spy(concat [AA1List, AAList, AList] SetList)
-    ,  spy(collapse_term (eq A' AA') Result [])
+    ,  spy(collapse_term (eq A' AA') Result Vars VarMap LibMap [])
     ,  !
     .
 

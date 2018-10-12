@@ -1,5 +1,9 @@
 % the precise implementation of this construct is still to be decided
 
+%%-- local definitions: letIn
+%this may soon change as it is still to be decided how this should look like
+type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
+
 of (letIn T M N) T' ext :- 
 spy(    isaType T propc ext),
 spy(    isa M T ext), 

@@ -2,12 +2,6 @@
 type fixMe A -> B -> C.
 type k_propId mttType -> mttTerm.
 
-%%-- local definitions: letIn
-%this may soon change as it is still to be decided how this should look like
-type letIn mttType -> mttTerm -> (mttTerm -> mttTerm) -> mttTerm.
-
-
-
 /* UNITYPED COMPUTATIONAL PREDICATES */
 type hstep, dconv, hnf,  conv, interp A -> A -> prop.
 
@@ -509,6 +503,16 @@ type concat list (list A) -> list A -> prop.
 concat [] [].
 concat [H|TL] R :- concat TL L, append H L R.
 
+type reverse_ list A -> list A -> list A -> prop.
+type reverse list A -> list A -> prop.
+
+reverse_ [] A A.
+reverse_ [H|TL] A R :- reverse_ TL [H|A] R.
+reverse L R :- reverse_ L [] R.
+
+get_elem [H|_] 0 H.
+get_elem [_|TL] I R :- I1 is (I - 1), get_elem TL I1 R.
+
 in_library P :-
  translateLib L1,
  trueLib L2,
@@ -645,4 +649,6 @@ type extractor_star mttTerm.
 
 ofType extractor_singleton props @level.
 of extractor_star extractor_singleton @level.
+dconv propS extractor_singleton.
+dconv extractor_singleton propS.
 

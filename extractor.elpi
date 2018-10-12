@@ -1,70 +1,578 @@
+%
+type chain A -> A -> Chain.
+type chain_end A -> A -> Chain.
+
+type extract_set_ops mttTerm -> mttTerm -> list mttTerm -> (A -> A -> Chain) -> list (list any) -> list mttTerm -> prop.
+type extract_set_ops_lib libraryEntry -> libraryEntry -> list mttTerm -> (A -> A -> Chain) -> list (list any) -> list mttTerm -> prop.
+
+%% Lib Extraction
+
+starify_nonset_ops_lib (univPi F) LibMap Result
+    :- pi Bi\ ofType Bi set int => starify_nonset_ops_lib (F Bi) LibMap (F' Bi)
+    ,  spy(Result = (univPi F')) 
+    ,  !
+    .
+starify_nonset_ops_lib (univCol F) LibMap Result
+    :- spy(pi Bi\ ofType Bi col int => starify_nonset_ops_lib (F Bi) LibMap (F' Bi))
+    ,  spy(Result = (univCol F')) 
+    ,  !
+    .
+starify_nonset_ops_lib (univProp F) LibMap Result
+    :- pi Bi\ ofType Bi props int => starify_nonset_ops_lib (F Bi) LibMap (F' Bi)
+    ,  spy(Result = (univProp F')) 
+    ,  !
+    .
+
+starify_nonset_ops_lib (univDepPi Bi F) LibMap Result
+    :- starify_nonset_ops_type Bi LibMap Bi'
+    ,  spy(pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
+            starify_nonset_ops_lib (F Ci) LibMap (F' Ci))
+    ,  spy(Result = (univDepPi Bi' F'))
+    ,  !
+    .
+starify_nonset_ops_lib (univDepCol Bi F) LibMap Result
+    :- starify_nonset_ops_type Bi LibMap Bi'
+    ,  spy(pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
+            starify_nonset_ops_lib (F Ci) LibMap (F' Ci))
+    ,  spy(Result = (univDepCol Bi' F'))
+    ,  !
+    .
+starify_nonset_ops_lib (univDepProp Bi F) LibMap Result
+    :- starify_nonset_ops_type Bi LibMap Bi'
+    ,  spy(pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
+            starify_nonset_ops_lib (F Ci) LibMap (F' Ci))
+    ,  spy(Result = (univDepProp Bi' F'))
+    ,  !
+    .
+
+starify_nonset_ops_lib (univPiT T F) LibMap Result
+    :- starify_nonset_ops_type T LibMap T'
+    ,  pi x\ of x T int => starify_nonset_ops_lib (F x) LibMap (F' x)
+    ,  spy(Result = (univPiT T' F')) 
+    ,  !
+    .
+
+starify_nonset_ops_lib (univDepPiT Ai Bi F) LibMap Result
+    :- starify_nonset_ops_type Ai LibMap Ai'
+    ,  spy((name Bi, Bi' = Bi)
+        , !; pi x\ of x Ai int => starify_nonset_ops_type (Bi x) LibMap (Bi' x))
+    ,  pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+        (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
+            (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
+                starify_nonset_ops_lib (F t) LibMap (F' t)
+    ,  spy(Result = (univDepPiT Ai' Bi' F')) 
+    ,  !
+    .
+
+starify_nonset_ops_lib (locDefL N TY TE) LibMap Result
+    :- spy(starify_nonset_ops_type TY LibMap TY')
+    ,  spy(starify_nonset_ops TE LibMap TE')
+    ,  spy(Result = (locDefL N TY' TE')) 
+    ,  !
+    .
+starify_nonset_ops_lib (locTypeDefL N KIND TY) LibMap Result
+    :- spy(starify_nonset_ops_type TY LibMap TY')
+    ,  spy(Result = (locTypeDefL N KIND TY')) 
+    ,  !
+    .
+
+starify_nonset_ops_lib_prop _A (isa star singleton @level).
+
+starify_nonset_ops_lib (hyp H1 H2 E) LibMap Result
+    :- starify_nonset_ops_lib_prop H1 H1'
+    ,  starify_nonset_ops_lib_prop H2 H2'
+    ,  starify_nonset_ops_lib E LibMap E'
+    ,  spy(Result = (hyp H1' H2' E')) 
+    ,  !
+    .
+starify_nonset_ops_lib (cut H E) LibMap Result
+    :- starify_nonset_ops_lib_prop H H'
+    ,  starify_nonset_ops_lib E LibMap E'
+    ,  spy(Result = (cut H' E')) 
+    ,  !
+    .
+
+
+extract_set_ops_lib (univPi F) Result Vars VarMap LibMap SetList
+    :- pi Bi\ ofType Bi set int => extract_set_ops_lib (F Bi) (F' Bi) [(var_type Bi _)|Vars] VarMap LibMap SetList
+    ,  spy(collapse_lib (univPi F') Result Vars VarMap LibMap [])
+    ,  !
+    .
+extract_set_ops_lib (univCol F) Result Vars VarMap LibMap SetList
+    :- pi Bi\ ofType Bi col int => extract_set_ops_lib (F Bi) (F' Bi) [(var_type Bi _)|Vars] VarMap LibMap SetList
+    ,  spy(collapse_lib (univCol F') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% T(1) -> N  ==>  N
+%collapse_lib (univProp F) Result Vars VarMap LibMap SetList
+%    :- spy(extract_set_ops_lib (F extractor_singleton) Result Vars VarMap LibMap SetList)
+%    ,  !
+%    .
+extract_set_ops_lib (univProp F) Result Vars VarMap LibMap SetList
+    :- pi Bi\ ofType Bi props int => extract_set_ops_lib (F Bi) (F' Bi) [(var_type Bi _)|Vars] VarMap LibMap FList
+    ,  spy(collapse_lib (univProp F') Result Vars VarMap LibMap AppList)
+    ,  spy(concat [AppList, FList] SetList)
+    ,  !
+    .
+
+extract_set_ops_lib (univDepPi Bi F) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type Bi Bi' Vars VarMap LibMap BiList
+    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) set int :- of y Bi' int) =>
+            (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
+            (pi x\ pi y\ dconv (Ei x) (Ei y) :- conv x y) =>
+                extract_set_ops_lib (F Ci) (F' Ei) [(var_dep_type Ei _ y)|[(var_dep_type Ci _ x)|Vars]] (chain Ci Ei (chain x y VarMap)) LibMap FList)
+    ,  spy(concat [FList, BiList] SetList)
+    ,  spy(collapse_lib (univDepPi Bi' F') Result Vars VarMap LibMap [])
+    ,  !
+    .
+extract_set_ops_lib (univDepCol Bi F) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type Bi Bi' Vars VarMap LibMap BiList
+    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) col int :- of y Bi' int) =>
+            (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
+            (pi x\ pi y\ dconv (Ei x) (Ei y) :- conv x y) =>
+                extract_set_ops_lib (F Ci) (F' Ei) [(var_dep_type Ei _ y)|[(var_dep_type Ci _ x)|Vars]] (chain Ci Ei (chain x y VarMap)) LibMap FList)
+    ,  spy(concat [FList, BiList] SetList)
+    ,  spy(collapse_lib (univDepCol Bi' F') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% T(1) -> N  ==>  N
+%collapse_lib (univDepProp _Bi F) Result Vars VarMap LibMap SetList
+%    :- spy(extract_set_ops_lib (F (_\extractor_singleton)) Result Vars VarMap LibMap SetList)
+%    ,  !
+%    .
+extract_set_ops_lib (univDepProp Bi F) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type Bi Bi' Vars VarMap LibMap BiList
+    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
+           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) props int :- of y Bi' int) =>
+            (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
+            (pi x\ pi y\ dconv (Ei x) (Ei y) :- conv x y) =>
+                extract_set_ops_lib (F Ci) (F' Ei) [(var_dep_type Ei _ y)|[(var_dep_type Ci _ x)|Vars]] (chain Ci Ei (chain x y VarMap)) LibMap FList)
+    ,  spy(concat [FList, BiList] SetList)
+    ,  spy(collapse_lib (univDepProp Bi' F') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+extract_set_ops_lib (univPiT T F) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type T T' Vars VarMap LibMap TList)
+    ,  spy(pi x\ of x T int => pi y\ of y T' int => extract_set_ops_lib (F x) (F' y) [(var_term _ y)|[(var_term _ x)|Vars]] (chain x y VarMap) LibMap FList)
+    ,  spy(concat [FList, TList] SetList)
+    ,  spy(collapse_lib (univPiT T' F') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+extract_set_ops_lib (univDepPiT Ai Bi F) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops_type Ai Ai' Vars VarMap LibMap AiList)
+    ,  spy((name Bi, Bi' = Bi, BiList = [])
+        , !; pi x\ of x Ai int => pi y\ of y Ai' int => extract_set_ops_type (Bi x) (Bi' y) [(var_term _ y)|[(var_term _ x)|Vars]] (chain x y VarMap) LibMap BiList)
+    ,  pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+       pi y\ of y Ai' int => pi g\ (pi y\ ofType (Bi' y) set int :- of y Ai' int) =>
+        (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
+        (pi x\ pi y\ dconv (Bi' x) (Bi' y) :- conv x y) =>
+            (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
+            (pi y\ of (g y) (Bi' y) int :- of y Ai' int) =>
+                spy(extract_set_ops_lib (F t) (F' g) [(var_dep_term Bi' g y)|[(var_dep_term Bi t x)|Vars]] (chain t g (chain x y VarMap)) LibMap FList)
+    ,  spy(concat [FList, BiList, AiList] SetList)
+    ,  spy(Result = (univDepPiT Ai' Bi' F')) 
+    ,  !
+    .
+
+
+type occurrences list any -> any -> list any -> prop.
+
+occurrences [H|TL] N Result
+    :- occurrences TL N TL'
+    ,  ((occurs H N, H' = [H]), !; H' = [])
+    ,  concat [H',TL'] Result
+    .
+occurrences [] _N [].
+
+type wrapped_occurrences list mttTerm -> any -> list mttTerm -> prop.
+
+wrapped_occurs (var_type H _) N H' :- ((occurs H N, H' = [(var_type H _)]), !; H' = []).
+wrapped_occurs (var_term _ H) N H' :- ((occurs H N, H' = [(var_term _ H)]), !; H' = []).
+wrapped_occurs (var_dep_type H _ A) N H' :- ((occurs H N, H' = [(var_dep_type H _ A)]), !; H' = []).
+wrapped_occurs (var_dep_term _ H A) N H' :- ((occurs H N, H' = [(var_dep_term _ H A)]), !; H' = []).
+wrapped_occurrences [H|TL] N Result
+    :- wrapped_occurrences TL N TL'
+    ,  wrapped_occurs H N H'
+    ,  concat [H',TL'] Result
+    .
+wrapped_occurrences [] _N [].
+
+
+type magic_type X -> Y.
+type magic_term X -> Y.
+type append_args (X -> Y) -> (A -> A -> Chain) -> any -> list any -> any -> prop.
+
+append_args Magic VarMap Head [H|TL] Result
+    :- map_var H VarMap H', append_args Magic VarMap (Magic Head H') TL Result
+    .
+append_args _ _ Head [] Head.
+
+type clean_header (X -> Y) -> (A -> A -> Chain) -> any -> any -> prop.
+
+clean_header magic_type _ (magic_type A B) (magic_type A B) :- !.
+clean_header magic_term _ (magic_term A B) (magic_term A B) :- !.
+clean_header Magic VarMap N N'
+    :- spy(names Vars)
+    ,  spy(occurrences Vars N Vars')
+    ,  spy(term_to_string N S)
+    ,  spy(rex_replace "^\\(extr_\\)?\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\2" S SH)
+    ,  spy(SHead is "extr_" ^ SH)
+    ,  spy(string_to_term SHead NHead)
+    ,  spy(append_args Magic VarMap NHead Vars' N')
+    .
+
+
+extract_set_ops_lib (locDefL N TY TE) Result Vars VarMap LibMap SetList
+    :- spy(clean_header magic_term VarMap N N')
+    ,  spy(extract_set_ops_type TY TY' Vars VarMap LibMap TYList)
+    ,  spy(extract_set_ops TE TE' Vars VarMap LibMap TEList)
+    ,  spy(concat [TEList, TYList] SetList)
+    ,  spy(collapse_lib (locDefL N' TY' TE') Result Vars VarMap LibMap [])
+    ,  !
+    .
+extract_set_ops_lib (locTypeDefL N _KIND TY) Result Vars VarMap LibMap SetList
+    :- clean_header magic_type VarMap N N'
+    ,  spy(extract_set_ops_type TY TY' Vars VarMap LibMap SetList)
+    ,  spy(ofType TY' KIND' @level)
+    ,  spy(collapse_lib (locTypeDefL N' KIND' TY') Result Vars VarMap LibMap [])
+    ,  !
+    .
+extract_set_ops_lib (hyp _H1 _H2 E) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_lib E E' Vars VarMap LibMap SetList
+    ,  spy(Result = E') 
+    ,  !
+    .
+extract_set_ops_lib (cut _H E) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_lib E E' Vars VarMap LibMap SetList
+    ,  spy(Result = E') 
+    ,  !
+    .
+
 %% Base cases definition for extraction
 
-starify_type set A A :- !.
-starify_type col propS extractor_singleton :- !.
-starify_type col A A :- !.
-starify_type _   _ extractor_singleton.
+type get_call_name any -> string -> prop.
+get_call_name (univPi F) Result :- get_call_name (F X_) Result.
+get_call_name (univCol F) Result :- get_call_name (F X_) Result.
+get_call_name (univProp F) Result :- get_call_name (F X_) Result.
+get_call_name (univDepPi _ F) Result :- get_call_name (F X_) Result.
+get_call_name (univDepCol _ F) Result :- get_call_name (F X_) Result.
+get_call_name (univDepProp _ F) Result :- get_call_name (F X_) Result.
+get_call_name (univPiT _ F) Result :- get_call_name (F X_) Result.
+get_call_name (univDepPiT _ _ F) Result :- get_call_name (F X_) Result.
+get_call_name (hyp _ _ E) Result :- get_call_name E Result.
+get_call_name (cut _ E) Result :- get_call_name E Result.
+get_call_name (locTypeDefL N _ _) Result
+    :- term_to_string N S
+    ,  rex_replace "^\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\1" S Result
+    .
+get_call_name (locDefL N _ _) Result
+    :- term_to_string N S
+    ,  rex_replace "^\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\1" S Result
+    .
 
-starify_nonset_ops_type (decode A) Result
-    :- starify_nonset_ops A A'
+is_lib_call_ AName [[Call|_]|Tail]
+    :- get_call_name Call Name
+    ,  ((AName = Name), !; is_lib_call_ AName Tail)
+    .
+
+type is_lib_call any -> list (list any) -> prop.
+is_lib_call A LibMap
+    :- term_to_string A SA
+    ,  rex_replace "^\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\1" SA SAHead
+    ,  is_lib_call_ SAHead LibMap
+    .
+
+starify_type set A _ A :- !.
+starify_type col propS _ extractor_singleton :- !.
+starify_type col A _ A :- !.
+starify_type _   A _ A :- spy(name A), !.
+starify_type _   A LibMap A :- spy(is_lib_call A LibMap).
+%starify_type _   _ _ extractor_singleton.
+
+starify_nonset_ops_type (decode A) LibMap Result
+    :- starify_nonset_ops A LibMap A'
     ,  Result = (decode A')
     ,  !
     .
 
-starify_nonset_ops_type TA Result
+starify_nonset_ops_type TA LibMap Result
     :- ofType TA AKind @level
-    ,  spy(starify_type AKind TA Result)
+    ,  spy(starify_type AKind TA LibMap Result)
     ,  !
     .
 
-starify_term set A A :- !.
-starify_term col A A :- !.
-starify_term _   A A :- spy(name A), !.
-starify_term _   _ extractor_star.
+starify_term set A _ A :- !.
+starify_term col A _ A :- !.
+starify_term _   A _ A :- spy(name A), !.
+starify_term _   A LibMap A :- spy(is_lib_call A LibMap).
+%starify_term _   _ _ extractor_star.
 
-starify_nonset_ops (encode A) Result
-    :- starify_nonset_ops_type A A'
+starify_nonset_ops (encode A) LibMap Result
+    :- starify_nonset_ops_type A LibMap A'
     ,  Result = (encode A')
     ,  !
     .
 
-starify_nonset_ops A Result
+starify_nonset_ops A LibMap Result
     :- of A TA @level
     ,  ofType TA AKind @level
-    ,  spy(starify_term AKind A Result)
+    ,  spy(starify_term AKind A LibMap Result)
     ,  !
     .
 
 
-collapse_type (decode extractor_star) Result
+type contains_magic any -> prop -> prop.
+contains_magic A true :- term_to_string A S, rex_match ".*magic.*" S, !.
+contains_magic _ false.
+
+type map_var any -> (A -> A -> Chain) -> any -> prop.
+map_var A (chain B C Tail) A' :- ((B = A, A' = C), !; map_var A Tail A').
+map_var A (chain_end _ _ _) A.
+
+type map_var_group libGroup -> any -> (A -> A -> Chain) -> any -> prop.
+map_var_group Group A VarMap A'
+    :- ((Group = lib_source, A' = A), !; Group = lib_dest, map_var A VarMap A')
+    .
+
+type map_var_app_chain list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
+map_var_app_chain [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
+    :- map_var H VarMap H'
+    ,  map_var_app_chain TL VarMap TL'
+    .
+map_var_app_chain [(var_term _ H)] VarMap [(var_term _ H')]
+    :- map_var H VarMap H'
+    .
+
+type map_var_app_chain_group libGroup -> list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
+map_var_app_chain_group Group [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
+    :- map_var_group Group H VarMap H'
+    ,  map_var_app_chain_group Group TL VarMap TL'
+    .
+map_var_app_chain_group Group [(var_term _ H)] VarMap [(var_term _ H')]
+    :- map_var_group Group H VarMap H'
+    .
+
+apply_var_args [(var_dep_term _ H _)|TL] (H TL') :- apply_var_args TL TL'.
+apply_var_args [(var_term _ H)] H.
+
+type apply_args list any -> mttTerm -> prop.
+apply_args [H] H :- !.
+apply_args [H|TL] (H TL') :- apply_args TL TL'.
+
+get_vars_in_app_chain [(var_dep_term _ H A)|TL] Type Result1 Result2
+    :- of A T @level
+    ,  get_vars_in_app_chain TL TypeTL R1 R2
+    ,  conv TypeTL T
+    ,  of (H A) Type @level
+    ,  Result1 = [(var_dep_term _ H A)|R1]
+    ,  Result2 = R2
+    .
+get_vars_in_app_chain [(var_term _ H)|TL] Type Result1 Result2
+    :- of H Type @level
+    ,  Result1 = [(var_term _ H)]
+    ,  Result2 = TL
+    .
+
+
+kind libGroup type.
+type lib_source, lib_dest libGroup.
+type get_applied_head any -> libGroup -> list any -> (A -> A -> Chain) -> any -> prop.
+
+get_applied_head (univPi F) Group [(var_type H _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+get_applied_head (univCol F) Group [(var_type H _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+get_applied_head (univProp F) Group [(var_type H _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+
+get_applied_head (univPi F) Group [(var_dep_type H _ A)|TL] VarMap Result
+    :- of A T @level
+    ,  get_vars_in_app_chain TL BType B TL'
+    ,  conv BType T
+    ,  map_var_group Group H VarMap H'
+    ,  map_var_app_chain_group Group B VarMap B1
+    ,  apply_var_args B1 B'
+    ,  get_applied_head (F (H' B')) Group TL' VarMap Result
+    .
+get_applied_head (univCol F) Group [(var_dep_type H _ A)|TL] VarMap Result
+    :- of A T @level
+    ,  get_vars_in_app_chain TL BType B TL'
+    ,  conv BType T
+    ,  map_var_group Group H VarMap H'
+    ,  map_var_app_chain_group Group B VarMap B1
+    ,  apply_var_args B1 B'
+    ,  get_applied_head (F (H' B')) Group TL' VarMap Result
+    .
+get_applied_head (univProp F) Group [(var_dep_type H _ A)|TL] VarMap Result
+    :- of A T @level
+    ,  get_vars_in_app_chain TL BType B TL'
+    ,  conv BType T
+    ,  map_var_group Group H VarMap H'
+    ,  map_var_app_chain_group Group B VarMap B1
+    ,  apply_var_args B1 B'
+    ,  get_applied_head (F (H' B')) Group TL' VarMap Result
+    .
+
+get_applied_head (univDepPi _ F) Group [(var_dep_type H _ _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+get_applied_head (univDepCol _ F) Group [(var_dep_type H _ _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+get_applied_head (univDepProp _ F) Group [(var_dep_type H _ _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+
+get_applied_head (univPiT _ F) Group [(var_term _ H)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+get_applied_head (univPiT _ F) Group [(var_dep_term _ H A)|TL] VarMap Result
+    :- of A T @level
+    ,  get_vars_in_app_chain TL BType B TL'
+    ,  conv BType T
+    ,  map_var_group Group H VarMap H'
+    ,  map_var_app_chain_group Group B VarMap B1
+    ,  apply_var_args B1 B'
+    ,  get_applied_head (F (H' B')) Group TL' VarMap Result
+    .
+
+get_applied_head (univDepPiT _ _ F) Group [(var_dep_term _ H _)|TL] VarMap Result
+    :- map_var_group Group H VarMap H'
+    ,  get_applied_head (F H') Group TL VarMap Result
+    .
+
+get_applied_head (hyp _ _ E) Group Vars VarMap Result :- get_applied_head E Group Vars VarMap Result.
+get_applied_head (cut _ E) Group Vars VarMap Result :- get_applied_head E Group Vars VarMap Result.
+
+get_applied_head (locTypeDefL N _ _) _ _ _ N.
+get_applied_head (locDefL N _ _) _ _ _ N.
+
+type map_lib_call  any -> list mttTerm -> (A -> A -> Chain) -> list (list any) -> any -> prop.
+map_lib_call A RVars VarMap [[Entry|[ExtrEntry]]|Tail] Result
+    :- reverse RVars Vars
+    ,  wrapped_occurrences Vars A Vars'
+    ,  ((get_applied_head Entry lib_source Vars' VarMap H), !; H = Entry)
+    ,  ((get_applied_head ExtrEntry lib_dest Vars' VarMap M), !; M = ExtrEntry)
+    ,  ((A = H
+        ,    Result = M)
+        , !; map_lib_call A RVars VarMap Tail Result)
+    .
+
+collapse_lib A A _Vars _VarMap _LibMap [].
+
+collapse_type (decode extractor_star) Result _Vars _VarMap _LibMap []
     :- Result = extractor_singleton
     ,  !
     .
-
-collapse_type A A.
-
-extract_set_ops_type (decode A) Result SetList
-    :- extract_set_ops A A' SetList
-    ,  spy(collapse_type (decode A') Result)
+collapse_type (magic_type Head Arg) Result _Vars _VarMap _LibMap []
+    :- isaType (magic_type Head Arg) props @level
+    ,  Result = extractor_singleton
+    ,  !
+    .
+collapse_type A Result _Vars _VarMap _LibMap []
+    :- term_to_string A SA
+    ,  spy(rex_match "^extr_[a-zA-Z0-9_]+$" SA)
+    ,  isaType A props @level
+    ,  Result = extractor_singleton
     ,  !
     .
 
-extract_set_ops_type A A [].
 
-collapse_term (encode extractor_singleton) Result []
+collapse_type A A  _Vars _VarMap _LibMap [].
+
+extract_set_ops_type (decode A) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops A A' Vars VarMap LibMap SetList)
+    ,  spy(collapse_type (decode A') Result Vars VarMap LibMap [])
+    ,  !
+    .
+extract_set_ops_type (magic_type Head Arg) Result Vars VarMap LibMap []
+    :- spy(collapse_type (magic_type Head Arg) Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+extract_set_ops_type extractor_singleton extractor_singleton _ _VarMap _LibMap [] :- !.
+extract_set_ops_type A Result Vars VarMap LibMap []
+    :- spy(map_lib_call A Vars VarMap LibMap A')
+    ,  spy(collapse_type A' Result Vars VarMap LibMap [])
+    ,  !.
+extract_set_ops_type A Result _Vars VarMap _LibMap [] :- name A, map_var A VarMap Result, !.
+extract_set_ops_type A Result Vars VarMap _ []
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  reverse Vars Vars'
+    ,  spy(wrapped_occurrences Vars' A [(var_dep_type H _ _)|TL])
+    ,  map_var H VarMap H'
+    ,  map_var_app_chain TL VarMap TL1
+    ,  apply_var_args TL1 TL'
+    ,  Result = (H' TL')
+    .
+%extract_set_ops_type A A _ _ _ [].
+
+
+collapse_term (encode extractor_singleton) Result _Vars _VarMap _LibMap []
     :- Result = extractor_star
     ,  !
     .
-
-collapse_term A A [].
-
-extract_set_ops (encode A) Result SetList
-    :- extract_set_ops_type A A' SetList
-    ,  spy(collapse_term (encode A') Result [])
+collapse_term (magic_term Head Arg) Result _Vars _VarMap _LibMap []
+    :- spy(isa (magic_term Head Arg) extractor_singleton @level)
+    ,  Result = extractor_star
+    ,  !
+    .
+collapse_term A Result _Vars _VarMap _LibMap []
+    :- term_to_string A SA
+    ,  spy(rex_match "^extr_[a-zA-Z0-9_]+$" SA)
+    ,  isa A extractor_singleton @level
+    ,  Result = extractor_star
     ,  !
     .
 
-extract_set_ops A A [].
+collapse_term A A _Vars _VarMap _LibMap [].
+
+
+extract_set_ops (encode A) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type A A' Vars VarMap LibMap SetList
+    ,  spy(collapse_term (encode A') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+extract_set_ops (magic_term Head Arg) Result Vars VarMap LibMap []
+    :- spy(collapse_term (magic_term Head Arg) Result Vars VarMap LibMap [])
+    ,  !
+    .
+extract_set_ops extractor_star extractor_star _ _VarMap _LibMap [] :- !.
+extract_set_ops A Result Vars VarMap LibMap []
+    :- spy(map_lib_call A Vars VarMap LibMap A')
+    ,  spy(collapse_term A' Result Vars VarMap LibMap [])
+    ,  !.
+extract_set_ops A Result _Vars VarMap _LibMap [] :- name A, map_var A VarMap Result, !.
+extract_set_ops A Result Vars VarMap _ []
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  reverse Vars Vars'
+    ,  spy(wrapped_occurrences Vars' A [(var_dep_term _ H _)|TL])
+    ,  map_var H VarMap H'
+    ,  map_var_app_chain TL VarMap TL1
+    ,  apply_var_args TL1 TL'
+    ,  Result = (H' TL')
+    .
+%extract_set_ops A A _ _ _ [].
 
 is_informative set true.
 is_informative col true.
@@ -72,169 +580,656 @@ is_informative props false.
 is_informative propc false.
 
 
-reabstract_term_ (lambda B F) H M Result Abstracted
-    :- pi b\ locDecl b B => reabstract_term_ (F b) H M (F' b) Abstracted
-    ,  spy(Result = (lambda B F'))
+reabstract_term (extractor_type_lambda K F) H M Result
+    :- spy((name F, reabstract_dep_term F H M F')
+        , !; pi Bi\ (isaType Bi K int) => reabstract_term (F Bi) H M (F' Bi))
+    ,  spy(Result = (extractor_type_lambda K F'))
     ,  !
     .
-reabstract_term_ (app Lam X) H M Result Abstracted
-    :- reabstract_term_ Lam H M Lam' LamAbstracted
-    ,  reabstract_term_ X H M X' XAbstracted
+reabstract_term (extractor_dep_type_lambda A K F) H M Result
+    :- reabstract_type A H M A'
+    ,  spy((name F, reabstract_dep_term F H M F')
+        , !; pi a\ of a A int => pi Bi\ (isaType (Bi a) K int) => reabstract_term (F Bi) H M (F' Bi))
+    ,  spy(Result = (extractor_dep_type_lambda A' K F'))
+    ,  !
+    .
+reabstract_term (extractor_dep_lambda A B F) H M Result
+    :- reabstract_type A H M A'
+    ,  spy((name B, reabstract_dep_type B H M B')
+        , !; pi a\ of a A int => reabstract_type (B a) H M (B' a))
+    ,  spy((name F, reabstract_dep_term F H M F')
+        , !; pi a\ of a A int => pi b\ (of (b a) (B a) int) => reabstract_term (F b) H M (F' b))
+    ,  spy(Result = (extractor_dep_lambda A' B' F'))
+    ,  !
+    .
+
+
+reabstract_type (setPi B C) H M Result
+    :- reabstract_type B H M B'
+    ,  ((name C, reabstract_dep_type C H M C')
+        , !; pi b\ locDecl b B => reabstract_type (C b) H M (C' b))
+    ,  spy(Result = (setPi B' C'))
+    ,  !
+    .
+reabstract_term (lambda B F) H M Result
+    :- spy(reabstract_type B H M B')
+    ,  spy((name F, reabstract_dep_term F H M F')
+        , !; pi b\ locDecl b B => reabstract_term (F b) H M (F' b))
+    ,  spy(Result = (lambda B' F'))
+    ,  !
+    .
+reabstract_term (app Lam X) H M Result
+    :- reabstract_term Lam H M Lam'
+    ,  reabstract_term X H M X'
     ,  spy(Result = (app Lam' X'))
-    ,  spy(logic_or LamAbstracted XAbstracted Abstracted)
     ,  !
     .
 
-reabstract_term_ (pair B C BB CC) H M Result Abstracted
-    :- reabstract_term_ BB H M BB' BAbstracted
-    ,  reabstract_term_ CC H M CC' CAbstracted
-    ,  spy(Result = (pair B C BB' CC'))
-    ,  spy(logic_or BAbstracted CAbstracted Abstracted)
+reabstract_type (setSigma B C) H M Result
+    :- reabstract_type B H M B'
+    ,  ((name C, reabstract_dep_type C H M C')
+        , !; pi b\ locDecl b B => reabstract_type (C b) H M (C' b))
+    ,  spy(Result = (setSigma B' C'))
     ,  !
     .
-reabstract_term_ (p1 Pair) H M Result Abstracted
-    :- reabstract_term_ Pair H M Pair' Abstracted
-    ,  spy(Result = (p1 Pair'))
+reabstract_term (pair B C BB CC) H M Result
+    :- reabstract_type (setSigma B C) H M (setSigma B' C')
+    ,  reabstract_term BB H M BB'
+    ,  reabstract_term CC H M CC'
+    ,  spy(Result = (pair B' C' BB' CC')) 
     ,  !
     .
-reabstract_term_ (p2 Pair) H M Result Abstracted
-    :- reabstract_term_ Pair H M Pair' Abstracted
-    ,  spy(Result = (p2 Pair'))
+reabstract_term (p1 Pair) H M Result
+    :- reabstract_term Pair H M Pair'
+    ,  Result = (p1 Pair') 
     ,  !
     .
-reabstract_term_ (elim_setSigma Pair MT MM) H M Result Abstracted
-    :- reabstract_term_ Pair H M Pair' PairAbstracted
+reabstract_term (p2 Pair) H M Result
+    :- reabstract_term Pair H M Pair'
+    ,  Result = (p2 Pair') 
+    ,  !
+    .
+reabstract_term (elim_setSigma Pair MT MM) H M Result
+    :- reabstract_term Pair H M Pair'
     ,  isa Pair (setSigma B C) @level
-    ,  pi b\ pi c\ locDecl b B => locDecl c (C b) =>
-        reabstract_term_ (MM b c) H M (MM' b c) MMAbstracted
-    ,  spy(Result = (elim_setSigma Pair' MT MM'))
-    ,  spy(logic_or PairAbstracted MMAbstracted Abstracted)
+    ,  ((name MT, reabstract_dep_type MT H M MT')
+        , !; pi p\ locDecl p (setSigma B C) => reabstract_type (MT p) H M (MT' p))
+    ,  ((pi b\ locDecl b B => (name (MM b), reabstract_dep_term (MM b) H M (MM' b)))
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => reabstract_term (MM b c) H M (MM' b c))
+    ,  Result = (elim_setSigma Pair' MT' MM')
     ,  !
     .
 
-reabstract_term_ (inl A B AA) H M Result Abstracted
-    :- reabstract_term_ AA H M AA' Abstracted
-    ,  spy(Result = (inl A B AA'))
+reabstract_type (setSum A B) H M Result
+    :- reabstract_type A H M A'
+    ,  reabstract_type B H M B'
+    ,  Result = (setSum A' B')
     ,  !
     .
-reabstract_term_ (inr A B BB) H M Result Abstracted
-    :- reabstract_term_ BB H M BB' Abstracted
-    ,  spy(Result = (inr A B BB'))
+reabstract_term (inl A B AA) H M Result
+    :- reabstract_type A H M A'
+    ,  reabstract_type B H M B'
+    ,  reabstract_term AA H M AA'
+    ,  Result = (inl A' B' AA')
     ,  !
     .
-reabstract_term_ (elim_setSum C W Cl Cr) H M Result Abstracted
-    :- reabstract_term_ W H M W' WAbstracted
-    ,  isa W (setSum A B) @level
-    ,  pi l\ locDecl l A => reabstract_term_ (Cl l) H M (Cl' l) ClAbstracted
-    ,  pi r\ locDecl r B => reabstract_term_ (Cr r) H M (Cr' r) CrAbstracted
-    ,  spy(Result = (elim_setSum C W' Cl' Cr'))
-    ,  spy(logic_or ClAbstracted CrAbstracted CAbstracted)
-    ,  spy(logic_or WAbstracted CAbstracted Abstracted)
+reabstract_term (inr A B BB) H M Result
+    :- reabstract_type A H M A'
+    ,  reabstract_type B H M B'
+    ,  reabstract_term BB H M BB'
+    ,  Result = (inr A' B' BB')
+    ,  !
+    .
+reabstract_term (elim_setSum C W Cl Cr) H M Result
+    :- reabstract_term W H M W'
+    ,  isa W (setSum L R) @level
+    ,  ((name C, reabstract_dep_type C H M C')
+        , !; pi w\ locDecl w (setSum L R) => reabstract_type (C w) H M (C' w))
+    ,  ((name Cl, reabstract_dep_term Cl H M Cl')
+        , !; pi l\ locDecl l L => reabstract_term (Cl l) H M (Cl' l))
+    ,  ((name Cr, reabstract_dep_term Cr H M Cr')
+        , !; pi r\ locDecl r R => reabstract_term (Cr r) H M (Cr' r)) 
+    ,  Result = (elim_setSum C' W' Cl' Cr')
     ,  !
     .
 
-reabstract_term_ A H M Result Abstracted
-    :- spy((name A, A = H
-        ,    Result = M, Abstracted = true)
-        , !; Result = A, Abstracted = false)
+reabstract_type (list C) H M Result
+    :- reabstract_type C H M C'
+    ,  Result = (list C')
     ,  !
     .
+reabstract_term (list_empty C) H M Result
+    :- reabstract_type C H M C'
+    ,  Result = (list_empty C')
+    ,  !
+    .
+reabstract_term (list_cons C Head Tail) H M Result
+    :- reabstract_type C H M C'
+    ,  reabstract_term Head H M Head'
+    ,  reabstract_term Tail H M Tail'
+    ,  Result = (list_cons C' Head' Tail')
+    ,  !
+    .
+reabstract_term (elim_list L List LA LL) H M Result
+    :- reabstract_term List H M List'
+    ,  isa List (list C) @level
+    ,  ((name L, reabstract_dep_type L H M L')
+        , !; pi z\ locDecl z (list C) => reabstract_type (L z) H M (L' z))
+    ,  spy(reabstract_term LA H M LA')
+    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) => (name (LL y x), reabstract_dep_term (LL y x) H M (LL' y x)))
+        , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+            reabstract_term (LL y x z) H M (LL' y x z))
+    ,  Result = (elim_list L' List' LA' LL')
+    ,  !
+    .
+
+type reabstract_magic any -> any -> any -> any -> prop.
+reabstract_magic (magic_type Head Tail) H M Result
+    :- reabstract_magic Head H M Head'
+    ,  reabstract_magic Tail H M Tail'
+    ,  Result = (magic_type Head' Tail')
+    ,  !
+    .
+reabstract_magic (magic_term Head Tail) H M Result
+    :- reabstract_magic Head H M Head'
+    ,  reabstract_magic Tail H M Tail'
+    ,  Result = (magic_term Head' Tail')
+    ,  !
+    .
+reabstract_magic A H M M
+    :- spy(name A)
+    ,  spy(A = H)
+    ,  !
+    .
+reabstract_magic A _ _ A.
+
+
+reabstract_var_app_list [H|TL] (var_dep_term _ H _) (var_dep_term _ M _) [M|TL] :- !.
+reabstract_var_app_list [H'|TL] (var_dep_term _ H _) (var_dep_term _ M _) [H'|TL']
+    :- reabstract_var_app_list TL (var_dep_term _ H _) (var_dep_term _ M _) TL'
+    .
+reabstract_var_app_list [] _ _ [] :- !.
+
+reabstract_var_app_list [H] (var_term _ H) (var_term _ M) [M] :- !.
+reabstract_var_app_list [H'|TL] (var_term _ H) (var_term _ M) [H'|TL']
+    :- reabstract_var_app_list TL (var_term _ H) (var_term _ M) TL'
+    .
+reabstract_var_app_list [] _ _ [] :- !.
+
+reabstract_type A (var_type H _) (var_type M _) M
+    :- spy(name A)
+    ,  spy(A = H)
+    ,  !
+    .
+reabstract_type A (var_type H _) (var_type M _) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_type (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_type A (var_term _ H) (var_term _ M) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_type (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_type A (var_dep_type H _ _) (var_dep_type M _ _) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_type (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_type A (var_dep_term _ H _) (var_dep_term _ M _) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_type (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_type A (var_dep_type H _ _) (var_dep_type M _ _) Result
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  names Vars
+    ,  occurrences Vars A [H|TL]
+    ,  apply_args TL TL'
+    ,  Result = (M TL')
+    .
+reabstract_type A (var_dep_term _ H _) (var_dep_term _ M _) Result
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  names Vars
+    ,  occurrences Vars A [T|TL]
+    ,  reabstract_var_app_list TL (var_dep_term _ H _) (var_dep_term _ M _) TL1
+    ,  apply_args TL1 TL'
+    ,  Result = (T TL')
+    .
+reabstract_type A (var_term _ H) (var_term _ M) Result
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  names Vars
+    ,  occurrences Vars A [T|TL]
+    ,  reabstract_var_app_list TL (var_term _ H) (var_term _ M) TL1
+    ,  apply_args TL1 TL'
+    ,  Result = (T TL')
+    .
+reabstract_type A _ _ A.
+
+
+reabstract_term A (var_term _ H) (var_term _ M) M
+    :- spy(name A)
+    ,  spy(A = H)
+    ,  !
+    .
+reabstract_term A (var_type H _) (var_type M _) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_term (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_term A (var_term _ H) (var_term _ M) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_term (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_term A (var_dep_type H _ _) (var_dep_type M _ _) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_term (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_term A (var_dep_term _ H _) (var_dep_term _ M _) Result
+    :- spy(occurs H A)
+    ,  spy(clean_header magic_term (chain_end _ _ _) A A')
+    ,  spy(reabstract_magic A' H M Result)
+    ,  !
+    .
+reabstract_term A (var_dep_term _ H _) (var_dep_term _ M _) Result
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  names Vars
+    ,  occurrences Vars A List
+    ,  reabstract_var_app_list List (var_dep_term _ H _) (var_dep_term _ M _) List'
+    ,  apply_args List' Result
+    .
+reabstract_term A (var_term _ H) (var_term _ M) Result
+    :- term_to_string A S, spy(rex_match "x[0-9]+ .*" S)
+    ,  names Vars
+    ,  occurrences Vars A List
+    ,  reabstract_var_app_list List (var_term _ H) (var_term _ M) List'
+    ,  apply_args List' Result
+    .
+reabstract_term A _ _ A.
+
+reabstract_dep_type A (var_dep_type H _ _) (var_dep_type M _ _) M
+    :- spy(name A)
+    ,  spy(A = H)
+    ,  !
+    .
+reabstract_dep_type A _ _ A.
+
+type reabstract_dep_term any -> mttTerm -> mttTerm -> any -> prop.
+reabstract_dep_term A (var_dep_term _ H _) (var_dep_term _ M _) M
+    :- spy(name A)
+    ,  spy(A = H)
+    ,  !
+    .
+reabstract_dep_term A _ _ A.
+
+
+type var_term     any -> any -> mttTerm.
+type var_type     any -> any -> mttTerm.
+type var_dep_term any -> any -> any -> mttTerm.
+type var_dep_type any -> any -> any -> mttTerm.
+
+type perform_abstractions_ mttTerm -> list mttTerm -> list mttTerm -> (A -> A -> Chain) -> list (list any) -> mttTerm -> mttTerm -> prop.
+
+type perform_abstractions list mttTerm -> list mttTerm -> (A -> A -> Chain) -> list (list any) -> mttTerm -> mttTerm -> prop.
+
+perform_abstractions_ (var_term _ H) TL Vars VarMap LibMap Term Result
+    :- spy(of H HType @level)
+    ,  spy(extract_set_ops_type HType XType Vars VarMap LibMap _)
+    ,  pi x\ locDecl x XType =>
+        ( spy(perform_abstractions TL Vars VarMap LibMap Term Term1)
+        , spy(reabstract_term Term1 (var_term _ H) (var_term _ x) (Term2 x))
+        , spy(Result = (lambda XType Term2)))
+    ,  !
+    .
+
+type extractor_dep_lambda mttType -> (mttTerm -> mttType) -> ((mttTerm -> mttTerm) -> mttTerm) -> mttTerm.
+
+perform_abstractions_ (var_dep_term HType H A) TL Vars VarMap LibMap Term Result
+    :- spy(of A AType @level)
+    ,  spy(isa (H A) (HType A) @level)
+    ,  spy((name HType, XType = HType)
+        , !; extract_set_ops_type (HType A) (XType A) Vars VarMap LibMap _)
+    ,  pi x\ (of (x A) (XType A) int) =>
+        ( spy(perform_abstractions TL Vars VarMap LibMap Term Term1)
+        , spy(reabstract_term Term1 (var_dep_term HType H A) (var_dep_term XType x A) (Term2 x))
+        , spy(Result = (extractor_dep_lambda AType XType Term2)))
+    ,  !
+    .
+
+type extractor_type_lambda mttKind -> (mttType -> mttTerm) -> mttTerm.
+
+perform_abstractions_ (var_type H _) TL Vars VarMap LibMap Term Result
+    :- spy(ofType H HKind @level)
+    ,  pi Bi\ (isaType Bi HKind int) =>
+        ( spy(perform_abstractions TL Vars VarMap LibMap Term Term1)
+        , spy(reabstract_term Term1 (var_type H _) (var_type Bi _) (Term2 Bi))
+        , spy(Result = (extractor_type_lambda HKind Term2)))
+    ,  !
+    .
+
+type extractor_dep_type_lambda mttType -> mttKind -> ((mttTerm -> mttType) -> mttTerm) -> mttTerm.
+
+perform_abstractions_ (var_dep_type H _ A) TL Vars VarMap LibMap Term Result
+    :- spy(of A AType @level)
+    ,  spy(ofType (H A) HKind @level)
+    ,  pi Bi\ (isaType (Bi A) HKind int) =>
+        ( spy(perform_abstractions TL Vars VarMap LibMap Term Term1)
+        , spy(reabstract_term Term1 (var_dep_type H _ A) (var_dep_type Bi _ A) (Term2 Bi))
+        , spy(Result = (extractor_dep_type_lambda AType HKind Term2)))
+    ,  !
+    .
+
+perform_abstractions [WH|TL] Vars VarMap LibMap Term Result
+    :- !
+    ,  spy(perform_abstractions_ WH TL Vars VarMap LibMap Term Result)
+    ,  !
+    .
+
+perform_abstractions [] _Vars _VarMap _LibMap Term Term :- !.
 
 
 logic_or true _ true :- !.
 logic_or _ true true :- !.
 logic_or _ _ false.
 
-perform_abstractions [H|TL] Term Result Abstracted
-    :- !
-    ,  of H HType @level
-    ,  spy(extract_set_ops_type HType XType _)
-    ,  pi x\ locDecl x XType =>
-        (
-              spy(perform_abstractions TL Term Term1 Abstracted1)
-            , spy(reabstract_term_ Term1 H x (Term2 x) Abstracted2)
-            , spy(Result = (lambda XType Term2))
-            , spy(logic_or Abstracted1 Abstracted2 Abstracted)
-        )
+intersect_var_to_type (setPi B C) Var Result
+    :- intersect_var_to_type B Var BResult
+    ,  ((name C, intersect_var_to_dep_type C Var CResult)
+        , !; pi b\ locDecl b B => intersect_var_to_type (C b) Var CResult)
+    ,  spy(logic_or BResult CResult Result)
+    ,  !
+    .
+intersect_var_to_term (lambda B F) Var Result
+    :- intersect_var_to_type B Var BResult
+    ,  ((name F, intersect_var_to_dep_term F Var FResult)
+        , !; pi b\ locDecl b B => intersect_var_to_term (F b) Var FResult)
+    ,  spy(logic_or BResult FResult Result)
+    ,  !
+    .
+intersect_var_to_term (app Lam X) Var Result
+    :- intersect_var_to_term Lam Var LamResult
+    ,  intersect_var_to_term X Var XResult
+    ,  spy(logic_or LamResult XResult Result)
     ,  !
     .
 
-perform_abstractions [] Term Term false :- !.
-
-collect_vars (lambda B F) Exc List
-    :- pi b\ locDecl b B => collect_vars (F b) [b|Exc] List
+intersect_var_to_type (setSigma B C) Var Result
+    :- intersect_var_to_type B Var BResult
+    ,  ((name C, intersect_var_to_dep_type C Var CResult)
+        , !; pi b\ locDecl b B => intersect_var_to_type (C b) Var CResult)
+    ,  spy(logic_or BResult CResult Result)
     ,  !
     .
-collect_vars (app Lam X) Exc List
-    :- spy(collect_vars Lam Exc LamList)
-    ,  spy(collect_vars X Exc XList)
-    ,  spy(concat [LamList, XList] List)
-    ,  !
-    .
-
-collect_vars (pair _B _C BB CC) Exc List
-    :- spy(collect_vars BB Exc BList)
-    ,  spy(collect_vars CC Exc CList)
-    ,  spy(concat [BList, CList] List)
+intersect_var_to_term (pair B C BB CC) Var Result
+    :- intersect_var_to_type (setSigma B C) Var SigmaResult
+    ,  intersect_var_to_term BB Var BBResult
+    ,  intersect_var_to_term CC Var CCResult
+    ,  spy(logic_or BBResult CCResult BCResult)
+    ,  spy(logic_or SigmaResult BCResult Result)
     ,  !.
-collect_vars (p1 Pair) Exc List
-    :- collect_vars Pair Exc List
+intersect_var_to_term (p1 Pair) Var Result
+    :- intersect_var_to_term Pair Var Result
     ,  !
     .
-collect_vars (p2 Pair) Exc List
-    :- collect_vars Pair Exc List
+intersect_var_to_term (p2 Pair) Var Result
+    :- intersect_var_to_term Pair Var Result
     ,  !
     .
-collect_vars (elim_setSigma Pair _M MM) Exc List
-    :- collect_vars Pair Exc PairList
+intersect_var_to_term (elim_setSigma Pair M MM) Var Result
+    :- intersect_var_to_term Pair Var PairResult
     ,  isa Pair (setSigma B C) @level
-    ,  pi b\ pi c\ locDecl b B => locDecl c (C b) => spy(collect_vars (MM b c) [c|[b|Exc]] MMList)
-    ,  spy(concat [PairList, MMList] List)
+    ,  ((name M, intersect_var_to_dep_type M Var MResult)
+        , !; pi p\ locDecl p (setSigma B C) => intersect_var_to_type (M p) Var MResult)
+    ,  ((pi b\ locDecl b B => (name (MM b), intersect_var_to_dep_term (MM b) Var MMResult))
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => spy(intersect_var_to_term (MM b c) Var MMResult))
+    ,  spy(logic_or MResult MMResult MMMResult)
+    ,  spy(logic_or PairResult MMMResult Result)
     ,  !
     .
 
-collect_vars (inl _A _B AA) Exc List
-    :- collect_vars AA Exc List
+intersect_var_to_type (setSum A B) Var Result
+    :- intersect_var_to_type A Var AResult
+    ,  intersect_var_to_type B Var BResult
+    ,  spy(logic_or AResult BResult Result)
     ,  !
     .
-collect_vars (inr _A _B BB) Exc List
-    :- collect_vars BB Exc List
+intersect_var_to_term (inl _A _B AA) Var Result
+    :- intersect_var_to_term AA Var Result
     ,  !
     .
-collect_vars (elim_setSum _C W Cl Cr) Exc List
-    :- collect_vars W Exc WList
-    ,  isa W (setSum A B) @level
-    ,  pi l\ locDecl l A => collect_vars (Cl l) [l|Exc] ClList
-    ,  pi r\ locDecl r B => collect_vars (Cr r) [r|Exc] CrList
-    ,  spy(concat [WList, ClList, CrList] List)
+intersect_var_to_term (inr _A _B BB) Var Result
+    :- intersect_var_to_term BB Var Result
+    ,  !
+    .
+intersect_var_to_term (elim_setSum C W Cl Cr) Var Result
+    :- intersect_var_to_term W Var WResult
+    ,  isa W (setSum L R) @level
+    ,  ((name C, intersect_var_to_dep_type C Var CResult)
+        , !; pi w\ locDecl w (setSum L R) => intersect_var_to_type (C w) Var CResult)
+    ,  ((name Cl, intersect_var_to_dep_term Cl Var ClResult)
+        , !; pi l\ locDecl l L => intersect_var_to_term (Cl l) Var ClResult)
+    ,  ((name Cr, intersect_var_to_dep_term Cr Var CrResult)
+        , !; pi r\ locDecl r R => intersect_var_to_term (Cr r) Var CrResult)
+    ,  spy(logic_or ClResult CrResult CCResult)
+    ,  spy(logic_or CResult CCResult CCCResult)
+    ,  spy(logic_or WResult CCCResult Result)
     ,  !
     .
 
-is_in A [H|TL] Result :- spy((A = H, Result = true), !; is_in A TL Result), !.
-is_in _ [] false.
+intersect_var_to_type (list C) Var Result
+    :- intersect_var_to_type C Var Result
+    ,  !
+    .
+intersect_var_to_term (list_empty C) Var Result
+    :- intersect_var_to_type C Var Result
+    ,  !
+    .
+intersect_var_to_term (list_cons C Head Tail) Var Result
+    :- intersect_var_to_type C Var CResult
+    ,  intersect_var_to_term Head Var HeadResult
+    ,  intersect_var_to_term Tail Var TailResult
+    ,  spy(logic_or HeadResult TailResult ListResult)
+    ,  spy(logic_or CResult ListResult Result)
+    ,  !
+    .
+intersect_var_to_term (elim_list L List LA LL) Var Result
+    :- intersect_var_to_term List Var ListResult
+    ,  isa List (list C) @level
+    ,  ((name L, intersect_var_to_dep_type L Var LResult)
+        , !; pi z\ locDecl z (list C) => intersect_var_to_type (L z) Var LResult)
+    ,  intersect_var_to_term LA Var LAResult
+    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) => (name (LL y x), intersect_var_to_dep_term (LL y x) Var LLResult))
+        , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+        intersect_var_to_term (LL y x z) Var LLResult)
+    ,  spy(logic_or LAResult LLResult L1Result)
+    ,  spy(logic_or LResult L1Result L2Result)
+    ,  spy(logic_or ListResult L2Result Result)
+    ,  !
+    .
 
-collect_vars A Exc Result
+
+intersect_var_to_type A (var_type V _) true
     :- name A
-    ,  spy(is_in A Exc IsIn)
-    ,  ((IsIn = true, Result = []), !; Result = [A])
+    ,  A = V
     , !
     .
-collect_vars _ _ [].
+intersect_var_to_type A (var_type V _) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_type A (var_term _ V) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_type A (var_dep_type V _ _) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_type A (var_dep_term _ V _) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_type _ _ false.
 
-extract_term true A [Result]
-    :- spy(collect_vars A [] List)
-    ,  spy(perform_abstractions List A A' Abstracted)
-    ,  ((Abstracted = true, Result = A'), !; Result = A)
+intersect_var_to_term A (var_term _ V) true
+    :- name A
+    ,  A = V
+    , !
+    .
+intersect_var_to_term A (var_term _ V) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_term A (var_dep_term _ V _) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_term A (var_type V _) Result
+    :- of A AType @level
+    ,  intersect_var_to_type AType (var_type V _) Result
+    , !
+    .
+intersect_var_to_term A (var_term _ V) Result
+    :- spy(of A AType @level)
+    ,  intersect_var_to_type AType (var_term _ V) Result
+    , !
+    .
+intersect_var_to_term A (var_dep_type V _ _) Result
+    :- of A AType @level
+    ,  intersect_var_to_type AType (var_dep_type V _ _) Result
+    , !
+    .
+intersect_var_to_term A (var_dep_term _ V _) Result
+    :- of A AType @level
+    ,  intersect_var_to_type AType (var_dep_term _ V _) Result
+    , !
+    .
+intersect_var_to_term _ _ false.
+
+intersect_var_to_dep_type A (var_dep_type V _ _) true
+    :- name A
+    ,  A = V
+    , !
+    .
+intersect_var_to_dep_type A (var_dep_type V _ _) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_dep_type _ _ false.
+
+intersect_var_to_dep_term A (var_dep_term _ V _) true
+    :- name A
+    ,  A = V
+    , !
+    .
+intersect_var_to_dep_term A (var_dep_term _ V _) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_dep_term A (var_term _ V) true
+    :- occurs V A
+    , !
+    .
+intersect_var_to_dep_term A (var_dep_type V _ X) Result
+    :- of (A X) (AType X) @level
+    ,  intersect_var_to_dep_type AType (var_dep_type V _ X) Result
+    , !
+    .
+intersect_var_to_dep_term _ _ false.
+
+%type occurs_var any -> any -> prop -> prop.
+%occurs_var A (var_type V _) true :- occurs V A, !.
+%occurs_var A (var_type V _) true :- name V, isa A V @level, !.
+%occurs_var A (var_term _ V) true :- occurs V A, !.
+%occurs_var A (var_dep_type V _ _) true :- occurs V A, !.
+%occurs_var A (var_dep_type V _ _) true :- name V, isa A V @level, !.
+%occurs_var A (var_dep_term _ V _) true :- occurs V A, !.
+%occurs_var _ _ false.
+%
+%get_abstraction_list__ A [H|TL] Result
+%    :- get_abstraction_list A TL Tail
+%    ,  spy(occurs_var A H IsIn)
+%    ,  spy((IsIn = true, Result = [H|Tail]), !; Result = Tail)
+%    ,  !
+%    .
+get_abstraction_list_ A [H|TL] Result
+    :- get_abstraction_list A TL Tail
+    ,  spy(intersect_var_to_term A H IsIn)
+    ,  spy((IsIn = true, Result = [H|Tail]), !; Result = Tail)
     ,  !
     .
+get_abstraction_list_ _ [] [].
 
-extract_term false _ [].
+is_in A [H|_] [A] :- A = H, !.
+is_in A [_|TL] R :- is_in A TL R.
+is_in _ [] [].
 
-extract_collapsing_input Term Type Kind Result
-    :- of Term Type' @level
-    ,  spy(extract_set_ops_type Type' Type _, !; fail)
-    ,  ofType Type Kind @level
-    ,  spy(is_informative Kind NeedsExtraction)
-    ,  spy(extract_term NeedsExtraction Term Result)
+isaVarType (var_type H _) (var_term _ B) [(var_type H _)] :- isa B H @level.
+isaVarType (var_dep_type H _ A) (var_dep_term _ B A) [(var_dep_type H _ A)] :- isa (B A) (H A) @level.
+
+complete_with_types_ H [] [BH|BTL] Result
+    :- ((isaVarType H BH Result), !; complete_with_types_ H [] BTL Result)
     .
+complete_with_types_ _ [] [] [].
+
+complete_with_types_ H [H] _BaseList [H].
+
+complete_with_types [H|TL] BaseList Result
+    :- is_in H BaseList H'
+    ,  complete_with_types_ H H' BaseList HList
+    ,  complete_with_types TL BaseList TLList
+    ,  concat [HList,TLList] Result
+    .
+complete_with_types [] _BaseList [].
+
+get_abstraction_list A List Result
+    :- get_abstraction_list_ A List BaseList
+    ,  spy(complete_with_types List BaseList Result)
+    .
+
+
+%wrap_vars List List'
+%    :- [H|TL] = List
+%    ,  wrap_vars TL TL'
+%    ,  ((ofType H _ @level, H' = (var_type H _)), !; H' = (var_term _ H))
+%    ,  List' = [H'|TL']
+%    ,  !
+%    .
+%wrap_vars [] [].
+%
+%extract_term__ true _Vars A [Result]
+%    :- spy(names Vars)
+%    ,  spy(wrap_vars Vars Vars')
+%    ,  spy(get_abstraction_list A Vars' List)
+%    ,  spy(perform_abstractions List A Result)
+%    ,  !
+%    .
+extract_term true Vars VarMap LibMap A [Result]
+    :- spy(reverse Vars Vars')
+    ,  spy(get_abstraction_list A Vars' List)
+    ,  spy(perform_abstractions List Vars VarMap LibMap A Result)
+    ,  !
+    .
+extract_term false _ _ _ _ [].
+
+extract_collapsing_input Vars VarMap LibMap Term Term' Result
+    :- of Term Type @level, ofType Type Kind @level
+    ,  spy(is_informative Kind NeedsExtraction)
+    ,  spy(extract_term NeedsExtraction Vars VarMap LibMap Term Result)
+    ,  spy((NeedsExtraction = true, Term' = extractor_star), !; Term' = Term)
+    .
+
+%% Typing extensions to type extractor terms
+
+of (encode T) extractor_singleton IE :- spy (ofType T props IE).
+ofType (decode T) props IE :- spy (of T extractor_singleton IE).
 
