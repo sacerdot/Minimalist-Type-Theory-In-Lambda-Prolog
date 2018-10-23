@@ -1,3 +1,5 @@
+%tests
+
 accumulate debug.
 
 accumulate main.
@@ -485,9 +487,15 @@ type propc_e mttTerm.
 ofType propc_t propc IE_.
 of propc_e propc_t IE_.
 
+type pse_t mttType.
+type pse_a mttTerm.
+
+ofType pse_t props ext.
+of pse_a pse_t ext.
+
 typecheckExtr X Type :- testExtr X Result, debug => spy(of Result Type int).
 
-testStEx X A :- testExtr X Term, debug => spy(extract_set_ops Term Result [] (chain_end _ _ _) [] SetList), concat [[Result], SetList] A.
+testStEx X A :- testExtr X Term, debug => spy(extract_set_ops Term Result [] (var_chain_end _ _ _) [] SetList), concat [[Result], SetList] A.
 typecheckStExList [SH|STL] [RH|RTL] :- of SH RH int, typecheckStExList STL RTL, !.
 typecheckStExList [] [].
 typecheckStEx X Type :- testStEx X Result, debug => typecheckStExList Result Type.
@@ -621,13 +629,95 @@ testExtr 49 A :- debug => starify_nonset_ops (app
 		(x\ pair (propId bool_t x x) (_\singleton) (id bool_t x) star)
 	)
 ) [] A.
+testExtr 50 A :- debug => starify_nonset_ops (elim_setSum
+    (x\ decode (elim_setSum
+        (y\propS)
+        x
+        (l\ encode extractor_singleton)
+        (r\ encode (and extractor_singleton extractor_singleton))))
+    (inr extractor_singleton (and extractor_singleton extractor_singleton)
+        (pair_and extractor_singleton extractor_singleton extractor_star extractor_star))
+    (l\ l)
+    (r\ r)
+) [] A.
+testExtr 51 A :- debug => starify_nonset_ops 
+    (elim_setSum
+        (x\num_t)
+        (inr singleton (and extractor_singleton extractor_singleton) (pair_and extractor_singleton extractor_singleton extractor_star extractor_star))
+        (l\ num_1)
+        (r\ num_2)
+    ) [] A.
+testExtr 52 A :- debug => starify_nonset_ops 
+    (elim_setSum
+        (x\extractor_singleton)
+        (inr singleton singleton star)
+        (l\ extractor_star)
+        (r\ extractor_star)
+    ) [] A.
+testExtr 53 A :- debug => starify_nonset_ops (elim_setSigma
+    (pair singleton (_\singleton) star star)
+    (x\ exist (setSigma singleton (_\singleton)) (_\extractor_singleton))
+    (l\r\ pair_exist
+        (setSigma singleton (_\singleton)) (_\extractor_singleton)
+        (pair singleton (_\singleton) r l) extractor_star)
+) [] A.
+testExtr 54 A :- debug => starify_nonset_ops (lambda
+    (setSigma singleton (_\singleton))
+    (y\ elim_setSigma
+        y
+        (x\ exist (setSigma singleton (_\singleton)) (_\extractor_singleton))
+        (l\r\ pair_exist
+            (setSigma singleton (_\singleton))
+            (_\extractor_singleton)
+            (elim_setSigma
+                (pair singleton (_\singleton) star star)
+                (x\ setSigma singleton (_\singleton))
+                (p\q\ pair singleton (_\singleton) p r))
+            extractor_star))
+) [] A.
+testExtr 55 A :- debug => starify_nonset_ops (app
+    (lambda
+        (propId bool_t true_bool true_bool)
+        (x\ id
+            (setSigma (propId bool_t true_bool true_bool) (_\singleton))
+            (pair (propId bool_t true_bool true_bool) (_\singleton) x star)))
+    (id bool_t true_bool)
+) [] A.
 
+% begin ext tests: richiedono di impostare il livello a ext
+testExtr 56 A :- debug => starify_nonset_ops (impl_lam (propEq propS (encode pse_t) (encode (implies pse_t pse_t))) (_\pse_a)) [] A.
+testExtr 57 A :- debug => starify_nonset_ops (lambda (propEq propS (encode pse_t) (encode (implies pse_t pse_t))) (_\pse_a)) [] A.
+% end ext tests
 
-translate_program_list [H|TL] [H'|TL']
-    :- translate_program H H'
-    ,  translate_program_list TL TL'
+testExtr 58 A :- debug => starify_nonset_ops (elim_list
+    (_\list (exist singleton (_\extractor_singleton)))
+    (list_cons singleton star (list_cons singleton star (list_empty singleton)))
+    (list_empty (exist singleton (_\extractor_singleton)))
+    (y\x\z\ list_cons
+        (exist singleton (_\extractor_singleton))
+        (pair_exist singleton (_\extractor_singleton) y extractor_star)
+        z)
+) [] A.
+testExtr 59 A :- debug => starify_nonset_ops (lambda singleton (x\
+    lambda singleton (y\
+        lambda singleton (z\
+            id (list singleton)
+                (list_cons singleton z
+                    (list_cons singleton y
+                        (list_cons singleton x
+                            (list_empty singleton)))))))) [] A.
+testExtr 60 A :- debug => starify_nonset_ops (elim_list
+    (_\exist singleton (_\extractor_singleton))
+    (list_cons singleton star (list_cons singleton star (list_empty singleton)))
+    (pair_exist singleton (_\extractor_singleton) star extractor_star)
+    (y\x\z\ pair_exist singleton (_\extractor_singleton) y extractor_star)
+) [] A.
+
+translate_program_list [H|TL] LibMap [H'|TL']
+    :- translate_program H LibMap H'
+    ,  translate_program_list TL LibMap TL'
     .
-translate_program_list [] [].
+translate_program_list [] _ [].
 
 filter_code (extractor_type_lambda B F) Result
     :- pi Bi\ ofType Bi B int => filter_code (F Bi) Result
@@ -646,34 +736,35 @@ filter_code_list [] [].
 
 translate_entry Entry LibMap StarEntry ExtrEntry OutLib Result
     :- spy(starify_nonset_ops_lib Entry LibMap StarEntry)
-    ,  spy(extract_set_ops_lib StarEntry ExtrEntry [] (chain_end _ _ _) LibMap OutList)
-    ,  spy(translate_lib_ ExtrEntry Code)
+    ,  spy(extract_set_ops_lib StarEntry ExtrEntry [] (var_chain_end _ _ _) LibMap ArgMask OutList)
+    ,  spy(translate_lib_ ExtrEntry LibMap Code)
 %    ,  spy(filter_code_list OutList OutList')
-    ,  spy(translate_program_list OutList CodeList)
+    ,  spy(translate_program_list OutList LibMap CodeList)
     ,  concat [[Code], CodeList] Result
-    ,  spy(concat [LibMap, [[StarEntry|[ExtrEntry]]]] OutLib)
+    ,  spy(get_call_signature StarEntry StarEntry')
+    ,  spy(get_call_signature ExtrEntry ExtrEntry')
+    ,  spy(concat [LibMap, [(lib_mapping StarEntry' ExtrEntry' ArgMask)]] OutLib)
     .
 
 translate_library [Entry|TL] LibMap Result
     :- translate_entry Entry LibMap StarEntry ExtrEntry ExtrLib Entry'
     ,  process_entry StarEntry Hyp
     ,  process_entry ExtrEntry ExtrHyp
-%    ,  ExtrHyp => translate_library TL ExtrLib TL'
     ,  Hyp => ExtrHyp => translate_library TL ExtrLib TL'
     ,  concat [Entry', TL'] Result
     .
 translate_library [] _ [].
 
 translate_entry_from_library [Entry|_TL] LibMap 0 Result
-    :- debug => translate_entry Entry LibMap _ _ _ Result
+    :- makeline
+    ,  debug => translate_entry Entry LibMap _ _ _ Result
     ,  !
     .
 translate_entry_from_library [Entry|TL] LibMap Index Result
     :- translate_entry Entry LibMap StarEntry ExtrEntry ExtrLib _
-    ,  debug => spy(process_entry StarEntry Hyp)
-    ,  debug => spy(process_entry ExtrEntry ExtrHyp)
+    ,  spy(process_entry StarEntry Hyp)
+    ,  spy(process_entry ExtrEntry ExtrHyp)
     ,  NewIndex is (Index - 1)
-%    ,  ExtrHyp => translate_entry_from_library TL ExtrLib NewIndex Result
     ,  Hyp => ExtrHyp => translate_entry_from_library TL ExtrLib NewIndex Result
     ,  !
     .

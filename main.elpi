@@ -323,7 +323,7 @@ locDecl X Y :- locDef X Y _.
 hstep X Y :- locDef X _ Y.
 hstep X Y :- locTypeDef X _ Y.
 
-type lib_app A -> B.
+type lib_app any -> any -> any.
 
 type process_library list libraryEntry -> prop -> prop.
 

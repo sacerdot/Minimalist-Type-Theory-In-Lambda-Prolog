@@ -145,10 +145,10 @@ extract_set_ops (elim_id P C CC) Result Vars VarMap LibMap SetList
     ,  ((pi x\ locDecl x A => pi a\ locDecl a A' =>
             (name (C x), map_var (C x) VarMap (C' a), CList = []))
         , !; pi x\ locDecl x A => pi y\ locDecl y A => pi a\ locDecl a A' => pi b\ locDecl b A' =>
-            extract_set_ops_type (C x y) (C' a b) [(var_term _ b)|[(var_term _ a)|[(var_term _ y)|[(var_term _ x)|Vars]]]] (chain y b (chain x a VarMap)) LibMap CList)
+            extract_set_ops_type (C x y) (C' a b) [(var_term _ b)|[(var_term _ a)|[(var_term _ y)|[(var_term _ x)|Vars]]]] (var_chain y b (var_chain x a VarMap)) LibMap CList)
     ,  ((name CC, map_var CC VarMap CC', CCList = [])
         , !; pi x\ locDecl x A => pi a\ locDecl a A' =>
-            extract_set_ops (CC x) (CC' a) [(var_term _ a)|[(var_term _ x)|Vars]] (chain x a VarMap) LibMap CCList)
+            extract_set_ops (CC x) (CC' a) [(var_term _ a)|[(var_term _ x)|Vars]] (var_chain x a VarMap) LibMap CCList)
     ,  spy(collapse_term (elim_id P' C' CC') Result Vars VarMap LibMap ElimList)
     ,  concat [ElimList, CCList, CList, IdList] SetList
     ,  !

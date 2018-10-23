@@ -176,9 +176,9 @@ extract_set_ops (elim_or C W Cl Cr) Result Vars VarMap LibMap SetList
     ,  isa W (or L R) @level
     ,  isa W' (or L' R') @level
     ,  ((name Cl, map_var Cl VarMap Cl', ClList = [])
-        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_set_ops (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] (chain l i VarMap) LibMap ClList)
+        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_set_ops (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] (var_chain l i VarMap) LibMap ClList)
     ,  ((name Cr, map_var Cr VarMap Cr', CrList = [])
-        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_set_ops (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] (chain r f VarMap) LibMap CrList)
+        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_set_ops (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] (var_chain r f VarMap) LibMap CrList)
     ,  spy(collapse_term (elim_or C' W' Cl' Cr') Result Vars VarMap LibMap ElimList)
     ,  concat [ElimList, CrList, ClList, CList, WList] SetList
     ,  !

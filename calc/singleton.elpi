@@ -186,10 +186,11 @@ collapse_term (elim_singleton Star C _CC) Result _Vars _VarMap _LibMap []
     .
 
 extract_set_ops (elim_singleton Star C CC) Result Vars VarMap LibMap SetList
-    :- extract_set_ops Star Star' Vars VarMap LibMap []
+    :- extract_set_ops Star Star' Vars VarMap LibMap StarList
     ,  ((name C, map_var C VarMap C')
-        , !; pi s\ locDecl s singleton => extract_set_ops_type (C s) (C' s) [(var_term _ s)|Vars] VarMap LibMap [])
-    ,  extract_set_ops CC CC' Vars VarMap LibMap SetList
+        , !; pi s\ locDecl s singleton => extract_set_ops_type (C s) (C' s) [(var_term _ s)|Vars] VarMap LibMap CList)
+    ,  extract_set_ops CC CC' Vars VarMap LibMap CCList
+    ,  concat [CCList, CList, StarList] SetList
     ,  spy(collapse_term (elim_singleton Star' C' CC') Result Vars VarMap LibMap [])
     ,  !
     .

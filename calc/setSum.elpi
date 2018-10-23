@@ -192,11 +192,11 @@ extract_set_ops (elim_setSum C W Cl Cr) Result Vars VarMap LibMap SetList
     ,  isa W' (setSum L' R') @level
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; pi w\ locDecl w (setSum L R) => pi m\ locDecl m (setSum L' R') =>
-            extract_set_ops_type (C w) (C' m) [(var_term _ m)|[(var_term _ w)|Vars]] (chain w m VarMap) LibMap CList)
+            extract_set_ops_type (C w) (C' m) [(var_term _ m)|[(var_term _ w)|Vars]] (var_chain w m VarMap) LibMap CList)
     ,  ((name Cl, map_var Cl VarMap Cl', ClList = [])
-        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_set_ops (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] (chain l i VarMap) LibMap ClList)
+        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_set_ops (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] (var_chain l i VarMap) LibMap ClList)
     ,  ((name Cr, map_var Cr VarMap Cr', CrList = [])
-        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_set_ops (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] (chain r f VarMap) LibMap CrList)
+        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_set_ops (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] (var_chain r f VarMap) LibMap CrList)
     ,  spy(collapse_term (elim_setSum C' W' Cl' Cr') Result Vars VarMap LibMap ElimList)
     ,  spy(concat [ElimList, CrList, ClList, CList, WList] SetList)
     ,  !

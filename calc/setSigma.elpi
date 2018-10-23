@@ -1454,7 +1454,7 @@ extract_set_ops_type (setSigma B C) Result Vars VarMap LibMap SetList
     :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (chain b d VarMap) LibMap CList))
+            extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap CList))
     ,  spy(concat [CList, BList] SetList)
     ,  spy(collapse_type (setSigma B' C') Result Vars VarMap LibMap [])
     ,  !
@@ -1574,12 +1574,12 @@ extract_set_ops (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
         , !; isa Pair' (setSigma B' C') @level)
     ,  ((name M, map_var M VarMap M', MList = [])
         , !; pi p\ locDecl p (setSigma B C) => pi q\ locDecl q (setSigma B' C') =>
-            spy(extract_set_ops_type (M p) (M' q) [(var_term _ q)|[(var_term _ p)|Vars]] (chain p q VarMap) LibMap MList))
+            spy(extract_set_ops_type (M p) (M' q) [(var_term _ q)|[(var_term _ p)|Vars]] (var_chain p q VarMap) LibMap MList))
     ,  ((pi b\ locDecl b B => pi d\ locDecl d B' =>
             (name (MM b), map_var (MM b) VarMap (MM' d), MMList = []))
         , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => 
              pi d\ pi e\ locDecl d B' => locDecl e (C' d) =>
-                spy(extract_set_ops (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] (chain c e (chain b d VarMap)) LibMap MMList))
+                spy(extract_set_ops (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] (var_chain c e (var_chain b d VarMap)) LibMap MMList))
     ,  spy(collapse_term (elim_setSigma Pair' M' MM') Result Vars VarMap LibMap ElimList)
     ,  spy(concat [ElimList, MMList, MList, PairList] SetList)
     ,  !

@@ -299,7 +299,7 @@ collapse_term (impl_lam B F) Result _Vars _VarMap _LibMap []
 extract_set_ops (impl_lam B F) Result Vars VarMap LibMap SetList
     :- extract_set_ops_type B B' Vars VarMap LibMap BList
     ,  ((name F, map_var F VarMap F', FList = [])
-        , !; pi b\ locDecl b B => pi d\ locDecl d B' => extract_set_ops (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] (chain b d VarMap) LibMap FList)
+        , !; pi b\ locDecl b B => pi d\ locDecl d B' => extract_set_ops (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap FList)
     ,  concat [FList, BList] SetList
     ,  spy(collapse_term (impl_lam B' F') Result Vars VarMap LibMap [])
     ,  !

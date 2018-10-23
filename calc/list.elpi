@@ -134,14 +134,14 @@ extract_set_ops (elim_list L List LA LL) Result Vars VarMap LibMap SetList
     ,  isa List' (list C') @level
     , ((name L, map_var L VarMap L', LList = [])
         , !; pi z\ locDecl z (list C) => pi s\ locDecl s (list C') => 
-            extract_set_ops_type (L z) (L' s) [(var_term _ s)|[(var_term _ z)|Vars]] (chain z s VarMap) LibMap LList)
+            extract_set_ops_type (L z) (L' s) [(var_term _ s)|[(var_term _ z)|Vars]] (var_chain z s VarMap) LibMap LList)
     ,  spy(extract_set_ops LA LA' Vars VarMap LibMap LAList)
     ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) =>
          pi b\ locDecl b C' => pi a\ locDecl a (list C') =>
             (name (LL y x), map_var (LL y x) VarMap (LL' b a), LLList = []))
         , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
              pi b\ locDecl b C' => pi a\ locDecl a (list C') => pi c\ locDecl c (L' a) =>
-            extract_set_ops (LL y x z) (LL' b a c) [(var_term _ z)|[(var_term _ x)|[(var_term _ y)|[(var_term _ c)|[(var_term _ a)|[(var_term _ b)|Vars]]]]]] (chain z c (chain x a (chain y b VarMap))) LibMap LLList)
+            extract_set_ops (LL y x z) (LL' b a c) [(var_term _ z)|[(var_term _ x)|[(var_term _ y)|[(var_term _ c)|[(var_term _ a)|[(var_term _ b)|Vars]]]]]] (var_chain z c (var_chain x a (var_chain y b VarMap))) LibMap LLList)
     ,  spy(collapse_term (elim_list L' List' LA' LL') Result Vars VarMap LibMap ElimList)
     ,  spy(concat [ElimList, LLList, LAList, LList, ListList] SetList)
     ,  !
