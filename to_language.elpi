@@ -11,12 +11,6 @@
 %% setPi -> data SetPi a b = SetPi { p :: a -> b }
 %% data Dummy = Dummy
 
-%% -XDataKinds
-%% -XPolyKinds
-%% -XTypeInType
-
-%% univPi -> data univPi t f where 
-
 kind language type.
 type ocaml, haskell language.
 
@@ -173,62 +167,87 @@ translate_lib_def_term_ A H' Result
     ,  Result is H' ^ " " ^ A'
     .
 
-translate_lib_def_term (lib_app H A) Result
-    :- translate_lib_def_term H H'
+translate_lib_def_term (lib_app H A) Result HName
+    :- translate_lib_def_term H H' HName
     ,  spy(translate_lib_def_term_ A H' Result)
     ,  !
     .
-translate_lib_def_term H Result
+translate_lib_def_term H Result Result
     :- term_to_string H Result
     ,  !
     .
 
-translate_locDefL_to ocaml N' TE' Result
-    :- Result is "let " ^ N' ^ " = " ^ TE' ^ ";;"
+translate_locDefL_to ocaml NName N' TY' TE' Result
+    :- Signature is "val " ^ NName ^ " : " ^ TY'
+    ,  Definition is "let " ^ N' ^ " = " ^ TE' ^ ";;"
+    ,  Result is Signature ^ "\n" ^ Definition
     ,  !
     .
-translate_locDefL_to haskell N' TE' Result
-    :- Result is "" ^ N' ^ " = " ^ TE' ^ ""
+translate_locDefL_to haskell NName N' TY' TE' Result
+    :- Signature is NName ^ " :: " ^ TY'
+    ,  Definition is "" ^ N' ^ " = " ^ TE' ^ ""
+    ,  Result is Signature ^ "\n" ^ Definition
     ,  !
     .
 
-translate_lib_ (locDefL N _TY TE) LibMap Result
-    :- spy(translate_lib_def_term N N')
+translate_lib_ (locDefL N TY TE) LibMap Result
+    :- spy(translate_lib_def_term N N' NName)
     ,  spy(translate_term_ TE LibMap TE')
-    ,  translate_locDefL_to @language N' TE' Result
+    ,  spy(translate_type_ TY LibMap TY')
+    ,  translate_locDefL_to @language NName N' TY' TE' Result
     ,  !
     .
 
 
-translate_lib_def_type (lib_app H A) Result
-    :- translate_lib_def_type H H'
-    ,  term_to_string A A'
+type translate_lib_def_type_ any -> string -> string -> prop.
+translate_lib_def_type_ A H' Result
+    :- ofType A _ @level
+    ,  term_to_string A SA
+    ,  translate_type_var_to @language SA A'
     ,  Result is H' ^ " " ^ A'
     ,  !
     .
-translate_lib_def_type H Result
+translate_lib_def_type_ A H' Result
+    :- spy(pi x\ locDecl x X_ => ofType (A x) _ @level)
+    ,  term_to_string A SA
+    ,  translate_type_var_to @language SA A'
+    ,  Result is H' ^ " " ^ A'
+    ,  !
+    .
+translate_lib_def_type_ A H' Result
+    :- term_to_string A A'
+    ,  Result is H' ^ " " ^ A'
+    .
+
+translate_lib_def_type (lib_app H A) Result HName
+    :- translate_lib_def_type H H' HName
+    ,  spy(translate_lib_def_type_ A H' Result)
+    ,  !
+    .
+translate_lib_def_type H Result Result
     :- term_to_string H Result
     ,  !
     .
 
+turn_to_ocaml_type_decl_ "" "" :- !.
 turn_to_ocaml_type_decl_ S Result
-    :- spy(rex_replace "^ \\('\\)?\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\2" S SHead)
-    ,  spy(rex_replace "^ \\('\\)?\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\3" S STail)
-    ,  ((STail = ""
-        ,    spy(Result is "'" ^ SHead))
-        , !; spy(turn_to_ocaml_type_decl_ STail STail')
-            , spy(Result is "'" ^ SHead ^ ", " ^ STail'))
+    :- spy(rex_replace "^ \\(['a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\1" S SHead)
+    ,  spy(rex_replace "^ \\(['a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\2" S STail)
+    ,  spy(turn_to_ocaml_type_decl_ STail STail')
+    ,  ((STail' = ""
+        ,    spy(Result is SHead))
+        , !; spy(Result is SHead ^ ", " ^ STail'))
     .
 turn_to_ocaml_type_decl S Result
     :- spy(rex_replace "^\\(extr_\\)?\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\2" S SHead)
     ,  spy(rex_replace "^\\(extr_\\)?\\([a-zA-Z0-9_]+\\)\\( .*\\)?$" "\\3" S STail)
-    ,  ((STail = ""
+    ,  spy(turn_to_ocaml_type_decl_ STail STail')
+    ,  ((STail' = ""
         ,    spy(Result is "extr_" ^ SHead))
-        , !; spy(turn_to_ocaml_type_decl_ STail STail')
-            , spy(Result is "(" ^ STail' ^ ") extr_" ^ SHead))
+        , !; spy(Result is "(" ^ STail' ^ ") extr_" ^ SHead))
     .
 translate_locTypeDefL_to ocaml N' TY' Result
-    :- turn_to_ocaml_type_decl N' NR
+    :- spy(turn_to_ocaml_type_decl N' NR)
     ,  Result is "type " ^ NR ^ " = " ^ TY' ^ ";;"
     ,  !
     .
@@ -238,13 +257,13 @@ turn_to_haskell_type_decl S Result
     ,  spy(Result is "Extr_" ^ S1)
     .
 translate_locTypeDefL_to haskell N' TY' Result
-    :- turn_to_haskell_type_decl N' NR
+    :- spy(turn_to_haskell_type_decl N' NR)
     ,  Result is "type " ^ NR ^ " = " ^ TY' ^ ""
     ,  !
     .
 
 translate_lib_ (locTypeDefL N _KIND TY) LibMap Result
-    :- spy(translate_lib_def_type N N')
+    :- spy(translate_lib_def_type N N' _)
     ,  spy(translate_type_ TY LibMap TY')
     ,  translate_locTypeDefL_to @language N' TY' Result
     ,  !
@@ -677,7 +696,7 @@ translate_term_arg (var_dep_type _ _ _) _A _LibMap Result
     ,  !
     .
 translate_term_arg (var_dep_term _ _ _) A LibMap Result
-    :- spy((name A, term_to_string A A')
+    :- spy((name A, translate_dep_term_ A LibMap A')
         , !; pi x\ locDecl x X_ => translate_term_ (A x) LibMap A')
     ,  Result = A'
     ,  !
@@ -712,14 +731,13 @@ translate_type_arg (var_term _ _) A LibMap Result
     ,  !
     .
 translate_type_arg (var_dep_type _ _ _) A LibMap Result
-    :-  spy((name A, term_to_string A A')
+    :-  spy((name A, translate_dep_type_ A LibMap A')
         , !; pi x\ locDecl x X_ => translate_type_ (A x) LibMap A')
     ,  Result = A'
-    :- Result = ""
     ,  !
     .
 translate_type_arg (var_dep_term _ _ _) A LibMap Result
-    :- spy((name A, term_to_string A A')
+    :- spy((name A, translate_dep_term_ A LibMap A')
         , !; pi x\ locDecl x X_ => translate_term_ (A x) LibMap A')
     ,  Result = A'
     ,  !
@@ -730,7 +748,7 @@ translate_lib_call_type (lib_app H A) LibMap Index Call Result
     ,  spy(translate_lib_call_type H LibMap Index' Call H')
     ,  spy(get_call_arg_elpi_type Call Index 0 _ VarA)
     ,  spy(translate_type_arg VarA A LibMap A')
-    ,  ((A' = "", Result is H'), !; Result is "(" ^ H' ^ " " ^ A' ^ ")")
+    ,  ((A' = "", Result is H'), !; Result is H' ^ " " ^ A')
     ,  !
     .
 translate_lib_call_type H LibMap _Index Call Result
@@ -739,8 +757,17 @@ translate_lib_call_type H LibMap _Index Call Result
     ,  !
     .
 
+translate_lib_call_type_to ocaml Call Result
+    :- turn_to_ocaml_type_decl Call Result
+    ,  !
+    .
+translate_lib_call_type_to haskell Call Result
+    :- turn_to_haskell_type_decl Call Result
+    ,  !
+    .
 translate_type_ (lib_app H A) LibMap Result
-    :- spy(translate_lib_call_type (lib_app H A) LibMap 0 _ Result)
+    :- spy(translate_lib_call_type (lib_app H A) LibMap 0 _ LibCall)
+    ,  translate_lib_call_type_to @language LibCall Result
     ,  !
     .
 
@@ -794,6 +821,22 @@ translate_dep_term_ A _ Result
     :- name A
     ,  term_to_string A S
     ,  Result is S
+    ,  !
+    .
+
+translate_dep_type_var_to ocaml S Result
+    :- Result is "'" ^ S
+    ,  !
+    .
+translate_dep_type_var_to haskell S Result
+    :- Result is S
+    ,  !
+    .
+
+translate_dep_type_ A _ Result
+    :- name A
+    ,  term_to_string A S
+    ,  translate_dep_type_var_to @language S Result
     ,  !
     .
 

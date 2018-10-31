@@ -19,6 +19,7 @@ accumulate calc/setPi.
 accumulate calc/setSigma.
 
 accumulate extractor.
+accumulate to_language.
 
 kind testFlag type.
 
@@ -486,6 +487,16 @@ type propc_e mttTerm.
 
 ofType propc_t propc IE_.
 of propc_e propc_t IE_.
+
+type num_t mttType.
+type num_1 mttTerm.
+type num_2 mttTerm.
+type num_3 mttTerm.
+
+ofType num_t set int.
+of num_1 num_t int.
+of num_2 num_t int.
+of num_3 num_t int.
 
 type pse_t mttType.
 type pse_a mttTerm.
