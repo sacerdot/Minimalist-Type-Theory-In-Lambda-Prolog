@@ -146,17 +146,15 @@ collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result Vars VarMap LibMap [
     .
 
 %% (N + B') -> 1  ==>  1  (se passato direttamente)
-collapse_term (elim_setSum _C (inl A _B AA) Cl _Cr) Result Vars VarMap LibMap ElimList
+collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result _Vars _VarMap _LibMap []
     :- pi a\ locDecl a A => isa (Cl a) extractor_singleton @level
-    ,  extract_collapsing_input Vars VarMap LibMap AA _ ElimList
     ,  Result = extractor_star
     ,  !
     .
 
 %% (B' + N) -> 1  ==>  1  (se passato direttamente)
-collapse_term (elim_setSum _C (inr _A B BB) _Cl Cr) Result Vars VarMap LibMap ElimList
+collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result _Vars _VarMap _LibMap []
     :- pi b\ locDecl b B => isa (Cr b) extractor_singleton @level
-    ,  extract_collapsing_input Vars VarMap LibMap BB _ ElimList
     ,  Result = extractor_star
     ,  !
     .
@@ -174,14 +172,10 @@ collapse_term (elim_setSum _C (inr _A B BB) _Cl Cr) Result Vars VarMap LibMap El
     .
 
 %% N + N -> 1  ==>  1
-%% se uno dei tipi non fosse informativo, starei estraendo delle prop
-collapse_term (elim_setSum _C W Cl Cr) Result Vars VarMap LibMap ElimList
+collapse_term (elim_setSum _C W Cl Cr) Result _Vars _VarMap _LibMap []
     :- of W (setSum A B) @level
     ,  pi a\ locDecl a A => isa (Cl a) extractor_singleton @level
     ,  pi b\ locDecl b B => isa (Cr b) extractor_singleton @level
-    ,  ofType A KindA @level, is_informative KindA true
-    ,  ofType B KindB @level, is_informative KindB true
-    ,  extract_collapsing_input Vars VarMap LibMap W _ ElimList
     ,  Result = extractor_star
     ,  !
     .

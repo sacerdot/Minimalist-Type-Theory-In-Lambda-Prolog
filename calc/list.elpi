@@ -121,9 +121,8 @@ extract_set_ops (list_cons C Head Tail) Result Vars VarMap LibMap SetList
     .
 
 %% N -> 1  ==>  1
-collapse_term (elim_list L List _LA _LL) Result Vars VarMap LibMap ElimList
+collapse_term (elim_list L List _LA _LL) Result _Vars _VarMap _LibMap []
     :- conv (L List) extractor_singleton
-    ,  extract_collapsing_input Vars VarMap LibMap List _ ElimList
     ,  Result = extractor_star
     ,  !
     .

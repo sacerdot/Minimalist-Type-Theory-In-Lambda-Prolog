@@ -360,10 +360,9 @@ collapse_term (forall_app Lam _X) Result _Vars _VarMap _LibMap []
 
 extract_set_ops (forall_app Lam X) Result Vars VarMap LibMap SetList
     :- extract_set_ops Lam Lam' Vars VarMap LibMap LamList
-    ,  extract_set_ops X X1 Vars VarMap LibMap XList
-    ,  extract_collapsing_input Vars VarMap LibMap X1 X' X1List
-    ,  spy(collapse_term (forall_app Lam' X') Result Vars VarMap LibMap AppList)
-    ,  concat [AppList, X1List, XList, LamList] SetList
+    ,  extract_set_ops X _ Vars VarMap LibMap XList
+    ,  spy(collapse_term (forall_app Lam' extractor_star) Result Vars VarMap LibMap AppList)
+    ,  concat [AppList, XList, LamList] SetList
     ,  !
     .
 

@@ -773,16 +773,11 @@ collapse_type (propEq A _AA1 _AA2) Result _Vars _VarMap _LibMap []
     .
 
 extract_set_ops_type (propEq A AA1 AA2) Result Vars VarMap LibMap SetList
-    :- extract_set_ops AA1 AA11 Vars VarMap LibMap AA1List
-    ,  extract_set_ops AA2 AA21 Vars VarMap LibMap AA2List
-    ,  extract_set_ops_type A A1 Vars VarMap LibMap AList
-    ,  extract_collapsing_input Vars VarMap LibMap AA11 AA1' AA11List
-    ,  extract_collapsing_input Vars VarMap LibMap AA21 AA2' AA21List
-    ,  spy((AA1' = extractor_star, AA2' = extractor_star
-        ,    A' = extractor_singleton)
-        , !; A' = A1)
-    ,  spy(concat [AA21List, AA11List, AA2List, AA1List, AList] SetList)
-    ,  spy(collapse_type (propEq A' AA1' AA2') Result Vars VarMap LibMap [])
+    :- extract_set_ops AA1 _ Vars VarMap LibMap AA1List
+    ,  extract_set_ops AA2 _ Vars VarMap LibMap AA2List
+    ,  extract_set_ops_type A _ Vars VarMap LibMap AList
+    ,  spy(concat [AA2List, AA1List, AList] SetList)
+    ,  spy(collapse_type (propEq extractor_singleton extractor_star extractor_star) Result Vars VarMap LibMap [])
     ,  !
     .
 
@@ -795,14 +790,10 @@ collapse_term (eq A _AA) Result _Vars _VarMap _LibMap []
 
 %% A' -> C A'  ==>  A' -> C 1
 extract_set_ops (eq A AA) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops_type A A1 Vars VarMap LibMap AList)
-    ,  spy(extract_set_ops AA AA1 Vars VarMap LibMap AAList)
-    ,  spy(extract_collapsing_input Vars VarMap LibMap AA1 AA' AA1List)
-    ,  spy((AA' = extractor_star
-        ,    A' = extractor_singleton)
-        , !; A' = A1)
-    ,  spy(concat [AA1List, AAList, AList] SetList)
-    ,  spy(collapse_term (eq A' AA') Result Vars VarMap LibMap [])
+    :- spy(extract_set_ops_type A _ Vars VarMap LibMap AList)
+    ,  spy(extract_set_ops AA _ Vars VarMap LibMap AAList)
+    ,  spy(concat [AAList, AList] SetList)
+    ,  spy(collapse_term (eq extractor_singleton extractor_star) Result Vars VarMap LibMap [])
     ,  !
     .
 

@@ -1560,9 +1560,7 @@ collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
 %% N x N -> 1  ==>  1
 collapse_term (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
     :- conv (M Pair) extractor_singleton
-    ,  extract_collapsing_input Vars VarMap LibMap Pair _ PairList
-    ,  extract_set_ops (MM (p1 Pair) (p2 Pair)) Result Vars VarMap LibMap ElimList
-    ,  spy(concat [ElimList, PairList] SetList)
+    ,  extract_set_ops (MM (p1 Pair) (p2 Pair)) Result Vars VarMap LibMap SetList
     ,  !
     .
 

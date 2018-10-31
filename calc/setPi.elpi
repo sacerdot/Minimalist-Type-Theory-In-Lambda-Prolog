@@ -1950,17 +1950,15 @@ extract_set_ops (lambda B F) Result Vars VarMap LibMap SetList
     .
 
 %% 1  ==>  1  (A')
-collapse_term (app Lam X) Result Vars VarMap LibMap AppList
+collapse_term (app Lam _X) Result _Vars _VarMap _LibMap []
     :- spy(isa Lam extractor_singleton @level)
-    ,  spy(extract_collapsing_input Vars VarMap LibMap X _ AppList)
     ,  spy(Result = extractor_star)
     ,  !
     .
 
 %% A' -> 1  ==>  1  (A')
-collapse_term (app Lam X) Result Vars VarMap LibMap AppList
+collapse_term (app Lam _X) Result _Vars _VarMap _LibMap []
     :- spy(isa Lam (setPi _ (_\extractor_singleton)) @level)
-    ,  spy(extract_collapsing_input Vars VarMap LibMap X _ AppList)
     ,  spy(Result = extractor_star)
     ,  !
     .

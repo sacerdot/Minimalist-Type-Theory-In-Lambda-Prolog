@@ -232,8 +232,13 @@ occurrences [H|TL] N Result
     .
 occurrences [] _N [].
 
-type wrapped_occurrences list mttTerm -> any -> list mttTerm -> prop.
 
+type var_term     any -> any -> mttTerm.
+type var_type     any -> any -> mttTerm.
+type var_dep_term any -> any -> any -> mttTerm.
+type var_dep_type any -> any -> any -> mttTerm.
+
+type wrapped_occurrences list mttTerm -> any -> list mttTerm -> prop.
 wrapped_occurs (var_type H _) N H' :- ((occurs H N, H' = [(var_type H _)]), !; H' = []).
 wrapped_occurs (var_term _ H) N H' :- ((occurs H N, H' = [(var_term _ H)]), !; H' = []).
 wrapped_occurs (var_dep_type H _ A) N H' :- ((occurs H N, H' = [(var_dep_type H _ A)]), !; H' = []).
@@ -722,11 +727,52 @@ extract_set_ops H Result Vars VarMap LibMap SetList
     .
 %extract_set_ops A A _ _ _ [].
 
+type get_call_signature any -> any -> prop.
+get_call_signature (univPi F) (univPi F')
+    :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
+    .
+get_call_signature (univCol F) (univCol F')
+    :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
+    .
+get_call_signature (univProp F) (univProp F')
+    :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
+    .
+get_call_signature (univDepPi B F) (univDepPi B F')
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
+    .
+get_call_signature (univDepCol B F) (univDepCol B F')
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
+    .
+get_call_signature (univDepProp B F) (univDepProp B F')
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
+    .
+get_call_signature (univPiT A F) (univPiT A F')
+    :- pi a\ of a A int => get_call_signature (F a) (F' a)
+    .
+get_call_signature (univDepPiT A B F) (univDepPiT A B F')
+    :- pi t\ (pi x\ ofType (B x) set int :- of x A int) =>
+        (pi x\ pi y\ dconv (B x) (B y) :- conv x y) =>
+            (pi x\ of (t x) (B x) int :- of x A int) => get_call_signature (F t) (F' t)
+    .
+get_call_signature (hyp _ _ E) E' :- get_call_signature E E'.
+get_call_signature (cut _ E) E' :- get_call_signature E E'.
+get_call_signature (locTypeDefL N _ _) (locTypeDefL N _ _).
+get_call_signature (locDefL N _ _) (locDefL N _ _).
+
+%% Typing extensions to type extractor terms
+
+of (encode T) extractor_singleton IE :- spy (ofType T props IE).
+ofType (decode T) props IE :- spy (of T extractor_singleton IE).
+
+%% Extraction of terms that goes into star
+
 is_informative set true.
 is_informative col true.
 is_informative props false.
 is_informative propc false.
-
 
 reabstract_term (extractor_type_lambda K F) H M LibMap Result
     :- spy((name F, reabstract_dep_term F H M LibMap F')
@@ -998,10 +1044,9 @@ reabstract_dep_term A (var_dep_term _ H _) (var_dep_term _ M _) _ M
 reabstract_dep_term A _ _ _ A.
 
 
-type var_term     any -> any -> mttTerm.
-type var_type     any -> any -> mttTerm.
-type var_dep_term any -> any -> any -> mttTerm.
-type var_dep_type any -> any -> any -> mttTerm.
+type extractor_dep_lambda mttType -> (mttTerm -> mttType) -> ((mttTerm -> mttTerm) -> mttTerm) -> mttTerm.
+type extractor_type_lambda mttKind -> (mttType -> mttTerm) -> mttTerm.
+type extractor_dep_type_lambda mttType -> mttKind -> ((mttTerm -> mttType) -> mttTerm) -> mttTerm.
 
 type perform_abstractions_ mttTerm -> list mttTerm -> list mttTerm -> (A -> A -> Chain) -> list lib_mapping_type -> mttTerm -> mttTerm -> prop.
 
@@ -1017,8 +1062,6 @@ perform_abstractions_ (var_term _ H) TL Vars VarMap LibMap Term Result
     ,  !
     .
 
-type extractor_dep_lambda mttType -> (mttTerm -> mttType) -> ((mttTerm -> mttTerm) -> mttTerm) -> mttTerm.
-
 perform_abstractions_ (var_dep_term HType H A) TL Vars VarMap LibMap Term Result
     :- spy(of A AType @level)
     ,  spy(isa (H A) (HType A) @level)
@@ -1031,8 +1074,6 @@ perform_abstractions_ (var_dep_term HType H A) TL Vars VarMap LibMap Term Result
     ,  !
     .
 
-type extractor_type_lambda mttKind -> (mttType -> mttTerm) -> mttTerm.
-
 perform_abstractions_ (var_type H _) TL Vars VarMap LibMap Term Result
     :- spy(ofType H HKind @level)
     ,  pi Bi\ (isaType Bi HKind int) =>
@@ -1041,8 +1082,6 @@ perform_abstractions_ (var_type H _) TL Vars VarMap LibMap Term Result
         , spy(Result = (extractor_type_lambda HKind Term2)))
     ,  !
     .
-
-type extractor_dep_type_lambda mttType -> mttKind -> ((mttTerm -> mttType) -> mttTerm) -> mttTerm.
 
 perform_abstractions_ (var_dep_type H _ A) TL Vars VarMap LibMap Term Result
     :- spy(of A AType @level)
@@ -1137,44 +1176,3 @@ extract_collapsing_input Vars VarMap LibMap Term Term' Result
     ,  spy(extract_term NeedsExtraction Vars VarMap LibMap Term Result)
     ,  spy((NeedsExtraction = true, Term' = extractor_star), !; Term' = Term)
     .
-
-type get_call_signature any -> any -> prop.
-get_call_signature (univPi F) (univPi F')
-    :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
-    .
-get_call_signature (univCol F) (univCol F')
-    :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
-    .
-get_call_signature (univProp F) (univProp F')
-    :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
-    .
-get_call_signature (univDepPi B F) (univDepPi B F')
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
-        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
-    .
-get_call_signature (univDepCol B F) (univDepCol B F')
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
-        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
-    .
-get_call_signature (univDepProp B F) (univDepProp B F')
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
-        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
-    .
-get_call_signature (univPiT A F) (univPiT A F')
-    :- pi a\ of a A int => get_call_signature (F a) (F' a)
-    .
-get_call_signature (univDepPiT A B F) (univDepPiT A B F')
-    :- pi t\ (pi x\ ofType (B x) set int :- of x A int) =>
-        (pi x\ pi y\ dconv (B x) (B y) :- conv x y) =>
-            (pi x\ of (t x) (B x) int :- of x A int) => get_call_signature (F t) (F' t)
-    .
-get_call_signature (hyp _ _ E) E' :- get_call_signature E E'.
-get_call_signature (cut _ E) E' :- get_call_signature E E'.
-get_call_signature (locTypeDefL N _ _) (locTypeDefL N _ _).
-get_call_signature (locDefL N _ _) (locDefL N _ _).
-
-%% Typing extensions to type extractor terms
-
-of (encode T) extractor_singleton IE :- spy (ofType T props IE).
-ofType (decode T) props IE :- spy (of T extractor_singleton IE).
-
