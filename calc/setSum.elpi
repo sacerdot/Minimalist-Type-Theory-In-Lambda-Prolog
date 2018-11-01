@@ -1,4 +1,3 @@
-
 %%-- disjoint sum: setSum
 
 type setSum mttType -> mttType -> mttType.
@@ -25,22 +24,191 @@ of (inl A B Aa) (setSum A B) IE
 of (elim_setSum C W Cl Cr) (C W) IE 
     :- spy (of W (setSum A B) IE)
      , spy (ofType (setSum A B) _ IE) 
-     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) col IE)
-     , spy (pi x\ locDecl x A => spy(isa (Cl x) (C (inl A B x)) IE) ) 
+     , spy (pi z\ locDecl z (setSum A B) => ofType (C z) _ IE)
+     , spy (pi x\ locDecl x A => isa (Cl x) (C (inl A B x)) IE)
      , spy (pi y\ locDecl y B => isa (Cr y) (C (inr A B y)) IE) 
      .
+
 
 hstep (elim_setSum _C W Cl _Cr) (Cl Wl) 
     :- hnf W (inl _A _B Wl)
     .
+
 hstep (elim_setSum _C W _Cl Cr) (Cr Wr) 
     :- hnf W (inr _A _B Wr)
     .
 
-dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
-    :- (conv W W')
-    ,  (of W AB IE_)
-    ,  (pi z \ locDecl z AB => (conv (C z) (C' z) ) )
-    ,  (pi z \ locDecl z AB => (conv (Cl z) (Cl' z) ) )
-    ,  (pi z \ locDecl z AB => (conv (Cr z) (Cr' z) ) )
+
+dconv (setSum A B) (setSum A' B')
+    :- conv A A'
+    ,  conv B B'
     .
+
+dconv (inr A B BB) (inr A' B' BB') 
+    :- conv A A'
+    ,  conv B B'
+    ,  conv BB BB'
+    .
+
+dconv (inl A B AA) (inl A' B' AA')  
+    :- conv A A'
+    ,  conv B B'
+    ,  conv AA AA'
+    .
+
+dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr') 
+    :- conv W W'
+    ,  isa W (setSum A B) _ 
+    ,  pi z\ locDecl z (setSum A B) => conv (C z) (C' z)
+    ,  pi x\ locDecl x A => conv (Cl x) (Cl' x)
+    ,  pi y\ locDecl y B => conv (Cr y) (Cr' y)
+    .
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (setSum A B) LibMap Result
+    :- starify_nonset_ops_type A LibMap A'
+    ,  starify_nonset_ops_type B LibMap B'
+    ,  Result = (setSum A' B')
+    ,  !
+    .
+
+starify_nonset_ops (inl A B AA) LibMap Result
+    :- starify_nonset_ops_type A LibMap A'
+    ,  starify_nonset_ops_type B LibMap B'
+    ,  starify_nonset_ops AA LibMap AA'
+    ,  Result = (inl A' B' AA')
+    ,  !
+    .
+
+starify_nonset_ops (inr A B BB) LibMap Result
+    :- starify_nonset_ops_type A LibMap A'
+    ,  starify_nonset_ops_type B LibMap B'
+    ,  starify_nonset_ops BB LibMap BB'
+    ,  Result = (inr A' B' BB')
+    ,  !
+    .
+
+starify_nonset_ops (elim_setSum C W Cl Cr) LibMap Result
+    :- starify_nonset_ops W LibMap W'
+    ,  isa W (setSum L R) @level
+    ,  ((name C, C' = C)
+        , !; pi w\ locDecl w (setSum L R) => starify_nonset_ops_type (C w) LibMap (C' w))
+    ,  ((name Cl, Cl' = Cl)
+        , !; pi l\ locDecl l L => starify_nonset_ops (Cl l) LibMap (Cl' l))
+    ,  ((name Cr, Cr' = Cr)
+        , !; pi r\ locDecl r R => starify_nonset_ops (Cr r) LibMap (Cr' r))
+    ,  Result = (elim_setSum C' W' Cl' Cr')
+    ,  !
+    .
+
+
+extract_set_ops_type (setSum A B) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type A A' Vars VarMap LibMap AList
+    ,  extract_set_ops_type B B' Vars VarMap LibMap BList
+    ,  concat [BList, AList] SetList
+    ,  collapse_type (setSum A' B') Result Vars VarMap LibMap []
+    ,  !
+    .
+
+extract_set_ops (inl A B AA) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops AA AA' Vars VarMap LibMap AAList)
+    ,  spy(extract_set_ops_type A A' Vars VarMap LibMap AList)
+    ,  spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+    ,  concat [AAList, BList, AList] SetList
+    ,  spy(collapse_term (inl A' B' AA') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+extract_set_ops (inr A B BB) Result Vars VarMap LibMap SetList
+    :- spy(extract_set_ops BB BB' Vars VarMap LibMap BBList)
+    ,  spy(extract_set_ops_type A A' Vars VarMap LibMap AList)
+    ,  spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+    ,  concat [BBList, BList, AList] SetList
+    ,  spy(collapse_term (inr A' B' BB') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% (1 + B') -> A'  ==>  (1 + B') -> A' (preserve_complexity)
+collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _Vars _VarMap _LibMap []
+    :- conv A extractor_singleton
+    ,  is_complexity_altered (elim_setSum C (inl A B AA) Cl Cr)
+    ,  Result = (elim_setSum C (inl A B AA) Cl Cr)
+    ,  !
+    .
+
+%% (1 + B') -> A'  ==>  A'  (se passato direttamente)
+collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result Vars VarMap LibMap []
+    :- conv A extractor_singleton
+    ,  extract_set_ops (Cl extractor_star) Result Vars VarMap LibMap []
+    ,  !
+    .
+
+%% (B' + 1) -> A'  ==>  (1 + B') -> A' (preserve_complexity)
+collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _Vars _VarMap _LibMap []
+    :- conv B extractor_singleton
+    ,  is_complexity_altered (elim_setSum C (inr A B BB) Cl Cr)
+    ,  Result = (elim_setSum C (inr A B BB) Cl Cr)
+    ,  !
+    .
+
+%% (B' + 1) -> A'  ==>  A'  (se passato direttamente)
+collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result Vars VarMap LibMap []
+    :- conv B extractor_singleton
+    ,  extract_set_ops (Cr extractor_star) Result Vars VarMap LibMap []
+    ,  !
+    .
+
+%% (N + B') -> 1  ==>  1  (se passato direttamente)
+collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result _Vars _VarMap _LibMap []
+    :- pi a\ locDecl a A => isa (Cl a) extractor_singleton @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+%% (B' + N) -> 1  ==>  1  (se passato direttamente)
+collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result _Vars _VarMap _LibMap []
+    :- pi b\ locDecl b B => isa (Cr b) extractor_singleton @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+%% (N + B') -> N  ==>  N -> N  (se passato direttamente)
+collapse_term (elim_setSum _C (inl A _B AA) Cl _Cr) Result Vars VarMap LibMap ElimList
+    :- extract_set_ops (app (lambda A Cl) AA) Result Vars VarMap LibMap ElimList
+    ,  !
+    .
+
+%% (B' + N) -> N  ==>  N -> N  (se passato direttamente)
+collapse_term (elim_setSum _C (inr _A B BB) _Cl Cr) Result Vars VarMap LibMap ElimList
+    :- extract_set_ops (app (lambda B Cr) BB) Result Vars VarMap LibMap ElimList
+    ,  !
+    .
+
+%% N + N -> 1  ==>  1
+collapse_term (elim_setSum _C W Cl Cr) Result _Vars _VarMap _LibMap []
+    :- of W (setSum A B) @level
+    ,  pi a\ locDecl a A => isa (Cl a) extractor_singleton @level
+    ,  pi b\ locDecl b B => isa (Cr b) extractor_singleton @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (elim_setSum C W Cl Cr) Result Vars VarMap LibMap SetList
+    :- extract_set_ops W W' Vars VarMap LibMap WList
+    ,  isa W (setSum L R) @level
+    ,  isa W' (setSum L' R') @level
+    ,  ((name C, map_var C VarMap C', CList = [])
+        , !; pi w\ locDecl w (setSum L R) => pi m\ locDecl m (setSum L' R') =>
+            extract_set_ops_type (C w) (C' m) [(var_term _ m)|[(var_term _ w)|Vars]] (var_chain w m VarMap) LibMap CList)
+    ,  ((name Cl, map_var Cl VarMap Cl', ClList = [])
+        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_set_ops (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] (var_chain l i VarMap) LibMap ClList)
+    ,  ((name Cr, map_var Cr VarMap Cr', CrList = [])
+        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_set_ops (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] (var_chain r f VarMap) LibMap CrList)
+    ,  spy(collapse_term (elim_setSum C' W' Cl' Cr') Result Vars VarMap LibMap ElimList)
+    ,  spy(concat [ElimList, CrList, ClList, CList, WList] SetList)
+    ,  !
+    .
+

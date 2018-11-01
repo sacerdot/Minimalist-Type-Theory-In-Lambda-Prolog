@@ -1,3 +1,5 @@
+%%-- propositional conjunction: and
+
 type and mttType -> mttType -> mttType.
 type pair_and mttType -> mttType -> mttTerm -> mttTerm -> mttTerm.
 type p1_and, p2_and mttTerm -> mttTerm.
@@ -41,3 +43,109 @@ dconv (and B C) (and B' C')
     :- (conv B B')
     ,  (conv C C')
     .
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%                                   ESTRAZIONE                                   %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+starify_nonset_ops_type (and B C) LibMap Result
+    :- starify_nonset_ops_type B LibMap B'
+    ,  starify_nonset_ops_type C LibMap C'
+    ,  Result = (and B' C')
+    ,  !
+    .
+
+starify_nonset_ops (pair_and B C BB CC) LibMap Result 
+    :- starify_nonset_ops BB LibMap BB'
+    ,  starify_nonset_ops CC LibMap CC'
+    ,  starify_nonset_ops_type (and B C) LibMap (and B' C')
+    ,  spy(Result = (pair_and B' C' BB' CC'))
+    ,  !
+    .
+
+starify_nonset_ops (p1_and Pair) LibMap Result
+    :- starify_nonset_ops Pair LibMap Pair'
+    ,  spy(Result = (p1_and Pair'))
+    ,  !
+    .
+
+starify_nonset_ops (p2_and Pair) LibMap Result
+    :- starify_nonset_ops Pair LibMap Pair'
+    ,  spy(Result = (p2_and Pair'))
+    ,  !
+    .
+
+
+collapse_type (and B C) Result _Vars _VarMap _LibMap []
+    :- conv B extractor_singleton
+    ,  conv C extractor_singleton
+    ,  Result = extractor_singleton
+    ,  !
+    .
+
+extract_set_ops_type (and B C) Result Vars VarMap LibMap SetList
+    :- extract_set_ops_type B B' Vars VarMap LibMap BList
+    ,  extract_set_ops_type C C' Vars VarMap LibMap CList
+    ,  concat [CList, BList] SetList
+    ,  spy(collapse_type (and B' C') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% 1 -> 1 -> 1 x 1  ==>  1
+collapse_term (pair_and B C BB CC) Result _Vars _VarMap _LibMap []
+    :- isa (pair_and B C BB CC) (and extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (pair_and B C BB CC) Result Vars VarMap LibMap SetList
+    :- extract_set_ops BB BB' Vars VarMap LibMap BBList
+    ,  extract_set_ops CC CC' Vars VarMap LibMap CCList
+    ,  extract_set_ops_type B B' Vars VarMap LibMap BList
+    ,  extract_set_ops_type C C' Vars VarMap LibMap CList
+    ,  concat [CCList, BBList, CList, BList] SetList
+    ,  spy(collapse_term (pair_and B' C' BB' CC') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% 1 -> 1  ==>  1
+collapse_term (p1_and Pair) Result _Vars _VarMap _LibMap []
+    :- isa Pair extractor_singleton @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+%% 1 x 1 -> 1  ==>  1
+collapse_term (p1_and Pair) Result _Vars _VarMap _LibMap []
+    :- isa Pair (and extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (p1_and Pair) Result Vars VarMap LibMap SetList
+    :- extract_set_ops Pair Pair' Vars VarMap LibMap SetList
+    ,  spy(collapse_term (p1_and Pair') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% 1 -> 1  ==>  1
+collapse_term (p2_and Pair) Result _Vars _VarMap _LibMap []
+    :- isa Pair extractor_singleton @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+%% 1 x 1 -> 1  ==>  1
+collapse_term (p2_and Pair) Result _Vars _VarMap _LibMap []
+    :- isa Pair (and extractor_singleton extractor_singleton) @level
+    ,  Result = extractor_star
+    ,  !
+    .
+
+extract_set_ops (p2_and Pair) Result Vars VarMap LibMap SetList
+    :- extract_set_ops Pair Pair' Vars VarMap LibMap SetList
+    ,  spy(collapse_term (p2_and Pair') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
