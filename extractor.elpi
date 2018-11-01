@@ -625,6 +625,28 @@ extract_set_ops_lib_call A Result Vars VarMap LibMap SetList
     ,  !
     .
 
+type contains_lib_app A -> prop -> prop.
+contains_lib_app A true
+    :- term_to_string A SA
+    ,  rex_match "^.*lib_app .*$" SA
+    ,  !
+    .
+contains_lib_app _ false.
+
+type is_non_collapsible_lambda any -> prop.
+is_non_collapsible_lambda (setPi _ _).
+is_non_collapsible_lambda (lambda _ _).
+is_non_collapsible_lambda (app _ _).
+is_non_collapsible_lambda (elim_setSum _ (inl _ _ _) Cl _) :- contains_lib_app Cl true.
+is_non_collapsible_lambda (elim_setSum _ (inr _ _ _) _ Cr) :- contains_lib_app Cr true.
+is_non_collapsible_lambda (elim_setSigma _ _ MM) :- contains_lib_app MM true.
+
+type is_complexity_altered any -> prop.
+is_complexity_altered A
+    :- @language = ocaml
+    ,  is_non_collapsible_lambda A
+    .
+
 
 collapse_type (decode extractor_star) Result _Vars _VarMap _LibMap []
     :- Result = extractor_singleton

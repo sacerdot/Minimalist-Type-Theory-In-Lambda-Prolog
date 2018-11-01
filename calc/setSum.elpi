@@ -131,10 +131,26 @@ extract_set_ops (inr A B BB) Result Vars VarMap LibMap SetList
     ,  !
     .
 
+%% (1 + B') -> A'  ==>  (1 + B') -> A' (preserve_complexity)
+collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _Vars _VarMap _LibMap []
+    :- conv A extractor_singleton
+    ,  is_complexity_altered (elim_setSum C (inl A B AA) Cl Cr)
+    ,  Result = (elim_setSum C (inl A B AA) Cl Cr)
+    ,  !
+    .
+
 %% (1 + B') -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result Vars VarMap LibMap []
     :- conv A extractor_singleton
     ,  extract_set_ops (Cl extractor_star) Result Vars VarMap LibMap []
+    ,  !
+    .
+
+%% (B' + 1) -> A'  ==>  (1 + B') -> A' (preserve_complexity)
+collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _Vars _VarMap _LibMap []
+    :- conv B extractor_singleton
+    ,  is_complexity_altered (elim_setSum C (inr A B BB) Cl Cr)
+    ,  Result = (elim_setSum C (inr A B BB) Cl Cr)
     ,  !
     .
 

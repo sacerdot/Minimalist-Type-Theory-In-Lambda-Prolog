@@ -1528,12 +1528,29 @@ extract_set_ops (p2 Pair) Result Vars VarMap LibMap SetList
     ,  !
     .
 
+%% 1 -> A'  ==>  1 x 1 -> A' (preserve_complexity)
+collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
+    :- spy(isa Pair extractor_singleton @level)
+    ,  is_complexity_altered (elim_setSigma Pair M MM)
+    ,  Result = (elim_setSigma (pair extractor_singleton (_\extractor_singleton) extractor_star extractor_star) M MM)
+    ,  !
+    .
+
 %% 1 -> A'  ==>  A'
 collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
     :- spy(isa Pair extractor_singleton @level)
     ,  spy(extract_set_ops (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList)
     ,  !
     .
+
+%% 1 x 1 -> A'  ==>  1 x 1 -> A' (preserve_complexity)
+collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
+    :- spy(isa Pair (setSigma extractor_singleton (_\ extractor_singleton)) @level)
+    ,  is_complexity_altered (elim_setSigma Pair M MM)
+    ,  Result = (elim_setSigma Pair M MM)
+    ,  !
+    .
+
 
 %% 1 x 1 -> A'  ==>  A'
 collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList

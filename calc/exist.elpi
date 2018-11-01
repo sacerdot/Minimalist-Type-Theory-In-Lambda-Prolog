@@ -126,17 +126,19 @@ extract_set_ops (pair_exist B C BB CC) Result Vars VarMap LibMap SetList
     ,  !
     .
 
-%% 1 -> A'  ==>  A'
-collapse_term (elim_exist Pair _M MM) Result Vars VarMap LibMap ElimList
+%% 1 -> 1  ==>  1
+collapse_term (elim_exist Pair M _MM) Result _Vars _VarMap _LibMap []
     :- isa Pair extractor_singleton @level
-    ,  extract_set_ops (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList
+    ,  conv M extractor_singleton
+    ,  Result = extractor_star
     ,  !
     .
 
-%% 1 x 1 -> A'  ==>  A'
-collapse_term (elim_exist Pair _M MM) Result Vars VarMap LibMap ElimList
+%% 1 x 1 -> 1  ==>  1
+collapse_term (elim_exist Pair M _MM) Result _Vars _VarMap _LibMap []
     :- isa Pair (exist extractor_singleton (_\ extractor_singleton)) @level
-    ,  extract_set_ops (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList
+    ,  conv M extractor_singleton
+    ,  Result = extractor_star
     ,  !
     .
 

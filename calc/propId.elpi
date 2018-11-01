@@ -113,17 +113,19 @@ extract_set_ops (id A AA) Result Vars VarMap LibMap SetList
     ,  !
     .
 
-%% 1 -> A'  ==>  A'
-collapse_term (elim_id P _C CC) Result Vars VarMap LibMap SetList
+%% 1 -> 1  ==>  1
+collapse_term (elim_id P C _CC) Result _Vars _VarMap _LibMap []
     :- isa P extractor_singleton int
-    ,  extract_set_ops (CC extractor_star) Result Vars VarMap LibMap SetList
+    ,  conv (C extractor_star extractor_star) extractor_singleton
+    ,  Result = extractor_star
     ,  !
     .
 
-%% C 1 -> A'  ==>  A'
-collapse_term (elim_id P _C CC) Result Vars VarMap LibMap SetList
+%% C 1 -> 1  ==>  1
+collapse_term (elim_id P C _CC) Result _Vars _VarMap _LibMap []
     :- isa P (propId extractor_singleton _ _) int
-    ,  extract_set_ops (CC extractor_star) Result Vars VarMap LibMap SetList
+    ,  conv (C extractor_star extractor_star) extractor_singleton
+    ,  Result = extractor_star
     ,  !
     .
 

@@ -14,8 +14,8 @@
 kind language type.
 type ocaml, haskell language.
 
-%macro @language :- ocaml.
-macro @language :- haskell.
+macro @language :- ocaml.
+%macro @language :- haskell.
 
 translate_program_to ocaml Code' Result
     :- Result is Code' ^ ";;"
