@@ -14,8 +14,8 @@
 kind language type.
 type ocaml, haskell language.
 
-macro @language :- ocaml.
-%macro @language :- haskell.
+%macro @language :- ocaml.
+macro @language :- haskell.
 
 translate_program_to ocaml Code' Result
     :- Result is Code' ^ ";;"
@@ -214,10 +214,7 @@ translate_lib_def_type_ A H' Result
     ,  Result is H' ^ " " ^ A'
     ,  !
     .
-translate_lib_def_type_ A H' Result
-    :- term_to_string A A'
-    ,  Result is H' ^ " " ^ A'
-    .
+translate_lib_def_type_ _ H' H'.
 
 translate_lib_def_type (lib_app H A) Result HName
     :- translate_lib_def_type H H' HName
@@ -779,8 +776,9 @@ translate_term_ A _ Result
     .
 translate_term_ A _ Result
     :- term_to_string A S
-    ,  spy(rex_match "x[0-9]+ .*" S)
-    ,  Result is "(" ^ S ^ ")"
+    ,  spy(rex_match "# x[0-9]+ .*" S)
+    ,  rex_replace "# \\(x[0-9]+ .*\\)" "\\1" S SH
+    ,  Result is "(" ^ SH ^ ")"
     ,  !
     .
 translate_term_ H LibMap Result
@@ -806,8 +804,8 @@ translate_type_ A _ Result
     .
 translate_type_ A _ Result
     :- term_to_string A S
-    ,  rex_match "x[0-9]+ .*" S
-    ,  rex_replace "\\(x[0-9]+\\) .*" "\\1" S SH
+    ,  rex_match "# x[0-9]+ .*" S
+    ,  rex_replace "# \\(x[0-9]+\\) .*" "\\1" S SH
     ,  translate_type_var_to @language SH Result
     ,  !
     .

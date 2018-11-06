@@ -745,7 +745,7 @@ filter_code_list [H|TL] Result
     .
 filter_code_list [] [].
 
-translate_entry Entry LibMap StarEntry ExtrEntry OutLib Result
+translate_entry Entry LibMap ExtrEntry OutLib Result
     :- spy(starify_nonset_ops_lib Entry LibMap StarEntry)
     ,  spy(extract_set_ops_lib StarEntry ExtrEntry [] (var_chain_end _ _ _) LibMap ArgMask OutList)
     ,  spy(translate_lib_ ExtrEntry LibMap Code)
@@ -758,8 +758,8 @@ translate_entry Entry LibMap StarEntry ExtrEntry OutLib Result
     .
 
 translate_library [Entry|TL] LibMap Result
-    :- translate_entry Entry LibMap StarEntry ExtrEntry ExtrLib Entry'
-    ,  process_entry StarEntry Hyp
+    :- translate_entry Entry LibMap ExtrEntry ExtrLib Entry'
+    ,  process_entry Entry Hyp
     ,  process_entry ExtrEntry ExtrHyp
     ,  Hyp => ExtrHyp => translate_library TL ExtrLib TL'
     ,  concat [Entry', TL'] Result
@@ -768,12 +768,15 @@ translate_library [] _ [].
 
 translate_entry_from_library [Entry|_TL] LibMap 0 Result
     :- makeline
-    ,  debug => translate_entry Entry LibMap _ _ _ Result
+    ,  debug => translate_entry Entry LibMap _ _ Result
+%    , debug => pi a\ locDecl a (lib_app setoid singleton) =>
+%        pi b\ locDecl b (lib_app (lib_app (lib_app setoidDep singleton) (_\singleton)) a) => 
+%            spy(of (lib_app (lib_app (lib_app (lib_app setSigma_setoid singleton) (_\singleton)) a) b) Type int)
     ,  !
     .
 translate_entry_from_library [Entry|TL] LibMap Index Result
-    :- translate_entry Entry LibMap StarEntry ExtrEntry ExtrLib _
-    ,  spy(process_entry StarEntry Hyp)
+    :- translate_entry Entry LibMap ExtrEntry ExtrLib _
+    ,  spy(process_entry Entry Hyp)
     ,  spy(process_entry ExtrEntry ExtrHyp)
     ,  NewIndex is (Index - 1)
     ,  Hyp => ExtrHyp => translate_entry_from_library TL ExtrLib NewIndex Result

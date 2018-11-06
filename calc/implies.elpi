@@ -282,8 +282,8 @@ collapse_type (implies B C) Result _Vars _VarMap _LibMap []
     .
 
 extract_set_ops_type (implies B C) Result Vars VarMap LibMap SetList
-    :- extract_set_ops_type B B' Vars VarMap LibMap BList
-    ,  extract_set_ops_type C C' Vars VarMap LibMap CList
+    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+    ,  spy(extract_set_ops_type C C' Vars VarMap LibMap CList)
     ,  concat [CList, BList] SetList
     ,  spy(collapse_type (implies B' C') Result Vars VarMap LibMap [])
     ,  !
@@ -297,9 +297,9 @@ collapse_term (impl_lam B F) Result _Vars _VarMap _LibMap []
     .
 
 extract_set_ops (impl_lam B F) Result Vars VarMap LibMap SetList
-    :- extract_set_ops_type B B' Vars VarMap LibMap BList
+    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
     ,  ((name F, map_var F VarMap F', FList = [])
-        , !; pi b\ locDecl b B => pi d\ locDecl d B' => extract_set_ops (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap FList)
+        , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' => extract_set_ops (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap FList))
     ,  concat [FList, BList] SetList
     ,  spy(collapse_term (impl_lam B' F') Result Vars VarMap LibMap [])
     ,  !
@@ -322,8 +322,8 @@ collapse_term (impl_app Lam X) Result _Vars _VarMap _LibMap []
     .
 
 extract_set_ops (impl_app Lam X) Result Vars VarMap LibMap SetList
-    :- extract_set_ops Lam Lam' Vars VarMap LibMap LamList
-    ,  extract_set_ops X X' Vars VarMap LibMap XList
+    :- spy(extract_set_ops Lam Lam' Vars VarMap LibMap LamList)
+    ,  spy(extract_set_ops X X' Vars VarMap LibMap XList)
     ,  spy(collapse_term (impl_app Lam' X') Result Vars VarMap LibMap [])
     ,  concat [XList, LamList] SetList
     ,  !

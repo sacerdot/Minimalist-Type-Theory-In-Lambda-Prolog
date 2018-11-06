@@ -35,6 +35,13 @@ type of, isa            mttTerm -> mttType -> mttLevel -> prop.
 type locDef         mttTerm -> mttType -> mttTerm -> prop.
 type locTypeDef     mttType -> mttKind -> mttType -> prop.
 
+%% application of a variable
+type # (mttTerm -> A) -> mttTerm -> A.
+hstep (# A B) (A B).
+
+of (# A B) Type IE :- of (A B) Type IE.
+ofType (# A B) Kind IE :- ofType (A B) Kind IE.
+
 %% conversion to (weak) head-normal form WHNF
 hnf A B :- (hstep A C), !, (hnf C B).
 hnf A A.
@@ -48,7 +55,7 @@ hnf A A.
 conv A A :- ! .
 conv A B :- (locDecl _ (propEq _ A B) ), !.
 conv A B :- (locDecl _ (propEq _ B A) ), !.
-conv A B :- (hnf A A'), ( hnf B B'), spy( dconv A' B').
+conv A B :- (hnf A A'), (hnf B B'), spy(dconv A' B').
 
 %conv A B :- spy(hnf A A'), spy( hnf B B'), spy(locDecl _ (propEq _ A1 B1)), spy(hnf A1 A2), spy(hnf B1 B2), spy((A' = A2, B' = B2) ; (A' = B2 , B' = A2)). 
 
@@ -101,8 +108,6 @@ of uvar _ _ :- print "ERROR: Flexible of!", fail.
 ofType uvar _ _ :- print "ERROR: Flexible ofType!", fail.
 isa uvar _ _, isa _ uvar _ :- print "ERROR: Flexible isa!", fail.
 isaType uvar _ _, isaType _ uvar _ :- print "ERROR: Flexible isaType!", fail.
-
-ofType A KIND _IE :- locTypeDef A KIND _.
 
 %% !!!DEBUG mock typing of term M, returns chosen type T
 of (fixMe M T ) T int 
@@ -165,8 +170,9 @@ isa Term TY IE
     ,  spy(conv TY' TY)
     .
 
+ofType X KIND _ :- locTypeDef X KIND _.
 
-of X Y _ :-  locDecl X Y .
+of X Y _ :- locDecl X Y.
 
 %% the universe of small propositions
 ofType propS col _IE.
@@ -384,36 +390,36 @@ translateLib L1 :-
     (univDepPi B C\
      (univPiT (lib_app setoid B) bS\
        locTypeDefL (lib_app (lib_app (lib_app setoidDep B) C) bS) col
-        (setSigma (setSigma (setPi B x\ lib_app setoid (C x)) _\
+        (setSigma (setSigma (setPi B x\ lib_app setoid (# C x)) _\
 		  	    (setPi B x1\ setPi B x2\
 	            	      setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\
-		     	    	setPi (C x1) _\ C x2)) cc\
+		     	    	setPi (# C x1) _\ # C x2)) cc\
 		  (setPi B x1\ setPi B x2\
-		    setPi (C x1) y1\ setPi (C x1) y2\
+		    setPi (# C x1) y1\ setPi (# C x1) y2\
 		     setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) d1\
-		      setPi (decode (app (app (app (lib_app setoid_rel (C x1))
-		      	    	    (app (elim_setSigma cc (_\ (setPi B x\ lib_app setoid (C x))) (x\y\x)) x1)) y1) y2)) d2\
-		       (decode (app (app (app (lib_app setoid_rel (C x2))
-		       	       	    	 (app (elim_setSigma cc (_\ (setPi B x\ lib_app setoid (C x))) (x\y\x)) x2))
+		      setPi (decode (app (app (app (lib_app setoid_rel (# C x1))
+		      	    	    (app (elim_setSigma cc (_\ (setPi B x\ lib_app setoid (# C x))) (x\y\x)) x1)) y1) y2)) d2\
+		       (decode (app (app (app (lib_app setoid_rel (# C x2))
+		       	       	    	 (app (elim_setSigma cc (_\ (setPi B x\ lib_app setoid (# C x))) (x\y\x)) x2))
 					 (app (app (app (app (elim_setSigma cc
 					      	   	     		    (_\ (setPi B x1\ setPi B x2\
 	            	      						    	setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\
-		     	    							setPi (C x1) _\ C x2))
+		     	    							setPi (# C x1) _\ # C x2))
 									    (x\y\y)) x1) x2) d1) y1))
 					 (app (app (app (app (elim_setSigma cc
 					      	   	     		    (_\ (setPi B x1\ setPi B x2\
 	            	      						    	setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\
-		     	    							setPi (C x1) _\ C x2))
+		     	    							setPi (# C x1) _\ # C x2))
 									    (x\y\y)) x1) x2) d1) y2))))))))
 	  
 , (univPi B\
    (univDepPi B C\
     (univPiT (lib_app setoid B) bS\
      (locDefL (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS)
-       (setPi (lib_app (lib_app (lib_app setoidDep B) C) bS) s\ setPi B x\ lib_app setoid (C x))
+       (setPi (lib_app (lib_app (lib_app setoidDep B) C) bS) s\ setPi B x\ lib_app setoid (# C x))
        (lambda (lib_app (lib_app (lib_app setoidDep B) C) bS) s\
-         elim_setSigma s (_\ (setPi B x\ lib_app setoid (C x)))
-	   	       (w1\w2\ elim_setSigma w1 (_\ (setPi B x\ lib_app setoid (C x))) (x\y\x)))))))
+         elim_setSigma s (_\ (setPi B x\ lib_app setoid (# C x)))
+	   	       (w1\w2\ elim_setSigma w1 (_\ (setPi B x\ lib_app setoid (# C x))) (x\y\x)))))))
 	  
 
 , (univPi B\
@@ -423,12 +429,12 @@ translateLib L1 :-
       (setPi (lib_app (lib_app (lib_app setoidDep B) C) bS) s\
        (setPi B x1\ setPi B x2\
          setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\
-	  setPi (C x1) _\ C x2))
+	  setPi (# C x1) _\ # C x2))
      (lambda (lib_app (lib_app (lib_app setoidDep B) C) bS) s\
-       elim_setSigma s (_\ setPi B x1\ setPi B x2\ setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\ setPi (C x1) _\ C x2)
+       elim_setSigma s (_\ setPi B x1\ setPi B x2\ setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\ setPi (# C x1) _\ # C x2)
        		     (w1\w2\
 			elim_setSigma w1 (_\ setPi B x1\ setPi B x2\
-				      	     setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\ setPi (C x1) _\ C x2) (x\y\y))))))
+				      	     setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) _\ setPi (# C x1) _\ # C x2) (x\y\y))))))
 ,
    (univPi B\
    (univDepPi B C\
@@ -436,20 +442,20 @@ translateLib L1 :-
      locDefL (lib_app (lib_app (lib_app proof_trasp B) C) bS)
       (setPi (lib_app (lib_app (lib_app setoidDep B) C) bS) s\
        (setPi B x1\ setPi B x2\
-	     setPi (C x1) y1\ setPi (C x1) y2\
+	     setPi (# C x1) y1\ setPi (# C x1) y2\
 	      setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) d1\
-	       setPi (decode (app (app (app (lib_app setoid_rel (C x1)) (app (app (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS) s) x1)) y1) y2)) d2\
-	        (decode (app (app (app (lib_app setoid_rel (C x2))
+	       setPi (decode (app (app (app (lib_app setoid_rel (# C x1)) (app (app (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS) s) x1)) y1) y2)) d2\
+	        (decode (app (app (app (lib_app setoid_rel (# C x2))
 			     (app (app (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS) s) x2))
 			     (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast B) C) bS) s) x1) x2) d1) y1))
 			     (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast B) C) bS) s) x1) x2) d1) y2)))))
       (lambda (lib_app (lib_app (lib_app setoidDep B) C) bS) s\
         (elim_setSigma s
 	  (s\ (setPi B x1\ setPi B x2\
-	     setPi (C x1) y1\ setPi (C x1) y2\
+	     setPi (# C x1) y1\ setPi (# C x1) y2\
 	      setPi (decode (app (app (app (lib_app setoid_rel B) bS) x1) x2)) d1\
-	       setPi (decode (app (app (app (lib_app setoid_rel (C x1)) (app (app (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS) s) x1)) y1) y2)) d2\
-	        (decode (app (app (app (lib_app setoid_rel (C x2))
+	       setPi (decode (app (app (app (lib_app setoid_rel (# C x1)) (app (app (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS) s) x1)) y1) y2)) d2\
+	        (decode (app (app (app (lib_app setoid_rel (# C x2))
 			     (app (app (lib_app (lib_app (lib_app setoidDepCarrier B) C) bS) s) x2))
 			     (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast B) C) bS) s) x1) x2) d1) y1))
 			     (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast B) C) bS) s) x1) x2) d1) y2)))))

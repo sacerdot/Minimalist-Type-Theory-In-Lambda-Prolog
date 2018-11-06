@@ -1953,7 +1953,7 @@ collapse_term (lambda B F) Result _Vars _VarMap _LibMap []
 %% (1 -> A')  ==>  A'
 collapse_term (lambda B F) Result Vars VarMap LibMap LamList
     :- spy(isa (lambda B F) (setPi extractor_singleton _) @level)
-    ,  extract_set_ops (F extractor_star) Result Vars VarMap LibMap LamList
+    ,  spy(extract_set_ops (F extractor_star) Result Vars VarMap LibMap LamList)
     ,  !
     .
 

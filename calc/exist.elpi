@@ -91,9 +91,7 @@ extract_set_ops_type (exist B C) Result Vars VarMap LibMap SetList
     :- spy(extract_set_ops_type B B1 Vars VarMap LibMap BList)
     ,  spy(ofType B Kind @level)
     ,  spy(is_informative Kind NeedsExtraction)
-    ,  spy((NeedsExtraction = false
-        ,    B' = B1)
-        , !; B' = extractor_singleton)
+    ,  spy((NeedsExtraction = false, B' = B1), !; B' = extractor_singleton)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap CList))
@@ -111,16 +109,14 @@ collapse_term (pair_exist B C BB CC) Result _Vars _VarMap _LibMap []
 
 %% A' -> 1 -> A' x 1  ==>  A' -> 1 -> 1 x 1
 extract_set_ops (pair_exist B C BB CC) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops BB BB1 Vars VarMap LibMap BBList)
-    ,  spy(extract_set_ops CC CC' Vars VarMap LibMap CCList)
-    ,  spy(extract_set_ops_type B B1 Vars VarMap LibMap BList)
+    :- spy(extract_set_ops_type B B1 Vars VarMap LibMap BList)
+    ,  spy(extract_set_ops BB BB1 Vars VarMap LibMap BBList)
+    ,  spy(extract_collapsing_input Vars VarMap LibMap BB1 BB' BB1List)
+    ,  spy((BB' = extractor_star, B' = extractor_singleton), !; B' = B1)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap CList))
-    ,  spy(extract_collapsing_input Vars VarMap LibMap BB1 BB' BB1List)
-    ,  spy((BB' = extractor_star
-        ,    B' = extractor_singleton)
-        , !; B' = B1)
+    ,  spy(extract_set_ops CC CC' Vars VarMap LibMap CCList)
     ,  concat [BB1List, CCList, BBList, CList, BList] SetList
     ,  spy(collapse_term (pair_exist B' C' BB' CC') Result Vars VarMap LibMap [])
     ,  !
@@ -143,15 +139,17 @@ collapse_term (elim_exist Pair M _MM) Result _Vars _VarMap _LibMap []
     .
 
 extract_set_ops (elim_exist Pair M MM) Result Vars VarMap LibMap SetList
-    :- extract_set_ops Pair Pair' Vars VarMap LibMap PairList
-    ,  isa Pair (exist B C) @level
-    ,  isa Pair' (exist B' C') @level
-    ,  extract_set_ops_type M M' Vars VarMap LibMap MList
+    :- spy(extract_set_ops Pair Pair' Vars VarMap LibMap PairList)
+    ,  spy(isa Pair (exist B C) @level)
+    ,  ((isa Pair' extractor_singleton @level
+        ,    B' = extractor_singleton, C' = (_\extractor_singleton))
+        , !; isa Pair' (exist B' C') @level)
+    ,  spy(extract_set_ops_type M M' Vars VarMap LibMap MList)
     ,  ((pi b\ locDecl b B => pi d\ locDecl d B' =>
             (name (MM b), map_var (MM b) VarMap (MM' d), MMList = []))
-        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => 
+        , !; spy(pi b\ pi c\ locDecl b B => locDecl c (C b) => 
              pi d\ pi e\ locDecl d B' => locDecl e (C' d) =>
-                spy(extract_set_ops (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] (var_chain c e (var_chain b d VarMap)) LibMap MMList))
+                extract_set_ops (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] (var_chain c e (var_chain b d VarMap)) LibMap MMList))
     ,  spy(collapse_term (elim_exist Pair' M' MM') Result Vars VarMap LibMap ElimList)
     ,  concat [ElimList, MMList, MList, PairList] SetList
     ,  !

@@ -79,7 +79,8 @@ starify_nonset_ops_lib (locTypeDefL N KIND TY) LibMap Result
     ,  !
     .
 
-starify_nonset_ops_lib_prop _A (isa star singleton @level).
+starify_nonset_ops_lib_prop _ true.
+%starify_nonset_ops_lib_prop A A.
 
 starify_nonset_ops_lib (hyp H1 H2 E) LibMap Result
     :- starify_nonset_ops_lib_prop H1 H1'
@@ -223,14 +224,14 @@ extract_set_ops_lib (cut _H E) Result Vars VarMap LibMap ArgMask SetList
 
 %% Base cases definition for extraction
 
-type occurrences list any -> any -> list any -> prop.
-
-occurrences [H|TL] N Result
-    :- occurrences TL N TL'
-    ,  ((occurs H N, H' = [H]), !; H' = [])
-    ,  concat [H',TL'] Result
-    .
-occurrences [] _N [].
+%type occurrences list any -> any -> list any -> prop.
+%
+%occurrences [H|TL] N Result
+%    :- occurrences TL N TL'
+%    ,  ((occurs H N, H' = [H]), !; H' = [])
+%    ,  concat [H',TL'] Result
+%    .
+%occurrences [] _N [].
 
 
 type var_term     any -> any -> mttTerm.
@@ -238,17 +239,17 @@ type var_type     any -> any -> mttTerm.
 type var_dep_term any -> any -> any -> mttTerm.
 type var_dep_type any -> any -> any -> mttTerm.
 
-type wrapped_occurrences list mttTerm -> any -> list mttTerm -> prop.
-wrapped_occurs (var_type H _) N H' :- ((occurs H N, H' = [(var_type H _)]), !; H' = []).
-wrapped_occurs (var_term _ H) N H' :- ((occurs H N, H' = [(var_term _ H)]), !; H' = []).
-wrapped_occurs (var_dep_type H _ A) N H' :- ((occurs H N, H' = [(var_dep_type H _ A)]), !; H' = []).
-wrapped_occurs (var_dep_term _ H A) N H' :- ((occurs H N, H' = [(var_dep_term _ H A)]), !; H' = []).
-wrapped_occurrences [H|TL] N Result
-    :- wrapped_occurrences TL N TL'
-    ,  wrapped_occurs H N H'
-    ,  concat [H',TL'] Result
-    .
-wrapped_occurrences [] _N [].
+%type wrapped_occurrences list mttTerm -> any -> list mttTerm -> prop.
+%wrapped_occurs (var_type H _) N H' :- ((occurs H N, H' = [(var_type H _)]), !; H' = []).
+%wrapped_occurs (var_term _ H) N H' :- ((occurs H N, H' = [(var_term _ H)]), !; H' = []).
+%wrapped_occurs (var_dep_type H _ A) N H' :- ((occurs H N, H' = [(var_dep_type H _ A)]), !; H' = []).
+%wrapped_occurs (var_dep_term _ H A) N H' :- ((occurs H N, H' = [(var_dep_term _ H A)]), !; H' = []).
+%wrapped_occurrences [H|TL] N Result
+%    :- wrapped_occurrences TL N TL'
+%    ,  wrapped_occurs H N H'
+%    ,  concat [H',TL'] Result
+%    .
+%wrapped_occurrences [] _N [].
 
 
 type get_call_name any -> any -> prop.
@@ -435,6 +436,14 @@ starify_nonset_ops_type (lib_app H A) LibMap Result
     ,  !
     .
 
+starify_nonset_ops_type (# X Y) LibMap Result
+    :- of Y TY @level
+    ,  ((name X, X' = X), !; pi y\ locDecl y TY => starify_nonset_ops_type (X y) LibMap (X' y))
+    ,  starify_nonset_ops Y LibMap Y'
+    ,  Result = (# X' Y')
+    ,  !
+    .
+
 starify_nonset_ops_type TA LibMap Result
     :- ofType TA AKind @level
     ,  spy(starify_type AKind TA LibMap Result)
@@ -459,6 +468,19 @@ starify_nonset_ops (lib_app H A) LibMap Result
     ,  !
     .
 
+starify_nonset_ops (# X Y) LibMap Result
+    :- of Y TY @level
+    ,  ((name X, X' = X), !; pi y\ locDecl y TY => starify_nonset_ops (X y) LibMap (X' y))
+    ,  starify_nonset_ops Y LibMap Y'
+    ,  Result = (# X' Y')
+    ,  !
+    .
+
+starify_nonset_ops (fixMe M T) _ (fixMe M T)
+    :- print "ATTENZIONE FIXME"
+    ,  !
+    .
+
 starify_nonset_ops A LibMap Result
     :- of A TA @level
     ,  ofType TA AKind @level
@@ -479,30 +501,30 @@ map_var_group Group A VarMap A'
     :- ((Group = lib_source, A' = A), !; Group = lib_dest, map_var A VarMap A')
     .
 
-type map_var_app_var_chain list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
-map_var_app_var_chain [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
-    :- map_var H VarMap H'
-    ,  map_var_app_var_chain TL VarMap TL'
-    .
-map_var_app_var_chain [(var_term _ H)] VarMap [(var_term _ H')]
-    :- map_var H VarMap H'
-    .
-
-type map_var_app_var_chain_group libGroup -> list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
-map_var_app_var_chain_group Group [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
-    :- map_var_group Group H VarMap H'
-    ,  map_var_app_var_chain_group Group TL VarMap TL'
-    .
-map_var_app_var_chain_group Group [(var_term _ H)] VarMap [(var_term _ H')]
-    :- map_var_group Group H VarMap H'
-    .
-
-apply_var_args [(var_dep_term _ H _)|TL] (H TL') :- apply_var_args TL TL'.
-apply_var_args [(var_term _ H)] H.
-
-type apply_args list any -> mttTerm -> prop.
-apply_args [H] H :- !.
-apply_args [H|TL] (H TL') :- apply_args TL TL'.
+%type map_var_app_var_chain list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
+%map_var_app_var_chain [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
+%    :- map_var H VarMap H'
+%    ,  map_var_app_var_chain TL VarMap TL'
+%    .
+%map_var_app_var_chain [(var_term _ H)] VarMap [(var_term _ H')]
+%    :- map_var H VarMap H'
+%    .
+%
+%type map_var_app_var_chain_group libGroup -> list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
+%map_var_app_var_chain_group Group [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
+%    :- map_var_group Group H VarMap H'
+%    ,  map_var_app_var_chain_group Group TL VarMap TL'
+%    .
+%map_var_app_var_chain_group Group [(var_term _ H)] VarMap [(var_term _ H')]
+%    :- map_var_group Group H VarMap H'
+%    .
+%
+%apply_var_args [(var_dep_term _ H _)|TL] (# H TL') :- apply_var_args TL TL'.
+%apply_var_args [(var_term _ H)] H.
+%
+%type apply_args list any -> mttTerm -> prop.
+%apply_args [H] H :- !.
+%apply_args [H|TL] (# H TL') :- apply_args TL TL'.
 
 
 filter_args [ArgHead|ArgTail] [true|MaskTail] [ArgHead|ArgTail'] :- filter_args ArgTail MaskTail ArgTail'.
@@ -538,9 +560,9 @@ get_arg_list _H [].
 
 type map_lib_call  any -> list lib_mapping_type -> any -> prop.
 map_lib_call A LibMap Result
-    :- spy(get_call_name A Name)
-    ,  spy(get_arg_list A Args)
-    ,  spy((term_to_string Name S, rex_match "^extr_[a-zA-Z0-9_]+$" S, Result = A)
+    :- get_call_name A Name
+    ,  get_arg_list A Args
+    ,  ((term_to_string Name S, rex_match "^extr_[a-zA-Z0-9_]+$" S, Result = A)
         , !; map_lib_call_ Name Args LibMap Result)
     .
 
@@ -607,13 +629,13 @@ extract_set_ops_lib_call_ (lib_app H A) Index Call Result Vars VarMap LibMap Set
     ,  !
     .
 extract_set_ops_lib_call_ H _Index Call Result _Vars _VarMap LibMap []
-    :- spy(term_to_string H S), spy(rex_match "^extr_[a-zA-Z0-9_]+$" S)
+    :- term_to_string H S, rex_match "^extr_[a-zA-Z0-9_]+$" S
     ,  spy(is_extrlib_call H LibMap Call)
     ,  Result = H
     ,  !
     .
 extract_set_ops_lib_call_ H _Index Call Result _Vars _VarMap LibMap []
-    :- spy(term_to_string H S), spy(rex_match "^[a-zA-Z0-9_]+$" S)
+    :- term_to_string H S, rex_match "^[a-zA-Z0-9_]+$" S
     ,  spy(is_lib_call H LibMap Call)
     ,  Result = H
     ,  !
@@ -680,17 +702,18 @@ extract_set_ops_type (lib_app H A) Result Vars VarMap LibMap SetList
     ,  !
     .
 
+extract_set_ops_type (# X Y) Result Vars VarMap LibMap SetList
+    :- extract_set_ops Y Y' Vars VarMap LibMap YList
+    ,  of Y TY @level, of Y' TY' @level
+    ,  ((name X, map_var X VarMap X', XList = [])
+        , !; pi y\ locDecl y TY => pi s\ locDecl s TY' =>
+            extract_set_ops_type (X y) (X' s) [(var_term _ s)|[(var_term _ y)|Vars]] (var_chain y s VarMap) LibMap XList)
+    ,  concat [YList, XList] SetList
+    ,  collapse_type (# X' Y') Result Vars VarMap LibMap []
+    .
+
 extract_set_ops_type extractor_singleton extractor_singleton _ _VarMap _LibMap [] :- !.
 extract_set_ops_type A Result _Vars VarMap _LibMap [] :- name A, map_var A VarMap Result, !.
-extract_set_ops_type A Result Vars VarMap _ []
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  reverse Vars Vars'
-    ,  wrapped_occurrences Vars' A [(var_dep_type H _ _)|TL]
-    ,  map_var H VarMap H'
-    ,  map_var_app_var_chain TL VarMap TL1
-    ,  apply_var_args TL1 TL'
-    ,  Result = (H' TL')
-    .
 extract_set_ops_type H Result Vars VarMap LibMap SetList
     :- spy(extract_set_ops_lib_call H H' Vars VarMap LibMap SetList)
     ,  spy(collapse_type H' Result Vars VarMap LibMap [])
@@ -731,17 +754,18 @@ extract_set_ops (lib_app H A) Result Vars VarMap LibMap SetList
     ,  !
     .
 
+extract_set_ops (# X Y) Result Vars VarMap LibMap SetList
+    :- extract_set_ops Y Y' Vars VarMap LibMap YList
+    ,  of Y TY @level, of Y' TY' @level
+    ,  ((name X, map_var X VarMap X', XList = [])
+        , !; pi y\ locDecl y TY => pi s\ locDecl s TY' =>
+            extract_set_ops (X y) (X' s) [(var_term _ s)|[(var_term _ y)|Vars]] (var_chain y s VarMap) LibMap XList)
+    ,  concat [YList, XList] SetList
+    ,  collapse_term (# X' Y') Result Vars VarMap LibMap []
+    .
+
 extract_set_ops extractor_star extractor_star _ _VarMap _LibMap [] :- !.
 extract_set_ops A Result _Vars VarMap _LibMap [] :- name A, map_var A VarMap Result, !.
-extract_set_ops A Result Vars VarMap _ []
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  reverse Vars Vars'
-    ,  wrapped_occurrences Vars' A [(var_dep_term _ H _)|TL]
-    ,  map_var H VarMap H'
-    ,  map_var_app_var_chain TL VarMap TL1
-    ,  apply_var_args TL1 TL'
-    ,  Result = (H' TL')
-    .
 extract_set_ops H Result Vars VarMap LibMap SetList
     :- spy(extract_set_ops_lib_call H H' Vars VarMap LibMap SetList)
     ,  spy(collapse_term H' Result Vars VarMap LibMap [])
@@ -786,8 +810,8 @@ get_call_signature (locDefL N _ _) (locDefL N _ _).
 
 %% Typing extensions to type extractor terms
 
-of (encode T) extractor_singleton IE :- spy (ofType T props IE).
-ofType (decode T) props IE :- spy (of T extractor_singleton IE).
+of (encode T) extractor_singleton IE :- ofType T props IE.
+ofType (decode T) props IE :- of T extractor_singleton IE.
 
 %% Extraction of terms that goes into star
 
@@ -985,45 +1009,33 @@ reabstract_term (lib_app A B) H M LibMap Result
     ,  !
     .
 
-reabstract_var_app_list [H|TL] (var_dep_term _ H _) (var_dep_term _ M _) [M|TL] :- !.
-reabstract_var_app_list [H'|TL] (var_dep_term _ H _) (var_dep_term _ M _) [H'|TL']
-    :- reabstract_var_app_list TL (var_dep_term _ H _) (var_dep_term _ M _) TL'
+reabstract_type (# X Y) H M LibMap Result
+    :- reabstract_dep_type X H M LibMap X'
+    ,  reabstract_term Y H M LibMap Y'
+    ,  Result = (# X' Y')
     .
-reabstract_var_app_list [] _ _ [] :- !.
+reabstract_term (# X Y) H M LibMap Result
+    :- reabstract_dep_term X H M LibMap X'
+    ,  reabstract_term Y H M LibMap Y'
+    ,  Result = (# X' Y')
+    .
 
-reabstract_var_app_list [H] (var_term _ H) (var_term _ M) [M] :- !.
-reabstract_var_app_list [H'|TL] (var_term _ H) (var_term _ M) [H'|TL']
-    :- reabstract_var_app_list TL (var_term _ H) (var_term _ M) TL'
-    .
-reabstract_var_app_list [] _ _ [] :- !.
+%reabstract_var_app_list [H|TL] (var_dep_term _ H _) (var_dep_term _ M _) [M|TL] :- !.
+%reabstract_var_app_list [H'|TL] (var_dep_term _ H _) (var_dep_term _ M _) [H'|TL']
+%    :- reabstract_var_app_list TL (var_dep_term _ H _) (var_dep_term _ M _) TL'
+%    .
+%reabstract_var_app_list [] _ _ [] :- !.
+%
+%reabstract_var_app_list [H] (var_term _ H) (var_term _ M) [M] :- !.
+%reabstract_var_app_list [H'|TL] (var_term _ H) (var_term _ M) [H'|TL']
+%    :- reabstract_var_app_list TL (var_term _ H) (var_term _ M) TL'
+%    .
+%reabstract_var_app_list [] _ _ [] :- !.
 
 reabstract_type A (var_type H _) (var_type M _) _ M
     :- name A
     ,  spy(A = H)
     ,  !
-    .
-reabstract_type A (var_dep_type H _ _) (var_dep_type M _ _) _ Result
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  names Vars
-    ,  occurrences Vars A [H|TL]
-    ,  apply_args TL TL'
-    ,  Result = (M TL')
-    .
-reabstract_type A (var_dep_term _ H _) (var_dep_term _ M _) _ Result
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  names Vars
-    ,  occurrences Vars A [T|TL]
-    ,  reabstract_var_app_list TL (var_dep_term _ H _) (var_dep_term _ M _) TL1
-    ,  apply_args TL1 TL'
-    ,  Result = (T TL')
-    .
-reabstract_type A (var_term _ H) (var_term _ M) _ Result
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  names Vars
-    ,  occurrences Vars A [T|TL]
-    ,  reabstract_var_app_list TL (var_term _ H) (var_term _ M) TL1
-    ,  apply_args TL1 TL'
-    ,  Result = (T TL')
     .
 reabstract_type A _ _ _ A.
 
@@ -1032,20 +1044,6 @@ reabstract_term A (var_term _ H) (var_term _ M) _ M
     :- name A
     ,  spy(A = H)
     ,  !
-    .
-reabstract_term A (var_dep_term _ H _) (var_dep_term _ M _) _ Result
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  names Vars
-    ,  occurrences Vars A List
-    ,  reabstract_var_app_list List (var_dep_term _ H _) (var_dep_term _ M _) List'
-    ,  apply_args List' Result
-    .
-reabstract_term A (var_term _ H) (var_term _ M) _ Result
-    :- term_to_string A S, rex_match "x[0-9]+ .*" S
-    ,  names Vars
-    ,  occurrences Vars A List
-    ,  reabstract_var_app_list List (var_term _ H) (var_term _ M) List'
-    ,  apply_args List' Result
     .
 reabstract_term A _ _ _ A.
 
@@ -1198,3 +1196,343 @@ extract_collapsing_input Vars VarMap LibMap Term Term' Result
     ,  spy(extract_term NeedsExtraction Vars VarMap LibMap Term Result)
     ,  spy((NeedsExtraction = true, Term' = extractor_star), !; Term' = Term)
     .
+
+%% erase_var_app
+
+type erase_var_app A -> A -> prop.
+mode (erase_var_app i o).
+
+erase_var_app (# A B) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  Result = (A' B')
+    ,  !
+    .
+
+erase_var_app (and B C) Result
+    :- erase_var_app B B'
+    ,  erase_var_app C C'
+    ,  Result = (and B' C')
+    ,  !
+    .
+
+erase_var_app (pair_and B C BB CC) Result 
+    :- erase_var_app BB BB'
+    ,  erase_var_app CC CC'
+    ,  erase_var_app (and B C) (and B' C')
+    ,  Result = (pair_and B' C' BB' CC')
+    ,  !
+    .
+
+erase_var_app (p1_and Pair) Result
+    :- erase_var_app Pair Pair'
+    ,  Result = (p1_and Pair')
+    ,  !
+    .
+
+erase_var_app (p2_and Pair) Result
+    :- erase_var_app Pair Pair'
+    ,  Result = (p2_and Pair')
+    ,  !
+    .
+
+
+erase_var_app (exist B C) Result
+    :- erase_var_app B B'
+    ,  ((name C, C' = C)
+        , !; pi b\ locDecl b B => erase_var_app (C b) (C' b))
+    ,  Result = (exist B' C')
+    ,  !
+    .
+
+erase_var_app (pair_exist B C BB CC) Result 
+    :- erase_var_app BB BB'
+    ,  erase_var_app CC CC'
+    ,  erase_var_app (exist B C) (exist B' C')
+    ,  Result = (pair_exist B' C' BB' CC')
+    ,  !
+    .
+
+erase_var_app (elim_exist Pair M MM) Result
+    :- erase_var_app Pair Pair'
+    ,  isa Pair' (exist B C) @level
+    ,  erase_var_app M M'
+    ,  ((pi b\ locDecl b B => (name (MM b), MM' = MM))
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => erase_var_app (MM b c) (MM' b c))
+    ,  Result = (elim_exist Pair' M' MM')
+    ,  !
+    .
+
+
+erase_var_app (forall B C) Result
+    :- erase_var_app B B'
+    ,  ((name C, C' = C)
+        , !; pi b\ locDecl b B => erase_var_app (C b) (C' b))
+    ,  Result = (forall B' C')
+    ,  !
+    .
+
+erase_var_app (forall_lam B F) Result
+    :- erase_var_app B B'
+    ,  ((name F, F' = F)
+        , !; pi b\ locDecl b B => erase_var_app (F b) (F' b))
+    ,   Result = (forall_lam B' F')
+    ,  !
+    .
+
+erase_var_app (forall_app Lam X) Result
+    :- erase_var_app Lam Lam'
+    ,  erase_var_app X X'
+    ,  Result = (forall_app Lam' X')
+    ,  !
+    .
+
+
+erase_var_app (implies B C) Result
+    :- erase_var_app B B'
+    ,  erase_var_app C C'
+    ,  Result = (implies B' C')
+    ,  !
+    .
+
+erase_var_app (impl_lam B F) Result
+    :- erase_var_app B B'
+    ,  ((name F, F' = F)
+        , !; pi x\ locDecl x B => erase_var_app (F x) (F' x))
+    ,  Result = (impl_lam B' F')
+    ,  !
+    .
+
+erase_var_app (impl_app Lam X) Result
+    :- erase_var_app Lam Lam'
+    ,  erase_var_app X X'
+    ,  Result = (impl_app Lam' X')
+    ,  !
+    .
+
+
+erase_var_app (list C) Result
+    :- erase_var_app C C'
+    ,  Result = (list C')
+    ,  !
+    .
+
+erase_var_app (list_empty C) Result
+    :- erase_var_app C C'
+    ,  Result = (list_empty C')
+    ,  !
+    .
+
+erase_var_app (list_cons C Head Tail) Result
+    :- erase_var_app C C'
+    ,  erase_var_app Head Head'
+    ,  erase_var_app Tail Tail'
+    ,  Result = (list_cons C' Head' Tail')
+    ,  !
+    .
+
+erase_var_app (elim_list L List LA LL) Result
+    :- erase_var_app List List'
+    ,  isa List' (list C) @level
+    , ((name L, L' = L)
+        , !; pi z\ locDecl z (list C) => erase_var_app (L z) (L' z))
+    ,  erase_var_app LA LA'
+    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) => (name (LL y x), LL' = LL))
+        , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
+            erase_var_app (LL y x z) (LL' y x z))
+    ,  Result = (elim_list L' List' LA' LL')
+    ,  !
+    .
+
+
+erase_var_app (elim_singleton Star C CC) Result 
+    :- erase_var_app Star Star'
+    ,  ((name C, C' = C)
+        , !; pi s\ locDecl s singleton => erase_var_app (C s) (C' s))
+    ,  erase_var_app CC CC'
+    ,  Result = (elim_singleton Star' C' CC')
+    ,  !
+    .
+
+
+erase_var_app (or A B) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  Result = (or A' B')
+    ,  !
+    .
+
+erase_var_app (inl_or A B AA) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  erase_var_app AA AA'
+    ,  Result = (inl_or A' B' AA')
+    ,  !
+    .
+
+erase_var_app (inr_or A B BB) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  erase_var_app BB BB'
+    ,  Result = (inr_or A' B' BB')
+    ,  !
+    .
+
+erase_var_app (elim_or C W Cl Cr) Result
+    :- erase_var_app W W'
+    ,  erase_var_app C C'
+    ,  isa W' (or L R) @level
+    ,  ((name Cl, Cl' = Cl)
+        , !; pi l\ locDecl l L => erase_var_app (Cl l) (Cl' l))
+    ,  ((name Cr, Cr' = Cr)
+        , !; pi r\ locDecl r R => erase_var_app (Cr r) (Cr' r))
+    ,  Result = (elim_or C' W' Cl' Cr')
+    ,  !
+    .
+
+
+erase_var_app (propEq A AA1 AA2) Result
+    :- erase_var_app AA1 AA1'
+    ,  erase_var_app AA2 AA2'
+    ,  erase_var_app A A'
+    ,  Result = (propEq A' AA1' AA2')
+    ,  !
+    .
+
+erase_var_app (eq A AA) Result
+    :- erase_var_app AA AA'
+    ,  erase_var_app A A'
+    ,  Result = (eq A' AA')
+    ,  !
+    .
+
+
+erase_var_app (propId A AA1 AA2) Result
+    :- erase_var_app AA1 AA1'
+    ,  erase_var_app AA2 AA2'
+    ,  erase_var_app A A'
+    ,  Result = (propId A' AA1' AA2')
+    ,  !
+    .
+
+erase_var_app (id A AA) Result
+    :- erase_var_app AA AA'
+    ,  erase_var_app A A'
+    ,  Result = (id A' AA')
+    ,  !
+    .
+
+erase_var_app (elim_id P C CC) Result
+    :- erase_var_app P P'
+    ,  isa P (propId A _ _) int
+    ,  ((pi x\ locDecl x A => (name (C x), C' = C))
+        , !; pi x\ locDecl x A => pi y\ locDecl y A => erase_var_app (C x y) (C' x y))
+    ,  ((name CC, CC' = CC)
+        , !; pi x\ locDecl x A => erase_var_app (CC x) (CC' x))
+    ,  Result = (elim_id P' C' CC')
+    ,  !
+    .
+
+
+erase_var_app (setPi B C) Result
+    :- erase_var_app B B'
+    ,  ((name C, C' = C)
+        , !; pi b\ locDecl b B => erase_var_app (C b) (C' b))
+    ,  Result = (setPi B' C')
+    ,  !
+    .
+
+erase_var_app (lambda B F) Result
+    :- erase_var_app B B'
+    ,  ((name F, F' = F)
+        , !; pi b\ locDecl b B => erase_var_app (F b) (F' b))
+    ,  Result = (lambda B' F')
+    ,  !
+    .
+
+erase_var_app (app Lam X) Result
+    :- erase_var_app Lam Lam'
+    ,  erase_var_app X X'
+    ,  Result = (app Lam' X')
+    ,  !
+    .
+
+
+erase_var_app (setSigma B C) Result
+    :- erase_var_app B B'
+    ,  ((name C, C' = C)
+        , !; pi b\ locDecl b B => erase_var_app (C b) (C' b))
+    ,  Result = (setSigma B' C')
+    ,  !
+    .
+
+erase_var_app (pair B C BB CC) Result
+    :- erase_var_app BB BB'
+    ,  erase_var_app CC CC'
+    ,  erase_var_app (setSigma B C) (setSigma B' C')
+    ,  Result = (pair B' C' BB' CC') 
+    ,  !
+    .
+
+erase_var_app (p1 Pair) Result
+    :- erase_var_app Pair Pair'
+    ,  Result = (p1 Pair') 
+    ,  !
+    .
+
+erase_var_app (p2 Pair) Result
+    :- erase_var_app Pair Pair'
+    ,  Result = (p2 Pair')
+    ,  !
+    .
+
+erase_var_app (elim_setSigma Pair M MM) Result
+    :- erase_var_app Pair Pair'
+    ,  isa Pair' (setSigma B C) @level
+    ,  ((name M, M' = M)
+        , !; pi p\ locDecl p (setSigma B C) => erase_var_app (M p) (M' p))
+    ,  ((pi b\ locDecl b B => (name (MM b), MM' = MM))
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => erase_var_app (MM b c) (MM' b c))
+    ,  Result = (elim_setSigma Pair' M' MM')
+    ,  !
+    .
+
+
+erase_var_app (setSum A B) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  Result = (setSum A' B')
+    ,  !
+    .
+
+erase_var_app (inl A B AA) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  erase_var_app AA AA'
+    ,  Result = (inl A' B' AA')
+    ,  !
+    .
+
+erase_var_app (inr A B BB) Result
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  erase_var_app BB BB'
+    ,  Result = (inr A' B' BB')
+    ,  !
+    .
+
+erase_var_app (elim_setSum C W Cl Cr) Result
+    :- erase_var_app W W'
+    ,  isa W' (setSum L R) @level
+    ,  ((name C, C' = C)
+        , !; pi w\ locDecl w (setSum L R) => erase_var_app (C w) (C' w))
+    ,  ((name Cl, Cl' = Cl)
+        , !; pi l\ locDecl l L => erase_var_app (Cl l) (Cl' l))
+    ,  ((name Cr, Cr' = Cr)
+        , !; pi r\ locDecl r R => erase_var_app (Cr r) (Cr' r))
+    ,  Result = (elim_setSum C' W' Cl' Cr')
+    ,  !
+    .
+
+erase_var_app A A.
+
