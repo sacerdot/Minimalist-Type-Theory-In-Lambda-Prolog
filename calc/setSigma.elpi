@@ -42,7 +42,7 @@ of (elim_setSigma Pair M MM) (M Pair) IE
     .
 
 hstep (elim_setSigma Pair _M Mm) (Mm Bb Cc) 
-    :- hnf Pair (pair _B _C Bb Cc)
+    :- spy(hnf Pair (pair _B _C Bb Cc))
     .
 
 
@@ -243,7 +243,7 @@ new_interp_type (setSigma B C) O :-
    spy (macro_interp B (x\xi\_\_\ interp (C x) (Ci xi))),
    spy (new_interp_type B Bs),
    spy (new_interp_dep_type B C Cs),
-   O = setSigma_setoid Bi Ci Bs Cs.
+   O = (lib_app (lib_app (lib_app (lib_app setSigma_setoid Bi) Ci) Bs) Cs).
 
 new_interp_dep_type A (x \ setSigma (B x) (C x)) O :-
    spy (interp A Ai),

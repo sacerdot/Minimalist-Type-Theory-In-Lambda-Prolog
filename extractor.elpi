@@ -50,7 +50,7 @@ starify_nonset_ops_lib (univDepProp Bi F) LibMap Result
 
 starify_nonset_ops_lib (univPiT T F) LibMap Result
     :- starify_nonset_ops_type T LibMap T'
-    ,  pi x\ of x T int => starify_nonset_ops_lib (F x) LibMap (F' x)
+    ,  spy(pi x\ of x T int => starify_nonset_ops_lib (F x) LibMap (F' x))
     ,  spy(Result = (univPiT T' F')) 
     ,  !
     .
@@ -97,9 +97,42 @@ starify_nonset_ops_lib (cut H E) LibMap Result
     .
 
 
+conditional_fail Bool :- Bool = true.
+
+type not_occurs A -> B -> prop.
+not_occurs V T :- ((occurs V T, Result = false), !; Result = true), conditional_fail Result.
+
+type erase_absent_arg B -> C -> A -> B -> B -> prop.
+erase_absent_arg H' Arg A B Result
+    :- not_occurs Arg A
+    ,  not_occurs Arg B
+    ,  Result = H'
+    ,  !
+    .
+erase_absent_arg H' Arg _ _ (lib_app H' Arg).
+
+type erase_absent_args B -> A -> B -> B -> prop.
+erase_absent_args (lib_app H Arg) A B Result
+    :- erase_absent_args H A B H'
+    ,  erase_absent_arg H' Arg A B Result
+    ,  !
+    .
+erase_absent_args H _ _ H.
+
+%% N -> K  ==>  K
+collapse_lib (univPi F) Result _ _ _ false []
+    :- pi Bi\ ofType Bi set int => (not_occurs Bi (F Bi), Result = (F Bi))
+    ,  !
+    .
 extract_set_ops_lib (univPi F) Result Vars VarMap LibMap [TakeArg|ArgMask] SetList
     :- spy(pi Bi\ ofType Bi set int => extract_set_ops_lib (F Bi) (F' Bi) [(var_type Bi _)|Vars] VarMap LibMap ArgMask SetList)
     ,  spy(collapse_lib (univPi F') Result Vars VarMap LibMap TakeArg [])
+    ,  !
+    .
+
+%% N -> K  ==>  K
+collapse_lib (univCol F) Result _ _ _ false []
+    :- pi Bi\ ofType Bi col int => (not_occurs Bi (F Bi), Result = (F Bi))
     ,  !
     .
 extract_set_ops_lib (univCol F) Result Vars VarMap LibMap [TakeArg|ArgMask] SetList
@@ -120,6 +153,13 @@ extract_set_ops_lib (univProp F) Result Vars VarMap LibMap [TakeArg|ArgMask] Set
     ,  !
     .
 
+
+%% N -> K  ==>  K
+collapse_lib (univDepPi Bi F) Result _ _ _ false []
+    :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => (not_occurs Ci (F Ci), Result = (F Ci))
+    ,  !
+    .
 extract_set_ops_lib (univDepPi Bi F) Result Vars VarMap LibMap [TakeArg|ArgMask] SetList
     :- spy(extract_set_ops_type Bi Bi' Vars VarMap LibMap BiList)
     ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
@@ -129,6 +169,13 @@ extract_set_ops_lib (univDepPi Bi F) Result Vars VarMap LibMap [TakeArg|ArgMask]
                 extract_set_ops_lib (F Ci) (F' Ei) [(var_dep_type Ei _ y)|[(var_dep_type Ci _ x)|Vars]] (var_chain Ci Ei (var_chain x y VarMap)) LibMap ArgMask FList)
     ,  spy(concat [FList, BiList] SetList)
     ,  spy(collapse_lib (univDepPi Bi' F') Result Vars VarMap LibMap TakeArg [])
+    ,  !
+    .
+
+%% N -> K  ==>  K
+collapse_lib (univDepCol Bi F) Result _ _ _ false []
+    :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => (not_occurs Ci (F Ci), Result = (F Ci))
     ,  !
     .
 extract_set_ops_lib (univDepCol Bi F) Result Vars VarMap LibMap [TakeArg|ArgMask] SetList
@@ -166,6 +213,11 @@ collapse_lib (univPiT T F) Result Vars VarMap LibMap false SetList
     ,  spy(extract_set_ops_lib (F extractor_star) Result Vars VarMap LibMap _ArgMask SetList)
     ,  !
     .
+%% N -> K  ==>  K
+collapse_lib (univPiT T F) Result _ _ _ false []
+    :- pi x\ of x T int => (not_occurs x (F x), Result = (F x))
+    ,  !
+    .
 extract_set_ops_lib (univPiT T F) Result Vars VarMap LibMap [TakeArg|ArgMask] SetList
     :- spy(extract_set_ops_type T T' Vars VarMap LibMap TList)
     ,  spy(pi x\ of x T int => pi y\ of y T' int => extract_set_ops_lib (F x) (F' y) [(var_term _ y)|[(var_term _ x)|Vars]] (var_chain x y VarMap) LibMap ArgMask FList)
@@ -178,6 +230,13 @@ extract_set_ops_lib (univPiT T F) Result Vars VarMap LibMap [TakeArg|ArgMask] Se
 collapse_lib (univDepPiT _Ai Bi F) Result Vars VarMap LibMap false SetList
     :- conv Bi (_\extractor_singleton)
     ,  spy(extract_set_ops_lib (F (_\extractor_star)) Result Vars VarMap LibMap _ArgMask SetList)
+    ,  !
+    .
+%% N -> K  ==>  K
+collapse_lib (univDepPiT Ai Bi F) Result _ _ _ false []
+    :- pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+        (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
+            (pi x\ of (t x) (Bi x) int :- of x Ai int) => (not_occurs t (F t), Result = (F t))
     ,  !
     .
 extract_set_ops_lib (univDepPiT Ai Bi F) Result Vars VarMap LibMap [TakeArg|ArgMask] SetList
@@ -196,12 +255,26 @@ extract_set_ops_lib (univDepPiT Ai Bi F) Result Vars VarMap LibMap [TakeArg|ArgM
     ,  !
     .
 
+
+% elimina argomenti inutilizzati
+collapse_lib (locDefL N TY TE) Result _ _ _ true []
+    :- spy(erase_absent_args N TY TE N')
+    ,  Result = (locDefL N' TY TE)
+    ,  !
+    .
 extract_set_ops_lib (locDefL N TY TE) Result Vars VarMap LibMap [] SetList
     :- spy(extract_set_ops_lib_def N N' Vars VarMap LibMap [])
     ,  spy(extract_set_ops_type TY TY' Vars VarMap LibMap TYList)
     ,  spy(extract_set_ops TE TE' Vars VarMap LibMap TEList)
     ,  spy(concat [TEList, TYList] SetList)
     ,  spy(collapse_lib (locDefL N' TY' TE') Result Vars VarMap LibMap true [])
+    ,  !
+    .
+
+% elimina argomenti inutilizzati
+collapse_lib (locTypeDefL N KIND TY) Result _ _ _ true []
+    :- spy(erase_absent_args N KIND TY N')
+    ,  Result = (locTypeDefL N' KIND TY)
     ,  !
     .
 extract_set_ops_lib (locTypeDefL N _KIND TY) Result Vars VarMap LibMap [] SetList
@@ -211,45 +284,27 @@ extract_set_ops_lib (locTypeDefL N _KIND TY) Result Vars VarMap LibMap [] SetLis
     ,  spy(collapse_lib (locTypeDefL N' KIND' TY') Result Vars VarMap LibMap true [])
     ,  !
     .
+
+
 extract_set_ops_lib (hyp _H1 _H2 E) Result Vars VarMap LibMap ArgMask SetList
     :- extract_set_ops_lib E E' Vars VarMap LibMap ArgMask SetList
     ,  spy(Result = E') 
     ,  !
     .
+
 extract_set_ops_lib (cut _H E) Result Vars VarMap LibMap ArgMask SetList
     :- extract_set_ops_lib E E' Vars VarMap LibMap ArgMask SetList
     ,  spy(Result = E') 
     ,  !
     .
 
+
 %% Base cases definition for extraction
-
-%type occurrences list any -> any -> list any -> prop.
-%
-%occurrences [H|TL] N Result
-%    :- occurrences TL N TL'
-%    ,  ((occurs H N, H' = [H]), !; H' = [])
-%    ,  concat [H',TL'] Result
-%    .
-%occurrences [] _N [].
-
 
 type var_term     any -> any -> mttTerm.
 type var_type     any -> any -> mttTerm.
 type var_dep_term any -> any -> any -> mttTerm.
 type var_dep_type any -> any -> any -> mttTerm.
-
-%type wrapped_occurrences list mttTerm -> any -> list mttTerm -> prop.
-%wrapped_occurs (var_type H _) N H' :- ((occurs H N, H' = [(var_type H _)]), !; H' = []).
-%wrapped_occurs (var_term _ H) N H' :- ((occurs H N, H' = [(var_term _ H)]), !; H' = []).
-%wrapped_occurs (var_dep_type H _ A) N H' :- ((occurs H N, H' = [(var_dep_type H _ A)]), !; H' = []).
-%wrapped_occurs (var_dep_term _ H A) N H' :- ((occurs H N, H' = [(var_dep_term _ H A)]), !; H' = []).
-%wrapped_occurrences [H|TL] N Result
-%    :- wrapped_occurrences TL N TL'
-%    ,  wrapped_occurs H N H'
-%    ,  concat [H',TL'] Result
-%    .
-%wrapped_occurrences [] _N [].
 
 
 type get_call_name any -> any -> prop.
@@ -500,31 +555,6 @@ type map_var_group libGroup -> B -> (A -> A -> Chain) -> B -> prop.
 map_var_group Group A VarMap A'
     :- ((Group = lib_source, A' = A), !; Group = lib_dest, map_var A VarMap A')
     .
-
-%type map_var_app_var_chain list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
-%map_var_app_var_chain [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
-%    :- map_var H VarMap H'
-%    ,  map_var_app_var_chain TL VarMap TL'
-%    .
-%map_var_app_var_chain [(var_term _ H)] VarMap [(var_term _ H')]
-%    :- map_var H VarMap H'
-%    .
-%
-%type map_var_app_var_chain_group libGroup -> list mttTerm -> (A -> A -> Chain) -> list mttTerm -> prop.
-%map_var_app_var_chain_group Group [(var_dep_term _ H _)|TL] VarMap [(var_dep_term _ H' _)|TL']
-%    :- map_var_group Group H VarMap H'
-%    ,  map_var_app_var_chain_group Group TL VarMap TL'
-%    .
-%map_var_app_var_chain_group Group [(var_term _ H)] VarMap [(var_term _ H')]
-%    :- map_var_group Group H VarMap H'
-%    .
-%
-%apply_var_args [(var_dep_term _ H _)|TL] (# H TL') :- apply_var_args TL TL'.
-%apply_var_args [(var_term _ H)] H.
-%
-%type apply_args list any -> mttTerm -> prop.
-%apply_args [H] H :- !.
-%apply_args [H|TL] (# H TL') :- apply_args TL TL'.
 
 
 filter_args [ArgHead|ArgTail] [true|MaskTail] [ArgHead|ArgTail'] :- filter_args ArgTail MaskTail ArgTail'.
@@ -808,11 +838,6 @@ get_call_signature (cut _ E) E' :- get_call_signature E E'.
 get_call_signature (locTypeDefL N _ _) (locTypeDefL N _ _).
 get_call_signature (locDefL N _ _) (locDefL N _ _).
 
-%% Typing extensions to type extractor terms
-
-of (encode T) extractor_singleton IE :- ofType T props IE.
-ofType (decode T) props IE :- of T extractor_singleton IE.
-
 %% Extraction of terms that goes into star
 
 is_informative set true.
@@ -1019,18 +1044,6 @@ reabstract_term (# X Y) H M LibMap Result
     ,  reabstract_term Y H M LibMap Y'
     ,  Result = (# X' Y')
     .
-
-%reabstract_var_app_list [H|TL] (var_dep_term _ H _) (var_dep_term _ M _) [M|TL] :- !.
-%reabstract_var_app_list [H'|TL] (var_dep_term _ H _) (var_dep_term _ M _) [H'|TL']
-%    :- reabstract_var_app_list TL (var_dep_term _ H _) (var_dep_term _ M _) TL'
-%    .
-%reabstract_var_app_list [] _ _ [] :- !.
-%
-%reabstract_var_app_list [H] (var_term _ H) (var_term _ M) [M] :- !.
-%reabstract_var_app_list [H'|TL] (var_term _ H) (var_term _ M) [H'|TL']
-%    :- reabstract_var_app_list TL (var_term _ H) (var_term _ M) TL'
-%    .
-%reabstract_var_app_list [] _ _ [] :- !.
 
 reabstract_type A (var_type H _) (var_type M _) _ M
     :- name A

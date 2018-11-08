@@ -43,7 +43,7 @@ of (# A B) Type IE :- of (A B) Type IE.
 ofType (# A B) Kind IE :- ofType (A B) Kind IE.
 
 %% conversion to (weak) head-normal form WHNF
-hnf A B :- (hstep A C), !, (hnf C B).
+hnf A B :- spy(hstep A C), !, spy(hnf C B).
 hnf A A.
 
 %dstep A B :- spy(hstep A B).
@@ -55,7 +55,7 @@ hnf A A.
 conv A A :- ! .
 conv A B :- (locDecl _ (propEq _ A B) ), !.
 conv A B :- (locDecl _ (propEq _ B A) ), !.
-conv A B :- (hnf A A'), (hnf B B'), spy(dconv A' B').
+conv A B :- spy(hnf A A'), spy(hnf B B'), spy(dconv A' B').
 
 %conv A B :- spy(hnf A A'), spy( hnf B B'), spy(locDecl _ (propEq _ A1 B1)), spy(hnf A1 A2), spy(hnf B1 B2), spy((A' = A2, B' = B2) ; (A' = B2 , B' = A2)). 
 
@@ -657,6 +657,12 @@ type extractor_star mttTerm.
 
 ofType extractor_singleton props @level.
 of extractor_star extractor_singleton @level.
+
+%% Typing extensions to type extractor terms
+
 dconv propS extractor_singleton.
 dconv extractor_singleton propS.
+%of (encode T) extractor_singleton IE :- makeline, ofType T props IE.
+%ofType (decode T) props IE :- makeline, of T extractor_singleton IE.
+
 
