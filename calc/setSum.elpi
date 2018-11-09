@@ -68,64 +68,67 @@ dconv (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops_type (setSum A B) LibMap Result
-    :- starify_nonset_ops_type A LibMap A'
-    ,  starify_nonset_ops_type B LibMap B'
+%% Starification
+
+starify_type (setSum A B) LibMap Result
+    :- starify_type A LibMap A'
+    ,  starify_type B LibMap B'
     ,  Result = (setSum A' B')
     ,  !
     .
 
-starify_nonset_ops (inl A B AA) LibMap Result
-    :- starify_nonset_ops_type A LibMap A'
-    ,  starify_nonset_ops_type B LibMap B'
-    ,  starify_nonset_ops AA LibMap AA'
+starify_term (inl A B AA) LibMap Result
+    :- starify_type A LibMap A'
+    ,  starify_type B LibMap B'
+    ,  starify_term AA LibMap AA'
     ,  Result = (inl A' B' AA')
     ,  !
     .
 
-starify_nonset_ops (inr A B BB) LibMap Result
-    :- starify_nonset_ops_type A LibMap A'
-    ,  starify_nonset_ops_type B LibMap B'
-    ,  starify_nonset_ops BB LibMap BB'
+starify_term (inr A B BB) LibMap Result
+    :- starify_type A LibMap A'
+    ,  starify_type B LibMap B'
+    ,  starify_term BB LibMap BB'
     ,  Result = (inr A' B' BB')
     ,  !
     .
 
-starify_nonset_ops (elim_setSum C W Cl Cr) LibMap Result
-    :- starify_nonset_ops W LibMap W'
+starify_term (elim_setSum C W Cl Cr) LibMap Result
+    :- starify_term W LibMap W'
     ,  isa W (setSum L R) @level
     ,  ((name C, C' = C)
-        , !; pi w\ locDecl w (setSum L R) => starify_nonset_ops_type (C w) LibMap (C' w))
+        , !; pi w\ locDecl w (setSum L R) => starify_type (C w) LibMap (C' w))
     ,  ((name Cl, Cl' = Cl)
-        , !; pi l\ locDecl l L => starify_nonset_ops (Cl l) LibMap (Cl' l))
+        , !; pi l\ locDecl l L => starify_term (Cl l) LibMap (Cl' l))
     ,  ((name Cr, Cr' = Cr)
-        , !; pi r\ locDecl r R => starify_nonset_ops (Cr r) LibMap (Cr' r))
+        , !; pi r\ locDecl r R => starify_term (Cr r) LibMap (Cr' r))
     ,  Result = (elim_setSum C' W' Cl' Cr')
     ,  !
     .
 
+%% Extraction
 
-extract_set_ops_type (setSum A B) Result Vars VarMap LibMap SetList
-    :- extract_set_ops_type A A' Vars VarMap LibMap AList
-    ,  extract_set_ops_type B B' Vars VarMap LibMap BList
+extract_type (setSum A B) Result Vars VarMap LibMap SetList
+    :- extract_type A A' Vars VarMap LibMap AList
+    ,  extract_type B B' Vars VarMap LibMap BList
     ,  concat [BList, AList] SetList
     ,  collapse_type (setSum A' B') Result Vars VarMap LibMap []
     ,  !
     .
 
-extract_set_ops (inl A B AA) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops AA AA' Vars VarMap LibMap AAList)
-    ,  spy(extract_set_ops_type A A' Vars VarMap LibMap AList)
-    ,  spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+extract_term (inl A B AA) Result Vars VarMap LibMap SetList
+    :- spy(extract_term AA AA' Vars VarMap LibMap AAList)
+    ,  spy(extract_type A A' Vars VarMap LibMap AList)
+    ,  spy(extract_type B B' Vars VarMap LibMap BList)
     ,  concat [AAList, BList, AList] SetList
     ,  spy(collapse_term (inl A' B' AA') Result Vars VarMap LibMap [])
     ,  !
     .
 
-extract_set_ops (inr A B BB) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops BB BB' Vars VarMap LibMap BBList)
-    ,  spy(extract_set_ops_type A A' Vars VarMap LibMap AList)
-    ,  spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+extract_term (inr A B BB) Result Vars VarMap LibMap SetList
+    :- spy(extract_term BB BB' Vars VarMap LibMap BBList)
+    ,  spy(extract_type A A' Vars VarMap LibMap AList)
+    ,  spy(extract_type B B' Vars VarMap LibMap BList)
     ,  concat [BBList, BList, AList] SetList
     ,  spy(collapse_term (inr A' B' BB') Result Vars VarMap LibMap [])
     ,  !
@@ -142,7 +145,7 @@ collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _Vars _VarMap _LibMap []
 %% (1 + B') -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result Vars VarMap LibMap []
     :- conv A extractor_singleton
-    ,  extract_set_ops (Cl extractor_star) Result Vars VarMap LibMap []
+    ,  extract_term (Cl extractor_star) Result Vars VarMap LibMap []
     ,  !
     .
 
@@ -157,7 +160,7 @@ collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _Vars _VarMap _LibMap []
 %% (B' + 1) -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result Vars VarMap LibMap []
     :- conv B extractor_singleton
-    ,  extract_set_ops (Cr extractor_star) Result Vars VarMap LibMap []
+    ,  extract_term (Cr extractor_star) Result Vars VarMap LibMap []
     ,  !
     .
 
@@ -177,13 +180,13 @@ collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result _Vars _VarMap _LibMa
 
 %% (N + B') -> N  ==>  N -> N  (se passato direttamente)
 collapse_term (elim_setSum _C (inl A _B AA) Cl _Cr) Result Vars VarMap LibMap ElimList
-    :- extract_set_ops (app (lambda A Cl) AA) Result Vars VarMap LibMap ElimList
+    :- extract_term (app (lambda A Cl) AA) Result Vars VarMap LibMap ElimList
     ,  !
     .
 
 %% (B' + N) -> N  ==>  N -> N  (se passato direttamente)
 collapse_term (elim_setSum _C (inr _A B BB) _Cl Cr) Result Vars VarMap LibMap ElimList
-    :- extract_set_ops (app (lambda B Cr) BB) Result Vars VarMap LibMap ElimList
+    :- extract_term (app (lambda B Cr) BB) Result Vars VarMap LibMap ElimList
     ,  !
     .
 
@@ -196,19 +199,100 @@ collapse_term (elim_setSum _C W Cl Cr) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops (elim_setSum C W Cl Cr) Result Vars VarMap LibMap SetList
-    :- extract_set_ops W W' Vars VarMap LibMap WList
+extract_term (elim_setSum C W Cl Cr) Result Vars VarMap LibMap SetList
+    :- extract_term W W' Vars VarMap LibMap WList
     ,  isa W (setSum L R) @level
     ,  isa W' (setSum L' R') @level
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; pi w\ locDecl w (setSum L R) => pi m\ locDecl m (setSum L' R') =>
-            extract_set_ops_type (C w) (C' m) [(var_term _ m)|[(var_term _ w)|Vars]] (var_chain w m VarMap) LibMap CList)
+            extract_type (C w) (C' m) [(var_term _ m)|[(var_term _ w)|Vars]] [(var_mapping w m)|VarMap] LibMap CList)
     ,  ((name Cl, map_var Cl VarMap Cl', ClList = [])
-        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_set_ops (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] (var_chain l i VarMap) LibMap ClList)
+        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_term (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] [(var_mapping l i)|VarMap] LibMap ClList)
     ,  ((name Cr, map_var Cr VarMap Cr', CrList = [])
-        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_set_ops (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] (var_chain r f VarMap) LibMap CrList)
+        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_term (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] [(var_mapping r f)|VarMap] LibMap CrList)
     ,  spy(collapse_term (elim_setSum C' W' Cl' Cr') Result Vars VarMap LibMap ElimList)
     ,  spy(concat [ElimList, CrList, ClList, CList, WList] SetList)
     ,  !
     .
+
+%% Translation
+
+translate_setSum_to ocaml A' B' Result
+    :- Result is "(" ^ A' ^ ", " ^ B' ^ ") set_sum"
+    ,  !
+    .
+translate_setSum_to haskell A' B' Result
+    :- Result is "SetSum (" ^ A' ^ ") (" ^ B' ^ ")"
+    ,  !
+    .
+
+translate_type (setSum A B) LibMap Result
+    :- translate_type A LibMap A'
+    ,  translate_type B LibMap B'
+    ,  translate_setSum_to @language A' B' Result
+    ,  !
+    .
+
+
+translate_inl_to ocaml AA' Result
+    :- Result is "(Inl " ^ AA' ^ ")"
+    ,  !
+    .
+translate_inl_to haskell AA' Result
+    :- Result is "(Inl " ^ AA' ^ ")"
+    ,  !
+    .
+
+translate_term (inl _A _B AA) LibMap Result
+    :- translate_term AA LibMap AA'
+    ,  translate_inl_to @language AA' Result
+    ,  !
+    .
+
+
+translate_inr_to ocaml BB' Result
+    :- Result is "(Inr " ^ BB' ^ ")"
+    ,  !
+    .
+translate_inr_to haskell BB' Result
+    :- Result is "(Inr " ^ BB' ^ ")"
+    ,  !
+    .
+
+translate_term (inr _A _B BB) LibMap Result
+    :- translate_term BB LibMap BB'
+    ,  translate_inr_to @language BB' Result
+    ,  !
+    .
+
+translate_elim_setSum_abs_to ocaml SCx Sx Result
+    :- Result is "(fun " ^ Sx ^ " -> " ^ SCx ^ ")"
+    ,  !
+    .
+translate_elim_setSum_abs_to haskell SCx Sx Result
+    :- Result is "(\\" ^ Sx ^ " -> " ^ SCx ^ ")"
+    ,  !
+    .
+translate_elim_setSum_to ocaml W' Cl' Cr' Result
+    :- Result is "(match " ^ W' ^ " with | Inl inl -> " ^ Cl' ^ " inl | Inr inr -> " ^ Cr' ^ " inr)"
+    ,  !
+    .
+translate_elim_setSum_to haskell W' Cl' Cr' Result
+    :- Result is "(case " ^ W' ^ " of {Inl inl -> " ^ Cl' ^ " inl; Inr inr -> " ^ Cr' ^ " inr})"
+    ,  !
+    .
+
+translate_term (elim_setSum _C W Cl Cr) LibMap Result
+    :- translate_term W LibMap W'
+    ,  isa W (setSum L R) @level
+    ,  ((name Cl, term_to_string Cl Cl')
+        , !; pi l\ locDecl l L => (translate_term (Cl l) LibMap SCl, translate_term l LibMap Sl)
+            , translate_elim_setSum_abs_to @language SCl Sl Cl')
+    ,  ((name Cr, term_to_string Cr Cr')
+        , !; pi r\ locDecl r R => (translate_term (Cr r) LibMap SCr, translate_term r LibMap Sr)
+            , translate_elim_setSum_abs_to @language SCr Sr Cr')
+    ,  translate_elim_setSum_to @language W' Cl' Cr' Result
+    ,  !
+    .
+
 

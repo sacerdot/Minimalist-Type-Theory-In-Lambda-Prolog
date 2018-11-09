@@ -506,49 +506,49 @@ of pse_a pse_t ext.
 
 typecheckExtr X Type :- testExtr X Result, debug => spy(of Result Type int).
 
-testStEx X A :- testExtr X Term, debug => spy(extract_set_ops Term Result [] (var_chain_end _ _ _) [] SetList), concat [[Result], SetList] A.
+testStEx X A :- testExtr X Term, debug => spy(extract_term Term Result [] [] [] SetList), concat [[Result], SetList] A.
 typecheckStExList [SH|STL] [RH|RTL] :- of SH RH int, typecheckStExList STL RTL, !.
 typecheckStExList [] [].
 typecheckStEx X Type :- testStEx X Result, debug => typecheckStExList Result Type.
 
-testExtr 1 A :- debug => starify_nonset_ops (id (propId bool_t true_bool true_bool) (id bool_t true_bool)) [] A.
-testExtr 2 A :- debug => starify_nonset_ops (id (propId singleton star star) (id singleton star)) [] A.
-testExtr 3 A :- debug => starify_nonset_ops (app (lambda bool_t x\x) true_bool) [] A.
-testExtr 4 A :- debug => starify_nonset_ops (pair bool_t (_\bool_t) false_bool true_bool) [] A.
-testExtr 5 A :- debug => starify_nonset_ops (pair singleton (_\singleton) star star) [] A.
-testExtr 6 A :- debug => starify_nonset_ops (pair bool_t (x\propId bool_t x x) true_bool (id bool_t true_bool)) [] A.
-testExtr 7 A :- debug => starify_nonset_ops (pair singleton (x\propId singleton x x) star (id singleton star)) [] A.
-testExtr 8 A :- debug => starify_nonset_ops (app (lambda singleton x\x) star) [] A.
-testExtr 9 A :- debug => starify_nonset_ops (app (lambda singleton (x\ id singleton x)) star) [] A.
-testExtr 10 A :- debug => starify_nonset_ops (app (lambda bool_t (x\ id bool_t x)) true_bool) [] A.
-testExtr 11 A :- debug => starify_nonset_ops (elim_id (id singleton star) (x\ y\ propId singleton x y) (x\ id singleton x)) [] A.
-testExtr 12 A :- debug => starify_nonset_ops (elim_id (id bool_t true_bool) (x\ y\ propId bool_t x y) (x\ id bool_t x)) [] A.
-testExtr 13 A :- debug => starify_nonset_ops (elim_id (id bool_t true_bool) (x\ y\ implies bool_t bool_t) (x\ impl_lam bool_t (_\x))) [] A.
-testExtr 14 A :- debug => starify_nonset_ops (elim_singleton star (x\ singleton) star) [] A.
-testExtr 15 A :- debug => starify_nonset_ops (p1 (pair singleton (x\ bool_t) star bool_e)) [] A.
-testExtr 16 A :- debug => starify_nonset_ops (p2 (pair bool_t (x\ singleton) bool_e star)) [] A.
-testExtr 17 A :- debug => starify_nonset_ops (elim_setSum (x\setSum singleton bool_t) (inl singleton bool_t star) (l\ inl singleton bool_t l) (r\ inr singleton bool_t r)) [] A.
-testExtr 18 A :- debug => starify_nonset_ops (elim_setSum (x\setSum bool_t bool_t) (inl bool_t bool_t true_bool) (l\ inl bool_t bool_t l) (r\ inr bool_t bool_t r)) [] A.
-testExtr 19 A :- debug => starify_nonset_ops (elim_setSum (x\setSum singleton singleton) (inl singleton singleton star) (l\ inl singleton singleton l) (r\ inr singleton singleton r)) [] A.
-testExtr 20 A :- debug => starify_nonset_ops (elim_setSum (x\setSum singleton (implies bool_t bool_t)) (inl singleton (implies bool_t bool_t) star) (l\ inl singleton (implies bool_t bool_t) l) (r\ inr singleton (implies bool_t bool_t) r)) [] A.
-testExtr 21 A :- debug => starify_nonset_ops
+testExtr 1 A :- debug => starify_term (id (propId bool_t true_bool true_bool) (id bool_t true_bool)) [] A.
+testExtr 2 A :- debug => starify_term (id (propId singleton star star) (id singleton star)) [] A.
+testExtr 3 A :- debug => starify_term (app (lambda bool_t x\x) true_bool) [] A.
+testExtr 4 A :- debug => starify_term (pair bool_t (_\bool_t) false_bool true_bool) [] A.
+testExtr 5 A :- debug => starify_term (pair singleton (_\singleton) star star) [] A.
+testExtr 6 A :- debug => starify_term (pair bool_t (x\propId bool_t x x) true_bool (id bool_t true_bool)) [] A.
+testExtr 7 A :- debug => starify_term (pair singleton (x\propId singleton x x) star (id singleton star)) [] A.
+testExtr 8 A :- debug => starify_term (app (lambda singleton x\x) star) [] A.
+testExtr 9 A :- debug => starify_term (app (lambda singleton (x\ id singleton x)) star) [] A.
+testExtr 10 A :- debug => starify_term (app (lambda bool_t (x\ id bool_t x)) true_bool) [] A.
+testExtr 11 A :- debug => starify_term (elim_id (id singleton star) (x\ y\ propId singleton x y) (x\ id singleton x)) [] A.
+testExtr 12 A :- debug => starify_term (elim_id (id bool_t true_bool) (x\ y\ propId bool_t x y) (x\ id bool_t x)) [] A.
+testExtr 13 A :- debug => starify_term (elim_id (id bool_t true_bool) (x\ y\ implies bool_t bool_t) (x\ impl_lam bool_t (_\x))) [] A.
+testExtr 14 A :- debug => starify_term (elim_singleton star (x\ singleton) star) [] A.
+testExtr 15 A :- debug => starify_term (p1 (pair singleton (x\ bool_t) star bool_e)) [] A.
+testExtr 16 A :- debug => starify_term (p2 (pair bool_t (x\ singleton) bool_e star)) [] A.
+testExtr 17 A :- debug => starify_term (elim_setSum (x\setSum singleton bool_t) (inl singleton bool_t star) (l\ inl singleton bool_t l) (r\ inr singleton bool_t r)) [] A.
+testExtr 18 A :- debug => starify_term (elim_setSum (x\setSum bool_t bool_t) (inl bool_t bool_t true_bool) (l\ inl bool_t bool_t l) (r\ inr bool_t bool_t r)) [] A.
+testExtr 19 A :- debug => starify_term (elim_setSum (x\setSum singleton singleton) (inl singleton singleton star) (l\ inl singleton singleton l) (r\ inr singleton singleton r)) [] A.
+testExtr 20 A :- debug => starify_term (elim_setSum (x\setSum singleton (implies bool_t bool_t)) (inl singleton (implies bool_t bool_t) star) (l\ inl singleton (implies bool_t bool_t) l) (r\ inr singleton (implies bool_t bool_t) r)) [] A.
+testExtr 21 A :- debug => starify_term
 (
 	elim_setSum (x\ propId (setSum singleton bool_t) x x) (inl singleton bool_t star)
 		(l\ id (setSum singleton bool_t) (inl singleton bool_t l))
 		(r\ id (setSum singleton bool_t) (inr singleton bool_t r))
 ) [] A.
-testExtr 22 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\bool_t) star bool_e) (x\singleton) (l\r\ l)) [] A.
-testExtr 23 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\bool_t) star true_bool) (x\bool_t) (l\r\ r)) [] A.
-testExtr 24 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\bool_t) star true_bool) (x\singleton) (l\r\ l)) [] A.
-testExtr 25 A :- debug => starify_nonset_ops (elim_setSigma (pair bool_t (_\bool_t) true_bool bool_e) (x\bool_t) (l\r\ l)) [] A.
-testExtr 26 A :- debug => starify_nonset_ops (pair singleton (x\propId bool_t true_bool true_bool) star (id bool_t true_bool)) [] A.
-testExtr 27 A :- debug => starify_nonset_ops (app
+testExtr 22 A :- debug => starify_term (elim_setSigma (pair singleton (_\bool_t) star bool_e) (x\singleton) (l\r\ l)) [] A.
+testExtr 23 A :- debug => starify_term (elim_setSigma (pair singleton (_\bool_t) star true_bool) (x\bool_t) (l\r\ r)) [] A.
+testExtr 24 A :- debug => starify_term (elim_setSigma (pair singleton (_\bool_t) star true_bool) (x\singleton) (l\r\ l)) [] A.
+testExtr 25 A :- debug => starify_term (elim_setSigma (pair bool_t (_\bool_t) true_bool bool_e) (x\bool_t) (l\r\ l)) [] A.
+testExtr 26 A :- debug => starify_term (pair singleton (x\propId bool_t true_bool true_bool) star (id bool_t true_bool)) [] A.
+testExtr 27 A :- debug => starify_term (app
     (lambda
         (setSigma (propId bool_t true_bool true_bool) (_\singleton))
         (x\ id (setSigma (propId bool_t true_bool true_bool) (_\singleton)) x))
     (pair (propId bool_t true_bool true_bool) (_\singleton) (id bool_t true_bool) star)
 ) [] A.
-testExtr 28 A :- debug => starify_nonset_ops (app
+testExtr 28 A :- debug => starify_term (app
     (lambda
         (setSigma (setSigma bool_t (_\bool_t)) (_\singleton))
         (x\ id (setSigma (setSigma bool_t (_\bool_t)) (_\singleton)) x))
@@ -556,20 +556,20 @@ testExtr 28 A :- debug => starify_nonset_ops (app
         (pair bool_t (_\bool_t) true_bool false_bool)
         star)
 ) [] A.
-testExtr 29 A :- debug => starify_nonset_ops (app
+testExtr 29 A :- debug => starify_term (app
 	(lambda (setSigma singleton (_\setSigma bool_t (_\bool_t)))
 		(x\ id (setSigma singleton (_\setSigma bool_t (_\bool_t))) x)
 	)
 	(pair singleton (_\setSigma bool_t (_\bool_t))
 		star (pair bool_t (_\bool_t) true_bool false_bool))
 ) [] A.
-testExtr 30 A :- debug => starify_nonset_ops (app
+testExtr 30 A :- debug => starify_term (app
 	(lambda (setSigma singleton (_\bool_t))
 		(x\ id (setSigma singleton (_\bool_t)) x)
 	)
 	(pair singleton (_\bool_t) star bool_e)
 ) [] A.
-testExtr 31 A :- debug => starify_nonset_ops
+testExtr 31 A :- debug => starify_term
 (app
 	(lambda (setSigma bool_t (_\setSigma singleton (_\bool_t)))
 		(x\ id (setSigma bool_t (_\setSigma singleton (_\bool_t))) x)
@@ -577,7 +577,7 @@ testExtr 31 A :- debug => starify_nonset_ops
 	(pair bool_t (_\setSigma singleton (_\bool_t))
 		true_bool (pair singleton (_\bool_t) star bool_e))
 ) [] A.
-testExtr 32 A :- debug => starify_nonset_ops
+testExtr 32 A :- debug => starify_term
 (app
 	(lambda (setSigma singleton (_\setSigma bool_t (_\col_t)))
 		(x\ id (setSigma singleton (_\setSigma bool_t (_\col_t))) x)
@@ -585,7 +585,7 @@ testExtr 32 A :- debug => starify_nonset_ops
 	(pair singleton (_\setSigma bool_t (_\col_t))
 		star (pair bool_t (_\col_t) true_bool col_e))
 ) [] A.
-testExtr 33 A :- debug => starify_nonset_ops
+testExtr 33 A :- debug => starify_term
 (app
 	(lambda (setSigma singleton (_\setSigma singleton (_\bool_t)))
 		(x\ id (setSigma singleton (_\setSigma singleton (_\bool_t))) x)
@@ -593,7 +593,7 @@ testExtr 33 A :- debug => starify_nonset_ops
 	(pair singleton (_\setSigma singleton (_\bool_t))
 		star (pair singleton (_\bool_t) star bool_e))
 ) [] A.
-testExtr 34 A :- debug => starify_nonset_ops
+testExtr 34 A :- debug => starify_term
 (app
 	(p1 (pair 
 		(setPi (setSigma singleton (_\bool_t)) (x\setSigma singleton (_\bool_t)))
@@ -603,7 +603,7 @@ testExtr 34 A :- debug => starify_nonset_ops
 	))
 	(pair singleton (_\bool_t) star bool_e)
 ) [] A.
-testExtr 35 A :- debug => starify_nonset_ops
+testExtr 35 A :- debug => starify_term
 (app
 	(p1 (pair 
 		(setPi (setSigma singleton (_\bool_t)) (x\setSigma singleton (_\bool_t)))
@@ -613,26 +613,26 @@ testExtr 35 A :- debug => starify_nonset_ops
 	))
 	(pair singleton (_\bool_t) star bool_e)
 ) [] A.
-testExtr 36 A :- debug => starify_nonset_ops (pair_exist singleton (_\propc_t) star propc_e) [] A.
-testExtr 37 A :- debug => starify_nonset_ops (pair_exist singleton (_\bool_t) star true_bool) [] A.
-testExtr 38 A :- debug => starify_nonset_ops (forall_app (forall_lam singleton (x\propc_e)) star) [] A.
-testExtr 39 A :- debug => starify_nonset_ops (forall_app (forall_lam singleton (x\true_bool)) star) [] A.
-testExtr 40 A :- debug => starify_nonset_ops (app (lambda singleton (x\propc_e)) star) [] A.
-testExtr 41 A :- debug => starify_nonset_ops (app (lambda singleton (x\true_bool)) star) [] A.
-testExtr 42 A :- debug => starify_nonset_ops (pair (exist singleton (_\propc_t)) (_\singleton)(pair_exist singleton (_\propc_t) star propc_e) star) [] A.
-testExtr 43 A :- debug => starify_nonset_ops (pair (forall singleton (x\propc_t)) (_\singleton)(forall_lam singleton (x\propc_e)) star) [] A.
-testExtr 44 A :- debug => starify_nonset_ops (elim_id (id singleton star) (x\ y\ exist singleton (x\propc_t)) (x\ pair_exist singleton (x\propc_t) x propc_e)) [] A.
-testExtr 45 A :- debug => starify_nonset_ops (elim_setSigma (pair bool_t (_\bool_t) bool_e bool_e) (x\singleton) (l\r\ star)) [] A.
-testExtr 46 A :- debug => starify_nonset_ops (elim_setSigma (pair singleton (_\singleton) star star) (x\bool_t) (l\r\ bool_e)) [] A.
-testExtr 47 A :- debug => starify_nonset_ops (app
+testExtr 36 A :- debug => starify_term (pair_exist singleton (_\propc_t) star propc_e) [] A.
+testExtr 37 A :- debug => starify_term (pair_exist singleton (_\bool_t) star true_bool) [] A.
+testExtr 38 A :- debug => starify_term (forall_app (forall_lam singleton (x\propc_e)) star) [] A.
+testExtr 39 A :- debug => starify_term (forall_app (forall_lam singleton (x\true_bool)) star) [] A.
+testExtr 40 A :- debug => starify_term (app (lambda singleton (x\propc_e)) star) [] A.
+testExtr 41 A :- debug => starify_term (app (lambda singleton (x\true_bool)) star) [] A.
+testExtr 42 A :- debug => starify_term (pair (exist singleton (_\propc_t)) (_\singleton)(pair_exist singleton (_\propc_t) star propc_e) star) [] A.
+testExtr 43 A :- debug => starify_term (pair (forall singleton (x\propc_t)) (_\singleton)(forall_lam singleton (x\propc_e)) star) [] A.
+testExtr 44 A :- debug => starify_term (elim_id (id singleton star) (x\ y\ exist singleton (x\propc_t)) (x\ pair_exist singleton (x\propc_t) x propc_e)) [] A.
+testExtr 45 A :- debug => starify_term (elim_setSigma (pair bool_t (_\bool_t) bool_e bool_e) (x\singleton) (l\r\ star)) [] A.
+testExtr 46 A :- debug => starify_term (elim_setSigma (pair singleton (_\singleton) star star) (x\bool_t) (l\r\ bool_e)) [] A.
+testExtr 47 A :- debug => starify_term (app
 	(lambda (setPi singleton (x\ setSigma singleton (_\singleton))) (y\ app y star))
 	(lambda singleton (x\ pair singleton (_\singleton) x x))
 ) [] A.
-testExtr 48 A :- debug => starify_nonset_ops (app
+testExtr 48 A :- debug => starify_term (app
 	(lambda (setPi singleton (x\singleton)) (y\ app y star))
 	(lambda singleton (x\x))
 ) [] A.
-testExtr 49 A :- debug => starify_nonset_ops (app
+testExtr 49 A :- debug => starify_term (app
 	(lambda (setPi bool_t (x\ setSigma (propId bool_t x x) (_\singleton)))
 		(y\ id (setSigma (propId bool_t true_bool true_bool) (_\singleton)) (app y true_bool))
 	)
@@ -640,7 +640,7 @@ testExtr 49 A :- debug => starify_nonset_ops (app
 		(x\ pair (propId bool_t x x) (_\singleton) (id bool_t x) star)
 	)
 ) [] A.
-testExtr 50 A :- debug => starify_nonset_ops (elim_setSum
+testExtr 50 A :- debug => starify_term (elim_setSum
     (x\ decode (elim_setSum
         (y\propS)
         x
@@ -651,28 +651,28 @@ testExtr 50 A :- debug => starify_nonset_ops (elim_setSum
     (l\ l)
     (r\ r)
 ) [] A.
-testExtr 51 A :- debug => starify_nonset_ops 
+testExtr 51 A :- debug => starify_term 
     (elim_setSum
         (x\num_t)
         (inr singleton (and extractor_singleton extractor_singleton) (pair_and extractor_singleton extractor_singleton extractor_star extractor_star))
         (l\ num_1)
         (r\ num_2)
     ) [] A.
-testExtr 52 A :- debug => starify_nonset_ops 
+testExtr 52 A :- debug => starify_term 
     (elim_setSum
         (x\extractor_singleton)
         (inr singleton singleton star)
         (l\ extractor_star)
         (r\ extractor_star)
     ) [] A.
-testExtr 53 A :- debug => starify_nonset_ops (elim_setSigma
+testExtr 53 A :- debug => starify_term (elim_setSigma
     (pair singleton (_\singleton) star star)
     (x\ exist (setSigma singleton (_\singleton)) (_\extractor_singleton))
     (l\r\ pair_exist
         (setSigma singleton (_\singleton)) (_\extractor_singleton)
         (pair singleton (_\singleton) r l) extractor_star)
 ) [] A.
-testExtr 54 A :- debug => starify_nonset_ops (lambda
+testExtr 54 A :- debug => starify_term (lambda
     (setSigma singleton (_\singleton))
     (y\ elim_setSigma
         y
@@ -686,7 +686,7 @@ testExtr 54 A :- debug => starify_nonset_ops (lambda
                 (p\q\ pair singleton (_\singleton) p r))
             extractor_star))
 ) [] A.
-testExtr 55 A :- debug => starify_nonset_ops (app
+testExtr 55 A :- debug => starify_term (app
     (lambda
         (propId bool_t true_bool true_bool)
         (x\ id
@@ -696,11 +696,11 @@ testExtr 55 A :- debug => starify_nonset_ops (app
 ) [] A.
 
 % begin ext tests: richiedono di impostare il livello a ext
-testExtr 56 A :- debug => starify_nonset_ops (impl_lam (propEq propS (encode pse_t) (encode (implies pse_t pse_t))) (_\pse_a)) [] A.
-testExtr 57 A :- debug => starify_nonset_ops (lambda (propEq propS (encode pse_t) (encode (implies pse_t pse_t))) (_\pse_a)) [] A.
+testExtr 56 A :- debug => starify_term (impl_lam (propEq propS (encode pse_t) (encode (implies pse_t pse_t))) (_\pse_a)) [] A.
+testExtr 57 A :- debug => starify_term (lambda (propEq propS (encode pse_t) (encode (implies pse_t pse_t))) (_\pse_a)) [] A.
 % end ext tests
 
-testExtr 58 A :- debug => starify_nonset_ops (elim_list
+testExtr 58 A :- debug => starify_term (elim_list
     (_\list (exist singleton (_\extractor_singleton)))
     (list_cons singleton star (list_cons singleton star (list_empty singleton)))
     (list_empty (exist singleton (_\extractor_singleton)))
@@ -709,7 +709,7 @@ testExtr 58 A :- debug => starify_nonset_ops (elim_list
         (pair_exist singleton (_\extractor_singleton) y extractor_star)
         z)
 ) [] A.
-testExtr 59 A :- debug => starify_nonset_ops (lambda singleton (x\
+testExtr 59 A :- debug => starify_term (lambda singleton (x\
     lambda singleton (y\
         lambda singleton (z\
             id (list singleton)
@@ -717,7 +717,7 @@ testExtr 59 A :- debug => starify_nonset_ops (lambda singleton (x\
                     (list_cons singleton y
                         (list_cons singleton x
                             (list_empty singleton)))))))) [] A.
-testExtr 60 A :- debug => starify_nonset_ops (elim_list
+testExtr 60 A :- debug => starify_term (elim_list
     (_\exist singleton (_\extractor_singleton))
     (list_cons singleton star (list_cons singleton star (list_empty singleton)))
     (pair_exist singleton (_\extractor_singleton) star extractor_star)
@@ -746,9 +746,9 @@ filter_code_list [H|TL] Result
 filter_code_list [] [].
 
 translate_entry Entry LibMap ExtrEntry OutLib Result
-    :- spy(starify_nonset_ops_lib Entry LibMap StarEntry)
-    ,  spy(extract_set_ops_lib StarEntry ExtrEntry [] (var_chain_end _ _ _) LibMap ArgMask OutList)
-    ,  spy(translate_lib_ ExtrEntry LibMap Code)
+    :- spy(starify_lib Entry LibMap StarEntry)
+    ,  spy(extract_lib StarEntry ExtrEntry [] [] LibMap ArgMask OutList)
+    ,  spy(translate_lib ExtrEntry LibMap Code)
 %    ,  spy(filter_code_list OutList OutList')
     ,  spy(translate_program_list OutList LibMap CodeList)
     ,  concat [[Code], CodeList] Result

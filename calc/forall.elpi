@@ -287,29 +287,32 @@ forallLib L :- L = [
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops_type (forall B C) LibMap Result
-    :- starify_nonset_ops_type B LibMap B'
+%% Starification
+
+starify_type (forall B C) LibMap Result
+    :- starify_type B LibMap B'
     ,  ((name C, C' = C)
-        , !; pi b\ locDecl b B => starify_nonset_ops_type (C b) LibMap (C' b))
+        , !; pi b\ locDecl b B => starify_type (C b) LibMap (C' b))
     ,  spy(Result = (forall B' C'))
     ,  !
     .
 
-starify_nonset_ops (forall_lam B F) LibMap Result
-    :- starify_nonset_ops_type B LibMap B'
+starify_term (forall_lam B F) LibMap Result
+    :- starify_type B LibMap B'
     ,  ((name F, F' = F)
-        , !; pi b\ locDecl b B => starify_nonset_ops (F b) LibMap (F' b))
+        , !; pi b\ locDecl b B => starify_term (F b) LibMap (F' b))
     ,  spy(Result = (forall_lam B' F'))
     ,  !
     .
 
-starify_nonset_ops (forall_app Lam X) LibMap Result
-    :- starify_nonset_ops Lam LibMap Lam'
-    ,  starify_nonset_ops X LibMap X'
+starify_term (forall_app Lam X) LibMap Result
+    :- starify_term Lam LibMap Lam'
+    ,  starify_term X LibMap X'
     ,  spy(Result = (forall_app Lam' X'))
     ,  !
     .
 
+%% Extraction
 
 collapse_type (forall _B C) Result _Vars _VarMap _LibMap []
     :- conv C (_\extractor_singleton)
@@ -317,11 +320,11 @@ collapse_type (forall _B C) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops_type (forall B C) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+extract_type (forall B C) Result Vars VarMap LibMap SetList
+    :- spy(extract_type B B' Vars VarMap LibMap BList)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap CList))
+            extract_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap CList))
     ,  concat [CList, BList] SetList
     ,  spy(collapse_type (forall B' C') Result Vars VarMap LibMap [])
     ,  !
@@ -334,11 +337,11 @@ collapse_term (forall_lam B F) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops (forall_lam B F) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+extract_term (forall_lam B F) Result Vars VarMap LibMap SetList
+    :- spy(extract_type B B' Vars VarMap LibMap BList)
     ,  ((name F, spy(map_var F VarMap F', FList = []))
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_set_ops (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap FList))
+            extract_term (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap FList))
     ,  concat [FList, BList] SetList
     ,  spy(collapse_term (forall_lam B' F') Result Vars VarMap LibMap [])
     ,  !
@@ -358,9 +361,9 @@ collapse_term (forall_app Lam _X) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops (forall_app Lam X) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops Lam Lam' Vars VarMap LibMap LamList)
-    ,  spy(extract_set_ops X _ Vars VarMap LibMap XList)
+extract_term (forall_app Lam X) Result Vars VarMap LibMap SetList
+    :- spy(extract_term Lam Lam' Vars VarMap LibMap LamList)
+    ,  spy(extract_term X _ Vars VarMap LibMap XList)
     ,  spy(collapse_term (forall_app Lam' extractor_star) Result Vars VarMap LibMap AppList)
     ,  concat [AppList, XList, LamList] SetList
     ,  !

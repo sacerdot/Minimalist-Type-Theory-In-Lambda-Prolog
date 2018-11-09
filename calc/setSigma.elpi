@@ -1403,45 +1403,48 @@ setoid_symm (setSigma B C) H :-
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops_type (setSigma B C) LibMap Result
-    :- starify_nonset_ops_type B LibMap B'
+%% Starification
+
+starify_type (setSigma B C) LibMap Result
+    :- starify_type B LibMap B'
     ,  ((name C, C' = C)
-        , !; pi b\ locDecl b B => starify_nonset_ops_type (C b) LibMap (C' b))
+        , !; pi b\ locDecl b B => starify_type (C b) LibMap (C' b))
     ,  spy(Result = (setSigma B' C'))
     ,  !
     .
 
-starify_nonset_ops (pair B C BB CC) LibMap Result
-    :- starify_nonset_ops BB LibMap BB'
-    ,  starify_nonset_ops CC LibMap CC'
-    ,  starify_nonset_ops_type (setSigma B C) LibMap (setSigma B' C')
+starify_term (pair B C BB CC) LibMap Result
+    :- starify_term BB LibMap BB'
+    ,  starify_term CC LibMap CC'
+    ,  starify_type (setSigma B C) LibMap (setSigma B' C')
     ,  spy(Result = (pair B' C' BB' CC')) 
     ,  !
     .
 
-starify_nonset_ops (p1 Pair) LibMap Result
-    :- starify_nonset_ops Pair LibMap Pair'
+starify_term (p1 Pair) LibMap Result
+    :- starify_term Pair LibMap Pair'
     ,  Result = (p1 Pair') 
     ,  !
     .
 
-starify_nonset_ops (p2 Pair) LibMap Result
-    :- starify_nonset_ops Pair LibMap Pair'
+starify_term (p2 Pair) LibMap Result
+    :- starify_term Pair LibMap Pair'
     ,  Result = (p2 Pair')
     ,  !
     .
 
-starify_nonset_ops (elim_setSigma Pair M MM) LibMap Result
-    :- spy(starify_nonset_ops Pair LibMap Pair')
+starify_term (elim_setSigma Pair M MM) LibMap Result
+    :- spy(starify_term Pair LibMap Pair')
     ,  spy(isa Pair (setSigma B C) @level)
     ,  spy((name M, M' = M)
-        , !; pi p\ locDecl p (setSigma B C) => starify_nonset_ops_type (M p) LibMap (M' p))
+        , !; pi p\ locDecl p (setSigma B C) => starify_type (M p) LibMap (M' p))
     ,  ((pi b\ locDecl b B => (name (MM b), MM' = MM))
-        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => starify_nonset_ops (MM b c) LibMap (MM' b c))
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => starify_term (MM b c) LibMap (MM' b c))
     ,  spy(Result = (elim_setSigma Pair' M' MM'))
     ,  !
     .
 
+%% Extraction
 
 collapse_type (setSigma B C) Result _Vars _VarMap _LibMap []
     :- conv B extractor_singleton
@@ -1450,11 +1453,11 @@ collapse_type (setSigma B C) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops_type (setSigma B C) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops_type B B' Vars VarMap LibMap BList)
+extract_type (setSigma B C) Result Vars VarMap LibMap SetList
+    :- spy(extract_type B B' Vars VarMap LibMap BList)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_set_ops_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] (var_chain b d VarMap) LibMap CList))
+            extract_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap CList))
     ,  spy(concat [CList, BList] SetList)
     ,  spy(collapse_type (setSigma B' C') Result Vars VarMap LibMap [])
     ,  !
@@ -1467,10 +1470,10 @@ collapse_term (pair B C BB CC) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops (pair B C BB CC) Result Vars VarMap LibMap SetList
-    :- extract_set_ops BB BB' Vars VarMap LibMap BBList
-    ,  extract_set_ops CC CC' Vars VarMap LibMap CCList
-    ,  extract_set_ops_type (setSigma B C) (setSigma B' C') Vars VarMap LibMap BCList
+extract_term (pair B C BB CC) Result Vars VarMap LibMap SetList
+    :- extract_term BB BB' Vars VarMap LibMap BBList
+    ,  extract_term CC CC' Vars VarMap LibMap CCList
+    ,  extract_type (setSigma B C) (setSigma B' C') Vars VarMap LibMap BCList
     ,  concat [CCList, BBList, BCList] SetList
     ,  spy(collapse_term (pair B' C' BB' CC') Result Vars VarMap LibMap [])
     ,  !
@@ -1496,8 +1499,8 @@ collapse_term (p1 (pair _B (x\extractor_singleton) BB extractor_star)) Result _V
     ,  !
     .
 
-extract_set_ops (p1 Pair) Result Vars VarMap LibMap SetList
-    :- extract_set_ops Pair Pair' Vars VarMap LibMap SetList
+extract_term (p1 Pair) Result Vars VarMap LibMap SetList
+    :- extract_term Pair Pair' Vars VarMap LibMap SetList
     ,  spy(collapse_term (p1 Pair') Result Vars VarMap LibMap [])
     ,  !
     .
@@ -1522,8 +1525,8 @@ collapse_term (p2 (pair extractor_singleton _C extractor_star CC )) Result _Vars
     ,  !
     .
 
-extract_set_ops (p2 Pair) Result Vars VarMap LibMap SetList
-    :- extract_set_ops Pair Pair' Vars VarMap LibMap SetList
+extract_term (p2 Pair) Result Vars VarMap LibMap SetList
+    :- extract_term Pair Pair' Vars VarMap LibMap SetList
     ,  spy(collapse_term (p2 Pair') Result Vars VarMap LibMap [])
     ,  !
     .
@@ -1539,7 +1542,7 @@ collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
 %% 1 -> A'  ==>  A'
 collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
     :- spy(isa Pair extractor_singleton @level)
-    ,  spy(extract_set_ops (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList)
+    ,  spy(extract_term (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList)
     ,  !
     .
 
@@ -1555,7 +1558,7 @@ collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
 %% 1 x 1 -> A'  ==>  A'
 collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
     :- spy(isa Pair (setSigma extractor_singleton (_\ extractor_singleton)) @level)
-    ,  extract_set_ops (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList
+    ,  extract_term (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList
     ,  !
     .
 
@@ -1563,40 +1566,145 @@ collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
 collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
     :- isa Pair (setSigma B (_\ extractor_singleton)) @level
     ,  spy(pi b\ locDecl b B =>
-        extract_set_ops (app (lambda B (b\ MM b extractor_star)) (p1 Pair)) Result Vars VarMap LibMap ElimList)
+        extract_term (app (lambda B (b\ MM b extractor_star)) (p1 Pair)) Result Vars VarMap LibMap ElimList)
     ,  !
     .
 
 %% 1 x N -> A'  ==>  N -> A'
 collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
     :- isa Pair (setSigma extractor_singleton C) @level
-    ,  extract_set_ops (app (lambda (C extractor_star) (MM extractor_star)) (p2 Pair)) Result Vars VarMap LibMap ElimList
+    ,  extract_term (app (lambda (C extractor_star) (MM extractor_star)) (p2 Pair)) Result Vars VarMap LibMap ElimList
     ,  !
     .
 
 %% N x N -> 1  ==>  1
 collapse_term (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
     :- conv (M Pair) extractor_singleton
-    ,  extract_set_ops (MM (p1 Pair) (p2 Pair)) Result Vars VarMap LibMap SetList
+    ,  extract_term (MM (p1 Pair) (p2 Pair)) Result Vars VarMap LibMap SetList
     ,  !
     .
 
-extract_set_ops (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
-    :- spy(extract_set_ops Pair Pair' Vars VarMap LibMap PairList)
+extract_term (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
+    :- spy(extract_term Pair Pair' Vars VarMap LibMap PairList)
     ,  isa Pair (setSigma B C) @level
     ,  ((isa Pair' extractor_singleton @level
         ,    B' = extractor_singleton, C' = (_\extractor_singleton))
         , !; isa Pair' (setSigma B' C') @level)
     ,  ((name M, map_var M VarMap M', MList = [])
         , !; pi p\ locDecl p (setSigma B C) => pi q\ locDecl q (setSigma B' C') =>
-            spy(extract_set_ops_type (M p) (M' q) [(var_term _ q)|[(var_term _ p)|Vars]] (var_chain p q VarMap) LibMap MList))
+            spy(extract_type (M p) (M' q) [(var_term _ q)|[(var_term _ p)|Vars]] [(var_mapping p q)| VarMap] LibMap MList))
     ,  ((pi b\ locDecl b B => pi d\ locDecl d B' =>
             (name (MM b), map_var (MM b) VarMap (MM' d), MMList = []))
         , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => 
              pi d\ pi e\ locDecl d B' => locDecl e (C' d) =>
-                spy(extract_set_ops (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] (var_chain c e (var_chain b d VarMap)) LibMap MMList))
+                spy(extract_term (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] [(var_mapping c e)|[(var_mapping b d)|VarMap]] LibMap MMList))
     ,  spy(collapse_term (elim_setSigma Pair' M' MM') Result Vars VarMap LibMap ElimList)
     ,  spy(concat [ElimList, MMList, MList, PairList] SetList)
+    ,  !
+    .
+
+%% Translation
+
+translate_setSigma_to ocaml B' C' Result
+    :- Result is "(" ^ B' ^ ", " ^ C' ^ ") set_sigma"
+    ,  !
+    .
+translate_setSigma_to haskell B' C' Result
+    :- Result is "SetSigma (" ^ B' ^ ") (" ^ C' ^ ")"
+    ,  !
+    .
+
+translate_type (setSigma B C) LibMap Result
+    :- translate_type B LibMap B'
+    ,  ((name C, term_to_string C C'), !; pi b\ locDecl b B => translate_type (C b) LibMap C')
+    ,  translate_setSigma_to @language B' C' Result
+    ,  !
+    .
+
+
+translate_pair_to ocaml BB' CC' Result
+    :- Result is "{ l = " ^ BB' ^ "; r = " ^ CC' ^ " }"
+    ,  !
+    .
+translate_pair_to haskell BB' CC' Result
+    :- Result is "(SetSigma " ^ BB' ^ " " ^ CC' ^ ")"
+    ,  !
+    .
+
+translate_term (pair _B _C BB CC) LibMap Result
+    :- translate_term BB LibMap BB'
+    ,  translate_term CC LibMap CC'
+    ,  translate_pair_to @language BB' CC' Result
+    ,  !
+    .
+
+
+translate_p1_to ocaml Pair' Result
+    :- Result is Pair' ^ ".l"
+    ,  !
+    .
+translate_p1_to haskell Pair' Result
+    :- Result is "(l " ^ Pair' ^ ")"
+    ,  !
+    .
+
+translate_term (p1 Pair) LibMap Result
+    :- translate_term Pair LibMap Pair'
+    ,  translate_p1_to @language Pair' Result
+    ,  !
+    .
+
+
+translate_p2_to ocaml Pair' Result
+    :- Result is Pair' ^ ".r"
+    ,  !
+    .
+translate_p2_to haskell Pair' Result
+    :- Result is "(r " ^ Pair' ^ ")"
+    ,  !
+    .
+
+translate_term (p2 Pair) LibMap Result
+    :- translate_term Pair LibMap Pair'
+    ,  translate_p2_to @language Pair' Result
+    ,  !
+    .
+
+
+translate_elim_setSigma_abs_to ocaml SMM Sb Sc Result
+    :- Result is "(fun " ^ Sb ^ " " ^ Sc ^ " -> " ^ SMM ^ ")"
+    ,  !
+    .
+translate_elim_setSigma_abs_to haskell SMM Sb Sc Result
+    :- Result is "(\\" ^ Sb ^ " " ^ Sc ^ " -> " ^ SMM ^ ")"
+    ,  !
+    .
+translate_elim_setSigma_partial_abs_to ocaml SMM Sb Result
+    :- Result is "(fun " ^ Sb ^ " -> " ^ SMM ^ ")"
+    ,  !
+    .
+translate_elim_setSigma_partial_abs_to haskell SMM Sb Result
+    :- Result is "(\\" ^ Sb ^ " -> " ^ SMM ^ ")"
+    ,  !
+    .
+translate_elim_setSigma_to ocaml Pair' MM' Result
+    :- Result is "(" ^ MM' ^ " " ^ Pair' ^ ".l " ^ Pair' ^ ".r)"
+    ,  !
+    .
+translate_elim_setSigma_to haskell Pair' MM' Result
+    :- Result is "(" ^ MM' ^ " (l " ^ Pair' ^") (r " ^ Pair' ^"))"
+    ,  !
+    .
+
+translate_term (elim_setSigma Pair _M MM) LibMap Result
+    :- translate_term Pair LibMap Pair'
+    ,  isa Pair (setSigma B C) @level
+    ,  ((pi b\ locDecl b B => (name (MM b), term_to_string (MM b) SMM, translate_term b LibMap Sb)
+            , translate_elim_setSigma_partial_abs_to @language SMM Sb MM')
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) =>
+                (spy(translate_term (MM b c) LibMap SMM), translate_term b LibMap Sb, translate_term c LibMap Sc)
+            , translate_elim_setSigma_abs_to @language SMM Sb Sc MM')
+    ,  translate_elim_setSigma_to @language Pair' MM' Result
     ,  !
     .
 

@@ -164,19 +164,22 @@ singletonLib L :-
 %%                                   ESTRAZIONE                                   %%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-starify_nonset_ops (elim_singleton Star C CC) LibMap Result 
-    :- starify_nonset_ops Star LibMap Star'
+%% Starification
+
+starify_term (elim_singleton Star C CC) LibMap Result 
+    :- starify_term Star LibMap Star'
     ,  ((name C, C' = C)
-        , !; pi s\ locDecl s singleton => starify_nonset_ops_type (C s) LibMap (C' s))
-    ,  starify_nonset_ops CC LibMap CC'
+        , !; pi s\ locDecl s singleton => starify_type (C s) LibMap (C' s))
+    ,  starify_term CC LibMap CC'
     ,  spy(Result = (elim_singleton Star' C' CC'))
     ,  !
     .
 
+%% Extraction
 
-extract_set_ops_type singleton singleton _ _ _ [] :- !.
+extract_type singleton singleton _ _ _ [] :- !.
 
-extract_set_ops star star _ _ _ [] :- !.
+extract_term star star _ _ _ [] :- !.
 
 %% 1 -> 1  ==>  1
 collapse_term (elim_singleton Star C _CC) Result _Vars _VarMap _LibMap []
@@ -185,13 +188,61 @@ collapse_term (elim_singleton Star C _CC) Result _Vars _VarMap _LibMap []
     ,  !
     .
 
-extract_set_ops (elim_singleton Star C CC) Result Vars VarMap LibMap SetList
-    :- extract_set_ops Star Star' Vars VarMap LibMap StarList
+extract_term (elim_singleton Star C CC) Result Vars VarMap LibMap SetList
+    :- extract_term Star Star' Vars VarMap LibMap StarList
     ,  ((name C, map_var C VarMap C')
-        , !; pi s\ locDecl s singleton => extract_set_ops_type (C s) (C' s) [(var_term _ s)|Vars] VarMap LibMap CList)
-    ,  extract_set_ops CC CC' Vars VarMap LibMap CCList
+        , !; pi s\ locDecl s singleton => extract_type (C s) (C' s) [(var_term _ s)|Vars] VarMap LibMap CList)
+    ,  extract_term CC CC' Vars VarMap LibMap CCList
     ,  concat [CCList, CList, StarList] SetList
     ,  spy(collapse_term (elim_singleton Star' C' CC') Result Vars VarMap LibMap [])
+    ,  !
+    .
+
+%% Translation
+
+translate_singleton_to ocaml Result
+    :- Result is "unit"
+    ,  !
+    .
+translate_singleton_to haskell Result
+    :- Result is "()"
+    ,  !
+    .
+
+translate_type singleton _ Result
+    :- translate_singleton_to @language Result
+    ,  !
+    .
+
+translate_type extractor_singleton _ Result
+    :- translate_singleton_to @language Result
+    ,  !
+    .
+
+
+translate_star_to ocaml Result
+    :- Result is "()"
+    ,  !
+    .
+translate_star_to haskell Result
+    :- Result is "()"
+    ,  !
+    .
+
+translate_term star _ Result
+    :- translate_star_to @language Result
+    ,  !
+    .
+
+translate_term extractor_star _ Result
+    :- translate_star_to @language Result
+    ,  !
+    .
+
+
+translate_term (elim_singleton _Star _C CC) LibMap Result
+    :- translate_term CC LibMap CC'
+    ,  Result is CC'
     ,  !
     .
 

@@ -644,25 +644,3 @@ process_cut (conv_symm X Y) AA :-
    spy(conv X Y),
    AA = conv Y X.
 
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%                                   ESTRAZIONE                                   %%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-macro @level :- int.
-%%macro @level :- ext.
-
-type extractor_singleton mttType.
-type extractor_star mttTerm.
-
-ofType extractor_singleton props @level.
-of extractor_star extractor_singleton @level.
-
-%% Typing extensions to type extractor terms
-
-dconv propS extractor_singleton.
-dconv extractor_singleton propS.
-%of (encode T) extractor_singleton IE :- makeline, ofType T props IE.
-%ofType (decode T) props IE :- makeline, of T extractor_singleton IE.
-
-
