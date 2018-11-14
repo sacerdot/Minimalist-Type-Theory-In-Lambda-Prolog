@@ -1,0 +1,41 @@
+TODO:
+a) test.elpi: splittare in codice di estrazione (un file? merge con extraction.elpi?) + codice di testing (un file) + libreria di tests (un altro file)
+b) commentare i predicati entry-point
+c) code simplification: forzare l'ordine degli argomenti nella locDef&friends
+   passando in input alla process_entry la lista degli argomenti, usandola
+   nel caso base e non facendo più scrivere all'utente lib_app oppure
+   verificando che l'utente abbia scritto i lib_app correttamente
+   (* meglio la seconda per leggibilità della libreria *)
+z) passare a un if-then-else al posto di (a, ! ; b)
+
+FOOD FOR BRAIN:
+1. abstract common code in extraction/{starify,extract,_...}_lib and main/process_entry
+2. dal momento che l'input del extract_* non è ben tipato, durante l'iterazione
+   sulle lib entry è inutile assumere tutte le ipotesi di tipaggio/conversione
+
+===========
+
+## Code extraction ##
+* test.elpi:
+  - pack_and_translate_library:  entrypoint
+  - translib:                    entrypoint for debugging on Index-th entry
+  - translate_entry:             obvious
+  - ...
+  - library of micro-tests for extraction, etc.
+
+  * lib_mapping: old_entry extracted_entry mask
+
+  - starify_lib: well typed (wt) MTTi -> ill typed(it) MTTi
+      <> propS |-> extractor_singleton
+      <> all hyps and cuts are dropped, breaking typability;
+         this is the only cause of typability breaking
+  - extract_lib: (it) MTTi -> (wt?) MTTi
+  - translate_lib: (wt?) MTTi -> {OCaml,Haskell}
+  - translate_program_list: traduce frammenti wt MTTi ->^3 {OCaml,Haskell}
+  - get_call_signature:
+
+* extraction.elpi:
+  defines {starify,extract}_lib
+
+* to_language.elpi:
+  defines translate_lib
