@@ -359,6 +359,13 @@ type fake_depterm int -> (mttTerm -> mttTerm).
 
 type get_call_arg_elpi_type any -> int -> any -> any -> mttTerm -> prop.
 
+/* CSC
+stilized_type_of (univPi F) [var_type _ _|KindTL]
+    :- (pi Bi\ ofType Bi set int => stilized_type_of (F Bi) KindTL)
+    ,  !
+    .
+*/
+
 get_call_arg_elpi_type (univPi F) Index Counter Var Result
     :- Counter' is (Counter + 1)
     ,  pi Bi\ ofType Bi set int =>
@@ -428,6 +435,10 @@ get_call_arg_elpi_type (cut _ E) Index Counter Var Result
     :- get_call_arg_elpi_type E Index Counter Var Result
     ,  !
     .
+
+/* CSC
+stilized_type_of (locDefL _ _ _) [].
+*/
 get_call_arg_elpi_type (locDefL N _ _) Index Counter Var Result
     :- get_call_arg_elpi_type N Index Counter Var Result
     ,  !
@@ -472,6 +483,22 @@ starify_arg (var_dep_term _ _ _) A LibMap Result
     .
 
 type starify_lib_call B -> list lib_mapping_type -> int -> libraryEntry -> B -> prop.
+
+/* starify_lib_call -H -LibMap +Kind +Result
+   Kind is the kind of H
+   Result is the starification of H */
+/* CSC
+starify_lib_call (lib_app H A) LibMap Kind Result
+    :- spy(starify_lib_call H LibMap [KindHD|KindTL] H')
+    ,  spy(starify_arg KindHD A LibMap A')
+    ,  Result = (lib_app H' A')
+    ,  !
+    .
+
+starify_lib_call H LibMap Kind H
+    :- is_lib_call H LibMap Hdef
+    ,  stilized_type_of Hdef Kind.
+*/
 
 starify_lib_call (lib_app H A) LibMap Index Call Result
     :- Index' is (Index + 1)
