@@ -43,7 +43,7 @@ of (# A B) Type IE :- of (A B) Type IE.
 ofType (# A B) Kind IE :- ofType (A B) Kind IE.
 
 %% conversion to (weak) head-normal form WHNF
-hnf A B :- spy(hstep A C), !, spy(hnf C B).
+hnf A B :- (hstep A C), !, (hnf C B).
 hnf A A.
 
 %dstep A B :- spy(hstep A B).
@@ -555,11 +555,33 @@ type conv_trans mttTerm -> mttTerm -> mttTerm -> prop.
 type conv_trans_symm mttTerm -> mttTerm -> mttTerm -> prop.
 type conv_symm mttTerm -> mttTerm -> prop.
 
+type advance_arg_list any -> list any -> list any -> prop.
+advance_arg_list A [H|TL] TL :- A = H.
+advance_arg_list A [_|TL] Result :- advance_arg_list A TL Result.
+
+type verify_arg_order_ A -> list any -> prop.
+verify_arg_order_ (lib_app H A) Vars
+    :- !
+    ,  spy(advance_arg_list A Vars Vars')
+    ,  spy(verify_arg_order_ H Vars')
+    ,  !
+    .
+verify_arg_order_ _ _.
+
+type verify_arg_order A -> prop.
+verify_arg_order N
+    :- names Vars
+    ,  reverse Vars RVars
+    ,  spy(verify_arg_order_ N RVars)
+    .
+
 process_entry (locTypeDefL N KIND TY) Hyp :-
+   spy(verify_arg_order N),
    spy(ofType TY KIND int),
    Hyp = locTypeDef N KIND TY,
    print "## New type definition: " N.
 process_entry (locDefL N TY TE) Hyp :-
+   spy(verify_arg_order N),
    spy(isaType TY _ int),
    spy(isa TE TY int),
    Hyp = locDef N TY TE,

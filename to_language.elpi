@@ -235,8 +235,8 @@ translate_hyp_to haskell E' Result
     ,  !
     .
 
-translate_lib (hyp _H1 _H2 E) LibMap Result
-    :- spy(translate_lib E LibMap E')
+translate_lib (hyp H1 _ E) LibMap Result
+    :- (H1 => spy(translate_lib E LibMap E'))
     ,  translate_hyp_to @language E' Result
     ,  !
     .
@@ -251,8 +251,8 @@ translate_cut_to haskell E' Result
     ,  !
     .
 
-translate_lib (cut _H E) LibMap Result
-    :- spy(translate_lib E LibMap E')
+translate_lib (cut H E) LibMap Result
+    :- (process_cut H Hyp, Hyp => spy(translate_lib E LibMap E'))
     ,  translate_cut_to @language E' Result
     ,  !
     .
@@ -279,22 +279,21 @@ translate_term_arg (var_dep_term _ _ _) A LibMap Result
     ,  !
     .
 
-translate_lib_call_term (lib_app H A) LibMap Index Call Result
-    :- Index' is (Index + 1)
-    ,  spy(translate_lib_call_term H LibMap Index' Call H')
-    ,  spy(get_call_arg_elpi_type Call Index 0 _ VarA)
-    ,  spy(translate_term_arg VarA A LibMap A')
+translate_lib_call_term (lib_app H A) LibMap KindTL Result
+    :- spy(translate_lib_call_term H LibMap [KindHD|KindTL] H')
+    ,  spy(translate_term_arg KindHD A LibMap A')
     ,  ((A' = "", Result is H'), !; Result is "(" ^ H' ^ " " ^ A' ^ ")")
     ,  !
     .
-translate_lib_call_term H LibMap _Index Call Result
-    :- is_extrlib_call H LibMap Call
+translate_lib_call_term H LibMap Kind Result
+    :- is_extrlib_call H LibMap Hdef
+    ,  spy(stylized_type_of Hdef Kind)
     ,  term_to_string H Result
     ,  !
     .
 
 translate_term (lib_app H A) LibMap Result
-    :- spy(translate_lib_call_term (lib_app H A) LibMap 0 _ Result)
+    :- spy(translate_lib_call_term (lib_app H A) LibMap _ Result)
     ,  !
     .
 
@@ -320,16 +319,15 @@ translate_type_arg (var_dep_term _ _ _) A LibMap Result
     ,  !
     .
 
-translate_lib_call_type (lib_app H A) LibMap Index Call Result
-    :- Index' is (Index + 1)
-    ,  spy(translate_lib_call_type H LibMap Index' Call H')
-    ,  spy(get_call_arg_elpi_type Call Index 0 _ VarA)
-    ,  spy(translate_type_arg VarA A LibMap A')
+translate_lib_call_type  (lib_app H A) LibMap KindTL Result
+    :- spy(translate_lib_call_type  H LibMap [KindHD|KindTL] H')
+    ,  spy(translate_type_arg KindHD A LibMap A')
     ,  ((A' = "", Result is H'), !; Result is H' ^ " " ^ A')
     ,  !
     .
-translate_lib_call_type H LibMap _Index Call Result
-    :- is_extrlib_call H LibMap Call
+translate_lib_call_type H LibMap Kind Result
+    :- is_extrlib_call H LibMap Hdef
+    ,  spy(stylized_type_of Hdef Kind)
     ,  term_to_string H Result
     ,  !
     .
@@ -343,7 +341,7 @@ translate_lib_call_type_to haskell Call Result
     ,  !
     .
 translate_type (lib_app H A) LibMap Result
-    :- spy(translate_lib_call_type (lib_app H A) LibMap 0 _ LibCall)
+    :- spy(translate_lib_call_type (lib_app H A) LibMap _ LibCall)
     ,  translate_lib_call_type_to @language LibCall Result
     ,  !
     .

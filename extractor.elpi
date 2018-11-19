@@ -22,6 +22,66 @@ type var_mapping A -> A -> var_mapping_type.
 kind lib_mapping_type type.
 type lib_mapping libraryEntry -> libraryEntry -> list prop -> lib_mapping_type.
 
+%% Library translation interface
+
+translate_program_list [H|TL] LibMap [H'|TL']
+    :- translate_program H LibMap H'
+    ,  translate_program_list TL LibMap TL'
+    .
+translate_program_list [] _ [].
+
+filter_code (extractor_type_lambda B F) Result
+    :- pi Bi\ ofType Bi B int => filter_code (F Bi) Result
+    .
+filter_code (lambda B F) true
+    :- pi x\ locDecl x B => ((F x) = x)
+    .
+filter_code _ false.
+
+filter_code_list [H|TL] Result
+    :- spy(filter_code H Delete)
+    ,  filter_code_list TL TL'
+    ,  ((Delete = true, Result = TL'), !; Result = [H|TL'])
+    .
+filter_code_list [] [].
+
+translate_entry Entry LibMap ExtrEntry OutLib Result
+    :- spy(starify_lib Entry LibMap StarEntry)
+    ,  spy(extract_lib StarEntry ExtrEntry [] [] LibMap ArgMask OutList)
+    ,  spy(translate_lib ExtrEntry LibMap Code)
+%    ,  spy(filter_code_list OutList OutList')
+    ,  spy(translate_program_list OutList LibMap CodeList)
+    ,  concat [[Code], CodeList] Result
+    ,  spy(get_call_signature StarEntry StarEntry')
+    ,  spy(get_call_signature ExtrEntry ExtrEntry')
+    ,  spy(concat [LibMap, [(lib_mapping StarEntry' ExtrEntry' ArgMask)]] OutLib)
+    .
+
+translate_library [Entry|TL] LibMap Result
+    :- translate_entry Entry LibMap ExtrEntry ExtrLib Entry'
+    ,  process_entry Entry Hyp
+    ,  process_entry ExtrEntry ExtrHyp
+    ,  Hyp => ExtrHyp => translate_library TL ExtrLib TL'
+    ,  concat [Entry', TL'] Result
+    .
+translate_library [] _ [].
+
+translate_entry_from_library [Entry|_TL] LibMap 0 Result
+    :- makeline
+    ,  debug => translate_entry Entry LibMap ExtrEntry _ Result
+    ,  print ExtrEntry
+    ,  !
+    .
+translate_entry_from_library [Entry|TL] LibMap Index Result
+    :- debug => spy(translate_entry Entry LibMap ExtrEntry ExtrLib _)
+    ,  spy(process_entry Entry Hyp)
+    ,  spy(process_entry ExtrEntry ExtrHyp)
+    ,  NewIndex is (Index - 1)
+    ,  Hyp => ExtrHyp => translate_entry_from_library TL ExtrLib NewIndex Result
+    ,  !
+    .
+translate_entry_from_library [] _ _ [].
+
 %% Lib Extraction
 
 starify_lib (univPi F) LibMap Result
@@ -96,19 +156,19 @@ starify_lib (locTypeDefL N KIND TY) LibMap Result
     ,  !
     .
 
-starify_lib_prop _ true.
-%starify_lib_prop A A.
+%starify_lib_prop _ true.
+starify_lib_prop A A.
 
 starify_lib (hyp H1 H2 E) LibMap Result
     :- starify_lib_prop H1 H1'
     ,  starify_lib_prop H2 H2'
-    ,  starify_lib E LibMap E'
+    ,  (H1' => starify_lib E LibMap E')
     ,  spy(Result = (hyp H1' H2' E')) 
     ,  !
     .
 starify_lib (cut H E) LibMap Result
     :- starify_lib_prop H H'
-    ,  starify_lib E LibMap E'
+    ,  (process_cut H' Hyp, Hyp => starify_lib E LibMap E')
     ,  spy(Result = (cut H' E')) 
     ,  !
     .
@@ -303,15 +363,93 @@ extract_lib (locTypeDefL N _KIND TY) Result Vars VarMap LibMap [] SetList
     .
 
 
-extract_lib (hyp _H1 _H2 E) Result Vars VarMap LibMap ArgMask SetList
-    :- extract_lib E E' Vars VarMap LibMap ArgMask SetList
-    ,  spy(Result = E') 
+
+%% prop extraction begin: prop extraction assumes that no extraction of reabstreacted terms is needed
+construct_implication_ [H|[]] Result
+    :- Result = H
+    ,  !
+    .
+construct_implication_ [H|TL] Result
+    :- construct_implication_ TL TL'
+    ,  Result = (H => TL')
+    .
+construct_implication List Result
+    :- reverse List RList
+    ,  spy(construct_implication_ RList Result)
+    .
+ 
+extract_lib_prop (pi a\ H a) Result VarMap LibMap NewDecl
+    :- pi a\ pi b\ spy(extract_lib_prop (H a) (H' b) [(var_mapping a b)|VarMap] LibMap NewDecl)
+    ,  spy(Result = (pi b\ H' b))
+    ,  !
+    .
+extract_lib_prop (isa X T @level) Result VarMap LibMap [(locDecl X' T')|[(locDecl X T)]]
+    :- spy(extract_term X X' [] VarMap LibMap [])
+    ,  spy(extract_type T T' [] VarMap LibMap [])
+    ,  spy(Result = (isa X' T' @level))
+    ,  !
+    .
+extract_lib_prop (locDecl X T) Result VarMap LibMap []
+    :- spy(extract_term X X' [] VarMap LibMap [])
+    ,  spy(extract_type T T' [] VarMap LibMap [])
+    ,  spy(Result = (locDecl X' T'))
+    ,  !
+    .
+extract_lib_prop (A => B) Result VarMap LibMap NewDecl
+    :- spy(extract_lib_prop A A' VarMap LibMap ADecl)
+    ,  spy(construct_implication [extract_lib_prop B B' VarMap LibMap NewDecl|[A'|[A|ADecl]]] ImpliesB)
+    ,  spy(ImpliesB)
+    ,  spy(Result = (A' => B'))
+    ,  !
+    .
+extract_lib_prop (conv A B) Result VarMap LibMap []
+    :- spy(extract_term A A' [] VarMap LibMap [])
+    ,  spy(extract_term B B' [] VarMap LibMap [])
+    ,  spy(Result = (conv A' B'))
+    ,  !
+    .
+extract_lib_prop (conv_trans X Y Z) Result VarMap LibMap []
+    :- spy(extract_term X X' [] VarMap LibMap [])
+    ,  spy(extract_term Y Y' [] VarMap LibMap [])
+    ,  spy(extract_term Z Z' [] VarMap LibMap [])
+    ,  spy(Result = (conv_trans X' Y' Z'))
+    ,  !
+    .
+extract_lib_prop (conv_trans_symm X Y Z) Result VarMap LibMap []
+    :- spy(extract_term X X' [] VarMap LibMap [])
+    ,  spy(extract_term Y Y' [] VarMap LibMap [])
+    ,  spy(extract_term Z Z' [] VarMap LibMap [])
+    ,  spy(Result = (conv_trans_symm X' Y' Z'))
+    ,  !
+    .
+extract_lib_prop (conv_symm X Y) Result VarMap LibMap []
+    :- spy(extract_term X X' [] VarMap LibMap [])
+    ,  spy(extract_term Y Y' [] VarMap LibMap [])
+    ,  spy(Result = (conv_symm X' Y'))
+    ,  !
+    .
+extract_lib_prop (spy A) Result VarMap LibMap NewDecl
+    :- spy(extract_lib_prop A A' VarMap LibMap NewDecl)
+    ,  spy(Result = (spy A'))
+    ,  !
+    .
+extract_lib_prop true true _ _ [].
+%% prop extraction end
+
+extract_lib (hyp H1 H2 E) Result Vars VarMap LibMap ArgMask SetList
+    :- spy(extract_lib_prop H1 H1' VarMap LibMap _)
+    ,  spy(extract_lib_prop H2 H2' VarMap LibMap _)
+    ,  spy(H1 => H1' => extract_lib E E' Vars VarMap LibMap ArgMask SetList)
+    ,  spy(Result = (hyp H1' H2' E'))
     ,  !
     .
 
-extract_lib (cut _H E) Result Vars VarMap LibMap ArgMask SetList
-    :- extract_lib E E' Vars VarMap LibMap ArgMask SetList
-    ,  spy(Result = E') 
+extract_lib (cut H E) Result Vars VarMap LibMap ArgMask SetList
+    :- spy(extract_lib_prop H H' VarMap LibMap _)
+    ,  spy(process_cut H Hyp)
+    ,  spy(process_cut H' Hyp')
+    ,  spy(Hyp => Hyp' => extract_lib E E' Vars VarMap LibMap ArgMask SetList)
+    ,  spy(Result = (cut H' E')) 
     ,  !
     .
 
@@ -352,112 +490,58 @@ is_extrlib_call AName [(lib_mapping _ Call _)|Tail] Call'
     .
 
 
-type fake_type int -> mttType.
-type fake_term int -> mttTerm.
-type fake_deptype int -> (mttTerm -> mttType).
-type fake_depterm int -> (mttTerm -> mttTerm).
+stylized_type_of (univPi F) [var_type _ _|KindTL]
+    :- (pi Bi\ ofType Bi set int => stylized_type_of (F Bi) KindTL)
+    ,  !
+    .
+stylized_type_of (univCol F) [var_type _ _|KindTL]
+    :- (pi Bi\ ofType Bi col int => stylized_type_of (F Bi) KindTL)
+    ,  !
+    .
+stylized_type_of (univProp F) [var_type _ _|KindTL]
+    :- (pi Bi\ ofType Bi props int => stylized_type_of (F Bi) KindTL)
+    ,  !
+    .
 
-type get_call_arg_elpi_type any -> int -> any -> any -> mttTerm -> prop.
+stylized_type_of (univDepPi Bi F) [var_dep_type _ _ _|KindTL]
+    :- (pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => stylized_type_of (F Ci) KindTL)
+    ,  !
+    .
+stylized_type_of (univDepCol Bi F) [var_dep_type _ _ _|KindTL]
+    :- (pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => stylized_type_of (F Ci) KindTL)
+    ,  !
+    .
+stylized_type_of (univDepProp Bi F) [var_dep_type _ _ _|KindTL]
+    :- (pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
+        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => stylized_type_of (F Ci) KindTL)
+    ,  !
+    .
 
-/* CSC
-stilized_type_of (univPi F) [var_type _ _|KindTL]
-    :- (pi Bi\ ofType Bi set int => stilized_type_of (F Bi) KindTL)
+stylized_type_of (univPiT T F) [var_term _ _|KindTL]
+    :- (pi x\ of x T int => stylized_type_of (F x) KindTL)
     ,  !
     .
-*/
 
-get_call_arg_elpi_type (univPi F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi Bi\ ofType Bi set int =>
-        ( get_call_arg_elpi_type (F (fake_type Counter)) Index Counter' Var Result'
-        , ((Var = (fake_type Counter), Result = (var_type _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (univCol F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi Bi\ ofType Bi col int =>
-        ( spy(get_call_arg_elpi_type (F (fake_type Counter)) Index Counter' Var Result')
-        , spy((Var = (fake_type Counter), Result = (var_type _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (univProp F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi Bi\ ofType Bi props int =>
-        ( get_call_arg_elpi_type (F (fake_type Counter)) Index Counter' Var Result'
-        , ((Var = (fake_type Counter), Result = (var_type _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (univDepPi Bi F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
-        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
-            ( get_call_arg_elpi_type (F (fake_deptype Counter)) Index Counter' Var Result'
-            , ((Var = (fake_deptype Counter), Result = (var_dep_type _ _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (univDepCol Bi F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
-        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
-            ( get_call_arg_elpi_type (F (fake_deptype Counter)) Index Counter' Var Result'
-            , ((Var = (fake_deptype Counter), Result = (var_dep_type _ _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (univDepProp Bi F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
-        (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
-            ( get_call_arg_elpi_type (F (fake_deptype Counter)) Index Counter' Var Result'
-            , ((Var = (fake_deptype Counter), Result = (var_dep_type _ _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (univPiT T F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi x\ of x T int =>
-        ( get_call_arg_elpi_type (F (fake_term Counter)) Index Counter' Var Result'
-        , ((Var = (fake_term Counter), Result = (var_term _ _)), !; Result = Result')) 
-    ,  !
-    .
-get_call_arg_elpi_type (univDepPiT Ai Bi F) Index Counter Var Result
-    :- Counter' is (Counter + 1)
-    ,  pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+stylized_type_of (univDepPiT Ai Bi F) [var_dep_term _ _ _|KindTL]
+    :- (pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
-            (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
-                ( get_call_arg_elpi_type (F (fake_depterm Counter)) Index Counter' Var Result'
-                , ((Var = (fake_depterm Counter), Result = (var_dep_term _ _ _)), !; Result = Result'))
-    ,  !
-    .
-get_call_arg_elpi_type (hyp _ _ E) Index Counter Var Result
-    :- get_call_arg_elpi_type E Index Counter Var Result
-    ,  !
-    .
-get_call_arg_elpi_type (cut _ E) Index Counter Var Result
-    :- get_call_arg_elpi_type E Index Counter Var Result
+            (pi x\ of (t x) (Bi x) int :- of x Ai int) => stylized_type_of (F t) KindTL)
     ,  !
     .
 
-/* CSC
-stilized_type_of (locDefL _ _ _) [].
-*/
-get_call_arg_elpi_type (locDefL N _ _) Index Counter Var Result
-    :- get_call_arg_elpi_type N Index Counter Var Result
+stylized_type_of (hyp H1 _ E) KindTL
+    :- (H1 => stylized_type_of E KindTL)
     ,  !
     .
-get_call_arg_elpi_type (locTypeDefL N _ _) Index Counter Var Result
-    :- spy(get_call_arg_elpi_type N Index Counter Var Result)
+stylized_type_of (cut H E) KindTL
+    :- (process_cut H Hyp, Hyp => stylized_type_of E KindTL)
     ,  !
     .
 
-get_call_arg_elpi_type (lib_app _ A) 0 _ Var _
-    :- spy(Var = A)
-    ,  !
-    .
-get_call_arg_elpi_type (lib_app H _) Index Counter Var Result
-    :- Index' is (Index - 1)
-    ,  get_call_arg_elpi_type H Index' Counter Var Result
-    ,  !
-    .
-
+stylized_type_of (locDefL _ _ _) [].
+stylized_type_of (locTypeDefL _ _ _) [].
 
 type starify_arg mttTerm -> B -> list lib_mapping_type -> B -> prop.
 
@@ -482,13 +566,13 @@ starify_arg (var_dep_term _ _ _) A LibMap Result
     ,  !
     .
 
-type starify_lib_call B -> list lib_mapping_type -> int -> libraryEntry -> B -> prop.
+type starify_lib_call B -> list lib_mapping_type -> list mttTerm -> B -> prop.
 
 /* starify_lib_call -H -LibMap +Kind +Result
    Kind is the kind of H
    Result is the starification of H */
-/* CSC
-starify_lib_call (lib_app H A) LibMap Kind Result
+
+starify_lib_call (lib_app H A) LibMap KindTL Result
     :- spy(starify_lib_call H LibMap [KindHD|KindTL] H')
     ,  spy(starify_arg KindHD A LibMap A')
     ,  Result = (lib_app H' A')
@@ -497,28 +581,14 @@ starify_lib_call (lib_app H A) LibMap Kind Result
 
 starify_lib_call H LibMap Kind H
     :- is_lib_call H LibMap Hdef
-    ,  stilized_type_of Hdef Kind.
-*/
-
-starify_lib_call (lib_app H A) LibMap Index Call Result
-    :- Index' is (Index + 1)
-    ,  spy(starify_lib_call H LibMap Index' Call H')
-    ,  spy(get_call_arg_elpi_type Call Index 0 _ VarA)
-    ,  spy(starify_arg VarA A LibMap A')
-    ,  Result = (lib_app H' A')
-    ,  !
-    .
-
-starify_lib_call H LibMap _Index Call H
-    :- is_lib_call H LibMap Call
-    ,  !
+    ,  spy(stylized_type_of Hdef Kind)
     .
 
 starify_type_ set A _ A :- !.
 starify_type_ col propS _ extractor_singleton :- !.
 starify_type_ col A _ A :- !.
 starify_type_ _   A _ A :- spy(name A), !.
-starify_type_ _   A LibMap Result :- starify_lib_call A LibMap 0 _ Result, !.
+starify_type_ _   A LibMap Result :- starify_lib_call A LibMap _ Result, !.
 %starify_type_ _   _ _ extractor_singleton.
 
 
@@ -531,7 +601,7 @@ starify_type (decode A) LibMap Result
 
 starify_type (lib_app H A) LibMap Result
     :- !
-    ,  spy(starify_lib_call (lib_app H A) LibMap 0 _ Result)
+    ,  spy(starify_lib_call (lib_app H A) LibMap _ Result)
     ,  !
     .
 
@@ -552,7 +622,7 @@ starify_type TA LibMap Result
 starify_term_ set A _ A :- !.
 starify_term_ col A _ A :- !.
 starify_term_ _   A _ A :- spy(name A), !.
-starify_term_ _   A LibMap Result :- starify_lib_call A LibMap 0 _ Result, !.
+starify_term_ _   A LibMap Result :- starify_lib_call A LibMap _ Result, !.
 %starify_term_ _   _ _ extractor_star.
 
 starify_term (encode A) LibMap Result
@@ -563,7 +633,7 @@ starify_term (encode A) LibMap Result
 
 starify_term (lib_app H A) LibMap Result
     :- !
-    ,  spy(starify_lib_call (lib_app H A) LibMap 0 _ Result)
+    ,  spy(starify_lib_call (lib_app H A) LibMap _ Result)
     ,  !
     .
 
@@ -690,33 +760,29 @@ extract_arg (var_dep_term _ _ _) A Result Vars VarMap LibMap SetList
     ,  !
     .
 
-type extract_lib_call_ B -> int -> libraryEntry -> B -> list mttTerm -> list var_mapping_type -> list lib_mapping_type -> list mttTerm -> prop.
+type extract_lib_call_ B -> list mttTerm -> B -> list mttTerm -> list var_mapping_type -> list lib_mapping_type -> list mttTerm -> prop.
 type extract_lib_call B -> B -> list mttTerm -> list var_mapping_type -> list lib_mapping_type -> list mttTerm -> prop.
 
-extract_lib_call_ (lib_app H A) Index Call Result Vars VarMap LibMap SetList
-    :- Index' is (Index + 1)
-    ,  spy(extract_lib_call_ H Index' Call H' Vars VarMap LibMap HList)
-    ,  spy(get_call_arg_elpi_type Call Index 0 _ VarA)
-    ,  spy(extract_arg VarA A A' Vars VarMap LibMap AList)
+extract_lib_call_ (lib_app H A) KindTL Result Vars VarMap LibMap SetList
+    :- spy(extract_lib_call_ H [KindHD|KindTL] H' Vars VarMap LibMap HList)
+    ,  spy(extract_arg KindHD A A' Vars VarMap LibMap AList)
     ,  concat [AList,HList] SetList
     ,  Result = (lib_app H' A')
     ,  !
     .
-extract_lib_call_ H _Index Call Result _Vars _VarMap LibMap []
+extract_lib_call_ H Kind H _ _ LibMap []
     :- term_to_string H S, rex_match "^extr_[a-zA-Z0-9_]+$" S
-    ,  spy(is_extrlib_call H LibMap Call)
-    ,  Result = H
-    ,  !
+    ,  is_extrlib_call H LibMap Hdef
+    ,  spy(stylized_type_of Hdef Kind)
     .
-extract_lib_call_ H _Index Call Result _Vars _VarMap LibMap []
+extract_lib_call_ H Kind H _ _ LibMap []
     :- term_to_string H S, rex_match "^[a-zA-Z0-9_]+$" S
-    ,  spy(is_lib_call H LibMap Call)
-    ,  Result = H
-    ,  !
+    ,  is_lib_call H LibMap Hdef
+    ,  spy(stylized_type_of Hdef Kind)
     .
 
 extract_lib_call A Result Vars VarMap LibMap SetList
-    :- spy(extract_lib_call_ A 0 _ A' Vars VarMap LibMap SetList)
+    :- spy(extract_lib_call_ A _ A' Vars VarMap LibMap SetList)
     ,  spy(map_lib_call A' LibMap Result)
     ,  !
     .
@@ -777,13 +843,13 @@ extract_type (lib_app H A) Result Vars VarMap LibMap SetList
     .
 
 extract_type (# X Y) Result Vars VarMap LibMap SetList
-    :- extract_term Y Y' Vars VarMap LibMap YList
-    ,  of Y TY @level, of Y' TY' @level
-    ,  ((name X, map_var X VarMap X', XList = [])
+    :- spy(extract_term Y Y' Vars VarMap LibMap YList)
+    ,  spy(of Y TY @level), spy(of Y' TY' @level)
+    ,  spy((name X, map_var X VarMap X', XList = [])
         , !; pi y\ locDecl y TY => pi s\ locDecl s TY' =>
             extract_type (X y) (X' s) [(var_term _ s)|[(var_term _ y)|Vars]] [(var_mapping y s)|VarMap] LibMap XList)
-    ,  concat [YList, XList] SetList
-    ,  collapse_type (# X' Y') Result Vars VarMap LibMap []
+    ,  spy(concat [YList, XList] SetList)
+    ,  spy(collapse_type (# X' Y') Result Vars VarMap LibMap [])
     .
 
 extract_type extractor_singleton extractor_singleton _ _VarMap _LibMap [] :- !.
@@ -1055,26 +1121,25 @@ reabstract_arg (var_dep_term _ _ _) A H M LibMap Result
     ,  !
     .
 
-type reabstract_lib_call A -> mttTerm -> mttTerm -> list lib_mapping_type -> A -> int -> libraryEntry -> prop.
-reabstract_lib_call (lib_app A B) H M LibMap Result Index Call
-    :- Index' is (Index + 1)
-    ,  spy(reabstract_lib_call A H M LibMap A' Index' Call)
-    ,  spy(get_call_arg_elpi_type Call Index 0 _ VarB)
-    ,  spy(reabstract_arg VarB B H M LibMap B')
+type reabstract_lib_call A -> mttTerm -> mttTerm -> list lib_mapping_type -> A -> list mttTerm -> prop.
+reabstract_lib_call (lib_app A B) H M LibMap Result KindTL
+    :- spy(reabstract_lib_call A H M LibMap A' [KindHD|KindTL])
+    ,  spy(reabstract_arg KindHD B H M LibMap B')
     ,  Result = (lib_app A' B')
     ,  !
     .
-reabstract_lib_call A _H _M LibMap A _Index Call
-    :- is_extrlib_call A LibMap Call
+reabstract_lib_call A _ _ LibMap A Kind
+    :- is_extrlib_call A LibMap Hdef
+    ,  spy(stylized_type_of Hdef Kind)
     ,  !
     .
 
 reabstract_type (lib_app A B) H M LibMap Result
-    :- spy(reabstract_lib_call (lib_app A B) H M LibMap Result 0 _)
+    :- spy(reabstract_lib_call (lib_app A B) H M LibMap Result _)
     ,  !
     .
 reabstract_term (lib_app A B) H M LibMap Result
-    :- spy(reabstract_lib_call (lib_app A B) H M LibMap Result 0 _)
+    :- spy(reabstract_lib_call (lib_app A B) H M LibMap Result _)
     ,  !
     .
 

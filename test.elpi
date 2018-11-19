@@ -504,13 +504,6 @@ type pse_a mttTerm.
 ofType pse_t props ext.
 of pse_a pse_t ext.
 
-typecheckExtr X Type :- testExtr X Result, debug => spy(of Result Type int).
-
-testStEx X A :- testExtr X Term, debug => spy(extract_term Term Result [] [] [] SetList), concat [[Result], SetList] A.
-typecheckStExList [SH|STL] [RH|RTL] :- of SH RH int, typecheckStExList STL RTL, !.
-typecheckStExList [] [].
-typecheckStEx X Type :- testStEx X Result, debug => typecheckStExList Result Type.
-
 testExtr 1 A :- debug => starify_term (id (propId bool_t true_bool true_bool) (id bool_t true_bool)) [] A.
 testExtr 2 A :- debug => starify_term (id (propId singleton star star) (id singleton star)) [] A.
 testExtr 3 A :- debug => starify_term (app (lambda bool_t x\x) true_bool) [] A.
@@ -724,67 +717,9 @@ testExtr 60 A :- debug => starify_term (elim_list
     (y\x\z\ pair_exist singleton (_\extractor_singleton) y extractor_star)
 ) [] A.
 
-translate_program_list [H|TL] LibMap [H'|TL']
-    :- translate_program H LibMap H'
-    ,  translate_program_list TL LibMap TL'
-    .
-translate_program_list [] _ [].
+%% Test infrastructure code
 
-filter_code (extractor_type_lambda B F) Result
-    :- pi Bi\ ofType Bi B int => filter_code (F Bi) Result
-    .
-filter_code (lambda B F) true
-    :- pi x\ locDecl x B => ((F x) = x)
-    .
-filter_code _ false.
-
-filter_code_list [H|TL] Result
-    :- spy(filter_code H Delete)
-    ,  filter_code_list TL TL'
-    ,  ((Delete = true, Result = TL'), !; Result = [H|TL'])
-    .
-filter_code_list [] [].
-
-translate_entry Entry LibMap ExtrEntry OutLib Result
-    :- spy(starify_lib Entry LibMap StarEntry)
-    ,  spy(extract_lib StarEntry ExtrEntry [] [] LibMap ArgMask OutList)
-    ,  spy(translate_lib ExtrEntry LibMap Code)
-%    ,  spy(filter_code_list OutList OutList')
-    ,  spy(translate_program_list OutList LibMap CodeList)
-    ,  concat [[Code], CodeList] Result
-    ,  spy(get_call_signature StarEntry StarEntry')
-    ,  spy(get_call_signature ExtrEntry ExtrEntry')
-    ,  spy(concat [LibMap, [(lib_mapping StarEntry' ExtrEntry' ArgMask)]] OutLib)
-    .
-
-translate_library [Entry|TL] LibMap Result
-    :- translate_entry Entry LibMap ExtrEntry ExtrLib Entry'
-    ,  process_entry Entry Hyp
-    ,  process_entry ExtrEntry ExtrHyp
-    ,  Hyp => ExtrHyp => translate_library TL ExtrLib TL'
-    ,  concat [Entry', TL'] Result
-    .
-translate_library [] _ [].
-
-translate_entry_from_library [Entry|_TL] LibMap 0 Result
-    :- makeline
-    ,  debug => translate_entry Entry LibMap _ _ Result
-%    , debug => pi a\ locDecl a (lib_app setoid singleton) =>
-%        pi b\ locDecl b (lib_app (lib_app (lib_app setoidDep singleton) (_\singleton)) a) => 
-%            spy(of (lib_app (lib_app (lib_app (lib_app setSigma_setoid singleton) (_\singleton)) a) b) Type int)
-    ,  !
-    .
-translate_entry_from_library [Entry|TL] LibMap Index Result
-    :- translate_entry Entry LibMap ExtrEntry ExtrLib _
-    ,  spy(process_entry Entry Hyp)
-    ,  spy(process_entry ExtrEntry ExtrHyp)
-    ,  NewIndex is (Index - 1)
-    ,  Hyp => ExtrHyp => translate_entry_from_library TL ExtrLib NewIndex Result
-    ,  !
-    .
-translate_entry_from_library [] _ _ [].
-
-translib Index Result
+build_library Lib
     :- translateLib L1
     ,  trueLib L2
     ,  propLib L3
@@ -795,20 +730,71 @@ translib Index Result
     ,  forallLib Lforall
     ,  propEqLib LpropEq
     ,  concat [L1, L2, L3, L4, L5, L6, Lforall, Limpl, LpropEq] Lib
+    .
+
+/*
+    translib -Index +Result
+    Index is the index of the n-th library entry whose extraction is being requested
+    Result is the translation of the n-th entry in the target language and its type signature, if present
+    Side effects: just before completing execution it prints out the output of the extraction phase
+*/
+translib Index Result
+    :- build_library Lib
     ,  translate_entry_from_library Lib [] Index Result
     .
 
+/*
+    pack_and_translate_library +Result
+    Result is a list of all the translated entries from the library
+*/
 pack_and_translate_library Result
-    :- translateLib L1
-    ,  trueLib L2
-    ,  propLib L3
-    ,  singletonLib L4
-    ,  setSigmaLib L5
-    ,  setPiLib L6
-    ,  impliesLib Limpl
-    ,  forallLib Lforall
-    ,  propEqLib LpropEq
-    ,  concat [L1, L2, L3, L4, L5, L6, Lforall, Limpl, LpropEq] Lib
+    :- build_library Lib
     ,  debug => translate_library Lib [] Result
+    .
+
+pack_and_process_library Result
+    :- build_library Lib
+    ,  debug => process_library Lib Result
+    .
+
+/*
+    testExtr -X +Term
+    X is the index of the n-th extractor test whose starification is being required
+    Term is the starification of the n-th test
+*/
+%% tests are defined above, I keep the documentation here to cluster it with the other entry-points
+
+/*
+    typecheckExtr -X +Type
+    X is the index of the n-th extractor test whose starification is being required
+    Type is the type of the starification of the n-th test
+*/
+typecheckExtr X Type
+    :- testExtr X Result
+    ,  debug => spy(of Result Type int)
+    .
+
+/*
+    testStEx -X +TermList
+    X is the index of the n-th extractor test whose extraction is being required
+    TermList is the list of extracted terms produced from the n-th test
+*/
+testStEx X TermList
+    :- testExtr X Term
+    ,  debug => spy(extract_term Term Result [] [] [] SetList)
+    ,  concat [[Result], SetList] TermList
+    .
+
+typecheckStExList [SH|STL] [RH|RTL] :- of SH RH int, typecheckStExList STL RTL, !.
+typecheckStExList [] [].
+
+/*
+    typecheckStEx -X +TypeList
+    X is the index of the n-th extractor test whose extraction is being required
+    TypeList is the list of the types of extracted terms produced from the n-th test
+*/
+typecheckStEx X TypeList
+    :- testStEx X Result
+    ,  debug => typecheckStExList Result TypeList
     .
 

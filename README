@@ -1,11 +1,6 @@
 TODO:
-a) test.elpi: splittare in codice di estrazione (un file? merge con extraction.elpi?) + codice di testing (un file) + libreria di tests (un altro file)
-b) commentare i predicati entry-point
-c) code simplification: forzare l'ordine degli argomenti nella locDef&friends
-   passando in input alla process_entry la lista degli argomenti, usandola
-   nel caso base e non facendo più scrivere all'utente lib_app oppure
-   verificando che l'utente abbia scritto i lib_app correttamente
-   (* meglio la seconda per leggibilità della libreria *)
+a) test.elpi: splittare in codice di testing (un file) + libreria di tests (un altro file)
+b) commentare i predicati entry-point (completato per gli entry-point dell'estrazione)
 z) passare a un if-then-else al posto di (a, ! ; b)
 
 FOOD FOR BRAIN:
