@@ -1446,93 +1446,96 @@ starify_term (elim_setSigma Pair M MM) LibMap Result
 
 %% Extraction
 
-collapse_type (setSigma B C) Result _Vars _VarMap _LibMap []
+collapse_type (setSigma B C) Result _ []
     :- conv B extractor_singleton
     ,  conv C (_\extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .
 
-extract_type (setSigma B C) Result Vars VarMap LibMap SetList
-    :- spy(extract_type B B' Vars VarMap LibMap BList)
+extract_type (setSigma B C) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  spy(extract_type B B' Context BList)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap CList))
+            extract_type (C b) (C' d)
+            (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
+            CList))
     ,  spy(concat [CList, BList] SetList)
-    ,  spy(collapse_type (setSigma B' C') Result Vars VarMap LibMap [])
+    ,  spy(collapse_type (setSigma B' C') Result Context [])
     ,  !
     .
 
 %% 1 -> 1 -> 1 x 1  ==>  1
-collapse_term (pair B C BB CC) Result _Vars _VarMap _LibMap []
+collapse_term (pair B C BB CC) Result _ []
     :- isa (pair B C BB CC) (setSigma extractor_singleton (_\ extractor_singleton)) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (pair B C BB CC) Result Vars VarMap LibMap SetList
-    :- extract_term BB BB' Vars VarMap LibMap BBList
-    ,  extract_term CC CC' Vars VarMap LibMap CCList
-    ,  extract_type (setSigma B C) (setSigma B' C') Vars VarMap LibMap BCList
+extract_term (pair B C BB CC) Result Context SetList
+    :- extract_term BB BB' Context BBList
+    ,  extract_term CC CC' Context CCList
+    ,  extract_type (setSigma B C) (setSigma B' C') Context BCList
     ,  concat [CCList, BBList, BCList] SetList
-    ,  spy(collapse_term (pair B' C' BB' CC') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (pair B' C' BB' CC') Result Context [])
     ,  !
     .
 
 %% 1 -> 1  ==>  1
-collapse_term (p1 Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p1 Pair) Result _ []
     :- isa Pair extractor_singleton @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 x 1 -> 1  ==>  1
-collapse_term (p1 Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p1 Pair) Result _ []
     :- isa Pair (setSigma extractor_singleton (_\ extractor_singleton)) @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% N x 1 -> N  ==>  N  (se passato direttamente)
-collapse_term (p1 (pair _B (x\extractor_singleton) BB extractor_star)) Result _Vars _VarMap _LibMap []
+collapse_term (p1 (pair _B (x\extractor_singleton) BB extractor_star)) Result _ []
     :- Result = BB
     ,  !
     .
 
-extract_term (p1 Pair) Result Vars VarMap LibMap SetList
-    :- extract_term Pair Pair' Vars VarMap LibMap SetList
-    ,  spy(collapse_term (p1 Pair') Result Vars VarMap LibMap [])
+extract_term (p1 Pair) Result Context SetList
+    :- extract_term Pair Pair' Context SetList
+    ,  spy(collapse_term (p1 Pair') Result Context [])
     ,  !
     .
 
 %% 1 -> 1  ==>  1
-collapse_term (p2 Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p2 Pair) Result _ []
     :- isa Pair extractor_singleton @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 x 1 -> 1  ==>  1
-collapse_term (p2 Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p2 Pair) Result _ []
     :- isa Pair (setSigma extractor_singleton (_\ extractor_singleton)) @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 x N -> N  ==>  N  (se passato direttamente)
-collapse_term (p2 (pair extractor_singleton _C extractor_star CC )) Result _Vars _VarMap _LibMap []
+collapse_term (p2 (pair extractor_singleton _C extractor_star CC )) Result _ []
     :- Result = CC
     ,  !
     .
 
-extract_term (p2 Pair) Result Vars VarMap LibMap SetList
-    :- extract_term Pair Pair' Vars VarMap LibMap SetList
-    ,  spy(collapse_term (p2 Pair') Result Vars VarMap LibMap [])
+extract_term (p2 Pair) Result Context SetList
+    :- extract_term Pair Pair' Context SetList
+    ,  spy(collapse_term (p2 Pair') Result Context [])
     ,  !
     .
 
 %% 1 -> A'  ==>  1 x 1 -> A' (preserve_complexity)
-collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
+collapse_term (elim_setSigma Pair M MM) Result _ []
     :- spy(isa Pair extractor_singleton @level)
     ,  is_complexity_altered (elim_setSigma Pair M MM)
     ,  Result = (elim_setSigma (pair extractor_singleton (_\extractor_singleton) extractor_star extractor_star) M MM)
@@ -1540,14 +1543,14 @@ collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
     .
 
 %% 1 -> A'  ==>  A'
-collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
+collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
     :- spy(isa Pair extractor_singleton @level)
-    ,  spy(extract_term (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList)
+    ,  spy(extract_term (MM extractor_star extractor_star) Result Context ElimList)
     ,  !
     .
 
 %% 1 x 1 -> A'  ==>  1 x 1 -> A' (preserve_complexity)
-collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
+collapse_term (elim_setSigma Pair M MM) Result _ []
     :- spy(isa Pair (setSigma extractor_singleton (_\ extractor_singleton)) @level)
     ,  is_complexity_altered (elim_setSigma Pair M MM)
     ,  Result = (elim_setSigma Pair M MM)
@@ -1556,49 +1559,56 @@ collapse_term (elim_setSigma Pair M MM) Result _Vars _VarMap _LibMap []
 
 
 %% 1 x 1 -> A'  ==>  A'
-collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
+collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
     :- spy(isa Pair (setSigma extractor_singleton (_\ extractor_singleton)) @level)
-    ,  extract_term (MM extractor_star extractor_star) Result Vars VarMap LibMap ElimList
-    ,  !
-    .
-
-%% N x 1 -> A'  ==>  N -> A'
-collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
-    :- isa Pair (setSigma B (_\ extractor_singleton)) @level
-    ,  spy(pi b\ locDecl b B =>
-        extract_term (app (lambda B (b\ MM b extractor_star)) (p1 Pair)) Result Vars VarMap LibMap ElimList)
-    ,  !
-    .
-
-%% 1 x N -> A'  ==>  N -> A'
-collapse_term (elim_setSigma Pair _M MM) Result Vars VarMap LibMap ElimList
-    :- isa Pair (setSigma extractor_singleton C) @level
-    ,  extract_term (app (lambda (C extractor_star) (MM extractor_star)) (p2 Pair)) Result Vars VarMap LibMap ElimList
+    ,  extract_term (MM extractor_star extractor_star) Result Context ElimList
     ,  !
     .
 
 %% N x N -> 1  ==>  1
-collapse_term (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
+collapse_term (elim_setSigma Pair M _MM) Result _ []
     :- conv (M Pair) extractor_singleton
-    ,  extract_term (MM (p1 Pair) (p2 Pair)) Result Vars VarMap LibMap SetList
+    ,  Result = extractor_star
     ,  !
     .
 
-extract_term (elim_setSigma Pair M MM) Result Vars VarMap LibMap SetList
-    :- spy(extract_term Pair Pair' Vars VarMap LibMap PairList)
+%% N x 1 -> A'  ==>  N -> A'
+collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
+    :- isa Pair (setSigma B (_\ extractor_singleton)) @level
+    ,  spy(pi b\ locDecl b B =>
+        extract_term (app (lambda B (b\ MM b extractor_star)) (p1 Pair)) Result Context ElimList)
+    ,  !
+    .
+
+%% 1 x N -> A'  ==>  N -> A'
+collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
+    :- isa Pair (setSigma extractor_singleton C) @level
+    ,  extract_term (app (lambda (C extractor_star) (MM extractor_star)) (p2 Pair)) Result Context ElimList
+    ,  !
+    .
+
+extract_term (elim_setSigma Pair M MM) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  spy(extract_term Pair Pair' Context PairList)
     ,  isa Pair (setSigma B C) @level
     ,  ((isa Pair' extractor_singleton @level
         ,    B' = extractor_singleton, C' = (_\extractor_singleton))
         , !; isa Pair' (setSigma B' C') @level)
     ,  ((name M, map_var M VarMap M', MList = [])
         , !; pi p\ locDecl p (setSigma B C) => pi q\ locDecl q (setSigma B' C') =>
-            spy(extract_type (M p) (M' q) [(var_term _ q)|[(var_term _ p)|Vars]] [(var_mapping p q)| VarMap] LibMap MList))
+            spy(extract_type (M p) (M' q)
+                (context [var_term _ q|[var_term _ p|Vars]] [var_mapping p q| VarMap] LibMap)
+                MList))
     ,  ((pi b\ locDecl b B => pi d\ locDecl d B' =>
             (name (MM b), map_var (MM b) VarMap (MM' d), MMList = []))
         , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => 
              pi d\ pi e\ locDecl d B' => locDecl e (C' d) =>
-                spy(extract_term (MM b c) (MM' d e) [(var_term _ e)|[(var_term _ d)|[(var_term _ c)|[(var_term _ b)|Vars]]]] [(var_mapping c e)|[(var_mapping b d)|VarMap]] LibMap MMList))
-    ,  spy(collapse_term (elim_setSigma Pair' M' MM') Result Vars VarMap LibMap ElimList)
+                spy(extract_term (MM b c) (MM' d e)
+                    (context [var_term _ e|[var_term _ d|[var_term _ c|[var_term _ b|Vars]]]]
+                             [var_mapping c e|[var_mapping b d|VarMap]]
+                             LibMap)
+                    MMList))
+    ,  spy(collapse_term (elim_setSigma Pair' M' MM') Result Context ElimList)
     ,  spy(concat [ElimList, MMList, MList, PairList] SetList)
     ,  !
     .
@@ -1698,11 +1708,12 @@ translate_elim_setSigma_to haskell Pair' MM' Result
 
 translate_term (elim_setSigma Pair _M MM) LibMap Result
     :- translate_term Pair LibMap Pair'
-    ,  isa Pair (setSigma B C) @level
-    ,  ((pi b\ locDecl b B => (name (MM b), term_to_string (MM b) SMM, translate_term b LibMap Sb)
+    ,  ((pi b\ locDecl b B_ => (name (MM b), term_to_string (MM b) SMM, translate_term b LibMap Sb)
             , translate_elim_setSigma_partial_abs_to @language SMM Sb MM')
-        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) =>
-                (spy(translate_term (MM b c) LibMap SMM), translate_term b LibMap Sb, translate_term c LibMap Sc)
+        , !; pi b\ pi c\ locDecl b B_ => locDecl c (C_ b) =>
+                (spy(translate_term (MM b c) LibMap SMM)
+                , translate_term b LibMap Sb
+                , translate_term c LibMap Sc)
             , translate_elim_setSigma_abs_to @language SMM Sb Sc MM')
     ,  translate_elim_setSigma_to @language Pair' MM' Result
     ,  !

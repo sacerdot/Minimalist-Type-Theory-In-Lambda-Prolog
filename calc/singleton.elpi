@@ -177,24 +177,27 @@ starify_term (elim_singleton Star C CC) LibMap Result
 
 %% Extraction
 
-extract_type singleton singleton _ _ _ [] :- !.
+extract_type singleton singleton _ [] :- !.
 
-extract_term star star _ _ _ [] :- !.
+extract_term star star _ [] :- !.
 
 %% 1 -> 1  ==>  1
-collapse_term (elim_singleton Star C _CC) Result _Vars _VarMap _LibMap []
+collapse_term (elim_singleton Star C _CC) Result _ []
     :- conv (C Star) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (elim_singleton Star C CC) Result Vars VarMap LibMap SetList
-    :- extract_term Star Star' Vars VarMap LibMap StarList
+extract_term (elim_singleton Star C CC) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  extract_term Star Star' Context StarList
     ,  ((name C, map_var C VarMap C')
-        , !; pi s\ locDecl s singleton => extract_type (C s) (C' s) [(var_term _ s)|Vars] VarMap LibMap CList)
-    ,  extract_term CC CC' Vars VarMap LibMap CCList
+        , !; pi s\ locDecl s singleton => extract_type (C s) (C' s)
+                                          (context [var_term _ s|Vars] VarMap LibMap)
+                                          CList)
+    ,  extract_term CC CC' Context CCList
     ,  concat [CCList, CList, StarList] SetList
-    ,  spy(collapse_term (elim_singleton Star' C' CC') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (elim_singleton Star' C' CC') Result Context [])
     ,  !
     .
 

@@ -102,49 +102,56 @@ starify_term (elim_list L List LA LL) LibMap Result
 
 %% Extraction
 
-extract_type (list C) Result Vars VarMap LibMap SetList
-    :- extract_type C C' Vars VarMap LibMap SetList
-    ,  collapse_type (list C') Result Vars VarMap LibMap []
+extract_type (list C) Result Context SetList
+    :- extract_type C C' Context SetList
+    ,  collapse_type (list C') Result Context []
     ,  !
     .
 
-extract_term (list_empty C) Result Vars VarMap LibMap SetList
-    :- spy(extract_type C C' Vars VarMap LibMap SetList)
-    ,  spy(collapse_term (list_empty C') Result Vars VarMap LibMap [])
+extract_term (list_empty C) Result Context SetList
+    :- spy(extract_type C C' Context SetList)
+    ,  spy(collapse_term (list_empty C') Result Context [])
     ,  !
     .
 
-extract_term (list_cons C Head Tail) Result Vars VarMap LibMap SetList
-    :- spy(extract_type C C' Vars VarMap LibMap CList)
-    ,  spy(extract_term Head Head' Vars VarMap LibMap HeadList)
-    ,  spy(extract_term Tail Tail' Vars VarMap LibMap TailList)
+extract_term (list_cons C Head Tail) Result Context SetList
+    :- spy(extract_type C C' Context CList)
+    ,  spy(extract_term Head Head' Context HeadList)
+    ,  spy(extract_term Tail Tail' Context TailList)
     ,  concat [TailList, HeadList, CList] SetList
-    ,  spy(collapse_term (list_cons C' Head' Tail') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (list_cons C' Head' Tail') Result Context [])
     ,  !
     .
 
 %% N -> 1  ==>  1
-collapse_term (elim_list L List _LA _LL) Result _Vars _VarMap _LibMap []
+collapse_term (elim_list L List _LA _LL) Result _ []
     :- conv (L List) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (elim_list L List LA LL) Result Vars VarMap LibMap SetList
-    :- extract_term List List' Vars VarMap LibMap ListList
+extract_term (elim_list L List LA LL) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  extract_term List List' Context ListList
     ,  isa List (list C) @level
     ,  isa List' (list C') @level
     , ((name L, map_var L VarMap L', LList = [])
         , !; pi z\ locDecl z (list C) => pi s\ locDecl s (list C') => 
-            extract_type (L z) (L' s) [(var_term _ s)|[(var_term _ z)|Vars]] [(var_mapping z s)|VarMap] LibMap LList)
-    ,  spy(extract_term LA LA' Vars VarMap LibMap LAList)
+            extract_type (L z) (L' s)
+            (context [var_term _ s|[var_term _ z|Vars]] [var_mapping z s|VarMap] LibMap)
+            LList)
+    ,  spy(extract_term LA LA' Context LAList)
     ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) =>
          pi b\ locDecl b C' => pi a\ locDecl a (list C') =>
             (name (LL y x), map_var (LL y x) VarMap (LL' b a), LLList = []))
         , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
              pi b\ locDecl b C' => pi a\ locDecl a (list C') => pi c\ locDecl c (L' a) =>
-            extract_term (LL y x z) (LL' b a c) [(var_term _ z)|[(var_term _ x)|[(var_term _ y)|[(var_term _ c)|[(var_term _ a)|[(var_term _ b)|Vars]]]]]] [(var_mapping z c)|[(var_mapping x a)|[(var_mapping y b)|VarMap]]] LibMap LLList)
-    ,  spy(collapse_term (elim_list L' List' LA' LL') Result Vars VarMap LibMap ElimList)
+            extract_term (LL y x z) (LL' b a c)
+            (context [var_term _ z|[var_term _ x|[var_term _ y|[var_term _ c|[var_term _ a|[var_term _ b|Vars]]]]]]
+                     [var_mapping z c|[var_mapping x a|[var_mapping y b|VarMap]]]
+                     LibMap)
+            LLList)
+    ,  spy(collapse_term (elim_list L' List' LA' LL') Result Context ElimList)
     ,  spy(concat [ElimList, LLList, LAList, LList, ListList] SetList)
     ,  !
     .
@@ -218,9 +225,8 @@ translate_elim_list_to haskell List' LA' LL' Result
 translate_term (elim_list L List LA LL) LibMap Result
     :- translate_term List LibMap List'
     ,  translate_term LA LibMap LA'
-    ,  of List (list C) @level
     ,  ((name LL, term_to_string LL LL')
-        , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => (translate_term (LL y x z) LibMap SLL, translate_term y LibMap Sy, translate_term x LibMap Sx, translate_term z LibMap Sz)
+        , !; pi y\ locDecl y C_ => pi x\ locDecl x (list C_) => pi z\ locDecl z (L x) => (translate_term (LL y x z) LibMap SLL, translate_term y LibMap Sy, translate_term x LibMap Sx, translate_term z LibMap Sz)
             , translate_elim_list_abs_to @language SLL Sy Sx Sz Result)
     ,  translate_elim_list_to @language List' LA' LL' Result
     ,  !

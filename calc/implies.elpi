@@ -277,39 +277,43 @@ starify_term (impl_app Lam X) LibMap Result
 
 %% Extraction
 
-collapse_type (implies B C) Result _Vars _VarMap _LibMap []
+collapse_type (implies B C) Result _ []
     :- conv B extractor_singleton
     ,  conv C extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .
 
-extract_type (implies B C) Result Vars VarMap LibMap SetList
-    :- spy(extract_type B B' Vars VarMap LibMap BList)
-    ,  spy(extract_type C C' Vars VarMap LibMap CList)
+extract_type (implies B C) Result Context SetList
+    :- spy(extract_type B B' Context BList)
+    ,  spy(extract_type C C' Context CList)
     ,  concat [CList, BList] SetList
-    ,  spy(collapse_type (implies B' C') Result Vars VarMap LibMap [])
+    ,  spy(collapse_type (implies B' C') Result Context [])
     ,  !
     .
 
 %% (1 -> 1) -> C (1 -> 1)  ==>  1 -> C 1
-collapse_term (impl_lam B F) Result _Vars _VarMap _LibMap []
+collapse_term (impl_lam B F) Result _ []
     :- isa (impl_lam B F) (implies extractor_singleton extractor_singleton) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (impl_lam B F) Result Vars VarMap LibMap SetList
-    :- spy(extract_type B B' Vars VarMap LibMap BList)
+extract_term (impl_lam B F) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  spy(extract_type B B' Context BList)
     ,  ((name F, map_var F VarMap F', FList = [])
-        , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' => extract_term (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap FList))
+        , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
+            extract_term (F b) (F' d)
+            (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
+            FList))
     ,  concat [FList, BList] SetList
-    ,  spy(collapse_term (impl_lam B' F') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (impl_lam B' F') Result Context [])
     ,  !
     .
 
 %% 1  ==>  1  (1)
-collapse_term (impl_app Lam X) Result _Vars _VarMap _LibMap []
+collapse_term (impl_app Lam X) Result _ []
     :- isa Lam extractor_singleton @level
     ,  isa X extractor_singleton @level
     ,  Result = extractor_star
@@ -317,17 +321,17 @@ collapse_term (impl_app Lam X) Result _Vars _VarMap _LibMap []
     .
 
 %% 1 -> 1  ==>  1  (1)
-collapse_term (impl_app Lam X) Result _Vars _VarMap _LibMap []
+collapse_term (impl_app Lam X) Result _ []
     :- isa Lam (implies extractor_singleton extractor_singleton) @level
     ,  isa X extractor_singleton @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (impl_app Lam X) Result Vars VarMap LibMap SetList
-    :- spy(extract_term Lam Lam' Vars VarMap LibMap LamList)
-    ,  spy(extract_term X X' Vars VarMap LibMap XList)
-    ,  spy(collapse_term (impl_app Lam' X') Result Vars VarMap LibMap [])
+extract_term (impl_app Lam X) Result Context SetList
+    :- spy(extract_term Lam Lam' Context LamList)
+    ,  spy(extract_term X X' Context XList)
+    ,  spy(collapse_term (impl_app Lam' X') Result Context [])
     ,  concat [XList, LamList] SetList
     ,  !
     .

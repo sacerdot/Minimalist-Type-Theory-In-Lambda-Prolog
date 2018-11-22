@@ -279,21 +279,21 @@ translate_term_arg (var_dep_term _ _ _) A LibMap Result
     ,  !
     .
 
-translate_lib_call_term (lib_app H A) LibMap KindTL Result
-    :- spy(translate_lib_call_term H LibMap [KindHD|KindTL] H')
+translate_lib_call_term (lib_app H A) LibMap Result KindTL
+    :- spy(translate_lib_call_term H LibMap H' [KindHD|KindTL])
     ,  spy(translate_term_arg KindHD A LibMap A')
     ,  ((A' = "", Result is H'), !; Result is "(" ^ H' ^ " " ^ A' ^ ")")
     ,  !
     .
-translate_lib_call_term H LibMap Kind Result
+translate_lib_call_term H LibMap Result Kind
     :- is_extrlib_call H LibMap Hdef
-    ,  spy(stylized_type_of Hdef Kind)
+    ,  spy(stylized_type_of Hdef _ Kind)
     ,  term_to_string H Result
     ,  !
     .
 
 translate_term (lib_app H A) LibMap Result
-    :- spy(translate_lib_call_term (lib_app H A) LibMap _ Result)
+    :- spy(translate_lib_call_term (lib_app H A) LibMap Result _)
     ,  !
     .
 
@@ -319,15 +319,15 @@ translate_type_arg (var_dep_term _ _ _) A LibMap Result
     ,  !
     .
 
-translate_lib_call_type  (lib_app H A) LibMap KindTL Result
-    :- spy(translate_lib_call_type  H LibMap [KindHD|KindTL] H')
+translate_lib_call_type  (lib_app H A) LibMap Result KindTL
+    :- spy(translate_lib_call_type  H LibMap H' [KindHD|KindTL])
     ,  spy(translate_type_arg KindHD A LibMap A')
     ,  ((A' = "", Result is H'), !; Result is H' ^ " " ^ A')
     ,  !
     .
-translate_lib_call_type H LibMap Kind Result
+translate_lib_call_type H LibMap Result Kind
     :- is_extrlib_call H LibMap Hdef
-    ,  spy(stylized_type_of Hdef Kind)
+    ,  spy(stylized_type_of Hdef _ Kind)
     ,  term_to_string H Result
     ,  !
     .
@@ -341,8 +341,13 @@ translate_lib_call_type_to haskell Call Result
     ,  !
     .
 translate_type (lib_app H A) LibMap Result
-    :- spy(translate_lib_call_type (lib_app H A) LibMap _ LibCall)
+    :- spy(translate_lib_call_type (lib_app H A) LibMap LibCall _)
     ,  translate_lib_call_type_to @language LibCall Result
+    ,  !
+    .
+
+translate_term (fixMe A _) _ Result
+    :- (translate_dummy_to @language A Result)
     ,  !
     .
 

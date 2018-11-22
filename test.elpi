@@ -504,6 +504,7 @@ type pse_a mttTerm.
 ofType pse_t props ext.
 of pse_a pse_t ext.
 
+
 testExtr 1 A :- debug => starify_term (id (propId bool_t true_bool true_bool) (id bool_t true_bool)) [] A.
 testExtr 2 A :- debug => starify_term (id (propId singleton star star) (id singleton star)) [] A.
 testExtr 3 A :- debug => starify_term (app (lambda bool_t x\x) true_bool) [] A.
@@ -717,6 +718,7 @@ testExtr 60 A :- debug => starify_term (elim_list
     (y\x\z\ pair_exist singleton (_\extractor_singleton) y extractor_star)
 ) [] A.
 
+
 %% Test infrastructure code
 
 build_library Lib
@@ -781,7 +783,7 @@ typecheckExtr X Type
 */
 testStEx X TermList
     :- testExtr X Term
-    ,  debug => spy(extract_term Term Result [] [] [] SetList)
+    ,  debug => spy(extract_term Term Result (context [] [] []) SetList)
     ,  concat [[Result], SetList] TermList
     .
 

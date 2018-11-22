@@ -1908,14 +1908,14 @@ starify_term (app Lam X) LibMap Result
 %% Extraction
 
 %% (A' -> 1)  ==>  1
-collapse_type (setPi _B C) Result _Vars _VarMap _LibMap []
+collapse_type (setPi _B C) Result _ []
     :- conv C (_\extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .
 
 %% (1 -> A')  ==>  (1 -> A') (preserve_complexity)
-collapse_type (setPi B C) Result _Vars _VarMap _LibMap []
+collapse_type (setPi B C) Result _ []
     :- conv B extractor_singleton
     ,  is_complexity_altered (setPi B C)
     ,  Result = (setPi B C)
@@ -1923,31 +1923,34 @@ collapse_type (setPi B C) Result _Vars _VarMap _LibMap []
     .
 
 %% (1 -> A')  ==>  A'
-collapse_type (setPi B C) Result Vars VarMap LibMap SetList
+collapse_type (setPi B C) Result Context SetList
     :- conv B extractor_singleton
-    ,  spy(extract_type (C extractor_star) Result Vars VarMap LibMap SetList)
+    ,  spy(extract_type (C extractor_star) Result Context SetList)
     ,  !
     .
 
-extract_type (setPi B C) Result Vars VarMap LibMap SetList
-    :- spy(extract_type B B' Vars VarMap LibMap BList)
+extract_type (setPi B C) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  spy(extract_type B B' Context BList)
     ,  ((name C, map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_type (C b) (C' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap CList))
-    ,  spy(collapse_type (setPi B' C') Result Vars VarMap LibMap PiList)
+            extract_type (C b) (C' d)
+            (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
+            CList))
+    ,  spy(collapse_type (setPi B' C') Result Context PiList)
     ,  spy(concat [PiList, CList, BList] SetList)
     ,  !
     .
 
 %% (A' -> 1)  ==>  1
-collapse_term (lambda B F) Result _Vars _VarMap _LibMap []
+collapse_term (lambda B F) Result _ []
     :- spy(isa (lambda B F) (setPi B (_\ extractor_singleton)) @level)
     ,  Result = extractor_star
     ,  !
     .
 
 %% (1 -> A')  ==>  (1 -> A') (preserve_complexity)
-collapse_term (lambda B F) Result _Vars _VarMap _LibMap []
+collapse_term (lambda B F) Result _ []
     :- spy(isa (lambda B F) (setPi extractor_singleton _) @level)
     ,  spy(is_complexity_altered (lambda B F))
     ,  Result = (lambda B F)
@@ -1955,38 +1958,41 @@ collapse_term (lambda B F) Result _Vars _VarMap _LibMap []
     .
 
 %% (1 -> A')  ==>  A'
-collapse_term (lambda B F) Result Vars VarMap LibMap LamList
+collapse_term (lambda B F) Result Context LamList
     :- spy(isa (lambda B F) (setPi extractor_singleton _) @level)
-    ,  spy(extract_term (F extractor_star) Result Vars VarMap LibMap LamList)
+    ,  spy(extract_term (F extractor_star) Result Context LamList)
     ,  !
     .
 
-extract_term (lambda B F) Result Vars VarMap LibMap SetList
-    :- spy(extract_type B B' Vars VarMap LibMap BList)
+extract_term (lambda B F) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  spy(extract_type B B' Context BList)
     ,  ((name F, spy(map_var F VarMap F', FList = []))
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
-            extract_term (F b) (F' d) [(var_term _ d)|[(var_term _ b)|Vars]] [(var_mapping b d)|VarMap] LibMap FList))
-    ,  spy(collapse_term (lambda B' F') Result Vars VarMap LibMap LamList)
+            extract_term (F b) (F' d)
+            (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
+            FList))
+    ,  spy(collapse_term (lambda B' F') Result Context LamList)
     ,  spy(concat [LamList, FList, BList] SetList)
     ,  !
     .
 
 %% 1  ==>  1  (A')
-collapse_term (app Lam _X) Result _Vars _VarMap _LibMap []
+collapse_term (app Lam _X) Result _ []
     :- spy(isa Lam extractor_singleton @level)
     ,  spy(Result = extractor_star)
     ,  !
     .
 
 %% A' -> 1  ==>  1  (A')
-collapse_term (app Lam _X) Result _Vars _VarMap _LibMap []
+collapse_term (app Lam _X) Result _ []
     :- spy(isa Lam (setPi _ (_\extractor_singleton)) @level)
     ,  spy(Result = extractor_star)
     ,  !
     .
 
 %% 1 -> A'  ==>  1 -> A' (preserve_complexity)
-collapse_term (app Lam X) Result _Vars _VarMap _LibMap []
+collapse_term (app Lam X) Result _ []
     :- spy(isa X extractor_singleton @level)
     ,  spy(is_complexity_altered (app Lam X))
     ,  spy(Result = (app Lam X))
@@ -1994,16 +2000,16 @@ collapse_term (app Lam X) Result _Vars _VarMap _LibMap []
     .
 
 %% 1 -> A'  ==>  A'
-collapse_term (app Lam X) Result _Vars _VarMap _LibMap []
+collapse_term (app Lam X) Result _ []
     :- spy(isa X extractor_singleton @level)
     ,  spy(Result = Lam)
     ,  !
     .
 
-extract_term (app Lam X) Result Vars VarMap LibMap SetList
-    :- spy(extract_term Lam Lam' Vars VarMap LibMap LamList)
-    ,  spy(extract_term X X' Vars VarMap LibMap XList)
-    ,  spy(collapse_term (app Lam' X') Result Vars VarMap LibMap AppList)
+extract_term (app Lam X) Result Context SetList
+    :- spy(extract_term Lam Lam' Context LamList)
+    ,  spy(extract_term X X' Context XList)
+    ,  spy(collapse_term (app Lam' X') Result Context AppList)
     ,  spy(concat [AppList, XList, LamList] SetList)
     ,  !
     .

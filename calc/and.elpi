@@ -80,75 +80,75 @@ starify_term (p2_and Pair) LibMap Result
 
 %% Extraction
 
-collapse_type (and B C) Result _Vars _VarMap _LibMap []
+collapse_type (and B C) Result _ []
     :- conv B extractor_singleton
     ,  conv C extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .
 
-extract_type (and B C) Result Vars VarMap LibMap SetList
-    :- extract_type B B' Vars VarMap LibMap BList
-    ,  extract_type C C' Vars VarMap LibMap CList
+extract_type (and B C) Result Context SetList
+    :- extract_type B B' Context BList
+    ,  extract_type C C' Context CList
     ,  concat [CList, BList] SetList
-    ,  spy(collapse_type (and B' C') Result Vars VarMap LibMap [])
+    ,  spy(collapse_type (and B' C') Result Context [])
     ,  !
     .
 
 %% 1 -> 1 -> 1 x 1  ==>  1
-collapse_term (pair_and B C BB CC) Result _Vars _VarMap _LibMap []
+collapse_term (pair_and B C BB CC) Result _ []
     :- isa (pair_and B C BB CC) (and extractor_singleton extractor_singleton) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (pair_and B C BB CC) Result Vars VarMap LibMap SetList
-    :- extract_term BB BB' Vars VarMap LibMap BBList
-    ,  extract_term CC CC' Vars VarMap LibMap CCList
-    ,  extract_type B B' Vars VarMap LibMap BList
-    ,  extract_type C C' Vars VarMap LibMap CList
+extract_term (pair_and B C BB CC) Result Context SetList
+    :- extract_term BB BB' Context BBList
+    ,  extract_term CC CC' Context CCList
+    ,  extract_type B B' Context BList
+    ,  extract_type C C' Context CList
     ,  concat [CCList, BBList, CList, BList] SetList
-    ,  spy(collapse_term (pair_and B' C' BB' CC') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (pair_and B' C' BB' CC') Result Context [])
     ,  !
     .
 
 %% 1 -> 1  ==>  1
-collapse_term (p1_and Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p1_and Pair) Result _ []
     :- isa Pair extractor_singleton @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 x 1 -> 1  ==>  1
-collapse_term (p1_and Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p1_and Pair) Result _ []
     :- isa Pair (and extractor_singleton extractor_singleton) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (p1_and Pair) Result Vars VarMap LibMap SetList
-    :- extract_term Pair Pair' Vars VarMap LibMap SetList
-    ,  spy(collapse_term (p1_and Pair') Result Vars VarMap LibMap [])
+extract_term (p1_and Pair) Result Context SetList
+    :- extract_term Pair Pair' Context SetList
+    ,  spy(collapse_term (p1_and Pair') Result Context [])
     ,  !
     .
 
 %% 1 -> 1  ==>  1
-collapse_term (p2_and Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p2_and Pair) Result _ []
     :- isa Pair extractor_singleton @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 x 1 -> 1  ==>  1
-collapse_term (p2_and Pair) Result _Vars _VarMap _LibMap []
+collapse_term (p2_and Pair) Result _ []
     :- isa Pair (and extractor_singleton extractor_singleton) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (p2_and Pair) Result Vars VarMap LibMap SetList
-    :- extract_term Pair Pair' Vars VarMap LibMap SetList
-    ,  spy(collapse_term (p2_and Pair') Result Vars VarMap LibMap [])
+extract_term (p2_and Pair) Result Context SetList
+    :- extract_term Pair Pair' Context SetList
+    ,  spy(collapse_term (p2_and Pair') Result Context [])
     ,  !
     .
 

@@ -105,84 +105,91 @@ starify_term (elim_or C W Cl Cr) LibMap Result
 
 %% Extraction
 
-collapse_type (or B C) Result _Vars _VarMap _LibMap []
+collapse_type (or B C) Result _ []
     :- conv B extractor_singleton
     ,  conv C extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .
 
-extract_type (or B C) Result Vars VarMap LibMap SetList
-    :- extract_type B B' Vars VarMap LibMap BList
-    ,  extract_type C C' Vars VarMap LibMap CList
+extract_type (or B C) Result Context SetList
+    :- extract_type B B' Context BList
+    ,  extract_type C C' Context CList
     ,  concat [CList, BList] SetList
-    ,  spy(collapse_type (or B' C') Result Vars VarMap LibMap [])
+    ,  spy(collapse_type (or B' C') Result Context [])
     ,  !
     .
 
 %% 1 -> 1 + 1  ==>  1
-collapse_term (inl_or A B AA) Result _Vars _VarMap _LibMap []
+collapse_term (inl_or A B AA) Result _ []
     :- isa (inl_or A B AA) (or extractor_singleton extractor_singleton) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (inl_or A B AA) Result Vars VarMap LibMap SetList
-    :- spy(extract_term AA AA' Vars VarMap LibMap AAList)
-    ,  spy(extract_type A A' Vars VarMap LibMap AList)
-    ,  spy(extract_type B B' Vars VarMap LibMap BList)
+extract_term (inl_or A B AA) Result Context SetList
+    :- spy(extract_term AA AA' Context AAList)
+    ,  spy(extract_type A A' Context AList)
+    ,  spy(extract_type B B' Context BList)
     ,  concat [AAList, BList, AList] SetList
-    ,  spy(collapse_term (inl_or A' B' AA') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (inl_or A' B' AA') Result Context [])
     ,  !
     .
 
 %% 1 -> 1 + 1  ==>  1
-collapse_term (inr_or A B BB) Result _Vars _VarMap _LibMap []
+collapse_term (inr_or A B BB) Result _ []
     :- isa (inr_or A B BB) (or extractor_singleton extractor_singleton) @level
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (inr_or A B BB) Result Vars VarMap LibMap SetList
-    :- spy(extract_term BB BB' Vars VarMap LibMap BBList)
-    ,  spy(extract_type A A' Vars VarMap LibMap AList)
-    ,  spy(extract_type B B' Vars VarMap LibMap BList)
+extract_term (inr_or A B BB) Result Context SetList
+    :- spy(extract_term BB BB' Context BBList)
+    ,  spy(extract_type A A' Context AList)
+    ,  spy(extract_type B B' Context BList)
     ,  concat [BBList, BList, AList] SetList
-    ,  spy(collapse_term (inr_or A' B' BB') Result Vars VarMap LibMap [])
+    ,  spy(collapse_term (inr_or A' B' BB') Result Context [])
     ,  !
     .
 
 %% 1  ==>  1  (1 + 1)
-collapse_term (elim_or _C W (_\extractor_star) (_\extractor_star)) Result _Vars _VarMap _LibMap []
+collapse_term (elim_or _C W (_\extractor_star) (_\extractor_star)) Result _ []
     :- isa W extractor_singleton @level
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 -> 1  ==>  1  (1 + B')
-collapse_term (elim_or _C (inl_or A _B _AA) (_\extractor_star) _Cr) Result _Vars _VarMap _LibMap []
+collapse_term (elim_or _C (inl_or A _B _AA) (_\extractor_star) _Cr) Result _ []
     :- conv A extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
 %% 1 -> 1  ==>  1  (B' + 1)
-collapse_term (elim_or _C (inr_or _A B _BB) _Cl (_\extractor_star)) Result _Vars _VarMap _LibMap []
+collapse_term (elim_or _C (inr_or _A B _BB) _Cl (_\extractor_star)) Result _ []
     :- conv B extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
-extract_term (elim_or C W Cl Cr) Result Vars VarMap LibMap SetList
-    :- extract_term W W' Vars VarMap LibMap WList
-    ,  extract_type C C' Vars VarMap LibMap CList
+extract_term (elim_or C W Cl Cr) Result Context SetList
+    :- Context = (context Vars VarMap LibMap)
+    ,  extract_term W W' Context WList
+    ,  extract_type C C' Context CList
     ,  isa W (or L R) @level
     ,  isa W' (or L' R') @level
     ,  ((name Cl, map_var Cl VarMap Cl', ClList = [])
-        , !; pi l\ locDecl l L => pi i\ locDecl i L' => extract_term (Cl l) (Cl' i) [(var_term _ i)|[(var_term _ l)|Vars]] [(var_mapping l i)|VarMap] LibMap ClList)
+        , !; pi l\ locDecl l L => pi i\ locDecl i L' =>
+            extract_term (Cl l) (Cl' i)
+            (context [var_term _ i|[var_term _ l|Vars]] [var_mapping l i|VarMap] LibMap)
+            ClList)
     ,  ((name Cr, map_var Cr VarMap Cr', CrList = [])
-        , !; pi r\ locDecl r R => pi f\ locDecl f R' => extract_term (Cr r) (Cr' f) [(var_term _ f)|[(var_term _ r)|Vars]] [(var_mapping r f)|VarMap] LibMap CrList)
-    ,  spy(collapse_term (elim_or C' W' Cl' Cr') Result Vars VarMap LibMap ElimList)
+        , !; pi r\ locDecl r R => pi f\ locDecl f R' =>
+            extract_term (Cr r) (Cr' f)
+            (context [var_term _ f|[var_term _ r|Vars]] [var_mapping r f|VarMap] LibMap)
+            CrList)
+    ,  spy(collapse_term (elim_or C' W' Cl' Cr') Result Context ElimList)
     ,  concat [ElimList, CrList, ClList, CList, WList] SetList
     ,  !
     .
