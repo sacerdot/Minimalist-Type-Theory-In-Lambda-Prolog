@@ -600,14 +600,14 @@ process_entry (univProp F) Hyp2 :-
    Hyp2 = (pi Bi \ Hyp Bi :- spy (isaType Bi props int)).
 
 process_entry (univDepPi Bi F) Hyp2 :-
-   spy (pi Ci \ (pi x \ ofType (Ci x) set int :- of x Bi int) =>
+   spy (pi Ci \ (pi x \ ofType (Ci x) set int :- isa x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) set int :- of x Bi int))
                 % , spy(pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y)  % This should not be needed, right?
           ).
 process_entry (univDepProp Bi F) Hyp2 :-
-   spy (pi Ci \ (pi x \ ofType (Ci x) props int :- of x Bi int) =>
+   spy (pi Ci \ (pi x \ ofType (Ci x) props int :- isa x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) props int :- of x Bi int))
@@ -615,7 +615,7 @@ process_entry (univDepProp Bi F) Hyp2 :-
           ).
 	  
 process_entry (univDepCol Bi F) Hyp2 :-
-   spy (pi Ci \ (pi x \ ofType (Ci x) col int :- of x Bi int) =>
+   spy (pi Ci \ (pi x \ ofType (Ci x) col int :- isa x Bi int) =>
                 (pi x \ pi y \ dconv (Ci x) (Ci y) :- conv x y) =>
                 spy (process_entry (F Ci) (Hyp Ci))),
    Hyp2 = (pi Ci \ Hyp Ci :- spy (pi x \ (isaType (Ci x) col int :- of x Bi int))
@@ -628,9 +628,9 @@ process_entry (univPiT T F) Hyp2 :-
    Hyp2 = (pi x \ Hyp x :- spy(isa x T int)).
 
 process_entry (univDepPiT Ai Bi F) Hyp2 :-
-   spy (pi t\   (pi x \ ofType (Bi x) set int :- of x Ai int) =>
+   spy (pi t\   (pi x \ ofType (Bi x) set int :- isa x Ai int) =>
                 (pi x \ pi y \ dconv (Bi x) (Bi y) :- conv x y) =>
-                (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
+                (pi x\ of (t x) (Bi x) int :- isa x Ai int) =>
 		spy(process_entry (F t) (Hyp t))),
    Hyp2 = (pi t\ Hyp t :-   spy (pi x\ (isaType (Bi x) set int :- of x Ai int)),  %this should hold already?
    	      	     	    spy(pi x\ isa (t x) (Bi x) int  :- of x Ai int)).
