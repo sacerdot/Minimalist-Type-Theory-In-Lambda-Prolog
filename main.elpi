@@ -37,10 +37,10 @@ type locTypeDef     mttType -> mttKind -> mttType -> prop.
 
 %% application of a variable
 type # (mttTerm -> A) -> mttTerm -> A.
-hstep (# A B) (A B).
+%hstep (# A B) (A B).
 
-of (# A B) Type IE :- of (A B) Type IE.
-ofType (# A B) Kind IE :- ofType (A B) Kind IE.
+%of (# A B) Type IE :- of (A B) Type IE.
+%ofType (# A B) Kind IE :- ofType (A B) Kind IE.
 
 %% conversion to (weak) head-normal form WHNF
 hnf A B :- (hstep A C), !, (hnf C B).
@@ -335,7 +335,8 @@ type process_library list libraryEntry -> prop -> prop.
 
 process_library [] K :- K.
 process_library [Entry|TL] K :-
-   spy(process_entry Entry Hyp),
+   erase_var_app Entry Entry',
+   spy(process_entry Entry' Hyp),
    spy(Hyp => process_library TL K).
 
 type in_library prop -> prop.
