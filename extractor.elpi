@@ -56,8 +56,8 @@ filter_code_list [] [].
 translate_entry Entry LibMap ExtrEntry OutLib Result
     :- Context = (context [] [] LibMap)
     ,  spy(starify_lib Entry LibMap StarEntry)
-    ,  spy(extract_lib StarEntry ExtrEntry Context ArgMask OutList)
-    ,  spy(translate_lib ExtrEntry LibMap Code)
+    ,  spy(extract_lib StarEntry ExtrEntry Context ArgMask [] OutList)
+    ,  spy(translate_lib ExtrEntry [] LibMap Code)
 %    ,  spy(filter_code_list OutList OutList')
     ,  spy(translate_program_list OutList LibMap CodeList)
     ,  concat [[Code], CodeList] Result
@@ -188,74 +188,80 @@ conditional_fail Bool :- Bool = true.
 type not_occurs A -> B -> prop.
 not_occurs V T :- ((occurs V T, Result = false), !; Result = true), conditional_fail Result.
 
-type erase_absent_arg B -> C -> A -> B -> B -> prop.
-erase_absent_arg H' Arg A B Result
-    :- not_occurs Arg A
-    ,  not_occurs Arg B
+kind body_type type.
+type body A -> body_type.
+
+type erase_absent_arg B -> C -> list body_type -> B -> prop.
+erase_absent_arg H' Arg [body HD|BodyTL] Result
+    :- not_occurs Arg HD
+    ,  erase_absent_arg H' Arg BodyTL Result
     ,  Result = H'
     ,  !
     .
-erase_absent_arg H' Arg _ _ (lib_app H' Arg).
+erase_absent_arg H' _ [] H'
+    :- !
+    .
+erase_absent_arg H' Arg _ (lib_app H' Arg).
 
-type erase_absent_args B -> A -> B -> B -> prop.
-erase_absent_args (lib_app H Arg) A B Result
-    :- erase_absent_args H A B H'
-    ,  erase_absent_arg H' Arg A B Result
+type erase_absent_args B -> list body_type -> B -> prop.
+erase_absent_args (lib_app H Arg) BodyList Result
+    :- erase_absent_args H BodyList H'
+    ,  erase_absent_arg H' Arg BodyList Result
     ,  !
     .
-erase_absent_args H _ _ H.
+erase_absent_args H _ H.
 
 %% N -> K  ==>  K
-collapse_lib (univPi F) Result _ false []
+collapse_lib (univPi F) Result _ false _ []
     :- pi Bi\ ofType Bi set int => (not_occurs Bi (F Bi), Result = (F Bi))
     ,  !
     .
-extract_lib (univPi F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univPi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(pi Bi\ ofType Bi set int => extract_lib (F Bi) (F' Bi)
                                        (context [var_type Bi _|Vars] VarMap LibMap)
-                                       ArgMask SetList)
-    ,  spy(collapse_lib (univPi F') Result Context TakeArg [])
+                                       ArgMask BodyList SetList)
+    ,  spy(collapse_lib (univPi F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 %% N -> K  ==>  K
-collapse_lib (univCol F) Result _ false []
+collapse_lib (univCol F) Result _ false _ []
     :- pi Bi\ ofType Bi col int => (not_occurs Bi (F Bi), Result = (F Bi))
     ,  !
     .
-extract_lib (univCol F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univCol F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(pi Bi\ ofType Bi col int => extract_lib (F Bi) (F' Bi)
                                        (context [var_type Bi _|Vars] VarMap LibMap)
-                                       ArgMask SetList)
-    ,  spy(collapse_lib (univCol F') Result Context TakeArg [])
+                                       ArgMask BodyList SetList)
+    ,  spy(collapse_lib (univCol F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 %% T(1) -> N  ==>  N
-collapse_lib (univProp F) Result Context false SetList
-    :- spy(extract_lib (F extractor_singleton) Result Context _ArgMask SetList)
+collapse_lib (univProp F) Result Context false BodyList SetList
+    :- spy(extract_lib (F extractor_singleton) Result Context _ArgMask BodyList SetList)
     ,  !
     .
-extract_lib (univProp F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univProp F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(pi Bi\ ofType Bi props int => extract_lib (F Bi) (F' Bi)
                                          (context [var_type Bi _|Vars] VarMap LibMap)
-                                         ArgMask FList)
-    ,  spy(collapse_lib (univProp F') Result Context TakeArg AppList)
+                                         ArgMask BodyList FList)
+    ,  spy(collapse_lib (univProp F') Result Context TakeArg BodyList AppList)
     ,  spy(concat [AppList, FList] SetList)
     ,  !
     .
 
 
 %% N -> K  ==>  K
-collapse_lib (univDepPi Bi F) Result _ false []
+collapse_lib (univDepPi Bi F) Result _ false _ []
     :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => (not_occurs Ci (F Ci), Result = (F Ci))
     ,  !
     .
-extract_lib (univDepPi Bi F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univDepPi Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Bi Bi' Context BiList)
     ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
@@ -266,19 +272,19 @@ extract_lib (univDepPi Bi F) Result Context [TakeArg|ArgMask] SetList
                 (context [var_dep_type Ei _ y|[var_dep_type Ci _ x|Vars]]
                          [var_mapping Ci Ei|[var_mapping x y|VarMap]]
                          LibMap)
-                ArgMask FList)
+                ArgMask BodyList FList)
     ,  spy(concat [FList, BiList] SetList)
-    ,  spy(collapse_lib (univDepPi Bi' F') Result Context TakeArg [])
+    ,  spy(collapse_lib (univDepPi Bi' F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 %% N -> K  ==>  K
-collapse_lib (univDepCol Bi F) Result _ false []
+collapse_lib (univDepCol Bi F) Result _ false _ []
     :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => (not_occurs Ci (F Ci), Result = (F Ci))
     ,  !
     .
-extract_lib (univDepCol Bi F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univDepCol Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Bi Bi' Context BiList)
     ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
@@ -289,18 +295,18 @@ extract_lib (univDepCol Bi F) Result Context [TakeArg|ArgMask] SetList
                 (context [var_dep_type Ei _ y|[var_dep_type Ci _ x|Vars]]
                          [var_mapping Ci Ei|[var_mapping x y|VarMap]]
                          LibMap)
-                ArgMask FList)
+                ArgMask BodyList FList)
     ,  spy(concat [FList, BiList] SetList)
-    ,  spy(collapse_lib (univDepCol Bi' F') Result Context TakeArg [])
+    ,  spy(collapse_lib (univDepCol Bi' F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 %% T(1) -> N  ==>  N
-collapse_lib (univDepProp _Bi F) Result Context false SetList
-    :- spy(extract_lib (F (_\extractor_singleton)) Result Context _ArgMask SetList)
+collapse_lib (univDepProp _Bi F) Result Context false BodyList SetList
+    :- spy(extract_lib (F (_\extractor_singleton)) Result Context _ArgMask BodyList SetList)
     ,  !
     .
-extract_lib (univDepProp Bi F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univDepProp Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Bi Bi' Context BiList)
     ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
@@ -311,49 +317,49 @@ extract_lib (univDepProp Bi F) Result Context [TakeArg|ArgMask] SetList
                 (context [var_dep_type Ei _ y|[var_dep_type Ci _ x|Vars]]
                          [var_mapping Ci Ei|[var_mapping x y|VarMap]]
                          LibMap)
-                ArgMask FList)
+                ArgMask BodyList FList)
     ,  spy(concat [FList, BiList] SetList)
-    ,  spy(collapse_lib (univDepProp Bi' F') Result Context TakeArg [])
+    ,  spy(collapse_lib (univDepProp Bi' F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 %% 1 -> N  ==>  N
-collapse_lib (univPiT T F) Result Context false SetList
+collapse_lib (univPiT T F) Result Context false BodyList SetList
     :- conv T extractor_singleton
-    ,  spy(extract_lib (F extractor_star) Result Context _ArgMask SetList)
+    ,  spy(extract_lib (F extractor_star) Result Context _ArgMask BodyList SetList)
     ,  !
     .
 %% N -> K  ==>  K
-collapse_lib (univPiT T F) Result _ false []
+collapse_lib (univPiT T F) Result _ false _ []
     :- pi x\ of x T int => (not_occurs x (F x), Result = (F x))
     ,  !
     .
-extract_lib (univPiT T F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univPiT T F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type T T' Context TList)
     ,  spy(pi x\ of x T int => pi y\ of y T' int =>
             extract_lib (F x) (F' y)
             (context [var_term _ y|[var_term _ x|Vars]] [var_mapping x y|VarMap] LibMap)
-            ArgMask FList)
+            ArgMask BodyList FList)
     ,  spy(concat [FList, TList] SetList)
-    ,  spy(collapse_lib (univPiT T' F') Result Context TakeArg [])
+    ,  spy(collapse_lib (univPiT T' F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 %% 1 -> N  ==>  N
-collapse_lib (univDepPiT _Ai Bi F) Result Context false SetList
+collapse_lib (univDepPiT _Ai Bi F) Result Context false BodyList SetList
     :- conv Bi (_\extractor_singleton)
-    ,  spy(extract_lib (F (_\extractor_star)) Result Context _ArgMask SetList)
+    ,  spy(extract_lib (F (_\extractor_star)) Result Context _ArgMask BodyList SetList)
     ,  !
     .
 %% N -> K  ==>  K
-collapse_lib (univDepPiT Ai Bi F) Result _ false []
+collapse_lib (univDepPiT Ai Bi F) Result _ false _ []
     :- pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
             (pi x\ of (t x) (Bi x) int :- of x Ai int) => (not_occurs t (F t), Result = (F t))
     ,  !
     .
-extract_lib (univDepPiT Ai Bi F) Result Context [TakeArg|ArgMask] SetList
+extract_lib (univDepPiT Ai Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Ai Ai' Context AiList)
     ,  spy((name Bi, Bi' = Bi, BiList = [])
@@ -371,39 +377,39 @@ extract_lib (univDepPiT Ai Bi F) Result Context [TakeArg|ArgMask] SetList
                     (context [var_dep_term Bi' g y|[var_dep_term Bi t x|Vars]]
                              [var_mapping t g|[var_mapping x y|VarMap]]
                              LibMap)
-                    ArgMask FList)
+                    ArgMask BodyList FList)
     ,  spy(concat [FList, BiList, AiList] SetList) 
-    ,  spy(collapse_lib (univDepPiT Ai' Bi' F') Result Context TakeArg [])
+    ,  spy(collapse_lib (univDepPiT Ai' Bi' F') Result Context TakeArg BodyList [])
     ,  !
     .
 
 
 % elimina argomenti inutilizzati
-collapse_lib (locDefL N TY TE) Result _ true []
-    :- spy(erase_absent_args N TY TE N')
+collapse_lib (locDefL N TY TE) Result _ true BodyList []
+    :- spy(erase_absent_args N [body TE|[body TY|BodyList]] N')
     ,  Result = (locDefL N' TY TE)
     ,  !
     .
-extract_lib (locDefL N TY TE) Result Context [] SetList
+extract_lib (locDefL N TY TE) Result Context [] BodyList SetList
     :- spy(extract_lib_def N N' Context [])
     ,  spy(extract_type TY TY' Context TYList)
     ,  spy(extract_term TE TE' Context TEList)
     ,  spy(concat [TEList, TYList] SetList)
-    ,  spy(collapse_lib (locDefL N' TY' TE') Result Context true [])
+    ,  spy(collapse_lib (locDefL N' TY' TE') Result Context true BodyList [])
     ,  !
     .
 
 % elimina argomenti inutilizzati
-collapse_lib (locTypeDefL N KIND TY) Result _ true []
-    :- spy(erase_absent_args N KIND TY N')
+collapse_lib (locTypeDefL N KIND TY) Result _ true BodyList []
+    :- spy(erase_absent_args N [body TY|BodyList] N')
     ,  Result = (locTypeDefL N' KIND TY)
     ,  !
     .
-extract_lib (locTypeDefL N _KIND TY) Result Context [] SetList
+extract_lib (locTypeDefL N _KIND TY) Result Context [] BodyList SetList
     :- spy(extract_lib_def N N' Context [])
     ,  spy(extract_type TY TY' Context SetList)
     ,  spy(ofType TY' KIND' @level)
-    ,  spy(collapse_lib (locTypeDefL N' KIND' TY') Result Context true [])
+    ,  spy(collapse_lib (locTypeDefL N' KIND' TY') Result Context true BodyList [])
     ,  !
     .
 
@@ -489,34 +495,34 @@ get_call_type (locTypeDefL _ _ T) T.
 get_call_type (locDefL _ T _) T.
 %% prop extraction end
 
-collapse_lib (hyp _ _ E) Result _ true []
+collapse_lib (hyp _ _ E) Result Context true BodyList []
     :- get_call_type E T
     ,  conv T extractor_singleton
-    ,  Result = E
+    ,  extract_lib E Result Context _ArgMask BodyList []
     ,  !
     .
 
-extract_lib (hyp H1 H2 E) Result Context ArgMask SetList
+extract_lib (hyp H1 H2 E) Result Context ArgMask BodyList SetList
     :- spy(extract_lib_prop H1 H1' Context _)
     ,  spy(extract_lib_prop H2 H2' Context _)
-    ,  spy(H1 => H1' => extract_lib E E' Context ArgMask SetList)
-    ,  spy(collapse_lib (hyp H1' H2' E') Result Context true [])
+    ,  spy(H1 => H1' => extract_lib E E' Context ArgMask [body H2'|[body H1'|BodyList]] SetList)
+    ,  spy(collapse_lib (hyp H1' H2' E') Result Context true BodyList [])
     ,  !
     .
 
-collapse_lib (cut _ E) Result _ true []
+collapse_lib (cut _ E) Result Context true BodyList []
     :- get_call_type E T
     ,  conv T extractor_singleton
-    ,  Result = E
+    ,  extract_lib E Result Context _ArgMask BodyList []
     ,  !
     .
 
-extract_lib (cut H E) Result Context ArgMask SetList
+extract_lib (cut H E) Result Context ArgMask BodyList SetList
     :- spy(extract_lib_prop H H' Context _)
     ,  spy(process_cut H Hyp)
     ,  spy(process_cut H' Hyp')
-    ,  spy(Hyp => Hyp' => extract_lib E E' Context ArgMask SetList)
-    ,  spy(collapse_lib (cut H' E') Result Context true [])
+    ,  spy(Hyp => Hyp' => extract_lib E E' Context ArgMask [body H'|BodyList] SetList)
+    ,  spy(collapse_lib (cut H' E') Result Context true BodyList [])
     ,  !
     .
 
@@ -771,9 +777,9 @@ get_arg_list _H [].
 
 type map_lib_call  any -> list lib_mapping_type -> any -> prop.
 map_lib_call A LibMap Result
-    :- get_call_name A Name
+    :- spy(get_call_name A Name)
     ,  get_arg_list A Args
-    ,  ((term_to_string Name S, rex_match "^extr_[a-zA-Z0-9_]+$" S, Result = A)
+    ,  spy((term_to_string Name S, rex_match "^extr_[a-zA-Z0-9_]+$" S, Result = A)
         , !; map_lib_call_ Name Args LibMap Result)
     .
 
@@ -813,7 +819,7 @@ extract_lib_def H Result _ []
     ,  !
     .
 
-collapse_lib A A _ true [].
+collapse_lib A A _ true _ [].
 
 type extract_arg mttTerm -> B -> B -> context_type -> list mttTerm -> prop.
 
@@ -894,6 +900,7 @@ is_non_collapsible_lambda (elim_setSum _ (inr _ _ B) _ Cr) :- contains_lib_app (
 is_non_collapsible_lambda (elim_setSigma (pair _ _ B C) _ MM) :- contains_lib_app (MM B C) true.
 is_non_collapsible_lambda _.
 */
+
 type is_complexity_altered any -> prop.
 is_complexity_altered _A
     :- @language = ocaml
@@ -971,7 +978,7 @@ collapse_term (lib_app H A) Result _ []
     ,  !
     .
 
-collapse_term (fixMe M T) Result _ []
+collapse_term (fixMe _M T) Result _ []
     :- conv T extractor_singleton
     ,  Result = extractor_star
     .

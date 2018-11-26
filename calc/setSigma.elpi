@@ -1708,9 +1708,10 @@ translate_elim_setSigma_to haskell Pair' MM' Result
 
 translate_term (elim_setSigma Pair _M MM) LibMap Result
     :- translate_term Pair LibMap Pair'
-    ,  ((pi b\ locDecl b B_ => (name (MM b), term_to_string (MM b) SMM, translate_term b LibMap Sb)
+    ,  isa Pair (setSigma B C) @level
+    ,  ((pi b\ locDecl b B => (name (MM b), term_to_string (MM b) SMM, translate_term b LibMap Sb)
             , translate_elim_setSigma_partial_abs_to @language SMM Sb MM')
-        , !; pi b\ pi c\ locDecl b B_ => locDecl c (C_ b) =>
+        , !; pi b\ pi c\ locDecl b B => locDecl c (C b) =>
                 (spy(translate_term (MM b c) LibMap SMM)
                 , translate_term b LibMap Sb
                 , translate_term c LibMap Sc)
