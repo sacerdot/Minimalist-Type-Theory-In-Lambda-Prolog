@@ -39,8 +39,8 @@ type locTypeDef     mttType -> mttKind -> mttType -> prop.
 type # (mttTerm -> A) -> mttTerm -> A.
 %hstep (# A B) (A B).
 
-%of (# A B) Type IE :- of (A B) Type IE.
-%ofType (# A B) Kind IE :- ofType (A B) Kind IE.
+of (# A B) Type IE :- of (A B) Type IE.
+ofType (# A B) Kind IE :- ofType (A B) Kind IE.
 
 %% conversion to (weak) head-normal form WHNF
 hnf A B :- (hstep A C), !, (hnf C B).
@@ -167,7 +167,9 @@ isaType Type Kind IE
 
 isa Term TY IE 
     :- spy(of Term TY' IE)
-    ,  spy(conv TY' TY)
+    , erase_var_app TY TYe
+    , erase_var_app TY' TYe'
+    ,  spy(conv TYe' TYe)
     .
 
 ofType X KIND _ :- locTypeDef X KIND _.
@@ -225,7 +227,7 @@ tau_eq P1 P2 F
     ,  ofType P2 K2 ext
     ,  pts_leq K1 propc
     ,  pts_leq K2 propc
-    ,  conv P1 P2
+    ,  conv P1 P2  % CSC: use erase_var_app here?
     ,  F = (_\_\_\ id singleton star)
     .
 
@@ -335,8 +337,7 @@ type process_library list libraryEntry -> prop -> prop.
 
 process_library [] K :- K.
 process_library [Entry|TL] K :-
-   erase_var_app Entry Entry',
-   spy(process_entry Entry' Hyp),
+   spy(process_entry Entry Hyp),
    spy(Hyp => process_library TL K).
 
 type in_library prop -> prop.
@@ -579,13 +580,15 @@ verify_arg_order N
 process_entry (locTypeDefL N KIND TY) Hyp :-
    spy(verify_arg_order N),
    spy(ofType TY KIND int),
-   Hyp = locTypeDef N KIND TY,
+   erase_var_app TY TY',
+   Hyp = locTypeDef N KIND TY',
    print "## New type definition: " N.
 process_entry (locDefL N TY TE) Hyp :-
    spy(verify_arg_order N),
    spy(isaType TY _ int),
    spy(isa TE TY int),
-   Hyp = locDef N TY TE,
+   erase_var_app TE TE',
+   Hyp = locDef N TY TE',
    print "## New definition: " N.
    
 process_entry (univPi F) Hyp2 :-
@@ -636,10 +639,15 @@ process_entry (univDepPiT Ai Bi F) Hyp2 :-
    Hyp2 = (pi t\ Hyp t :-   spy (pi x\ (isaType (Bi x) set int :- of x Ai int)),  %this should hold already?
    	      	     	    spy(pi x\ isa (t x) (Bi x) int  :- of x Ai int)).
 
-process_entry (hyp H1 H2 E) Hyp2 :-
+process_entry (hyp H1g H2g Eg) Hyp2 :-
+   erase_var_app H1g H1,
+   erase_var_app H2g H2,
+   erase_var_app Eg E,
    spy (H1 => process_entry E Hyp),
    Hyp2 = (Hyp :- spy(H2)).
-process_entry (cut H E) Hyp2 :-
+process_entry (cut Hg Eg) Hyp2 :-
+   erase_var_app Hg H,
+   erase_var_app Eg E,
    spy(process_cut H Hyp),
    spy (Hyp => process_entry E Hyp2).
 
