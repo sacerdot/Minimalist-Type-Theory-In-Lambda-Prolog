@@ -67,14 +67,14 @@ translate_univDep_to haskell F' Result
     .
 
 translate_lib (univDepPi Bi F) Vars LibMap Result
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             translate_lib (F Ci) [var_dep_type _ _ _|Vars] LibMap F'
     ,  translate_univDep_to @language F' Result
     ,  !
     .
 translate_lib (univDepCol Bi F) Vars LibMap Result
-    :- pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+    :- pi Ci\ (pi x\ ofType (Ci x) col int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             translate_lib (F Ci) [var_dep_type _ _ _|Vars] LibMap F'
     ,  translate_univDep_to @language F' Result
@@ -107,9 +107,9 @@ translate_univDepPiT_to haskell F' Result
     .
 
 translate_lib (univDepPiT Ai Bi F) Vars LibMap Result
-    :- pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) => 
+    :- pi t\ (pi x\ ofType (Bi x) set int :- isa x Ai int) => 
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
-            (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
+            (pi x\ of (t x) (Bi x) int :- isa x Ai int) =>
                 translate_lib (F t) [var_dep_term _ _ _|Vars] LibMap F'
     ,  translate_univDepPiT_to @language F' Result
     ,  !

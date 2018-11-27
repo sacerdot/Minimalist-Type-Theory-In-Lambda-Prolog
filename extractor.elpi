@@ -111,7 +111,7 @@ starify_lib (univProp F) LibMap Result
 
 starify_lib (univDepPi Bi F) LibMap Result
     :- starify_type Bi LibMap Bi'
-    ,  spy(pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+    ,  spy(pi Ci\ (pi x\ ofType (Ci x) set int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             starify_lib (F Ci) LibMap (F' Ci))
     ,  spy(Result = (univDepPi Bi' F'))
@@ -119,7 +119,7 @@ starify_lib (univDepPi Bi F) LibMap Result
     .
 starify_lib (univDepCol Bi F) LibMap Result
     :- starify_type Bi LibMap Bi'
-    ,  spy(pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+    ,  spy(pi Ci\ (pi x\ ofType (Ci x) col int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             starify_lib (F Ci) LibMap (F' Ci))
     ,  spy(Result = (univDepCol Bi' F'))
@@ -127,7 +127,7 @@ starify_lib (univDepCol Bi F) LibMap Result
     .
 starify_lib (univDepProp Bi F) LibMap Result
     :- starify_type Bi LibMap Bi'
-    ,  spy(pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
+    ,  spy(pi Ci\ (pi x\ ofType (Ci x) props int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             starify_lib (F Ci) LibMap (F' Ci))
     ,  spy(Result = (univDepProp Bi' F'))
@@ -145,9 +145,9 @@ starify_lib (univDepPiT Ai Bi F) LibMap Result
     :- starify_type Ai LibMap Ai'
     ,  spy((name Bi, Bi' = Bi)
         , !; pi x\ of x Ai int => starify_type (Bi x) LibMap (Bi' x))
-    ,  pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+    ,  pi t\ (pi x\ ofType (Bi x) set int :- isa x Ai int) =>
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
-            (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
+            (pi x\ of (t x) (Bi x) int :- isa x Ai int) =>
                 starify_lib (F t) LibMap (F' t)
     ,  spy(Result = (univDepPiT Ai' Bi' F')) 
     ,  !
@@ -257,15 +257,15 @@ extract_lib (univProp F) Result Context [TakeArg|ArgMask] BodyList SetList
 
 %% N -> K  ==>  K
 collapse_lib (univDepPi Bi F) Result _ false _ []
-    :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
+    :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => (not_occurs Ci (F Ci), Result = (F Ci))
     ,  !
     .
 extract_lib (univDepPi Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Bi Bi' Context BiList)
-    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- of x Bi int) =>
-           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) set int :- of y Bi' int) =>
+    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) set int :- isa x Bi int) =>
+           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) set int :- isa y Bi' int) =>
             (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             (pi x\ pi y\ dconv (Ei x) (Ei y) :- conv x y) =>
                 extract_lib (F Ci) (F' Ei)
@@ -280,15 +280,15 @@ extract_lib (univDepPi Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
 
 %% N -> K  ==>  K
 collapse_lib (univDepCol Bi F) Result _ false _ []
-    :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
+    :- pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => (not_occurs Ci (F Ci), Result = (F Ci))
     ,  !
     .
 extract_lib (univDepCol Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Bi Bi' Context BiList)
-    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- of x Bi int) =>
-           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) col int :- of y Bi' int) =>
+    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) col int :- isa x Bi int) =>
+           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) col int :- isa y Bi' int) =>
             (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             (pi x\ pi y\ dconv (Ei x) (Ei y) :- conv x y) =>
                 extract_lib (F Ci) (F' Ei)
@@ -309,8 +309,8 @@ collapse_lib (univDepProp _Bi F) Result Context false BodyList SetList
 extract_lib (univDepProp Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type Bi Bi' Context BiList)
-    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) props int :- of x Bi int) =>
-           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) props int :- of y Bi' int) =>
+    ,  spy(pi x\ of x Bi int => pi Ci\ (pi x\ ofType (Ci x) props int :- isa x Bi int) =>
+           pi y\ of y Bi' int => pi Ei\ (pi y\ ofType (Ei y) props int :- isa y Bi' int) =>
             (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) =>
             (pi x\ pi y\ dconv (Ei x) (Ei y) :- conv x y) =>
                 extract_lib (F Ci) (F' Ei)
@@ -354,9 +354,9 @@ collapse_lib (univDepPiT _Ai Bi F) Result Context false BodyList SetList
     .
 %% N -> K  ==>  K
 collapse_lib (univDepPiT Ai Bi F) Result _ false _ []
-    :- pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+    :- pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- isa x Ai int) =>
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
-            (pi x\ of (t x) (Bi x) int :- of x Ai int) => (not_occurs t (F t), Result = (F t))
+            (pi x\ of (t x) (Bi x) int :- isa x Ai int) => (not_occurs t (F t), Result = (F t))
     ,  !
     .
 extract_lib (univDepPiT Ai Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
@@ -367,12 +367,12 @@ extract_lib (univDepPiT Ai Bi F) Result Context [TakeArg|ArgMask] BodyList SetLi
             extract_type (Bi x) (Bi' y)
             (context [var_term _ y|[var_term _ x|Vars]] [var_mapping x y|VarMap] LibMap)
             BiList)
-    ,  pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- of x Ai int) =>
-       pi y\ of y Ai' int => pi g\ (pi y\ ofType (Bi' y) set int :- of y Ai' int) =>
+    ,  pi x\ of x Ai int => pi t\ (pi x\ ofType (Bi x) set int :- isa x Ai int) =>
+       pi y\ of y Ai' int => pi g\ (pi y\ ofType (Bi' y) set int :- isa y Ai' int) =>
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
         (pi x\ pi y\ dconv (Bi' x) (Bi' y) :- conv x y) =>
-            (pi x\ of (t x) (Bi x) int :- of x Ai int) =>
-            (pi y\ of (g y) (Bi' y) int :- of y Ai' int) =>
+            (pi x\ of (t x) (Bi x) int :- isa x Ai int) =>
+            (pi y\ of (g y) (Bi' y) int :- isa y Ai' int) =>
                 spy(extract_lib (F t) (F' g)
                     (context [var_dep_term Bi' g y|[var_dep_term Bi t x|Vars]]
                              [var_mapping t g|[var_mapping x y|VarMap]]
@@ -573,17 +573,17 @@ stylized_type_of (univProp F) [Arg|ArgTL] [var_type _ _|KindTL]
     .
 
 stylized_type_of (univDepPi Bi F) [Arg|ArgTL] [var_dep_type _ _ Bi|KindTL]
-    :- (pi x\ isaType (Arg x) set int :- of x Bi int) =>
+    :- (pi x\ isaType (Arg x) set int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Arg x) (Arg y) :- conv x y) => stylized_type_of (F Arg) ArgTL KindTL
     ,  !
     .
 stylized_type_of (univDepCol Bi F) [Arg|ArgTL] [var_dep_type _ _ Bi|KindTL]
-    :- (pi x\ isaType (Arg x) col int :- of x Bi int) =>
+    :- (pi x\ isaType (Arg x) col int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Arg x) (Arg y) :- conv x y) => stylized_type_of (F Arg) ArgTL KindTL
     ,  !
     .
 stylized_type_of (univDepProp Bi F) [Arg|ArgTL] [var_dep_type _ _ Bi|KindTL]
-    :- (pi x\ isaType (Arg x) props int :- of x Bi int) =>
+    :- (pi x\ isaType (Arg x) props int :- isa x Bi int) =>
         (pi x\ pi y\ dconv (Arg x) (Arg y) :- conv x y) => stylized_type_of (F Arg) ArgTL KindTL
     ,  !
     .
@@ -594,9 +594,9 @@ stylized_type_of (univPiT T F) [Arg|ArgTL] [var_term _ _|KindTL]
     .
 
 stylized_type_of (univDepPiT Ai Bi F) [Arg|ArgTL] [var_dep_term _ _ Ai|KindTL]
-    :- (pi x\ ofType (Bi x) set int :- of x Ai int) =>
+    :- (pi x\ ofType (Bi x) set int :- isa x Ai int) =>
         (pi x\ pi y\ dconv (Bi x) (Bi y) :- conv x y) =>
-            (pi x\ isa (Arg x) (Bi x) int :- of x Ai int) => stylized_type_of (F Arg) ArgTL KindTL
+            (pi x\ isa (Arg x) (Bi x) int :- isa x Ai int) => stylized_type_of (F Arg) ArgTL KindTL
     ,  !
     .
 
@@ -1050,24 +1050,24 @@ get_call_signature (univProp F) (univProp F')
     :- pi Bi\ ofType Bi set int => get_call_signature (F Bi) (F' Bi)
     .
 get_call_signature (univDepPi B F) (univDepPi B F')
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- isa x B int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
     .
 get_call_signature (univDepCol B F) (univDepCol B F')
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- isa x B int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
     .
 get_call_signature (univDepProp B F) (univDepProp B F')
-    :- pi Ci\ (pi x\ ofType (Ci x) set int :- of x B int) =>
+    :- pi Ci\ (pi x\ ofType (Ci x) set int :- isa x B int) =>
         (pi x\ pi y\ dconv (Ci x) (Ci y) :- conv x y) => get_call_signature (F Ci) (F' Ci)
     .
 get_call_signature (univPiT A F) (univPiT A F')
     :- pi a\ of a A int => get_call_signature (F a) (F' a)
     .
 get_call_signature (univDepPiT A B F) (univDepPiT A B F')
-    :- pi t\ (pi x\ ofType (B x) set int :- of x A int) =>
+    :- pi t\ (pi x\ ofType (B x) set int :- isa x A int) =>
         (pi x\ pi y\ dconv (B x) (B y) :- conv x y) =>
-            (pi x\ of (t x) (B x) int :- of x A int) => get_call_signature (F t) (F' t)
+            (pi x\ of (t x) (B x) int :- isa x A int) => get_call_signature (F t) (F' t)
     .
 get_call_signature (hyp _ _ E) E' :- get_call_signature E E'.
 get_call_signature (cut _ E) E' :- get_call_signature E E'.
