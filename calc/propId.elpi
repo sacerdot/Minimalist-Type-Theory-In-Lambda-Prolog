@@ -86,7 +86,7 @@ starify_term (elim_id P C CC) LibMap Result
 %% Extraction
 
 collapse_type (propId A _AA1 _AA2) Result _ []
-    :- conv A extractor_singleton
+    :- erase_and_conv A extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .
@@ -102,7 +102,7 @@ extract_type (propId A AA1 AA2) Result Context SetList
 
 %% C 1  ==>  1
 collapse_term (id A _AA) Result _ []
-    :- conv A extractor_singleton
+    :- erase_and_conv A extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
@@ -119,15 +119,15 @@ extract_term (id A AA) Result Context SetList
 %% 1 -> 1  ==>  1
 collapse_term (elim_id P C _CC) Result _ []
     :- isa P extractor_singleton int
-    ,  conv (C extractor_star extractor_star) extractor_singleton
+    ,  erase_and_conv (C extractor_star extractor_star) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
 %% C 1 -> 1  ==>  1
 collapse_term (elim_id P C _CC) Result _ []
-    :- isa P (propId extractor_singleton _ _) int
-    ,  conv (C extractor_star extractor_star) extractor_singleton
+    :- of P TP int, TP = (propId extractor_singleton _ _)
+    ,  erase_and_conv (C extractor_star extractor_star) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .

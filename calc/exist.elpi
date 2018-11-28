@@ -84,8 +84,8 @@ starify_term (elim_exist Pair M MM) LibMap Result
 %% Extraction
 
 collapse_type (exist B C) Result _ []
-    :- spy(conv B extractor_singleton)
-    ,  spy(conv C (_\extractor_singleton))
+    :- spy(erase_and_conv B extractor_singleton)
+    ,  spy(erase_and_conv C (_\extractor_singleton))
     ,  spy(Result = extractor_singleton)
     ,  !
     .
@@ -134,7 +134,7 @@ extract_term (pair_exist B C BB CC) Result Context SetList
 %% 1 -> 1  ==>  1
 collapse_term (elim_exist Pair M _MM) Result _ []
     :- isa Pair extractor_singleton @level
-    ,  conv M extractor_singleton
+    ,  erase_and_conv M extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
@@ -142,7 +142,7 @@ collapse_term (elim_exist Pair M _MM) Result _ []
 %% 1 x 1 -> 1  ==>  1
 collapse_term (elim_exist Pair M _MM) Result _ []
     :- isa Pair (exist extractor_singleton (_\ extractor_singleton)) @level
-    ,  conv M extractor_singleton
+    ,  erase_and_conv M extractor_singleton
     ,  Result = extractor_star
     ,  !
     .

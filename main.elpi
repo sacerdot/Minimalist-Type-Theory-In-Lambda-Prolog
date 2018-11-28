@@ -55,7 +55,7 @@ hnf A A.
 conv A A :- ! .
 conv A B :- (locDecl _ (propEq _ A B) ), !.
 conv A B :- (locDecl _ (propEq _ B A) ), !.
-conv A B :- (hnf A A'), (hnf B B'), (dconv A' B').
+conv A B :- spy(hnf A A'), spy(hnf B B'), spy(dconv A' B').
 
 %conv A B :- spy(hnf A A'), spy( hnf B B'), spy(locDecl _ (propEq _ A1 B1)), spy(hnf A1 A2), spy(hnf B1 B2), spy((A' = A2, B' = B2) ; (A' = B2 , B' = A2)). 
 

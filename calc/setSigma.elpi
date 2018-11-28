@@ -1447,8 +1447,8 @@ starify_term (elim_setSigma Pair M MM) LibMap Result
 %% Extraction
 
 collapse_type (setSigma B C) Result _ []
-    :- conv B extractor_singleton
-    ,  conv C (_\extractor_singleton)
+    :- erase_and_conv B extractor_singleton
+    ,  erase_and_conv C (_\extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .
@@ -1567,23 +1567,21 @@ collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
 
 %% N x N -> 1  ==>  1
 collapse_term (elim_setSigma Pair M _MM) Result _ []
-    :- conv (M Pair) extractor_singleton
+    :- erase_and_conv (M Pair) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .
 
-%% N x 1 -> A'  ==>  N -> A'
-collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
-    :- isa Pair (setSigma B (_\ extractor_singleton)) @level
-    ,  spy(pi b\ locDecl b B =>
-        extract_term (app (lambda B (b\ MM b extractor_star)) (p1 Pair)) Result Context ElimList)
+%% N x 1 -> A'  ==>  N -> A' (se passato direttamente)
+collapse_term (elim_setSigma (pair B (_\ extractor_singleton) BB _CC) _M MM) Result Context ElimList
+    :- spy(pi b\ locDecl b B =>
+        extract_term (app (lambda B (b\ MM b extractor_star)) BB) Result Context ElimList)
     ,  !
     .
 
-%% 1 x N -> A'  ==>  N -> A'
-collapse_term (elim_setSigma Pair _M MM) Result Context ElimList
-    :- isa Pair (setSigma extractor_singleton C) @level
-    ,  extract_term (app (lambda (C extractor_star) (MM extractor_star)) (p2 Pair)) Result Context ElimList
+%% 1 x N -> A'  ==>  N -> A' (se passato direttamente)
+collapse_term (elim_setSigma (pair extractor_singleton C _BB CC) _M MM) Result Context ElimList
+    :- spy(extract_term (app (lambda (C extractor_star) (MM extractor_star)) CC) Result Context ElimList)
     ,  !
     .
 

@@ -86,8 +86,8 @@ new_interp_dep_type A (a\ forall (B a) (C a)) O :-
 
 forallLib L :- L = [
 
-%% castDepForall: cast universal quantifier f : setPi (Bi a1) (b\ Ci (pair Ai Bi a1 b))
-%% 		       into universal quantifier   : setPi (Bi a2) (b\ Ci (pair Ai Bi a2 b))
+%% castDepForall: cast universal quantifier f : setPi (# Bi a1) (b\ Ci (pair Ai Bi a1 b))
+%% 		       into universal quantifier   : setPi (# Bi a2) (b\ Ci (pair Ai Bi a2 b))
 %%  IT NEEDS TO BE PROCESSED BEFORE IMPLIES
  (univPi Ai\
  univDepProp Ai Bi\
@@ -98,29 +98,29 @@ forallLib L :- L = [
    univPiT Ai a1\
    univPiT Ai a2\
    univPiT (decode (app (app (app (lib_app setoid_rel Ai) aS) a1) a2)) d\
-   univPiT (forall (Bi a1) (b\ Ci (pair Ai Bi a1 b))) f\
+   univPiT (forall (# Bi a1) (b\ # Ci (pair Ai Bi a1 b))) f\
    (hyp
-      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (# Bi x1) int => pi y2\ isa y2 (# Bi x2) int =>
         pi p\ isa p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) int =>
          conv y2 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p) y1) =>
           conv y1 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                      (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
 		     y2))
-      (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (Bi x1)  => pi y2\ locDecl y2 (Bi x2)  =>
+      (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (# Bi x1)  => pi y2\ locDecl y2 (# Bi x2)  =>
         pi p\ locDecl p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2))  =>
          conv y2 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p) y1) =>
           conv y1 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                      (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
 		     y2))
      (hyp
-       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int =>
+       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (# Bi x1) int =>
         pi p\ isa p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) int =>
          conv (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                    (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
               	   (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p)
 		   y1))
 	       y1)
-       (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (Bi x1)  =>
+       (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (# Bi x1)  =>
         pi p\ locDecl p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2))  =>
          conv (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                    (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
@@ -128,14 +128,14 @@ forallLib L :- L = [
 		   y1))
 	       y1)
      (hyp
-      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (Bi x2) int =>
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (# Bi x2) int =>
         pi p\ isa p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) int =>
        	conv y2
             (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p)
               	 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                       (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
 		 y2)))
-      (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y2\ locDecl y2 (Bi x2) =>
+      (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y2\ locDecl y2 (# Bi x2) =>
         pi p\ locDecl p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) =>
        	conv y2
             (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p)
@@ -144,18 +144,18 @@ forallLib L :- L = [
 		 y2)))
       % hyp on reflexivity
       (hyp
-	(pi x\ isa x Ai int => pi y \ isa y (Bi x) int =>
+	(pi x\ isa x Ai int => pi y \ isa y (# Bi x) int =>
           conv y (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x) x) (forall_app (app (lib_app setoid_reflL Ai) aS) x)) y))
-        (pi x\ locDecl x Ai => pi y \ locDecl y (Bi x) =>
+        (pi x\ locDecl x Ai => pi y \ locDecl y (# Bi x) =>
           spy (conv y (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x) x) (forall_app (app (lib_app setoid_reflL Ai) aS) x)) y)))
    (locDefL (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app castDepForall Ai) Bi) Ci) aS) bS) cS) a1) a2) d) f)
-   	    (forall (Bi a2) (b\ Ci (pair Ai Bi a2 b)))
-   	    (forall_lam (Bi a2) x\ (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast (setSigma Ai Bi)) Ci) (lib_app (lib_app (lib_app (lib_app setSigma_setoid Ai) Bi) aS) bS)) cS)
+   	    (forall (# Bi a2) (b\ # Ci (pair Ai Bi a2 b)))
+   	    (forall_lam (# Bi a2) x\ (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast (setSigma Ai Bi)) Ci) (lib_app (lib_app (lib_app (lib_app setSigma_setoid Ai) Bi) aS) bS)) cS)
 			       	    	 (pair Ai Bi a1 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) a2) a1)
 				    	     	    (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) a1) a2) d)) x)))
 				         (pair Ai Bi a2 x))
 					 (pair_exist (decode (app (app (app (lib_app setoid_rel Ai) aS) a1) a2))
-					 	     (dd \ decode (app (app (app (lib_app setoid_rel (Bi a2))
+					 	     (dd \ decode (app (app (app (lib_app setoid_rel (# Bi a2))
           				   	      	 (app (app (lib_app (lib_app (lib_app setoidDepCarrier Ai) Bi) aS) bS) a2))
         					      	 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS)
                 				      	       a1) a2) dd)
@@ -164,7 +164,7 @@ forallLib L :- L = [
 							     	      x)))
 						          x))
 						     d
-						     (forall_app (app (lib_app setoid_reflL (Bi a2))
+						     (forall_app (app (lib_app setoid_reflL (# Bi a2))
 						     	  (app (app (lib_app (lib_app (lib_app setoidDepCarrier Ai) Bi) aS) bS) a2))
 							  x)))
 			       	    	 (forall_app f (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) a2) a1)
@@ -180,27 +180,27 @@ forallLib L :- L = [
  univPiT (lib_app (lib_app (lib_app setoidDep Ai) Bi) aS) bS\
  univPiT (lib_app (lib_app (lib_app setoidDep (setSigma Ai Bi)) Ci) (lib_app (lib_app (lib_app (lib_app setSigma_setoid Ai) Bi) aS) bS)) cS\
  (hyp
-      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int => pi y2\ isa y2 (Bi x2) int =>
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (# Bi x1) int => pi y2\ isa y2 (# Bi x2) int =>
         pi p\ isa p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) int =>
          conv y2 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p) y1) =>
           conv y1 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                      (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
 		     y2))
-      (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (Bi x1)  => pi y2\ locDecl y2 (Bi x2)  =>
+      (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (# Bi x1)  => pi y2\ locDecl y2 (# Bi x2)  =>
         pi p\ locDecl p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2))  =>
          conv y2 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p) y1) =>
           conv y1 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                      (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
 		     y2))
      (hyp
-       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (Bi x1) int =>
+       (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y1\ isa y1 (# Bi x1) int =>
         pi p\ isa p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) int =>
          conv (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                    (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
               	   (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p)
 		   y1))
 	       y1)
-       (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (Bi x1)  =>
+       (pi x1\ locDecl x1 Ai  => pi x2\ locDecl x2 Ai  => pi y1\ locDecl y1 (# Bi x1)  =>
         pi p\ locDecl p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2))  =>
          conv (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                    (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
@@ -208,14 +208,14 @@ forallLib L :- L = [
 		   y1))
 	       y1)
      (hyp
-      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (Bi x2) int =>
+      (pi x1\ isa x1 Ai int => pi x2\ isa x2 Ai int => pi y2\ isa y2 (# Bi x2) int =>
         pi p\ isa p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) int =>
        	conv y2
             (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p)
               	 (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x2) x1)
                       (impl_app (forall_app (forall_app (app (lib_app setoid_symmL Ai) aS) x1) x2) p))
 		 y2)))
-      (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y2\ locDecl y2 (Bi x2) =>
+      (pi x1\ locDecl x1 Ai => pi x2\ locDecl x2 Ai => pi y2\ locDecl y2 (# Bi x2) =>
         pi p\ locDecl p (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) =>
        	conv y2
             (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x1) x2) p)
@@ -224,58 +224,58 @@ forallLib L :- L = [
 		 y2)))
       % hyp on reflexivity
       (hyp
-	(pi x\ isa x Ai int => pi y \ isa y (Bi x) int =>
+	(pi x\ isa x Ai int => pi y \ isa y (# Bi x) int =>
           conv y (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x) x) (forall_app (app (lib_app setoid_reflL Ai) aS) x)) y))
-        (pi x\ locDecl x Ai => pi y \ locDecl y (Bi x) =>
+        (pi x\ locDecl x Ai => pi y \ locDecl y (# Bi x) =>
           spy (conv y (app (app (app (app (app (lib_app (lib_app (lib_app setoidDepCast Ai) Bi) aS) bS) x) x) (forall_app (app (lib_app setoid_reflL Ai) aS) x)) y)))
-    (locDefL (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app forall_setoidDep Ai) Bi) Ci) aS) bS) cS) (lib_app (lib_app (lib_app setoidDep Ai) (a\ (forall (Bi a) (b\ Ci (pair Ai Bi a b))))) aS)
+    (locDefL (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app forall_setoidDep Ai) Bi) Ci) aS) bS) cS) (lib_app (lib_app (lib_app setoidDep Ai) (a\ (forall (# Bi a) (b\ # Ci (pair Ai Bi a b))))) aS)
           (pair  (setSigma % Carrier type
-	       	        (setPi Ai x\ lib_app setoid (forall (Bi x) (b\ Ci (pair Ai Bi x b)))) _\
+	       	        (setPi Ai x\ lib_app setoid (forall (# Bi x) (b\ # Ci (pair Ai Bi x b)))) _\
 			% Cast type
 		  	(setPi Ai x1\ setPi Ai x2\ setPi (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) _\
-		     	   setPi (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) _\
-			    (forall (Bi x2) (b\ Ci (pair Ai Bi x2 b)))))
+		     	   setPi (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) _\
+			    (forall (# Bi x2) (b\ # Ci (pair Ai Bi x2 b)))))
 		 (cc\
 		 % proof_trasp type
 		 (setPi Ai x1\ setPi Ai x2\
-		   setPi (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) y1\ setPi (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) y2\
+		   setPi (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) y1\ setPi (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) y2\
 		    setPi (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) d1\
-		     setPi (decode (app (app (app (lib_app setoid_rel (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))))
-				   (app (elim_setSigma cc (_\ (setPi Ai x\ lib_app setoid (forall (Bi x) (b\ Ci (pair Ai Bi x b)))))
+		     setPi (decode (app (app (app (lib_app setoid_rel (forall (Bi x1) (b\ # Ci (pair Ai Bi x1 b))))
+				   (app (elim_setSigma cc (_\ (setPi Ai x\ lib_app setoid (forall (# Bi x) (b\ # Ci (pair Ai Bi x b)))))
 					(x\y\x)) x1)) y1) y2)) d2\
-		      (decode (app (app (app (lib_app setoid_rel (forall (Bi x2) (b\ Ci (pair Ai Bi x2 b))))
-					(app (elim_setSigma cc (_\ (setPi Ai x\ lib_app setoid (forall (Bi x) (b\ Ci (pair Ai Bi x b)))))
+		      (decode (app (app (app (lib_app setoid_rel (forall (# Bi x2) (b\ # Ci (pair Ai Bi x2 b))))
+					(app (elim_setSigma cc (_\ (setPi Ai x\ lib_app setoid (forall (# Bi x) (b\ # Ci (pair Ai Bi x b)))))
 					     (x\y\x))
 					     x2))
 					(app (app (app (app (elim_setSigma cc
 								(_\ (setPi Ai x1\ setPi Ai x2\
 								   setPi (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) _\
-										setPi (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) _\
-										  (forall (Bi x2) (b\ Ci (pair Ai Bi x2 b)))))
+										setPi (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) _\
+										  (forall (# Bi x2) (b\ # Ci (pair Ai Bi x2 b)))))
 									   (x\y\y)) x1) x2) d1) y1))
 					(app (app (app (app (elim_setSigma cc
 								(_\ (setPi Ai x1\ setPi Ai x2\
 								   setPi (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) _\
-										setPi (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) _\
-										 (forall (Bi x2) (b\ Ci (pair Ai Bi x2 b)))))
+										setPi (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) _\
+										 (forall (# Bi x2) (b\ # Ci (pair Ai Bi x2 b)))))
 									   (x\y\y)) x1) x2) d1) y2)))))
-		  (pair (setPi Ai x\ lib_app setoid (forall (Bi x) (b\ Ci (pair Ai Bi x b))))
+		  (pair (setPi Ai x\ lib_app setoid (forall (# Bi x) (b\ # Ci (pair Ai Bi x b))))
 		  	(_\ (setPi Ai x1\ setPi Ai x2\ setPi (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) _\
-		     	    	   setPi (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) _\
-			    	   	 (forall (Bi x2) (b\ Ci (pair Ai Bi x2 b)))))
+		     	    	   setPi (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) _\
+			    	   	 (forall (# Bi x2) (b\ # Ci (pair Ai Bi x2 b)))))
 			% Carrier term
-			(lambda Ai x\ lib_app prop_setoid (forall (Bi x) (b\ Ci (pair Ai Bi x b))))
+			(lambda Ai x\ lib_app prop_setoid (forall (# Bi x) (b\ # Ci (pair Ai Bi x b))))
 			% Cast term
 			(lambda Ai x1\ lambda Ai x2\ lambda (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) d\
-			  lambda (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) f\
+			  lambda (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) f\
 			   (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app (lib_app castDepForall Ai) Bi) Ci) aS) bS) cS) x1) x2) d) f)))
 	          % proof_trasp term
 		  (lambda Ai x1\ lambda Ai x2\
- 		    lambda (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) y1\
- 		     lambda (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))) y2\
+ 		    lambda (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) y1\
+ 		     lambda (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))) y2\
  		      lambda (decode (app (app (app (lib_app setoid_rel Ai) aS) x1) x2)) d1\
- 		       lambda (decode (app (app (app (lib_app setoid_rel (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))))
-				     (lib_app prop_setoid (forall (Bi x1) (b\ Ci (pair Ai Bi x1 b))))) y1) y2)) d2\
+ 		       lambda (decode (app (app (app (lib_app setoid_rel (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))))
+				     (lib_app prop_setoid (forall (# Bi x1) (b\ # Ci (pair Ai Bi x1 b))))) y1) y2)) d2\
 
                    %% Si tratta di una uguaglianza tra proposizioni
  		   mk_trueT)
@@ -315,7 +315,7 @@ starify_term (forall_app Lam X) LibMap Result
 %% Extraction
 
 collapse_type (forall _B C) Result _ []
-    :- conv C (_\extractor_singleton)
+    :- erase_and_conv C (_\extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .

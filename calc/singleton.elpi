@@ -183,7 +183,7 @@ extract_term star star _ [] :- !.
 
 %% 1 -> 1  ==>  1
 collapse_term (elim_singleton Star C _CC) Result _ []
-    :- conv (C Star) extractor_singleton
+    :- erase_and_conv (C Star) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .

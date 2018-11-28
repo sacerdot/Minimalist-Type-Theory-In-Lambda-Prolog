@@ -125,7 +125,7 @@ extract_term (list_cons C Head Tail) Result Context SetList
 
 %% N -> 1  ==>  1
 collapse_term (elim_list L List _LA _LL) Result _ []
-    :- conv (L List) extractor_singleton
+    :- erase_and_conv (L List) extractor_singleton
     ,  Result = extractor_star
     ,  !
     .

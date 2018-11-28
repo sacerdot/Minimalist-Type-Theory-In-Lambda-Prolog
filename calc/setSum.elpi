@@ -136,7 +136,7 @@ extract_term (inr A B BB) Result Context SetList
 
 %% (1 + B') -> A'  ==>  (1 + B') -> A' (preserve_complexity)
 collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _ []
-    :- conv A extractor_singleton
+    :- erase_and_conv A extractor_singleton
     ,  is_complexity_altered (elim_setSum C (inl A B AA) Cl Cr)
     ,  Result = (elim_setSum C (inl A B AA) Cl Cr)
     ,  !
@@ -144,14 +144,14 @@ collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _ []
 
 %% (1 + B') -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result Context []
-    :- conv A extractor_singleton
+    :- erase_and_conv A extractor_singleton
     ,  extract_term (Cl extractor_star) Result Context []
     ,  !
     .
 
 %% (B' + 1) -> A'  ==>  (1 + B') -> A' (preserve_complexity)
 collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _ []
-    :- conv B extractor_singleton
+    :- erase_and_conv B extractor_singleton
     ,  is_complexity_altered (elim_setSum C (inr A B BB) Cl Cr)
     ,  Result = (elim_setSum C (inr A B BB) Cl Cr)
     ,  !
@@ -159,7 +159,7 @@ collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _ []
 
 %% (B' + 1) -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result Context []
-    :- conv B extractor_singleton
+    :- erase_and_conv B extractor_singleton
     ,  extract_term (Cr extractor_star) Result Context []
     ,  !
     .

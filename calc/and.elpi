@@ -81,8 +81,8 @@ starify_term (p2_and Pair) LibMap Result
 %% Extraction
 
 collapse_type (and B C) Result _ []
-    :- conv B extractor_singleton
-    ,  conv C extractor_singleton
+    :- erase_and_conv B extractor_singleton
+    ,  erase_and_conv C extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .

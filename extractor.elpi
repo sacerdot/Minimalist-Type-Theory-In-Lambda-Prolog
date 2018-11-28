@@ -171,17 +171,23 @@ starify_lib_prop A A.
 starify_lib (hyp H1 H2 E) LibMap Result
     :- starify_lib_prop H1 H1'
     ,  starify_lib_prop H2 H2'
-    ,  (H1' => starify_lib E LibMap E')
+    ,  (erase_var_app H1' Hyp, Hyp => starify_lib E LibMap E')
     ,  spy(Result = (hyp H1' H2' E')) 
     ,  !
     .
 starify_lib (cut H E) LibMap Result
     :- starify_lib_prop H H'
-    ,  (process_cut H' Hyp, Hyp => starify_lib E LibMap E')
+    ,  (erase_var_app H' HH, process_cut HH Hyp, Hyp => starify_lib E LibMap E')
     ,  spy(Result = (cut H' E')) 
     ,  !
     .
 
+type erase_and_conv A -> A -> prop.
+erase_and_conv A B
+    :- erase_var_app A A'
+    ,  erase_var_app B B'
+    ,  conv A' B'
+    .
 
 conditional_fail Bool :- Bool = true.
 
@@ -325,7 +331,7 @@ extract_lib (univDepProp Bi F) Result Context [TakeArg|ArgMask] BodyList SetList
 
 %% 1 -> N  ==>  N
 collapse_lib (univPiT T F) Result Context false BodyList SetList
-    :- conv T extractor_singleton
+    :- erase_and_conv T extractor_singleton
     ,  spy(extract_lib (F extractor_star) Result Context _ArgMask BodyList SetList)
     ,  !
     .
@@ -348,7 +354,7 @@ extract_lib (univPiT T F) Result Context [TakeArg|ArgMask] BodyList SetList
 
 %% 1 -> N  ==>  N
 collapse_lib (univDepPiT _Ai Bi F) Result Context false BodyList SetList
-    :- conv Bi (_\extractor_singleton)
+    :- erase_and_conv Bi (_\extractor_singleton)
     ,  spy(extract_lib (F (_\extractor_star)) Result Context _ArgMask BodyList SetList)
     ,  !
     .
@@ -497,7 +503,7 @@ get_call_type (locDefL _ T _) T.
 
 collapse_lib (hyp _ _ E) Result Context true BodyList []
     :- get_call_type E T
-    ,  conv T extractor_singleton
+    ,  erase_and_conv T extractor_singleton
     ,  extract_lib E Result Context _ArgMask BodyList []
     ,  !
     .
@@ -505,22 +511,23 @@ collapse_lib (hyp _ _ E) Result Context true BodyList []
 extract_lib (hyp H1 H2 E) Result Context ArgMask BodyList SetList
     :- spy(extract_lib_prop H1 H1' Context _)
     ,  spy(extract_lib_prop H2 H2' Context _)
-    ,  spy(H1 => H1' => extract_lib E E' Context ArgMask [body H2'|[body H1'|BodyList]] SetList)
+    ,  erase_var_app H1 Hyp, erase_var_app H1' Hyp'
+    ,  spy(Hyp => Hyp' => extract_lib E E' Context ArgMask [body H2'|[body H1'|BodyList]] SetList)
     ,  spy(collapse_lib (hyp H1' H2' E') Result Context true BodyList [])
     ,  !
     .
 
 collapse_lib (cut _ E) Result Context true BodyList []
     :- get_call_type E T
-    ,  conv T extractor_singleton
+    ,  erase_and_conv T extractor_singleton
     ,  extract_lib E Result Context _ArgMask BodyList []
     ,  !
     .
 
 extract_lib (cut H E) Result Context ArgMask BodyList SetList
     :- spy(extract_lib_prop H H' Context _)
-    ,  spy(process_cut H Hyp)
-    ,  spy(process_cut H' Hyp')
+    ,  erase_var_app H HH, spy(process_cut HH Hyp)
+    ,  erase_var_app H' HH', spy(process_cut HH' Hyp')
     ,  spy(Hyp => Hyp' => extract_lib E E' Context ArgMask [body H'|BodyList] SetList)
     ,  spy(collapse_lib (cut H' E') Result Context true BodyList [])
     ,  !
@@ -601,11 +608,11 @@ stylized_type_of (univDepPiT Ai Bi F) [Arg|ArgTL] [var_dep_term _ _ Ai|KindTL]
     .
 
 stylized_type_of (hyp H1 _ E) ArgTL KindTL
-    :- (H1 => stylized_type_of E ArgTL KindTL)
+    :- (erase_var_app H1 Hyp, Hyp => stylized_type_of E ArgTL KindTL)
     ,  !
     .
 stylized_type_of (cut H E) ArgTL KindTL
-    :- (process_cut H Hyp, Hyp => stylized_type_of E ArgTL KindTL)
+    :- (erase_var_app H HH, process_cut HH Hyp, Hyp => stylized_type_of E ArgTL KindTL)
     ,  !
     .
 
@@ -764,10 +771,9 @@ get_applied_head (locDefL N _ _) [] N.
 
 type map_lib_call_  any -> list any -> list lib_mapping_type -> any -> prop.
 map_lib_call_ Name Args [lib_mapping Entry ExtrEntry ArgMask|Tail] Result
-    :- spy(get_call_name Entry EntryName)
-    ,  spy((Name = EntryName
-        ,    filter_args Args ArgMask Args'
-             , get_applied_head ExtrEntry Args' Result)
+    :- get_call_name Entry EntryName
+    ,  ((Name = EntryName
+        ,    filter_args Args ArgMask Args', get_applied_head ExtrEntry Args' Result)
         , !; map_lib_call_ Name Args Tail Result)
     .
 
@@ -777,9 +783,9 @@ get_arg_list _H [].
 
 type map_lib_call  any -> list lib_mapping_type -> any -> prop.
 map_lib_call A LibMap Result
-    :- spy(get_call_name A Name)
+    :- get_call_name A Name
     ,  get_arg_list A Args
-    ,  spy((term_to_string Name S, rex_match "^extr_[a-zA-Z0-9_]+$" S, Result = A)
+    ,  ((term_to_string Name S, rex_match "^extr_[a-zA-Z0-9_]+$" S, Result = A)
         , !; map_lib_call_ Name Args LibMap Result)
     .
 
@@ -885,22 +891,6 @@ extract_lib_call A Result Context SetList
     ,  !
     .
 
-/*
-type contains_lib_app A -> prop -> prop.
-contains_lib_app A true
-    :- term_to_string A SA
-    ,  rex_match "^.*lib_app .*$" SA
-    ,  !
-    .
-contains_lib_app _ false.
-
-type is_non_collapsible_lambda any -> prop.
-is_non_collapsible_lambda (elim_setSum _ (inl _ _ A) Cl _) :- contains_lib_app (Cl A) true.
-is_non_collapsible_lambda (elim_setSum _ (inr _ _ B) _ Cr) :- contains_lib_app (Cr B) true.
-is_non_collapsible_lambda (elim_setSigma (pair _ _ B C) _ MM) :- contains_lib_app (MM B C) true.
-is_non_collapsible_lambda _.
-*/
-
 type is_complexity_altered any -> prop.
 is_complexity_altered _A
     :- @language = ocaml
@@ -935,8 +925,8 @@ extract_type (decode A) Result Context SetList
     .
 
 extract_type (lib_app H A) Result Context SetList
-    :- spy(extract_lib_call (lib_app H A) (lib_app H' A') Context SetList)
-    ,  spy(collapse_type (lib_app H' A') Result Context [])
+    :- spy(extract_lib_call (lib_app H A) LibCall Context SetList)
+    ,  spy(collapse_type LibCall Result Context [])
     ,  !
     .
 
@@ -944,7 +934,7 @@ extract_type (# X Y) Result Context SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_term Y Y' Context YList)
     ,  spy(of Y TY @level), spy(of Y' TY' @level)
-    ,  spy((name X, map_var X VarMap X', XList = [])
+    ,  ((spy(name X), spy(map_var X VarMap X'), spy(XList = []))
         , !; pi y\ locDecl y TY => pi s\ locDecl s TY' =>
             extract_type (X y) (X' s)
             (context [var_term _ s|[var_term _ y|Vars]] [var_mapping y s|VarMap] LibMap)
@@ -979,7 +969,7 @@ collapse_term (lib_app H A) Result _ []
     .
 
 collapse_term (fixMe _M T) Result _ []
-    :- conv T extractor_singleton
+    :- erase_and_conv T extractor_singleton
     ,  Result = extractor_star
     .
 
@@ -1001,8 +991,8 @@ extract_term (encode A) Result Context SetList
     .
 
 extract_term (lib_app H A) Result Context SetList
-    :- spy(extract_lib_call (lib_app H A) (lib_app H' A') Context SetList)
-    ,  spy(collapse_term (lib_app H' A') Result Context [])
+    :- spy(extract_lib_call (lib_app H A) LibCall Context SetList)
+    ,  spy(collapse_term LibCall Result Context [])
     ,  !
     .
 
@@ -1761,6 +1751,9 @@ erase_var_app (x \ F x) (x \ F' x)
  :- pi x \ erase_var_app (F x) (F' x).
 
 erase_var_app (fixMe S T) (fixMe S T')
+ :- erase_var_app T T'.
+
+erase_var_app (spy T) (spy T')
  :- erase_var_app T T'.
 
 erase_var_app (debugga T) (debugga T')
