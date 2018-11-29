@@ -192,7 +192,7 @@ collapse_term (elim_setSum _C (inr _A B BB) _Cl Cr) Result Context ElimList
 
 %% N + N -> 1  ==>  1
 collapse_term (elim_setSum _C W Cl Cr) Result _ []
-    :- of W (setSum A B) @level
+    :- isa W (setSum A B) @level
     ,  pi a\ locDecl a A => isa (Cl a) extractor_singleton @level
     ,  pi b\ locDecl b B => isa (Cr b) extractor_singleton @level
     ,  Result = extractor_star

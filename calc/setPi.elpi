@@ -1909,14 +1909,14 @@ starify_term (app Lam X) LibMap Result
 
 %% (A' -> 1)  ==>  1
 collapse_type (setPi _B C) Result _ []
-    :- erase_and_conv C (_\extractor_singleton)
+    :- spy(erase_and_conv C (_\extractor_singleton))
     ,  Result = extractor_singleton
     ,  !
     .
 
 %% (1 -> A')  ==>  (1 -> A') (preserve_complexity)
 collapse_type (setPi B C) Result _ []
-    :- erase_and_conv B extractor_singleton
+    :- spy(erase_and_conv B extractor_singleton)
     ,  is_complexity_altered (setPi B C)
     ,  Result = (setPi B C)
     ,  !
@@ -1924,7 +1924,7 @@ collapse_type (setPi B C) Result _ []
 
 %% (1 -> A')  ==>  A'
 collapse_type (setPi B C) Result Context SetList
-    :- erase_and_conv B extractor_singleton
+    :- spy(erase_and_conv B extractor_singleton)
     ,  spy(extract_type (C extractor_star) Result Context SetList)
     ,  !
     .

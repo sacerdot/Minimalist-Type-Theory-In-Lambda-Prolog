@@ -6,8 +6,8 @@ macro @level :- int.
 type extractor_singleton mttType.
 type extractor_star mttTerm.
 
-ofType extractor_singleton props @level.
-of extractor_star extractor_singleton @level.
+ofType extractor_singleton props _IE.
+of extractor_star extractor_singleton _IE.
 
 %% Typing extensions to type extractor terms
 
@@ -61,8 +61,8 @@ translate_entry Entry LibMap ExtrEntry OutLib Result
 %    ,  spy(filter_code_list OutList OutList')
     ,  spy(translate_program_list OutList LibMap CodeList)
     ,  concat [[Code], CodeList] Result
-    ,  spy(get_call_signature StarEntry StarEntry')
-    ,  spy(get_call_signature ExtrEntry ExtrEntry')
+    ,  get_call_signature StarEntry StarEntry'
+    ,  get_call_signature ExtrEntry ExtrEntry'
     ,  spy(concat [LibMap, [(lib_mapping StarEntry' ExtrEntry' ArgMask)]] OutLib)
     .
 
@@ -74,6 +74,14 @@ translate_library [Entry|TL] LibMap Result
     ,  concat [Entry', TL'] Result
     .
 translate_library [] _ [].
+
+/*
+%24
+translate_entry_from_library [_|TL] LibMap 5 Result
+    :- translate_entry_from_library TL LibMap 4 Result
+    ,  !
+    .
+*/
 
 translate_entry_from_library [Entry|_TL] LibMap 0 Result
     :- makeline
@@ -90,6 +98,9 @@ translate_entry_from_library [Entry|TL] LibMap Index Result
     ,  !
     .
 translate_entry_from_library [] _ _ [].
+
+type contains_# A -> prop.
+contains_# A :- ((term_to_string A S, rex_match "^.*#.*$" S, halt), !; true).
 
 %% Lib Extraction
 
@@ -184,9 +195,9 @@ starify_lib (cut H E) LibMap Result
 
 type erase_and_conv A -> A -> prop.
 erase_and_conv A B
-    :- erase_var_app A A'
-    ,  erase_var_app B B'
-    ,  conv A' B'
+    :- spy(erase_var_app A A')
+    ,  spy(erase_var_app B B')
+    ,  spy(conv A' B')
     .
 
 conditional_fail Bool :- Bool = true.
@@ -434,25 +445,34 @@ construct_implication List Result
     :- reverse List RList
     ,  spy(construct_implication_ RList Result)
     .
- 
+
+useless_variable_prop.
+
 extract_lib_prop (pi a\ H a) Result Context NewDecl
     :- Context = (context Vars VarMap LibMap)
     ,  pi a\ pi b\ spy(extract_lib_prop (H a) (H' b)
                        (context Vars [(var_mapping a b)|VarMap] LibMap)
                        NewDecl)
-    ,  spy(Result = (pi b\ H' b))
+/*    ,  (((H' extractor_star) = (useless_variable_prop => B)
+        ,    spy(extract_lib_prop B B' Context _), Result = B')
+        , !; Result = (pi b\ H' b))*/
+    ,  Result = (pi b\ H' b)
     ,  !
     .
-extract_lib_prop (isa X T @level) Result Context [(locDecl X' T')|[(locDecl X T)]]
+extract_lib_prop (isa X T @level) Result Context NewDecl
     :- spy(extract_term X X' Context [])
     ,  spy(extract_type T T' Context [])
-    ,  spy(Result = (isa X' T' @level))
+/*    ,  spy((T' = extractor_singleton
+        ,    Result = useless_variable_prop, NewDecl = [locDecl X T])
+        , !; Result = (isa X' T' @level), NewDecl = [locDecl X' T'|[locDecl X T]])*/
+    ,  Result = (isa X' T' @level), NewDecl = [locDecl X' T'|[locDecl X T]]
     ,  !
     .
 extract_lib_prop (locDecl X T) Result Context []
     :- spy(extract_term X X' Context [])
     ,  spy(extract_type T T' Context [])
-    ,  spy(Result = (locDecl X' T'))
+/*    ,  spy((T' = extractor_singleton, Result = useless_variable_prop), !; Result = (locDecl X' T'))*/
+    ,  Result = (locDecl X' T')
     ,  !
     .
 extract_lib_prop (A => B) Result Context NewDecl
@@ -1442,169 +1462,186 @@ mode (erase_var_app i o).
 erase_var_app (locTypeDefL N KIND TY) (locTypeDefL N' KIND' TY') :-
    erase_var_app N N',
    erase_var_app KIND KIND',
-   erase_var_app TY TY'.
+   erase_var_app TY TY', !.
 erase_var_app (locDefL N TY TE) (locDefL N' TY' TE') :-
    erase_var_app N N',
    erase_var_app TE TE',
-   erase_var_app TY TY'.
+   erase_var_app TY TY', !.
 erase_var_app (univPi F) (univPi F') :-
-   pi x \ erase_var_app (F x) (F' x).
+   pi x \ erase_var_app (F x) (F' x), !.
 erase_var_app (univCol F) (univCol F') :-
-   pi x \ erase_var_app (F x) (F' x).
+   pi x \ erase_var_app (F x) (F' x), !.
 erase_var_app (univProp F) (univProp F') :-
-   pi x \ erase_var_app (F x) (F' x).
+   pi x \ erase_var_app (F x) (F' x), !.
 erase_var_app (univDepPi Bi F) (univDepPi Bi' F') :-
    erase_var_app Bi Bi',
-   (pi x \ erase_var_app (F x) (F' x)).
+   (pi x \ erase_var_app (F x) (F' x)), !.
 erase_var_app (univDepProp Bi F) (univDepProp Bi' F') :-
    erase_var_app Bi Bi',
-   (pi x \ erase_var_app (F x) (F' x)).
+   (pi x \ erase_var_app (F x) (F' x)), !.
 erase_var_app (univDepCol Bi F) (univDepCol Bi' F') :-
    erase_var_app Bi Bi',
-   (pi x \ erase_var_app (F x) (F' x)).
+   (pi x \ erase_var_app (F x) (F' x)), !.
 erase_var_app (univPiT T F) (univPiT T' F') :-
    erase_var_app T T',
-   (pi x \ erase_var_app (F x) (F' x)).
+   (pi x \ erase_var_app (F x) (F' x)), !.
 erase_var_app (univDepPiT Ai Bi F) (univDepPiT Ai' Bi' F') :-
    erase_var_app Ai Ai',
    (pi x \ erase_var_app (Bi x) (Bi' x)),
-   (pi x \ erase_var_app (F x) (F' x)).
+   (pi x \ erase_var_app (F x) (F' x)), !.
 erase_var_app (hyp H1 H2 E) (hyp H1' H2' E') :-
    erase_var_app H1 H1',
    erase_var_app H2 H2',
-   erase_var_app E E'.
+   erase_var_app E E', !.
 erase_var_app (cut H E) (cut H' E') :-
    erase_var_app H H',
-   erase_var_app E E'.
+   erase_var_app E E', !.
 erase_var_app (pi a \ C a) (pi a \ C' a) :-
-   pi a \ erase_var_app (C a) (C' a).
+   pi a \ erase_var_app (C a) (C' a), !.
 erase_var_app (H1 => C) (H1' => C') :-
    erase_var_app H1 H1',
-   erase_var_app C C'.
+   erase_var_app C C', !.
 erase_var_app (conv_trans X Y Z) (conv_trans X' Y' Z') :-
    erase_var_app X X',
    erase_var_app Y Y',
-   erase_var_app Z Z'.
+   erase_var_app Z Z', !.
 erase_var_app (conv_trans_symm X Y Z) (conv_trans_symm X' Y' Z') :-
    erase_var_app X X',
    erase_var_app Y Y',
-   erase_var_app Z Z'.
+   erase_var_app Z Z', !.
 erase_var_app (conv_symm X Y) (conv_symm X' Y') :-
    erase_var_app X X',
-   erase_var_app Y Y'.
+   erase_var_app Y Y', !.
 
 erase_var_app (conv X Y) (conv X' Y') :-
    erase_var_app X X',
-   erase_var_app Y Y'.
+   erase_var_app Y Y', !.
 erase_var_app (of X Y L) (of X' Y' L) :-
    erase_var_app X X',
-   erase_var_app Y Y'.
+   erase_var_app Y Y', !.
 erase_var_app (ofType X Y L) (ofType X' Y' L) :-
    erase_var_app X X',
-   erase_var_app Y Y'.
+   erase_var_app Y Y', !.
 erase_var_app (isa X Y L) (isa X' Y' L) :-
    erase_var_app X X',
-   erase_var_app Y Y'.
+   erase_var_app Y Y', !.
 erase_var_app (isaType X Y L) (isaType X' Y' L) :-
    erase_var_app X X',
-   erase_var_app Y Y'.
+   erase_var_app Y Y', !.
 erase_var_app (locDecl N TE) (locDecl N' TE') :-
    erase_var_app N N',
-   erase_var_app TE TE'.
+   erase_var_app TE TE', !.
 
 erase_var_app (decode T) (decode T') :-
-   erase_var_app T T'.
+   erase_var_app T T', !.
 erase_var_app (encode T) (encode T') :-
-   erase_var_app T T'.
+   erase_var_app T T', !.
 
 erase_var_app (# A B) Result
     :- erase_var_app A A'
     ,  erase_var_app B B'
     ,  Result = (A' B')
+    , !
     .
 
 erase_var_app (and B C) (and B' C')
     :- erase_var_app B B'
     ,  erase_var_app C C'
+    , !
     .
 
 erase_var_app (pair_and B C BB CC) (pair_and B' C' BB' CC') 
     :- erase_var_app BB BB'
     ,  erase_var_app CC CC'
     ,  erase_var_app (and B C) (and B' C')
+    , !
     .
 
 erase_var_app (p1_and Pair) (p1_and Pair')
     :- erase_var_app Pair Pair'
+    , !
     .
 
 erase_var_app (p2_and Pair) (p2_and Pair')
     :- erase_var_app Pair Pair'
+    , !
     .
 
 
 erase_var_app (exist B C) (exist B' C')
     :- erase_var_app B B'
     ,  (pi b\ erase_var_app (C b) (C' b))
+    , !
     .
 
 erase_var_app (pair_exist B C BB CC) (pair_exist B' C' BB' CC') 
     :- erase_var_app BB BB'
     ,  erase_var_app CC CC'
     ,  erase_var_app (exist B C) (exist B' C')
+    , !
     .
 
 erase_var_app (elim_exist Pair M MM) (elim_exist Pair' M' MM')
     :- erase_var_app Pair Pair'
     ,  erase_var_app M M'
     ,  (pi b\ pi c\ erase_var_app (MM b c) (MM' b c))
+    , !
     .
 
 
 erase_var_app (forall B C) (forall B' C')
     :- erase_var_app B B'
     ,  (pi b\ erase_var_app (C b) (C' b))
+    , !
     .
 
 erase_var_app (forall_lam B F) (forall_lam B' F')
     :- erase_var_app B B'
     ,  (pi b\ erase_var_app (F b) (F' b))
+    , !
     .
 
 erase_var_app (forall_app Lam X) (forall_app Lam' X')
     :- erase_var_app Lam Lam'
     ,  erase_var_app X X'
+    , !
     .
 
 
 erase_var_app (implies B C) (implies B' C')
     :- erase_var_app B B'
     ,  erase_var_app C C'
+    , !
     .
 
 erase_var_app (impl_lam B F) (impl_lam B' F')
     :- erase_var_app B B'
     ,  (pi x\ erase_var_app (F x) (F' x))
+    , !
     .
 
 erase_var_app (impl_app Lam X) (impl_app Lam' X')
     :- erase_var_app Lam Lam'
     ,  erase_var_app X X'
+    , !
     .
 
 
 erase_var_app (list C) (list C')
     :- erase_var_app C C'
+    , !
     .
 
 erase_var_app (list_empty C) (list_empty C')
     :- erase_var_app C C'
+    , !
     .
 
 erase_var_app (list_cons C Head Tail) (list_cons C' Head' Tail')
     :- erase_var_app C C'
     ,  erase_var_app Head Head'
     ,  erase_var_app Tail Tail'
+    , !
     .
 
 erase_var_app (elim_list L List LA LL) (elim_list L' List' LA' LL')
@@ -1612,6 +1649,7 @@ erase_var_app (elim_list L List LA LL) (elim_list L' List' LA' LL')
     , (pi z\ erase_var_app (L z) (L' z))
     , erase_var_app LA LA'
     , (pi y\ pi x\ pi z\ erase_var_app (LL y x z) (LL' y x z))
+    , !
     .
 
 
@@ -1619,24 +1657,28 @@ erase_var_app (elim_singleton Star C CC) (elim_singleton Star' C' CC')
     :- erase_var_app Star Star'
     ,  (pi s\ erase_var_app (C s) (C' s))
     ,  erase_var_app CC CC'
+    , !
     .
 
 
 erase_var_app (or A B) (or A' B')
     :- erase_var_app A A'
     ,  erase_var_app B B'
+    , !
     .
 
 erase_var_app (inl_or A B AA) (inl_or A' B' AA')
     :- erase_var_app A A'
     ,  erase_var_app B B'
     ,  erase_var_app AA AA'
+    , !
     .
 
 erase_var_app (inr_or A B BB) (inr_or A' B' BB')
     :- erase_var_app A A'
     ,  erase_var_app B B'
     ,  erase_var_app BB BB'
+    , !
     .
 
 erase_var_app (elim_or C W Cl Cr) (elim_or C' W' Cl' Cr')
@@ -1644,6 +1686,7 @@ erase_var_app (elim_or C W Cl Cr) (elim_or C' W' Cl' Cr')
     ,  erase_var_app C C'
     ,  (pi l\ erase_var_app (Cl l) (Cl' l))
     ,  (pi r\ erase_var_app (Cr r) (Cr' r))
+    , !
     .
 
 
@@ -1651,11 +1694,13 @@ erase_var_app (propEq A AA1 AA2) (propEq A' AA1' AA2')
     :- erase_var_app AA1 AA1'
     ,  erase_var_app AA2 AA2'
     ,  erase_var_app A A'
+    , !
     .
 
 erase_var_app (eq A AA) (eq A' AA')
     :- erase_var_app AA AA'
     ,  erase_var_app A A'
+    , !
     .
 
 
@@ -1663,77 +1708,91 @@ erase_var_app (propId A AA1 AA2) (propId A' AA1' AA2')
     :- erase_var_app AA1 AA1'
     ,  erase_var_app AA2 AA2'
     ,  erase_var_app A A'
+    , !
     .
 
 erase_var_app (id A AA) (id A' AA')
     :- erase_var_app AA AA'
     ,  erase_var_app A A'
+    , !
     .
 
 erase_var_app (elim_id P C CC) (elim_id P' C' CC')
     :- erase_var_app P P'
     ,  (pi x\ pi y\ erase_var_app (C x y) (C' x y))
     ,  (pi x\ erase_var_app (CC x) (CC' x))
+    , !
     .
 
 
 erase_var_app (setPi B C) (setPi B' C')
     :- erase_var_app B B'
     ,  (pi b\ erase_var_app (C b) (C' b))
+    , !
     .
 
 erase_var_app (lambda B F) (lambda B' F')
     :- erase_var_app B B'
     ,  (pi b\ erase_var_app (F b) (F' b))
+    , !
     .
 
 erase_var_app (app Lam X) (app Lam' X')
     :- erase_var_app Lam Lam'
     ,  erase_var_app X X'
+    , !
     .
 
 
 erase_var_app (setSigma B C) (setSigma B' C')
     :- erase_var_app B B'
     ,  (pi b\ erase_var_app (C b) (C' b))
+    , !
     .
 
 erase_var_app (pair B C BB CC) (pair B' C' BB' CC')
     :- erase_var_app BB BB'
     ,  erase_var_app CC CC'
     ,  erase_var_app (setSigma B C) (setSigma B' C')
+    , !
     .
 
 erase_var_app (p1 Pair) (p1 Pair')
     :- erase_var_app Pair Pair'
+    , !
     .
 
 erase_var_app (p2 Pair) (p2 Pair')
     :- erase_var_app Pair Pair'
+    , !
     .
 
 erase_var_app (elim_setSigma Pair M MM) (elim_setSigma Pair' M' MM')
     :- erase_var_app Pair Pair'
     ,  (pi p\ erase_var_app (M p) (M' p))
     ,  (pi b\ pi c\ erase_var_app (MM b c) (MM' b c))
+    , !
     .
 
 
 erase_var_app (setSum A B) (setSum A' B')
     :- erase_var_app A A'
     ,  erase_var_app B B'
+    , !
     .
 
 erase_var_app (inl A B AA) (inl A' B' AA')
     :- erase_var_app A A'
     ,  erase_var_app B B'
     ,  erase_var_app AA AA'
+    , !
     .
 
 erase_var_app (inr A B BB) (inr A' B' BB')
     :- erase_var_app A A'
     ,  erase_var_app B B'
     ,  erase_var_app BB BB'
+    , !
     .
 
 erase_var_app (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
@@ -1741,25 +1800,26 @@ erase_var_app (elim_setSum C W Cl Cr) (elim_setSum C' W' Cl' Cr')
     ,  (pi w\ erase_var_app (C w) (C' w))
     ,  (pi l\ erase_var_app (Cl l) (Cl' l))
     ,  (pi r\ erase_var_app (Cr r) (Cr' r))
+    , !
     .
 
 erase_var_app (lib_app M N) (lib_app M' N')
  :- erase_var_app M M'
- ,  erase_var_app N N'.
+ ,  erase_var_app N N', !.
 
 erase_var_app (x \ F x) (x \ F' x)
- :- pi x \ erase_var_app (F x) (F' x).
+ :- pi x \ erase_var_app (F x) (F' x), !.
 
 erase_var_app (fixMe S T) (fixMe S T')
- :- erase_var_app T T'.
+ :- erase_var_app T T', !.
 
 erase_var_app (spy T) (spy T')
- :- erase_var_app T T'.
+ :- erase_var_app T T', !.
 
 erase_var_app (debugga T) (debugga T')
- :- erase_var_app T T'.
+ :- erase_var_app T T', !.
 
 erase_var_app (printa T) (printa T')
- :- erase_var_app T T'.
+ :- erase_var_app T T', !.
 
 erase_var_app A A.

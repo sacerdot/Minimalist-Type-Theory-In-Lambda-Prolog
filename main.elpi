@@ -52,10 +52,11 @@ hnf A A.
 
 %% Expresses (extensional) equality between two types. Checks if they have the same WHNF, in which case
 %% it calls itself recursively (via dconv) on all the subterms of the WHNF
+
 conv A A :- ! .
 conv A B :- (locDecl _ (propEq _ A B) ), !.
 conv A B :- (locDecl _ (propEq _ B A) ), !.
-conv A B :- spy(hnf A A'), spy(hnf B B'), spy(dconv A' B').
+conv A B :- (hnf A A'), (hnf B B'), (dconv A' B').
 
 %conv A B :- spy(hnf A A'), spy( hnf B B'), spy(locDecl _ (propEq _ A1 B1)), spy(hnf A1 A2), spy(hnf B1 B2), spy((A' = A2, B' = B2) ; (A' = B2 , B' = A2)). 
 
@@ -167,8 +168,8 @@ isaType Type Kind IE
 
 isa Term TY IE 
     :- spy(of Term TY' IE)
-    , erase_var_app TY TYe
-    , erase_var_app TY' TYe'
+    ,  erase_var_app TY TYe
+    ,  erase_var_app TY' TYe'
     ,  spy(conv TYe' TYe)
     .
 
