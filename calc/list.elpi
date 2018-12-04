@@ -223,12 +223,12 @@ translate_elim_list_to haskell List' LA' LL' Result
     .
 
 translate_term (elim_list L List LA LL) LibMap Result
-    :- translate_term List LibMap List'
-    ,  isa List (list C) @level
-    ,  translate_term LA LibMap LA'
-    ,  ((name LL, term_to_string LL LL')
+    :- spy(translate_term List LibMap List')
+    ,  spy(isa List (list C) @level)
+    ,  spy(translate_term LA LibMap LA')
+    ,  spy((name LL, term_to_string LL LL')
         , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => (translate_term (LL y x z) LibMap SLL, translate_term y LibMap Sy, translate_term x LibMap Sx, translate_term z LibMap Sz)
-            , translate_elim_list_abs_to @language SLL Sy Sx Sz Result)
+            , translate_elim_list_abs_to @language SLL Sy Sx Sz LL')
     ,  translate_elim_list_to @language List' LA' LL' Result
     ,  !
     .

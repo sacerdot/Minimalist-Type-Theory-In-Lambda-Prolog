@@ -1,21 +1,21 @@
 %% To OCaml
 %% setSum -> type ('a, 'b) set_sum = Inl of 'a | Inr of 'b;;
 %% setSigma -> type ('a, 'b) set_sigma = { l: 'a; r: 'b };;
-%% setPi -> type ('a, 'b) set_pi = { p: ('a -> 'b) };;
+%% setPi -> 'a -> 'b
 %% list -> 'a list
 %% type dummy = Dummy;;
 
 %% To Haskell
 %% setSum -> data SetSum a b = Inl a | Inr b  deriving (Show)
 %% setSigma -> data SetSigma a b = SetSigma { l :: a, r :: b }  deriving (Show)
-%% setPi -> data SetPi a b = SetPi { p :: a -> b }
+%% setPi -> a -> b
 %% data Dummy = Dummy
 
 kind language type.
 type ocaml, haskell language.
 
-%macro @language :- ocaml.
-macro @language :- haskell.
+macro @language :- ocaml.
+%macro @language :- haskell.
 
 type translate_type mttType -> list lib_mapping_type -> string -> prop.
 
@@ -471,11 +471,10 @@ translate_term (extractor_dep_type_lambda A K F) LibMap Result
     .
 
 translate_term (extractor_dep_lambda A B F) LibMap Result
-    :- ((name F, term_to_string F F')
+    :- ((name F, term_to_string F Result)
         , !; pi a\ of a A int => pi b\ (of (b a) (B a) int) =>
                 (translate_term (F b) LibMap SF, translate_dep_term b LibMap Sb)
-            , translate_lambda_abs_to @language SF Sb F')
-    ,  translate_lambda_to @language F' Result
+            , translate_lambda_abs_to @language SF Sb Result)
     ,  !
     .
 

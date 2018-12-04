@@ -2018,11 +2018,11 @@ extract_term (app Lam X) Result Context SetList
 %% Translation
 
 translate_setPi_to ocaml B' C' Result
-    :- Result is "(" ^ B' ^ ", " ^ C' ^ ") set_pi"
+    :- Result is "(" ^ B' ^ " -> " ^ C' ^ ")"
     ,  !
     .
 translate_setPi_to haskell B' C' Result
-    :- Result is "SetPi (" ^ B' ^ ") (" ^ C' ^ ")"
+    :- Result is "(" ^ B' ^ " -> " ^ C' ^ ")"
     ,  !
     .
 
@@ -2042,30 +2042,21 @@ translate_lambda_abs_to haskell SF Sb Result
     :- Result is "(\\" ^ Sb ^ " -> " ^ SF ^ ")"
     ,  !
     .
-translate_lambda_to ocaml F' Result
-    :- Result is "{ p = " ^ F' ^ " }"
-    ,  !
-    .
-translate_lambda_to haskell F' Result
-    :- Result is "(SetPi " ^ F' ^ ")"
-    ,  !
-    .
 
 translate_term (lambda B F) LibMap Result
-    :- ((name F, term_to_string F F')
+    :- ((name F, term_to_string F Result)
         , !; pi b\ locDecl b B => (translate_term (F b) LibMap SF, translate_term b LibMap Sb)
-            , translate_lambda_abs_to @language SF Sb F')
-    ,  translate_lambda_to @language F' Result
+            , translate_lambda_abs_to @language SF Sb Result)
     ,  !
     .
 
 
 translate_app_to ocaml Lam' X' Result
-    :- Result is "(" ^ Lam' ^ ".p " ^ X' ^ ")"
+    :- Result is "(" ^ Lam' ^ " " ^ X' ^ ")"
     ,  !
     .
 translate_app_to haskell Lam' X' Result
-    :- Result is "(p " ^ Lam' ^ " " ^ X' ^ ")"
+    :- Result is "(" ^ Lam' ^ " " ^ X' ^ ")"
     ,  !
     .
 
