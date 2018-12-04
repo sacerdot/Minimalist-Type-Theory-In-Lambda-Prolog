@@ -446,32 +446,41 @@ construct_implication List Result
     ,  spy(construct_implication_ RList Result)
     .
 
-useless_variable_prop.
+/*
+collapse_lib_prop (pi b\ H' b) Result Context
+    :- (H' extractor_star) = (locDecl extractor_star extractor_singleton => B)
+%    ,  spy(extract_lib_prop B B' Context _)
+    ,  Result = B
+    ,  !
+    .
+collapse_lib_prop (pi b\ H' b) Result Context
+    :- (H' extractor_star) = (isa extractor_star extractor_singleton @level => B)
+%    ,  spy(extract_lib_prop B B' Context _)
+    ,  Result = B
+    ,  !
+    .
+*/
+collapse_lib_prop (pi b\ H' b) Result _
+    :- spy(Result = (pi b\ H' b))
+    .
 
 extract_lib_prop (pi a\ H a) Result Context NewDecl
     :- Context = (context Vars VarMap LibMap)
     ,  pi a\ pi b\ spy(extract_lib_prop (H a) (H' b)
                        (context Vars [(var_mapping a b)|VarMap] LibMap)
                        NewDecl)
-/*    ,  (((H' extractor_star) = (useless_variable_prop => B)
-        ,    spy(extract_lib_prop B B' Context _), Result = B')
-        , !; Result = (pi b\ H' b))*/
-    ,  Result = (pi b\ H' b)
+    ,  spy(collapse_lib_prop (pi b\ H' b) Result Context)
     ,  !
     .
 extract_lib_prop (isa X T @level) Result Context NewDecl
     :- spy(extract_term X X' Context [])
     ,  spy(extract_type T T' Context [])
-/*    ,  spy((T' = extractor_singleton
-        ,    Result = useless_variable_prop, NewDecl = [locDecl X T])
-        , !; Result = (isa X' T' @level), NewDecl = [locDecl X' T'|[locDecl X T]])*/
     ,  Result = (isa X' T' @level), NewDecl = [locDecl X' T'|[locDecl X T]]
     ,  !
     .
 extract_lib_prop (locDecl X T) Result Context []
     :- spy(extract_term X X' Context [])
     ,  spy(extract_type T T' Context [])
-/*    ,  spy((T' = extractor_singleton, Result = useless_variable_prop), !; Result = (locDecl X' T'))*/
     ,  Result = (locDecl X' T')
     ,  !
     .
