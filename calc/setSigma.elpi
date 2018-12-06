@@ -1448,7 +1448,7 @@ starify_term (elim_setSigma Pair M MM) LibMap Result
 
 collapse_type (setSigma B C) Result _ []
     :- erase_and_conv B extractor_singleton
-    ,  erase_and_conv C (_\extractor_singleton)
+    ,  (pi x\ erase_and_conv (C x) extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .

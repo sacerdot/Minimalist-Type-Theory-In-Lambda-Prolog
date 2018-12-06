@@ -315,7 +315,7 @@ starify_term (forall_app Lam X) LibMap Result
 %% Extraction
 
 collapse_type (forall _B C) Result _ []
-    :- erase_and_conv C (_\extractor_singleton)
+    :- (pi x\ erase_and_conv (C x) extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .

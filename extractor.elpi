@@ -365,7 +365,7 @@ extract_lib (univPiT T F) Result Context [TakeArg|ArgMask] BodyList SetList
 
 %% 1 -> N  ==>  N
 collapse_lib (univDepPiT _Ai Bi F) Result Context false BodyList SetList
-    :- erase_and_conv Bi (_\extractor_singleton)
+    :- (pi x\ erase_and_conv (Bi x) extractor_singleton)
     ,  spy(extract_lib (F (_\extractor_star)) Result Context _ArgMask BodyList SetList)
     ,  !
     .

@@ -85,7 +85,7 @@ starify_term (elim_exist Pair M MM) LibMap Result
 
 collapse_type (exist B C) Result _ []
     :- spy(erase_and_conv B extractor_singleton)
-    ,  spy(erase_and_conv C (_\extractor_singleton))
+    ,  spy(pi x\ erase_and_conv (C x) extractor_singleton)
     ,  spy(Result = extractor_singleton)
     ,  !
     .

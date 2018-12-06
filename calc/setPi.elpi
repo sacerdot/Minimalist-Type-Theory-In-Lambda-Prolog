@@ -1909,7 +1909,7 @@ starify_term (app Lam X) LibMap Result
 
 %% (A' -> 1)  ==>  1
 collapse_type (setPi _B C) Result _ []
-    :- spy(erase_and_conv C (_\extractor_singleton))
+    :- spy(pi x\ erase_and_conv (C x) extractor_singleton)
     ,  Result = extractor_singleton
     ,  !
     .
