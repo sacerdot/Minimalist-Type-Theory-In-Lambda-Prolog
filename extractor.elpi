@@ -696,73 +696,73 @@ starify_type_ set A _ A :- !.
 starify_type_ col propS _ extractor_singleton :- !.
 starify_type_ col A _ A :- !.
 starify_type_ _   A _ A :- spy(name A), !.
-starify_type_ _   A Context Result :- starify_lib_call A Context Result, !.
+starify_type_ _   A LibMap Result :- starify_lib_call A LibMap Result, !.
 %starify_type_ _   _ _ extractor_singleton.
 
 
 
-starify_type (decode A) Context Result
-    :- starify_term A Context A'
+starify_type (decode A) LibMap Result
+    :- starify_term A LibMap A'
     ,  Result = (decode A')
     ,  !
     .
 
-starify_type (lib_app H A) Context Result
+starify_type (lib_app H A) LibMap Result
     :- !
-    ,  spy(starify_lib_call (lib_app H A) Context Result)
+    ,  spy(starify_lib_call (lib_app H A) LibMap Result)
     ,  !
     .
 
-starify_type (# X Y) Context Result
+starify_type (# X Y) LibMap Result
     :- of Y TY @level
-    ,  ((name X, X' = X), !; pi y\ locDecl y TY => starify_type (X y) Context (X' y))
-    ,  starify_term Y Context Y'
+    ,  ((name X, X' = X), !; pi y\ locDecl y TY => starify_type (X y) LibMap (X' y))
+    ,  starify_term Y LibMap Y'
     ,  Result = (# X' Y')
     ,  !
     .
 
-starify_type TA Context Result
+starify_type TA LibMap Result
     :- ofType TA AKind @level
-    ,  spy(starify_type_ AKind TA Context Result)
+    ,  spy(starify_type_ AKind TA LibMap Result)
     ,  !
     .
 
 starify_term_ set A _ A :- !.
 starify_term_ col A _ A :- !.
 starify_term_ _   A _ A :- spy(name A), !.
-starify_term_ _   A Context Result :- starify_lib_call A Context Result, !.
+starify_term_ _   A LibMap Result :- starify_lib_call A LibMap Result, !.
 %starify_term_ _   _ _ extractor_star.
 
-starify_term (encode A) Context Result
-    :- starify_type A Context A'
+starify_term (encode A) LibMap Result
+    :- starify_type A LibMap A'
     ,  Result = (encode A')
     ,  !
     .
 
-starify_term (lib_app H A) Context Result
+starify_term (lib_app H A) LibMap Result
     :- !
-    ,  spy(starify_lib_call (lib_app H A) Context Result)
+    ,  spy(starify_lib_call (lib_app H A) LibMap Result)
     ,  !
     .
 
-starify_term (# X Y) Context Result
+starify_term (# X Y) LibMap Result
     :- of Y TY @level
-    ,  ((name X, X' = X), !; pi y\ locDecl y TY => starify_term (X y) Context (X' y))
-    ,  starify_term Y Context Y'
+    ,  ((name X, X' = X), !; pi y\ locDecl y TY => starify_term (X y) LibMap (X' y))
+    ,  starify_term Y LibMap Y'
     ,  Result = (# X' Y')
     ,  !
     .
 
-starify_term (fixMe M T) Context Result
-    :- starify_type T Context T'
+starify_term (fixMe M T) LibMap Result
+    :- starify_type T LibMap T'
     ,  Result = (fixMe M T')
     ,  !
     .
 
-starify_term A Context Result
+starify_term A LibMap Result
     :- of A TA @level
     ,  ofType TA AKind @level
-    ,  spy(starify_term_ AKind A Context Result)
+    ,  spy(starify_term_ AKind A LibMap Result)
     ,  !
     .
 
@@ -1735,8 +1735,8 @@ erase_var_app (elim_id P C CC) (elim_id P' C' CC')
 
 
 erase_var_app (setPi B C) (setPi B' C')
-    :- erase_var_app B B'
-    ,  (pi b\ erase_var_app (C b) (C' b))
+    :- spy(erase_var_app B B')
+    ,  spy(pi b\ erase_var_app (C b) (C' b))
     , !
     .
 

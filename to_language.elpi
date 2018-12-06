@@ -14,8 +14,8 @@
 kind language type.
 type ocaml, haskell language.
 
-macro @language :- ocaml.
-%macro @language :- haskell.
+%macro @language :- ocaml.
+macro @language :- haskell.
 
 type translate_type mttType -> list lib_mapping_type -> string -> prop.
 
