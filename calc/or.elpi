@@ -95,9 +95,9 @@ starify_term (elim_or C W Cl Cr) LibMap Result
     :- starify_term W LibMap W'
     ,  starify_type C LibMap C'
     ,  isa W (or L R) @level
-    ,  ((name Cl, Cl' = Cl)
+    ,  ((name Cl Cl [], Cl' = Cl)
         , !; pi l\ locDecl l L => starify_term (Cl l) LibMap (Cl' l))
-    ,  ((name Cr, Cr' = Cr)
+    ,  ((name Cr Cr [], Cr' = Cr)
         , !; pi r\ locDecl r R => starify_term (Cr r) LibMap (Cr' r))
     ,  Result = (elim_or C' W' Cl' Cr')
     ,  !
@@ -179,12 +179,12 @@ extract_term (elim_or C W Cl Cr) Result Context SetList
     ,  extract_type C C' Context CList
     ,  isa W (or L R) @level
     ,  isa W' (or L' R') @level
-    ,  ((name Cl, map_var Cl VarMap Cl', ClList = [])
+    ,  ((name Cl Cl [], map_var Cl VarMap Cl', ClList = [])
         , !; pi l\ locDecl l L => pi i\ locDecl i L' =>
             extract_term (Cl l) (Cl' i)
             (context [var_term _ i|[var_term _ l|Vars]] [var_mapping l i|VarMap] LibMap)
             ClList)
-    ,  ((name Cr, map_var Cr VarMap Cr', CrList = [])
+    ,  ((name Cr Cr [], map_var Cr VarMap Cr', CrList = [])
         , !; pi r\ locDecl r R => pi f\ locDecl f R' =>
             extract_term (Cr r) (Cr' f)
             (context [var_term _ f|[var_term _ r|Vars]] [var_mapping r f|VarMap] LibMap)

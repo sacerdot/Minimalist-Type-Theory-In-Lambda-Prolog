@@ -168,7 +168,7 @@ singletonLib L :-
 
 starify_term (elim_singleton Star C CC) LibMap Result 
     :- starify_term Star LibMap Star'
-    ,  ((name C, C' = C)
+    ,  ((name C C [], C' = C)
         , !; pi s\ locDecl s singleton => starify_type (C s) LibMap (C' s))
     ,  starify_term CC LibMap CC'
     ,  spy(Result = (elim_singleton Star' C' CC'))
@@ -191,7 +191,7 @@ collapse_term (elim_singleton Star C _CC) Result _ []
 extract_term (elim_singleton Star C CC) Result Context SetList
     :- Context = (context Vars VarMap LibMap)
     ,  extract_term Star Star' Context StarList
-    ,  ((name C, map_var C VarMap C')
+    ,  ((name C C [], map_var C VarMap C')
         , !; pi s\ locDecl s singleton => extract_type (C s) (C' s)
                                           (context [var_term _ s|Vars] VarMap LibMap)
                                           CList)

@@ -1884,7 +1884,7 @@ setPiLib Lp :-
 
 starify_type (setPi B C) LibMap Result
     :- starify_type B LibMap B'
-    ,  ((name C, C' = C)
+    ,  ((name C C [], C' = C)
         , !; pi b\ locDecl b B => starify_type (C b) LibMap (C' b))
     ,  spy(Result = (setPi B' C'))
     ,  !
@@ -1892,7 +1892,7 @@ starify_type (setPi B C) LibMap Result
 
 starify_term (lambda B F) LibMap Result
     :- spy(starify_type B LibMap B')
-    ,  spy((name F, F' = F)
+    ,  spy((name F F [], F' = F)
         , !; pi b\ locDecl b B => starify_term (F b) LibMap (F' b))
     ,  spy(Result = (lambda B' F'))
     ,  !
@@ -1932,7 +1932,7 @@ collapse_type (setPi B C) Result Context SetList
 extract_type (setPi B C) Result Context SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type B B' Context BList)
-    ,  ((name C, map_var C VarMap C', CList = [])
+    ,  ((name C C [], map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_type (C b) (C' d)
             (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
@@ -1967,7 +1967,7 @@ collapse_term (lambda B F) Result Context LamList
 extract_term (lambda B F) Result Context SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type B B' Context BList)
-    ,  ((name F, spy(map_var F VarMap F', FList = []))
+    ,  ((name F F [], spy(map_var F VarMap F', FList = []))
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_term (F b) (F' d)
             (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
@@ -2028,7 +2028,7 @@ translate_setPi_to haskell B' C' Result
 
 translate_type (setPi B C) LibMap Result
     :- translate_type B LibMap B'
-    ,  ((name C, term_to_string C C'), !; pi b\ locDecl b B => translate_type (C b) LibMap C')
+    ,  ((name C C [], term_to_string C C'), !; pi b\ locDecl b B => translate_type (C b) LibMap C')
     ,  translate_setPi_to @language B' C' Result
     ,  !
     .
@@ -2044,7 +2044,7 @@ translate_lambda_abs_to haskell SF Sb Result
     .
 
 translate_term (lambda B F) LibMap Result
-    :- ((name F, term_to_string F Result)
+    :- ((name F F [], term_to_string F Result)
         , !; pi b\ locDecl b B => (translate_term (F b) LibMap SF, translate_term b LibMap Sb)
             , translate_lambda_abs_to @language SF Sb Result)
     ,  !

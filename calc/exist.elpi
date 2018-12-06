@@ -57,7 +57,7 @@ dconv (exist B C) (exist B' C')
 
 starify_type (exist B C) LibMap Result
     :- starify_type B LibMap B'
-    ,  ((name C, C' = C)
+    ,  ((name C C [], C' = C)
         , !; pi b\ locDecl b B => starify_type (C b) LibMap (C' b))
     ,  spy(Result = (exist B' C'))
     ,  !
@@ -75,7 +75,7 @@ starify_term (elim_exist Pair M MM) LibMap Result
     :- starify_term Pair LibMap Pair'
     ,  isa Pair (exist B C) @level
     ,  starify_type M LibMap M'
-    ,  ((pi b\ locDecl b B => (name (MM b), MM' = MM))
+    ,  ((pi b\ locDecl b B => (name (MM b) (MM b) [], MM' = MM))
         , !; pi b\ pi c\ locDecl b B => locDecl c (C b) => starify_term (MM b c) LibMap (MM' b c))
     ,  Result = (elim_exist Pair' M' MM')
     ,  !
@@ -96,7 +96,7 @@ extract_type (exist B C) Result Context SetList
     ,  spy(ofType B Kind @level)
     ,  spy(is_informative Kind NeedsExtraction)
     ,  spy((NeedsExtraction = false, B' = B1), !; B' = extractor_singleton)
-    ,  ((name C, map_var C VarMap C', CList = [])
+    ,  ((name C C [], map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_type (C b) (C' d)
             (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
@@ -120,7 +120,7 @@ extract_term (pair_exist B C BB CC) Result Context SetList
     ,  spy(extract_term BB BB1 Context BBList)
     ,  spy(extract_collapsing_input Context BB1 BB' BB1List)
     ,  spy((BB' = extractor_star, B' = extractor_singleton), !; B' = B1)
-    ,  ((name C, map_var C VarMap C', CList = [])
+    ,  ((name C C [], map_var C VarMap C', CList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_type (C b) (C' d)
             (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)
@@ -156,7 +156,7 @@ extract_term (elim_exist Pair M MM) Result Context SetList
         , !; isa Pair' (exist B' C') @level)
     ,  spy(extract_type M M' Context MList)
     ,  ((pi b\ locDecl b B => pi d\ locDecl d B' =>
-            (name (MM b), map_var (MM b) VarMap (MM' d), MMList = []))
+            (name (MM b) (MM b) [], map_var (MM b) VarMap (MM' d), MMList = []))
         , !; spy(pi b\ pi c\ locDecl b B => locDecl c (C b) => 
              pi d\ pi e\ locDecl d B' => locDecl e (C' d) =>
                 extract_term (MM b c) (MM' d e)

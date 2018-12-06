@@ -90,10 +90,10 @@ starify_term (list_cons C Head Tail) LibMap Result
 starify_term (elim_list L List LA LL) LibMap Result
     :- starify_term List LibMap List'
     ,  isa List (list C) @level
-    , ((name L, L' = L)
+    , ((name L L [], L' = L)
         , !; pi z\ locDecl z (list C) => starify_type (L z) LibMap (L' z))
     ,  spy(starify_term LA LibMap LA')
-    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) => (name (LL y x), LL' = LL))
+    ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) => (name (LL y x) (LL y x) [], LL' = LL))
         , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
             starify_term (LL y x z) LibMap (LL' y x z))
     ,  Result = (elim_list L' List' LA' LL')
@@ -135,7 +135,7 @@ extract_term (elim_list L List LA LL) Result Context SetList
     ,  extract_term List List' Context ListList
     ,  isa List (list C) @level
     ,  isa List' (list C') @level
-    , ((name L, map_var L VarMap L', LList = [])
+    , ((name L L [], map_var L VarMap L', LList = [])
         , !; pi z\ locDecl z (list C) => pi s\ locDecl s (list C') => 
             extract_type (L z) (L' s)
             (context [var_term _ s|[var_term _ z|Vars]] [var_mapping z s|VarMap] LibMap)
@@ -143,7 +143,7 @@ extract_term (elim_list L List LA LL) Result Context SetList
     ,  spy(extract_term LA LA' Context LAList)
     ,  ((pi y\ locDecl y C => pi x\ locDecl x (list C) =>
          pi b\ locDecl b C' => pi a\ locDecl a (list C') =>
-            (name (LL y x), map_var (LL y x) VarMap (LL' b a), LLList = []))
+            (name (LL y x) (LL y x) [], map_var (LL y x) VarMap (LL' b a), LLList = []))
         , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => 
              pi b\ locDecl b C' => pi a\ locDecl a (list C') => pi c\ locDecl c (L' a) =>
             extract_term (LL y x z) (LL' b a c)
@@ -226,7 +226,7 @@ translate_term (elim_list L List LA LL) LibMap Result
     :- spy(translate_term List LibMap List')
     ,  spy(isa List (list C) @level)
     ,  spy(translate_term LA LibMap LA')
-    ,  spy((name LL, term_to_string LL LL')
+    ,  spy((name LL LL [], term_to_string LL LL')
         , !; pi y\ locDecl y C => pi x\ locDecl x (list C) => pi z\ locDecl z (L x) => (translate_term (LL y x z) LibMap SLL, translate_term y LibMap Sy, translate_term x LibMap Sx, translate_term z LibMap Sz)
             , translate_elim_list_abs_to @language SLL Sy Sx Sz LL')
     ,  translate_elim_list_to @language List' LA' LL' Result

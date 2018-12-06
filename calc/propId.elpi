@@ -75,9 +75,9 @@ starify_term (id A AA) LibMap Result
 starify_term (elim_id P C CC) LibMap Result
     :- starify_term P LibMap P'
     ,  isa P (propId A _ _) int
-    ,  ((pi x\ locDecl x A => (name (C x), C' = C))
+    ,  ((pi x\ locDecl x A => (name (C x) (C x) [], C' = C))
         , !; pi x\ locDecl x A => pi y\ locDecl y A => starify_type (C x y) LibMap (C' x y))
-    ,  ((name CC, CC' = CC)
+    ,  ((name CC CC [], CC' = CC)
         , !; pi x\ locDecl x A => starify_term (CC x) LibMap (CC' x))
     ,  spy(Result = (elim_id P' C' CC'))
     ,  !
@@ -140,14 +140,14 @@ extract_term (elim_id P C CC) Result Context SetList
         ,    A' = extractor_singleton)
         , !; isa P' (propId A' _ _) int)
     ,  ((pi x\ locDecl x A => pi a\ locDecl a A' =>
-            (name (C x), map_var (C x) VarMap (C' a), CList = []))
+            (name (C x) (C x) [], map_var (C x) VarMap (C' a), CList = []))
         , !; pi x\ locDecl x A => pi y\ locDecl y A => pi a\ locDecl a A' => pi b\ locDecl b A' =>
             extract_type (C x y) (C' a b)
             (context [var_term _ b|[var_term _ a|[var_term _ y|[var_term _ x|Vars]]]]
                      [var_mapping y b|[var_mapping x a|VarMap]]
                      LibMap)
             CList)
-    ,  ((name CC, map_var CC VarMap CC', CCList = [])
+    ,  ((name CC CC [], map_var CC VarMap CC', CCList = [])
         , !; pi x\ locDecl x A => pi a\ locDecl a A' =>
             extract_term (CC x) (CC' a)
             (context [var_term _ a|[var_term _ x|Vars]] [var_mapping x a|VarMap] LibMap)

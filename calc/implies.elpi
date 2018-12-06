@@ -262,7 +262,7 @@ starify_type (implies B C) LibMap Result
 
 starify_term (impl_lam B F) LibMap Result
     :- starify_type B LibMap B'
-    ,  ((name F, F' = F)
+    ,  ((name F F [], F' = F)
         , !; pi x\ locDecl x B => starify_term (F x) LibMap (F' x))
     ,  Result = (impl_lam B' F')
     ,  !
@@ -302,7 +302,7 @@ collapse_term (impl_lam B F) Result _ []
 extract_term (impl_lam B F) Result Context SetList
     :- Context = (context Vars VarMap LibMap)
     ,  spy(extract_type B B' Context BList)
-    ,  ((name F, map_var F VarMap F', FList = [])
+    ,  ((name F F [], map_var F VarMap F', FList = [])
         , !; spy(pi b\ locDecl b B => pi d\ locDecl d B' =>
             extract_term (F b) (F' d)
             (context [var_term _ d|[var_term _ b|Vars]] [var_mapping b d|VarMap] LibMap)

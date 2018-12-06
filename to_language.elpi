@@ -273,7 +273,7 @@ translate_term_arg (var_dep_type _ _ _) _A _LibMap Result
     ,  !
     .
 translate_term_arg (var_dep_term _ _ X) A LibMap Result
-    :- spy((name A, translate_dep_term A LibMap A')
+    :- spy((name A A [], translate_dep_term A LibMap A')
         , !; pi x\ locDecl x X => translate_term (A x) LibMap A')
     ,  Result = A'
     ,  !
@@ -308,7 +308,7 @@ translate_type_arg (var_term _ _) _A _LibMap Result
     ,  !
     .
 translate_type_arg (var_dep_type _ _ X) A LibMap Result
-    :-  spy((name A, translate_dep_type A LibMap A')
+    :-  spy((name A A [], translate_dep_type A LibMap A')
         , !; pi x\ locDecl x X => translate_type (A x) LibMap A')
     ,  Result = A'
     ,  !
@@ -352,9 +352,21 @@ translate_term (# A B) LibMap Result
         , !; translate_term (A B) LibMap AB', Result is AB')
     ,  !
     .
-
 translate_type (# A _B) LibMap Result
     :- translate_dep_type A LibMap A'
+    ,  Result is A'
+    ,  !
+    .
+translate_term X LibMap Result
+    :- name X A [B]
+    ,  ((translate_dep_term A LibMap A'
+        ,    translate_term B LibMap B', Result is "(" ^ A' ^ " " ^ B' ^ ")")
+        , !; translate_term (A B) LibMap AB', Result is AB')
+    ,  !
+    .
+translate_type X LibMap Result
+    :- name X A [_B]
+    ,  translate_dep_type A LibMap A'
     ,  Result is A'
     ,  !
     .
@@ -365,7 +377,7 @@ translate_term (fixMe A _) _ Result
     .
 
 translate_term A _ Result
-    :- spy(name A)
+    :- spy(name A A [])
     ,  spy(term_to_string A S)
     ,  Result is S
     ,  !
@@ -386,7 +398,7 @@ translate_type_var_to haskell S Result
     .
 
 translate_type A _ Result
-    :- name A
+    :- name A A []
     ,  term_to_string A S
     ,  translate_type_var_to @language S Result
     ,  !
@@ -398,7 +410,7 @@ translate_type H LibMap Result
     .
 
 translate_dep_term A _ Result
-    :- name A
+    :- name A A []
     ,  term_to_string A S
     ,  Result is S
     ,  !
@@ -414,7 +426,7 @@ translate_dep_type_var_to haskell S Result
     .
 
 translate_dep_type A _ Result
-    :- name A
+    :- name A A []
     ,  term_to_string A S
     ,  translate_dep_type_var_to @language S Result
     ,  !
@@ -471,7 +483,7 @@ translate_term (extractor_dep_type_lambda A K F) LibMap Result
     .
 
 translate_term (extractor_dep_lambda A B F) LibMap Result
-    :- ((name F, term_to_string F Result)
+    :- ((name F F [], term_to_string F Result)
         , !; pi a\ of a A int => pi b\ (of (b a) (B a) int) =>
                 (translate_term (F b) LibMap SF, translate_dep_term b LibMap Sb)
             , translate_lambda_abs_to @language SF Sb Result)
