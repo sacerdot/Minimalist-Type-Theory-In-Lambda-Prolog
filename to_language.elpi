@@ -273,8 +273,7 @@ translate_term_arg (var_dep_type _ _ _) _A _LibMap Result
     ,  !
     .
 translate_term_arg (var_dep_term _ _ X) A LibMap Result
-    :- spy((name A A [], translate_dep_term A LibMap A')
-        , !; pi x\ locDecl x X => translate_term (A x) LibMap A')
+    :- spy(pi x\ locDecl x X => translate_term (A x) LibMap A')
     ,  Result = A'
     ,  !
     .
@@ -308,8 +307,7 @@ translate_type_arg (var_term _ _) _A _LibMap Result
     ,  !
     .
 translate_type_arg (var_dep_type _ _ X) A LibMap Result
-    :-  spy((name A A [], translate_dep_type A LibMap A')
-        , !; pi x\ locDecl x X => translate_type (A x) LibMap A')
+    :-  spy(pi x\ locDecl x X => translate_type (A x) LibMap A')
     ,  Result = A'
     ,  !
     .
@@ -347,21 +345,23 @@ translate_type (lib_app H A) LibMap Result
     .
 
 translate_term (# A B) LibMap Result
-    :- ((translate_dep_term A LibMap A'
-        ,    translate_term B LibMap B', Result is "(" ^ A' ^ " " ^ B' ^ ")")
-        , !; translate_term (A B) LibMap AB', Result is AB')
+    :- name A A []
+    ,  translate_dep_term A LibMap A'
+    ,  translate_term B LibMap B'
+    ,  Result is "(" ^ A' ^ " " ^ B' ^ ")"
     ,  !
     .
 translate_type (# A _B) LibMap Result
-    :- translate_dep_type A LibMap A'
+    :- name A A []
+    ,  translate_dep_type A LibMap A'
     ,  Result is A'
     ,  !
     .
 translate_term X LibMap Result
     :- name X A [B]
-    ,  ((translate_dep_term A LibMap A'
-        ,    translate_term B LibMap B', Result is "(" ^ A' ^ " " ^ B' ^ ")")
-        , !; translate_term (A B) LibMap AB', Result is AB')
+    ,  translate_dep_term A LibMap A'
+    ,  translate_term B LibMap B'
+    ,  Result is "(" ^ A' ^ " " ^ B' ^ ")"
     ,  !
     .
 translate_type X LibMap Result
@@ -483,10 +483,9 @@ translate_term (extractor_dep_type_lambda A K F) LibMap Result
     .
 
 translate_term (extractor_dep_lambda A B F) LibMap Result
-    :- ((name F F [], term_to_string F Result)
-        , !; pi a\ of a A int => pi b\ (of (b a) (B a) int) =>
-                (translate_term (F b) LibMap SF, translate_dep_term b LibMap Sb)
-            , translate_lambda_abs_to @language SF Sb Result)
+    :- pi a\ of a A int => pi b\ (of (b a) (B a) int) =>
+        (translate_term (F b) LibMap SF, translate_dep_term b LibMap Sb)
+    ,  translate_lambda_abs_to @language SF Sb Result
     ,  !
     .
 

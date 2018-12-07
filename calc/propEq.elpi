@@ -770,7 +770,7 @@ starify_term (eq A AA) LibMap Result
 %% Extraction
 
 collapse_type (propEq A _AA1 _AA2) Result _ []
-    :- erase_and_conv A extractor_singleton
+    :- conv A extractor_singleton
     ,  Result = extractor_singleton
     ,  !
     .
@@ -786,7 +786,7 @@ extract_type (propEq A AA1 AA2) Result Context SetList
 
 %% C 1  ==>  1
 collapse_term (eq A _AA) Result _ []
-    :- erase_and_conv A extractor_singleton
+    :- conv A extractor_singleton
     ,  Result = extractor_star
     ,  !
     .

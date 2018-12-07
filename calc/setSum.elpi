@@ -96,12 +96,9 @@ starify_term (inr A B BB) LibMap Result
 starify_term (elim_setSum C W Cl Cr) LibMap Result
     :- starify_term W LibMap W'
     ,  isa W (setSum L R) @level
-    ,  ((name C C [], C' = C)
-        , !; pi w\ locDecl w (setSum L R) => starify_type (C w) LibMap (C' w))
-    ,  ((name Cl Cl [], Cl' = Cl)
-        , !; pi l\ locDecl l L => starify_term (Cl l) LibMap (Cl' l))
-    ,  ((name Cr Cr [], Cr' = Cr)
-        , !; pi r\ locDecl r R => starify_term (Cr r) LibMap (Cr' r))
+    ,  pi w\ locDecl w (setSum L R) => starify_type (C w) LibMap (C' w)
+    ,  pi l\ locDecl l L => starify_term (Cl l) LibMap (Cl' l)
+    ,  pi r\ locDecl r R => starify_term (Cr r) LibMap (Cr' r)
     ,  Result = (elim_setSum C' W' Cl' Cr')
     ,  !
     .
@@ -136,7 +133,7 @@ extract_term (inr A B BB) Result Context SetList
 
 %% (1 + B') -> A'  ==>  (1 + B') -> A' (preserve_complexity)
 collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _ []
-    :- erase_and_conv A extractor_singleton
+    :- conv A extractor_singleton
     ,  is_complexity_altered (elim_setSum C (inl A B AA) Cl Cr)
     ,  Result = (elim_setSum C (inl A B AA) Cl Cr)
     ,  !
@@ -144,14 +141,14 @@ collapse_term (elim_setSum C (inl A B AA) Cl Cr) Result _ []
 
 %% (1 + B') -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inl A _B _AA) Cl _Cr) Result Context []
-    :- erase_and_conv A extractor_singleton
+    :- conv A extractor_singleton
     ,  extract_term (Cl extractor_star) Result Context []
     ,  !
     .
 
 %% (B' + 1) -> A'  ==>  (1 + B') -> A' (preserve_complexity)
 collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _ []
-    :- erase_and_conv B extractor_singleton
+    :- conv B extractor_singleton
     ,  is_complexity_altered (elim_setSum C (inr A B BB) Cl Cr)
     ,  Result = (elim_setSum C (inr A B BB) Cl Cr)
     ,  !
@@ -159,7 +156,7 @@ collapse_term (elim_setSum C (inr A B BB) Cl Cr) Result _ []
 
 %% (B' + 1) -> A'  ==>  A'  (se passato direttamente)
 collapse_term (elim_setSum _C (inr _A B _BB) _Cl Cr) Result Context []
-    :- erase_and_conv B extractor_singleton
+    :- conv B extractor_singleton
     ,  extract_term (Cr extractor_star) Result Context []
     ,  !
     .
@@ -204,21 +201,15 @@ extract_term (elim_setSum C W Cl Cr) Result Context SetList
     ,  extract_term W W' Context WList
     ,  isa W (setSum L R) @level
     ,  isa W' (setSum L' R') @level
-    ,  ((name C C [], map_var C VarMap C', CList = [])
-        , !; pi w\ locDecl w (setSum L R) => pi m\ locDecl m (setSum L' R') =>
-            extract_type (C w) (C' m)
-            (context [var_term _ m|[var_term _ w|Vars]] [var_mapping w m|VarMap] LibMap)
-            CList)
-    ,  ((name Cl Cl [], map_var Cl VarMap Cl', ClList = [])
-        , !; pi l\ locDecl l L => pi i\ locDecl i L' =>
-            extract_term (Cl l) (Cl' i)
-            (context [var_term _ i|[var_term _ l|Vars]] [var_mapping l i|VarMap] LibMap)
-            ClList)
-    ,  ((name Cr Cr [], map_var Cr VarMap Cr', CrList = [])
-        , !; pi r\ locDecl r R => pi f\ locDecl f R' =>
-            extract_term (Cr r) (Cr' f)
-            (context [var_term _ f|[var_term _ r|Vars]] [var_mapping r f|VarMap] LibMap)
-            CrList)
+    ,  pi w\ locDecl w (setSum L R) => pi m\ locDecl m (setSum L' R') => extract_type (C w) (C' m)
+        (context [var_term _ m|[var_term _ w|Vars]] [var_mapping w m|VarMap] LibMap)
+        CList
+    ,  pi l\ locDecl l L => pi i\ locDecl i L' => extract_term (Cl l) (Cl' i)
+        (context [var_term _ i|[var_term _ l|Vars]] [var_mapping l i|VarMap] LibMap)
+        ClList
+    ,  pi r\ locDecl r R => pi f\ locDecl f R' => extract_term (Cr r) (Cr' f)
+        (context [var_term _ f|[var_term _ r|Vars]] [var_mapping r f|VarMap] LibMap)
+        CrList
     ,  spy(collapse_term (elim_setSum C' W' Cl' Cr') Result Context ElimList)
     ,  spy(concat [ElimList, CrList, ClList, CList, WList] SetList)
     ,  !
@@ -294,12 +285,10 @@ translate_elim_setSum_to haskell W' Cl' Cr' Result
 translate_term (elim_setSum _C W Cl Cr) LibMap Result
     :- translate_term W LibMap W'
     ,  isa W (setSum L R) @level
-    ,  ((name Cl Cl [], term_to_string Cl Cl')
-        , !; pi l\ locDecl l L => (translate_term (Cl l) LibMap SCl, translate_term l LibMap Sl)
-            , translate_elim_setSum_abs_to @language SCl Sl Cl')
-    ,  ((name Cr Cr [], term_to_string Cr Cr')
-        , !; pi r\ locDecl r R => (translate_term (Cr r) LibMap SCr, translate_term r LibMap Sr)
-            , translate_elim_setSum_abs_to @language SCr Sr Cr')
+    ,  pi l\ locDecl l L => (translate_term (Cl l) LibMap SCl, translate_term l LibMap Sl)
+    ,  translate_elim_setSum_abs_to @language SCl Sl Cl'
+    ,  pi r\ locDecl r R => (translate_term (Cr r) LibMap SCr, translate_term r LibMap Sr)
+    ,  translate_elim_setSum_abs_to @language SCr Sr Cr'
     ,  translate_elim_setSum_to @language W' Cl' Cr' Result
     ,  !
     .
