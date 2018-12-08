@@ -105,10 +105,10 @@ mode (ofType i o o).
 mode (isa i i o).
 mode (isaType i o o).
 
-of uvar _ _ :- print "ERROR: Flexible of!", fail.
-ofType uvar _ _ :- print "ERROR: Flexible ofType!", fail.
-isa uvar _ _, isa _ uvar _ :- print "ERROR: Flexible isa!", fail.
-isaType uvar _ _, isaType _ uvar _ :- print "ERROR: Flexible isaType!", fail.
+of uvar _ _ :- print "ERROR: Flexible of!", halt.
+ofType uvar _ _ :- print "ERROR: Flexible ofType!", halt.
+isa uvar _ _, isa _ uvar _ :- print "ERROR: Flexible isa!", halt.
+isaType uvar _ _, isaType _ uvar _ :- print "ERROR: Flexible isaType!", halt.
 
 %% !!!DEBUG mock typing of term M, returns chosen type T
 of (fixMe M T ) T int 

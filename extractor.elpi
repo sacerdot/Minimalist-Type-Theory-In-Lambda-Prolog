@@ -77,9 +77,9 @@ translate_library [Entry|TL] LibMap Result
 translate_library [] _ [].
 
 /*
-%24
-translate_entry_from_library [_|TL] LibMap 5 Result
-    :- translate_entry_from_library TL LibMap 4 Result
+%26
+translate_entry_from_library [_|TL] LibMap 7 Result
+    :- translate_entry_from_library TL LibMap 6 Result
     ,  !
     .
 */
@@ -173,18 +173,76 @@ starify_lib (locTypeDefL N KIND TY) LibMap Result
     ,  !
     .
 
-starify_lib_prop A _ A _.
+%% prop starification begin
+starify_lib_prop (pi a\ H a) LibMap Result
+    :- spy(pi a\ starify_lib_prop (H a) LibMap (H' a))
+    ,  Result = (pi a\ H' a)
+    ,  !
+    .
+starify_lib_prop (isa X T @level => B) LibMap Result
+    :- name X X []
+    ,  spy(starify_type T LibMap T')
+    ,  spy(locDecl X T => starify_lib_prop B LibMap B')
+    ,  Result = (isa X T' @level => B')
+    ,  !
+    .
+starify_lib_prop (locDecl X T => B) LibMap Result
+    :- name X X []
+    ,  spy(starify_type T LibMap T')
+    ,  spy(locDecl X T => starify_lib_prop B LibMap B')
+    ,  Result = (locDecl X T' => B')
+    ,  !
+    .
+starify_lib_prop (conv X Y => B) LibMap Result
+    :- starify_lib_prop (conv X Y) LibMap (conv X' Y')
+    ,  starify_lib_prop B LibMap B'
+    ,  Result = (conv X' Y' => B')
+    ,  !
+    .
+starify_lib_prop (conv A B) LibMap Result
+    :- spy(starify_term A LibMap A')
+    ,  spy(starify_term B LibMap B')
+    ,  Result = (conv A' B')
+    ,  !
+    .
+starify_lib_prop (conv_trans X Y Z) LibMap Result
+    :- spy(starify_term X LibMap X')
+    ,  spy(starify_term Y LibMap Y')
+    ,  spy(starify_term Z LibMap Z')
+    ,  Result = (conv_trans X' Y' Z')
+    ,  !
+    .
+starify_lib_prop (conv_trans_symm X Y Z) LibMap Result
+    :- starify_term X LibMap X'
+    ,  starify_term Y LibMap Y'
+    ,  starify_term Z LibMap Z'
+    ,  Result = (conv_trans_symm X' Y' Z')
+    ,  !
+    .
+starify_lib_prop (conv_symm X Y) LibMap Result
+    :- starify_term X LibMap X'
+    ,  starify_term Y LibMap Y'
+    ,  Result = (conv_symm X' Y')
+    ,  !
+    .
+starify_lib_prop (spy A) LibMap Result
+    :- starify_lib_prop A LibMap A'
+    ,  Result = (spy A')
+    ,  !
+    .
+starify_lib_prop true _ true :- !.
+%% prop starification end
 
 starify_lib (hyp H1 H2 E) LibMap Result
-    :- starify_lib_prop H1 LibMap H1' _
-    ,  starify_lib_prop H2 LibMap H2' _
-    ,  (erase_var_app H1' Hyp, Hyp => starify_lib E LibMap E')
+    :- spy(starify_lib_prop H1 LibMap H1')
+    ,  spy(starify_lib_prop H2 LibMap H2')
+    ,  (H1' => starify_lib E LibMap E')
     ,  spy(Result = (hyp H1' H2' E')) 
     ,  !
     .
 starify_lib (cut H E) LibMap Result
-    :- starify_lib_prop H LibMap H' _
-    ,  (erase_var_app H' HH, process_cut HH Hyp, Hyp => starify_lib E LibMap E')
+    :- starify_lib_prop H LibMap H'
+    ,  (process_cut H' Hyp, Hyp => starify_lib E LibMap E')
     ,  spy(Result = (cut H' E')) 
     ,  !
     .
@@ -420,94 +478,78 @@ extract_lib (locTypeDefL N _KIND TY) Result Context [] BodyList SetList
 
 
 %% prop extraction begin: prop extraction assumes that no extraction of reabstreacted terms is needed
-construct_implication_ [H|[]] Result
-    :- Result = H
-    ,  !
-    .
-construct_implication_ [H|TL] Result
-    :- construct_implication_ TL TL'
-    ,  Result = (H => TL')
-    .
-construct_implication List Result
-    :- reverse List RList
-    ,  spy(construct_implication_ RList Result)
-    .
-
-/*
-collapse_lib_prop (pi b\ H' b) Result Context
+collapse_lib_prop (pi b\ H' b) Result
     :- (H' extractor_star) = (locDecl extractor_star extractor_singleton => B)
     ,  Result = B
     ,  !
     .
-collapse_lib_prop (pi b\ H' b) Result Context
+collapse_lib_prop (pi b\ H' b) Result
     :- (H' extractor_star) = (isa extractor_star extractor_singleton @level => B)
     ,  Result = B
     ,  !
     .
-*/
-collapse_lib_prop (pi b\ H' b) Result _
+collapse_lib_prop (pi b\ H' b) Result
     :- spy(Result = (pi b\ H' b))
     .
 
-extract_lib_prop (pi a\ H a) Result Context NewDecl
+extract_lib_prop (pi a\ H a) Result Context
     :- Context = (context Vars VarMap LibMap)
-    ,  pi a\ pi b\ spy(extract_lib_prop (H a) (H' b)
-                       (context Vars [(var_mapping a b)|VarMap] LibMap)
-                       NewDecl)
-    ,  spy(collapse_lib_prop (pi b\ H' b) Result Context)
+    ,  spy(pi a\ pi b\ extract_lib_prop (H a) (H' b) (context Vars [(var_mapping a b)|VarMap] LibMap))
+    ,  spy(collapse_lib_prop (pi b\ H' b) Result)
     ,  !
     .
-extract_lib_prop (isa X T @level) Result Context NewDecl
-    :- spy(extract_term X X' Context [])
+extract_lib_prop (isa X T @level => B) Result Context
+    :- Context = (context _ VarMap _), spy(map_var X VarMap X')
     ,  spy(extract_type T T' Context [])
-    ,  Result = (isa X' T' @level), NewDecl = [locDecl X' T'|[locDecl X T]]
+    ,  spy(locDecl X T => locDecl X' T' => extract_lib_prop B B' Context)
+    ,  Result = (isa X' T' @level => B')
     ,  !
     .
-extract_lib_prop (locDecl X T) Result Context []
-    :- spy(extract_term X X' Context [])
+extract_lib_prop (locDecl X T => B) Result Context
+    :- Context = (context _ VarMap _), spy(map_var X VarMap X')
     ,  spy(extract_type T T' Context [])
-    ,  Result = (locDecl X' T')
+    ,  spy(locDecl X T => locDecl X' T' => extract_lib_prop B B' Context)
+    ,  Result = (locDecl X' T' => B')
     ,  !
     .
-extract_lib_prop (A => B) Result Context NewDecl
-    :- spy(extract_lib_prop A A' Context ADecl)
-    ,  spy(construct_implication [extract_lib_prop B B' Context NewDecl|[A'|[A|ADecl]]] ImpliesB)
-    ,  spy(ImpliesB)
-    ,  spy(Result = (A' => B'))
+extract_lib_prop (conv X Y => B) Result Context
+    :- spy(extract_lib_prop (conv X Y) (conv X' Y') Context)
+    ,  spy(extract_lib_prop B B' Context)
+    ,  Result = (conv X' Y' => B')
     ,  !
     .
-extract_lib_prop (conv A B) Result Context []
+extract_lib_prop (conv A B) Result Context
     :- spy(extract_term A A' Context [])
     ,  spy(extract_term B B' Context [])
     ,  spy(Result = (conv A' B'))
     ,  !
     .
-extract_lib_prop (conv_trans X Y Z) Result Context []
+extract_lib_prop (conv_trans X Y Z) Result Context
     :- spy(extract_term X X' Context [])
     ,  spy(extract_term Y Y' Context [])
     ,  spy(extract_term Z Z' Context [])
     ,  spy(Result = (conv_trans X' Y' Z'))
     ,  !
     .
-extract_lib_prop (conv_trans_symm X Y Z) Result Context []
+extract_lib_prop (conv_trans_symm X Y Z) Result Context
     :- spy(extract_term X X' Context [])
     ,  spy(extract_term Y Y' Context [])
     ,  spy(extract_term Z Z' Context [])
     ,  spy(Result = (conv_trans_symm X' Y' Z'))
     ,  !
     .
-extract_lib_prop (conv_symm X Y) Result Context []
+extract_lib_prop (conv_symm X Y) Result Context
     :- spy(extract_term X X' Context [])
     ,  spy(extract_term Y Y' Context [])
     ,  spy(Result = (conv_symm X' Y'))
     ,  !
     .
-extract_lib_prop (spy A) Result Context NewDecl
-    :- spy(extract_lib_prop A A' Context NewDecl)
+extract_lib_prop (spy A) Result Context
+    :- spy(extract_lib_prop A A' Context)
     ,  spy(Result = (spy A'))
     ,  !
     .
-extract_lib_prop true true _ [].
+extract_lib_prop true true _.
 %% prop extraction end
 
 get_call_type (hyp _ _ E) Result :- get_call_type E Result.
@@ -523,10 +565,9 @@ collapse_lib (hyp _ _ E) Result Context true BodyList []
     .
 
 extract_lib (hyp H1 H2 E) Result Context ArgMask BodyList SetList
-    :- spy(extract_lib_prop H1 H1' Context _)
-    ,  spy(extract_lib_prop H2 H2' Context _)
-    ,  erase_var_app H1 Hyp, erase_var_app H1' Hyp'
-    ,  spy(Hyp => Hyp' => extract_lib E E' Context ArgMask [body H2'|[body H1'|BodyList]] SetList)
+    :- spy(extract_lib_prop H1 H1' Context)
+    ,  spy(extract_lib_prop H2 H2' Context)
+    ,  spy(H1 => H1' => extract_lib E E' Context ArgMask [body H2'|[body H1'|BodyList]] SetList)
     ,  spy(collapse_lib (hyp H1' H2' E') Result Context true BodyList [])
     ,  !
     .
@@ -539,9 +580,9 @@ collapse_lib (cut _ E) Result Context true BodyList []
     .
 
 extract_lib (cut H E) Result Context ArgMask BodyList SetList
-    :- spy(extract_lib_prop H H' Context _)
-    ,  erase_var_app H HH, spy(process_cut HH Hyp)
-    ,  erase_var_app H' HH', spy(process_cut HH' Hyp')
+    :- spy(extract_lib_prop H H' Context)
+    ,  spy(process_cut H Hyp)
+    ,  spy(process_cut H' Hyp')
     ,  spy(Hyp => Hyp' => extract_lib E E' Context ArgMask [body H'|BodyList] SetList)
     ,  spy(collapse_lib (cut H' E') Result Context true BodyList [])
     ,  !
@@ -622,11 +663,11 @@ stylized_type_of (univDepPiT Ai Bi F) [Arg|ArgTL] [var_dep_term _ _ Ai|KindTL]
     .
 
 stylized_type_of (hyp H1 _ E) ArgTL KindTL
-    :- (erase_var_app H1 Hyp, Hyp => stylized_type_of E ArgTL KindTL)
+    :- (H1 => stylized_type_of E ArgTL KindTL)
     ,  !
     .
 stylized_type_of (cut H E) ArgTL KindTL
-    :- (erase_var_app H HH, process_cut HH Hyp, Hyp => stylized_type_of E ArgTL KindTL)
+    :- (process_cut H Hyp, Hyp => stylized_type_of E ArgTL KindTL)
     ,  !
     .
 
@@ -703,14 +744,14 @@ starify_type (# X Y) LibMap Result
     ,  !
     .
 starify_type A LibMap Result
-    :- name A X [Y]
+    :- spy(name A X [Y])
     ,  starify_term Y LibMap Y'
     ,  Result = (X Y')
     ,  !
     .
 
 starify_type TA LibMap Result
-    :- ofType TA AKind @level
+    :- spy(ofType TA AKind @level)
     ,  spy(starify_type_ AKind TA LibMap Result)
     ,  !
     .
